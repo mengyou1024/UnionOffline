@@ -1,0 +1,5 @@
+module src.AScan
+
+ControlUI 1.0 ControlUI.qml
+MainUI 1.0 MainUI.qml
+ParamUI 1.0 ParamUI.qml

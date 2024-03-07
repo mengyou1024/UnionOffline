@@ -109,7 +109,7 @@ CMakeLists.txt.user*
 
 build/
 morose_config.h
-output
+output/*
 .vscode/
 config/ProductConfig.json
 pack-installer.iss

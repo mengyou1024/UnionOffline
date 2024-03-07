@@ -1,0 +1,15 @@
+[submodule "components/utils"]
+	path = components/utils
+	url = https://github.com/mengyou1024/misc_utils.git
+[submodule "components/union"]
+	path = components/union
+	url = https://github.com/mengyou1024/UnionLib.git
+[submodule "components/QXlsx"]
+	path = components/QXlsx
+	url = https://github.com/mengyou1024/QXlsx.git
+[submodule "components/SingleApplication"]
+	path = components/SingleApplication
+	url = https://github.com/mengyou1024/SingleApplication.git
+[submodule "components/NumCpp"]
+	path = components/NumCpp
+	url = https://github.com/dpilger26/NumCpp.git

@@ -1,9 +1,14 @@
+#include "common.hpp"
+#include "../AScan/AScanInteractor.hpp"
 #include "../morose_config.h"
-#include "common.h"
+#include <QJsonArray>
+#include <QJsonObject>
+#include <UnionType>
+#include <format>
 
-void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
     static QMutex mutex;
-    static int    maxCatelogyLen = 0;
+    static int    maxCatelogyLen = 12;
     int           categoryLen    = QString(context.category).length();
     static int    maxMsgLen      = 0;
     int           msgLen         = msg.length();
@@ -14,7 +19,8 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext &context
         maxMsgLen = msgLen;
     }
     QString logLevel;
-    QString logCategory = QString("[%1]%2").arg(QString(context.category), QString(maxCatelogyLen - categoryLen, ' '));
+    auto    temp        = QString("[%1]").arg(QString(context.category)).toStdString();
+    QString logCategory = QString(std::format("{: ^{}}", temp, maxCatelogyLen + 2).c_str());
 
 #ifdef QT_DEBUG
     switch (type) {
@@ -65,12 +71,13 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext &context
 #endif
 
     QString logTimeInfo = QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz]");
-    QString message     = QString("%1 %2 %3 %4\n")
+    QString message     = QString("%1 %2 %3 %4")
                           .arg(logTimeInfo, logLevel, logCategory, QString("%1%2").arg(msg, QString(maxMsgLen - msgLen, ' ')));
+    message.replace("\n", QString("\n") + QString(33 + maxCatelogyLen, ' '));
 
 #if defined(QT_DEBUG)
     mutex.lock();
-    printf("%s", message.toLocal8Bit().toStdString().c_str());
+    printf("%s\n", message.toLocal8Bit().toStdString().c_str());
     fflush(stdout);
     mutex.unlock();
 #else
@@ -86,30 +93,38 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext &context
         QFile file("./log/error.txt");
         file.open(QFile::WriteOnly | QIODevice::Append);
         QTextStream text_stream(&file);
-        text_stream << message;
+        text_stream << message << "\n";
         file.flush();
         file.close();
     }
-    text_stream << message;
+    text_stream << message << "\n";
     file.flush();
     file.close();
     mutex.unlock();
 #endif
 }
 
-void Morose::registerVariable(QQmlContext *context) {
+void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_APP_VERSION", APP_VERSION);
     context->setContextProperty("MOROSE_GIT_REPOSITORY", GIT_REPOSITORY);
     context->setContextProperty("MOROSE_GIT_USER_NAME", GIT_USER_NAME);
     context->setContextProperty("MOROSE_GIT_USER_EMAIL", GIT_USER_EMAIL);
+    qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
+    registeAllAScanFileSelector();
+    registNameFilter(context);
 }
 
-QJsonObject &Morose::getGlobalEnvironment() {
+void Morose::registeAllAScanFileSelector() {
+    Union::AScan::AScanFileSelector::RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::__390N_T8_LDAT_READ);
+    Union::AScan::AScanFileSelector::RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::__390N_T8_JSON_READ);
+}
+
+QJsonObject& Morose::getGlobalEnvironment() {
     static QJsonObject obj;
     return obj;
 }
 
-QJsonObject &Morose::loadGlobalEnvironment() {
+QJsonObject& Morose::loadGlobalEnvironment() {
     QFile file("Config.json");
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
@@ -120,4 +135,22 @@ QJsonObject &Morose::loadGlobalEnvironment() {
     }
     qDebug() << getGlobalEnvironment();
     return getGlobalEnvironment();
+}
+
+void Morose::registNameFilter(QQmlContext* context) {
+    QVariantList folderListModel_nameFilter;
+    QVariantList filedialog_nameFilter;
+    QVariantMap  mainUi_map;
+
+    mainUi_map.insert(Union::AScan::AScanFileSelector::GetUINameMap().toVariantMap());
+    folderListModel_nameFilter += Union::AScan::AScanFileSelector::GetFileListModelNameFilter().toVariantList();
+    filedialog_nameFilter += Union::AScan::AScanFileSelector::GetFileNameFilter().toVariantList();
+
+    context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
+    context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);
+    context->setContextProperty("MAINUI_MAP", mainUi_map);
+
+    qDebug() << "FOLDERLISTMODEL_NAMEFILTER:" << folderListModel_nameFilter;
+    qDebug() << "FILEDIALOG_NAMEFILTER:" << filedialog_nameFilter;
+    qDebug() << "MAINUI_MAP:" << mainUi_map;
 }

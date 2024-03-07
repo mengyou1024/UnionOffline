@@ -1,0 +1,9 @@
+module Union
+
+CButton 1.0 common/Button.qml
+CSlider 1.0 common/Slider.qml
+CSpinBox 1.0 common/SpinBox.qml
+CArea 1.0 common/Area.qml
+CToast 1.0 common/ToastManager.qml
+CKeyValue 1.0 common/KeyValue.qml
+CRectangle 1.0 common/CRectangle.qml

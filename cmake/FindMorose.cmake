@@ -1,15 +1,3 @@
-set(MOROSE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resource/img/morose.ico" CACHE STRING "Morose executable icon")
-set(MOROSE_OUT_DIR "${CMAKE_SOURCE_DIR}/output" CACHE STRING "Morose output directory")
-set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/dist" CACHE STRING "Morose dist directory")
-
-set(MOROSE_PLUGINS_DIR "${MOROSE_DIST_DIR}/plugins" CACHE INTERNAL "Morose plugins directory")
-set(MOROSE_INSTALL_DIR "${MOROSE_OUT_DIR}/install" CACHE INTERNAL "Morose install output directory")
-set(MOROSE_RUNTIME_PLUGINS_DIR "${CMAKE_CURRENT_BINARY_DIR}/plugins" CACHE INTERNAL "runtime plugins directory")
-set(MOROSE_PLUGINS_TYPE "GENERIC" "VIEW" CACHE INTERNAL "Morose plugins type")
-set(MOROSE_MAIN ${PROJECT_NAME} CACHE INTERNAL "morose excutable file name")
-set(MOROSE_PLUGIN_QML_DIRS CACHE INTERNAL "Morose plugin qml directories")
-set(MOROSE_UNINSTALL_DELETE CACHE INTERNAL "Morose Inno Setup delete file or directory")
-
 #[[
     获取有关git的相关信息
     `morose_main_setup()`
@@ -21,70 +9,77 @@ set(MOROSE_UNINSTALL_DELETE CACHE INTERNAL "Morose Inno Setup delete file or dir
 ]]
 macro(morose_main_setup)
     find_package(Git QUIET)
-
-    if(GIT_FOUND)
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} describe --tags
-            OUTPUT_VARIABLE APP_VERSION
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        )
-
-        if(NOT APP_VERSION)
-            message(FATAL_ERROR "Git repository must have a tag , use `git tag <tag_name> -m <tag_message>` to create a tag.\n"
-                "\te.g.: `git tag v0.0.1 -m \"init\"`\n"
-                "the git describe is use for varible `APP_VERSION`"
+    if (NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
+        if(GIT_FOUND)
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} describe --tags
+                OUTPUT_VARIABLE APP_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             )
+
+            if(NOT APP_VERSION)
+                message(FATAL_ERROR "Git repository must have a tag , use `git tag <tag_name> -m <tag_message>` to create a tag.\n"
+                    "\te.g.: `git tag v0.0.1 -m \"init\"`\n"
+                    "the git describe is use for varible `APP_VERSION`"
+                )
+            else()
+                message(STATUS "APP VERSION:" ${APP_VERSION})
+            endif()
+
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} remote
+                OUTPUT_VARIABLE GIT_REMOTE
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} remote get-url ${GIT_REMOTE}
+                OUTPUT_VARIABLE GIT_REPOSITORY_URL
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+            unset(GIT_REMOTE)
+            message(STATUS "GIT_REPOSITORY_URL:${GIT_REPOSITORY_URL}")
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} config user.name
+                OUTPUT_VARIABLE GIT_USER_NAME
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+            message(STATUS "GIT_USER_NAME:${GIT_USER_NAME}")
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} config user.email
+                OUTPUT_VARIABLE GIT_USER_EMAIL
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+            message(STATUS "GIT_USER_EMAIL:${GIT_USER_EMAIL}")
         else()
-            message(STATUS "APP VERSION:" ${APP_VERSION})
+            message(WARNING "no git found, please install git: https://git-scm.com/")
         endif()
 
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} remote
-            OUTPUT_VARIABLE GIT_REMOTE
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        )
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} remote get-url ${GIT_REMOTE}
-            OUTPUT_VARIABLE GIT_REPOSITORY_URL
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        )
-        unset(GIT_REMOTE)
-        message(STATUS "GIT_REPOSITORY_URL:${GIT_REPOSITORY_URL}")
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} config user.name
-            OUTPUT_VARIABLE GIT_USER_NAME
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        )
-        message(STATUS "GIT_USER_NAME:${GIT_USER_NAME}")
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} config user.email
-            OUTPUT_VARIABLE GIT_USER_EMAIL
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        )
-        message(STATUS "GIT_USER_EMAIL:${GIT_USER_EMAIL}")
-    else()
-        message(WARNING "no git found, please install git: https://git-scm.com/")
-    endif()
+        # 搜索inno setup工具
+        find_program(ISCC_PATH ISCC)
 
-    # 搜索inno setup工具
-    find_program(ISCC_PATH ISCC)
+        if(ISCC_PATH)
+            message(STATUS "Detected ISCC_PATH: ${ISCC_PATH}")
+        else(ISCC_PATH)
+            message(WARNING "no ISCC path found, please install inno setup and add it to path\n see: https://jrsoftware.org/isinfo.php")
+        endif(ISCC_PATH)
 
-    if(ISCC_PATH)
-        message(STATUS "Detected ISCC_PATH: ${ISCC_PATH}")
-    else(ISCC_PATH)
-        message(WARNING "no ISCC path found, please install inno setup and add it to path\n see: https://jrsoftware.org/isinfo.php")
-    endif(ISCC_PATH)
-
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/morose_config.h.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/morose_config.h
-        @ONLY
-    )
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/morose_config.h.in
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/morose_config.h
+            @ONLY
+        )
+    else (NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
+        file(READ "${CMAKE_SOURCE_DIR}/archive.json" ARCHIVE_JSON_STRING)
+        string(JSON APP_VERSION GET "${ARCHIVE_JSON_STRING}" APP_VERSION)
+        string(JSON GIT_USER_NAME GET "${ARCHIVE_JSON_STRING}" GIT_USER_NAME)
+        string(JSON GIT_REPOSITORY_URL GET "${ARCHIVE_JSON_STRING}" GIT_REPOSITORY_URL)
+        string(JSON GIT_USER_EMAIL GET "${ARCHIVE_JSON_STRING}" GIT_USER_EMAIL)
+    endif(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
 endmacro(morose_main_setup)
 
 #[[
@@ -428,4 +423,37 @@ endfunction(morose_add_subdirectory_path path)
 
 set(Morose_FOUND TRUE)
 morose_main_setup()
+set(MOROSE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resource/img/morose.ico" CACHE STRING "Morose executable icon")
+set(MOROSE_OUT_DIR "${CMAKE_SOURCE_DIR}/output" CACHE STRING "Morose output directory")
+set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-${APP_VERSION}" CACHE STRING "Morose dist directory")
+message(STATUS MOROSE_DIST_DIR:${MOROSE_DIST_DIR})
+set(MOROSE_PLUGINS_DIR "${MOROSE_DIST_DIR}/plugins" CACHE INTERNAL "Morose plugins directory")
+set(MOROSE_INSTALL_DIR "${MOROSE_OUT_DIR}" CACHE INTERNAL "Morose install output directory")
+set(MOROSE_RUNTIME_PLUGINS_DIR "${CMAKE_CURRENT_BINARY_DIR}/plugins" CACHE INTERNAL "runtime plugins directory")
+set(MOROSE_PLUGINS_TYPE "GENERIC" "VIEW" CACHE INTERNAL "Morose plugins type")
+set(MOROSE_MAIN ${PROJECT_NAME} CACHE INTERNAL "morose excutable file name")
+set(MOROSE_PLUGIN_QML_DIRS CACHE INTERNAL "Morose plugin qml directories")
+set(MOROSE_UNINSTALL_DELETE CACHE INTERNAL "Morose Inno Setup delete file or directory")
 morose_add_subdirectory_path("extensions")
+morose_add_subdirectory_path("components")
+
+add_custom_target(
+    Archive 
+    COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}-archive.zip
+    COMMAND powershell "Copy-Item -Force -Recurse ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/output/archive/.git;\
+    cd ${CMAKE_SOURCE_DIR}/output/archive/; \
+    git reset --hard;\
+    git submodule update --init --recursive" > nul
+    COMMAND echo "{\
+\"APP_VERSION\":\"${APP_VERSION}\",\
+\"GIT_REPOSITORY_URL\": \"${GIT_REPOSITORY_URL}\",\
+\"GIT_USER_NAME\": \"${GIT_USER_NAME}\",\
+\"GIT_USER_EMAIL\": \"${GIT_USER_EMAIL}\"\
+}" > ${CMAKE_SOURCE_DIR}/output/archive/archive.json
+    COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/output/archive/.git ${CMAKE_SOURCE_DIR}/output/archive/.github
+    COMMAND 7z a -tZip ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}-archive.zip ${CMAKE_SOURCE_DIR}/output/archive/* -bso0
+    COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/output/archive
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    BYPRODUCTS ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}-archive.zip
+    ${CMAKE_SOURCE_DIR}/archive.json
+)

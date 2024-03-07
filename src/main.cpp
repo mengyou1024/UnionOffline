@@ -1,4 +1,4 @@
-#include "common/common.h"
+#include "common/common.hpp"
 #include "morose_config.h"
 #include <QApplication>
 #include <QDebug>
@@ -7,10 +7,12 @@
 #include <QPluginLoader>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
+#include <SingleApplication.h>
+#include <Yo/File>
 #include <format>
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+int main(int argc, char* argv[]) {
+    SingleApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/img/morose.ico"));
 
     // 注册日志处理回调函数
@@ -26,7 +28,11 @@ int main(int argc, char *argv[]) {
     logSetting.beginGroup("Rules");
     auto filter = logSetting.value("filterRules");
     if (filter.isNull()) {
+#if defined(QT_DEBUG)
         logSetting.setValue("filterRules", "");
+#else
+        logSetting.setValue("filterRules", "*.debug=false");
+#endif
         filter = logSetting.value("filterRules");
     }
     QLoggingCategory::setFilterRules(filter.toString());
@@ -38,7 +44,7 @@ int main(int argc, char *argv[]) {
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
-        [url](QObject *obj, const QUrl &objUrl) {
+        [url](QObject* obj, const QUrl& objUrl) {
             if (!obj && url == objUrl)
                 QCoreApplication::exit(-1);
         },
@@ -48,5 +54,23 @@ int main(int argc, char *argv[]) {
     Morose::loadGlobalEnvironment();
     qInfo() << std::format("{:-^80}", "application start, version: " APP_VERSION).c_str();
     engine.load(url);
+    QObject::connect(&app, &QApplication::aboutToQuit, &app, []() {
+        qInfo() << std::format("{:-^80}", "application quiet").c_str();
+    });
+
+    auto rootObjs   = engine.rootObjects();
+    auto mainWindow = qobject_cast<QQuickWindow*>(rootObjs.first());
+    QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, [mainWindow]() {
+        mainWindow->setFlag(Qt::WindowStaysOnTopHint, true);
+        if (mainWindow->windowState() == Qt::WindowMaximized) {
+            mainWindow->resize(mainWindow->minimumSize());
+            mainWindow->setX((QGuiApplication::primaryScreen()->geometry().width() - mainWindow->minimumSize().width()) / 2);
+            mainWindow->setY((QGuiApplication::primaryScreen()->geometry().height() - mainWindow->minimumSize().height()) / 2);
+        }
+        mainWindow->showNormal();
+        mainWindow->setFlag(Qt::WindowStaysOnTopHint, false);
+        mainWindow->requestActivate();
+        mainWindow->raise();
+    });
     return app.exec();
 }

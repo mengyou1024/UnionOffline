@@ -1,6 +1,26 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/main.qml</file>
         <file>img/morose.ico</file>
+        <file>img/ava_clear.png</file>
+        <file>img/config-language.ico</file>
+        <file>img/folder.png</file>
+        <file>img/param.png</file>
+        <file>img/USB_51.png</file>
+        <file>qml/components/qmldir</file>
+        <file>qml/components/common/Button.qml</file>
+        <file>qml/components/common/Slider.qml</file>
+        <file>qml/components/common/SpinBox.qml</file>
+        <file>qml/components/common/Area.qml</file>
+        <file>qml/src/AScan/ControlUI.qml</file>
+        <file>qml/src/AScan/MainUI.qml</file>
+        <file>qml/src/AScan/qmldir</file>
+        <file>qml/About.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/components/common/Toast.qml</file>
+        <file>qml/components/common/ToastManager.qml</file>
+        <file>img/Failed.png</file>
+        <file>img/Succed.png</file>
+        <file>qml/components/common/KeyValue.qml</file>
+        <file>qml/src/AScan/ParamUI.qml</file>
     </qresource>
 </RCC>
