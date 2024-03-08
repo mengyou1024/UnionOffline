@@ -52,6 +52,7 @@ Source: "@MOROSE_DIST_DIR@/VC_redist.x64.exe"; DestDir: "{app}"; Flags: deleteaf
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}/log"
+Type: files; Name: "{app}/setting.ini"
 @MOROSE_UNINSTALL_DELETE_STRING@
 
 [Icons]

@@ -201,6 +201,9 @@ Rectangle {
                             if (isReplayStart === false) {
                                 replayTimer.stop()
                             } else {
+                                if (sl_timerLine.value === sl_timerLine.to) {
+                                    sl_timerLine.value = sl_timerLine.from
+                                }
                                 replayTimer.start()
                             }
                             isReplayStart = !isReplayStart

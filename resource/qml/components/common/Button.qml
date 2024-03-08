@@ -7,8 +7,8 @@ T.Button {
     id: control
     hoverEnabled: true
     flat: true
-    height: 28
-    width: 96
+    implicitHeight: 28
+    implicitWidth: 96
     contentItem: Label {
         background: Rectangle {
             color: down ? Qt.darker(backgroundColor, 1.1) : (hovered ? Qt.lighter(backgroundColor, 1.1) : backgroundColor)

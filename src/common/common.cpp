@@ -1,8 +1,10 @@
 #include "common.hpp"
 #include "../AScan/AScanInteractor.hpp"
 #include "../morose_config.h"
+#include "qmltranslator.h"
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QQmlEngine>
 #include <UnionType>
 #include <format>
 
@@ -90,12 +92,12 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
     file.open(QFile::WriteOnly | QIODevice::Append);
     QTextStream text_stream(&file);
     if (type == QtCriticalMsg || type == QtFatalMsg) {
-        QFile file("./log/error.txt");
-        file.open(QFile::WriteOnly | QIODevice::Append);
-        QTextStream text_stream(&file);
-        text_stream << message << "\n";
-        file.flush();
-        file.close();
+        QFile _file("./log/error.txt");
+        _file.open(QFile::WriteOnly | QIODevice::Append);
+        QTextStream _text_stream(&file);
+        _text_stream << message << "\n";
+        _file.flush();
+        _file.close();
     }
     text_stream << message << "\n";
     file.flush();
@@ -110,6 +112,12 @@ void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_GIT_USER_NAME", GIT_USER_NAME);
     context->setContextProperty("MOROSE_GIT_USER_EMAIL", GIT_USER_EMAIL);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
+    auto translatorInstance = QmlTranslator::Instance();
+    qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
+    QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
+        qDebug() << "languageChanged";
+        context->engine()->retranslate();
+    });
     registeAllAScanFileSelector();
     registNameFilter(context);
 }
@@ -127,13 +135,19 @@ QJsonObject& Morose::getGlobalEnvironment() {
 QJsonObject& Morose::loadGlobalEnvironment() {
     QFile file("Config.json");
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+        QJsonParseError err;
+        QJsonDocument   doc = QJsonDocument::fromJson(file.readAll(), &err);
         if (doc.isObject()) {
             getGlobalEnvironment() = doc.object();
+            qDebug() << getGlobalEnvironment();
+        } else {
+            qWarning() << err.errorString();
         }
         file.close();
+
+    } else {
+        qWarning() << "open file: Config.json failed!";
     }
-    qDebug() << getGlobalEnvironment();
     return getGlobalEnvironment();
 }
 

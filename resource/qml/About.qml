@@ -3,12 +3,18 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
 import "./components"
+import Morose.translator
 
 ApplicationWindow {
     minimumWidth: 640
     maximumWidth: 640
     minimumHeight: 480
     maximumHeight: 480
+
+    LoggingCategory {
+        id: tag
+        name: "About"
+    }
 
     signal winClose(var x)
     title: qsTr("关于")
@@ -26,8 +32,6 @@ ApplicationWindow {
         Image {
             Layout.preferredWidth: 120
             source: "qrc:/img/morose.ico"
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
             fillMode: Image.PreserveAspectFit
         }
         ColumnLayout {

@@ -17,14 +17,14 @@ int main(int argc, char* argv[]) {
 
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
-
+    qInfo() << std::format("{:-^80}", "application start, version: " APP_VERSION).c_str();
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 
     // 设置日志过滤规则
-    QSettings logSetting("log/setting.ini", QSettings::IniFormat);
+    QSettings logSetting("setting.ini", QSettings::IniFormat);
     logSetting.beginGroup("Rules");
     auto filter = logSetting.value("filterRules");
     if (filter.isNull()) {
@@ -50,9 +50,8 @@ int main(int argc, char* argv[]) {
         },
         Qt::QueuedConnection);
     Morose::registerVariable(engine.rootContext());
-    qDebug() << QString(100, '-').toStdString().c_str();
     Morose::loadGlobalEnvironment();
-    qInfo() << std::format("{:-^80}", "application start, version: " APP_VERSION).c_str();
+    qDebug() << QString(100, '-').toStdString().c_str();
     engine.load(url);
     QObject::connect(&app, &QApplication::aboutToQuit, &app, []() {
         qInfo() << std::format("{:-^80}", "application quiet").c_str();

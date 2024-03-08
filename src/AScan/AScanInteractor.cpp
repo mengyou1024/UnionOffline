@@ -9,7 +9,6 @@ static Q_LOGGING_CATEGORY(TAG, "AScanIntr");
 
 using namespace Union::Base;
 using namespace Union::AScan;
-constexpr auto AMP_MAX = 200.0;
 
 #if defined(QT_DEBUG)
 struct _TEST_TIME {
@@ -115,7 +114,7 @@ void AScanInteractor::setChartView(QQuickItem* newChartView) {
     emit chartViewChanged();
 }
 
-bool AScanInteractor::reportExportClicked(QString fileName) {
+bool AScanInteractor::reportExportClicked(QString _fileName) {
     qDebug(TAG) << __FUNCTION__;
     if (!checkAScanCursorValid()) {
         return false;
@@ -123,60 +122,60 @@ bool AScanInteractor::reportExportClicked(QString fileName) {
     const auto& ch = ascan.data[getAScanCursorMax()];
     // TODO: 生成数据
     QVariantMap vmp = {
-        {"检测单位", ""},
-        {"报告编写", ""},
-        {"委托单位", ""},
-        {"检测日期", QString::fromStdString(ascan.time)},
-        {"名称", ""},
-        {"编号", ""},
-        {"表面热处理", ""},
-        {"材质", ""},
-        {"表面粗糙度", ""},
-        {"探头型号", QString::fromStdWString(ascan.probe)},
-        {"晶片尺寸", QString::fromStdString(ascan.probeChipShape)},
-        {"探头类型", QString::fromStdWString(ascan.probe)},
-        {"前沿", QString::number(ascan.frontDistance, 'f', 1)},
-        {"探头K值", QString::number(Probe::Degree2K(ascan.angle), 'f', 2)},
-        {"频率", QString::number(ascan.probeFrequence, 'f', 1)},
-        {"折射角", QString::number(ascan.angle, 'f', 2)},
-        {"零点", QString::number(ascan.zeroPointBias, 'f', 1)},
-        {"仪器型号", QString::fromStdString(ascan.instrumentName)},
-        {"灵敏度", QString::number(ascan.performance.sensitivity, 'f', 1)},
-        {"回波抑制", QString::number(ch.suppression)},
-        {"回波延时", QString::number(ascan.samplingDelay, 'f', 1)},
-        {"声程范围", QString::number(ch.axisLen, 'f', 1)},
-        {"声速", QString::number(ascan.soundVelocity, 'f', 0)},
-        {"距离", ""},
-        {"水平", ""},
-        {"垂直", ""},
-        {"当量", ""},
-        {"长度", ""},
-        {"高度", ""},
-        {"等级", ""},
-        {"探伤结果", ""},
-        {"探伤标准", ""},
-        {"探伤人员", ""},
-        {"负责人员", ""},
-        {"备注", ""},
+        {QObject::tr("检测单位"), ""},
+        {QObject::tr("报告编写"), ""},
+        {QObject::tr("委托单位"), ""},
+        {QObject::tr("检测日期"), QString::fromStdString(ascan.time)},
+        {QObject::tr("名称"), ""},
+        {QObject::tr("编号"), ""},
+        {QObject::tr("表面热处理"), ""},
+        {QObject::tr("材质"), ""},
+        {QObject::tr("表面粗糙度"), ""},
+        {QObject::tr("探头型号"), QString::fromStdWString(ascan.probe)},
+        {QObject::tr("晶片尺寸"), QString::fromStdString(ascan.probeChipShape)},
+        {QObject::tr("探头类型"), QString::fromStdWString(ascan.probe)},
+        {QObject::tr("前沿"), QString::number(ascan.frontDistance, 'f', 1)},
+        {QObject::tr("探头K值"), QString::number(Probe::Degree2K(ascan.angle), 'f', 2)},
+        {QObject::tr("频率"), QString::number(ascan.probeFrequence, 'f', 1)},
+        {QObject::tr("折射角"), QString::number(ascan.angle, 'f', 2)},
+        {QObject::tr("零点"), QString::number(ascan.zeroPointBias, 'f', 1)},
+        {QObject::tr("仪器型号"), QString::fromStdString(ascan.instrumentName)},
+        {QObject::tr("灵敏度"), QString::number(ascan.performance.sensitivity, 'f', 1)},
+        {QObject::tr("回波抑制"), QString::number(ch.suppression)},
+        {QObject::tr("回波延时"), QString::number(ascan.samplingDelay, 'f', 1)},
+        {QObject::tr("声程范围"), QString::number(ch.axisLen, 'f', 1)},
+        {QObject::tr("声速"), QString::number(ascan.soundVelocity, 'f', 0)},
+        {QObject::tr("距离"), ""},
+        {QObject::tr("水平"), ""},
+        {QObject::tr("垂直"), ""},
+        {QObject::tr("当量"), ""},
+        {QObject::tr("长度"), ""},
+        {QObject::tr("高度"), ""},
+        {QObject::tr("等级"), ""},
+        {QObject::tr("探伤结果"), ""},
+        {QObject::tr("探伤标准"), ""},
+        {QObject::tr("探伤人员"), ""},
+        {QObject::tr("负责人员"), ""},
+        {QObject::tr("备注"), ""},
     };
-    return Yo::File::Render::Excel::Render("excel_templates/T_报表生成.xlsx", fileName, vmp);
+    return Yo::File::Render::Excel::Render("excel_templates/T_报表生成.xlsx", _fileName, vmp);
 }
 
-bool AScanInteractor::performanceClicked(QString fileName) {
+bool AScanInteractor::performanceClicked(QString _fileName) {
     qDebug(TAG) << __FUNCTION__;
     if (!checkAScanCursorValid()) {
         return false;
     }
     QVariantMap vmp = {
-        {"仪器型号", QString::fromStdString(ascan.instrumentName)},
-        {"水平线性", QString::number(ascan.performance.horizontalLinearity, 'f', 2)},
-        {"垂直线性", QString::number(ascan.performance.verticalLinearity, 'f', 2)},
-        {"分辨力", QString::number(ascan.performance.resolution, 'f', 1)},
-        {"动态范围", QString::number(ascan.performance.dynamicRange, 'f', 1)},
-        {"灵敏度余量", QString::number(ascan.performance.sensitivity, 'f', 1)},
-        {"检测单位", ""},
+        {QObject::tr("仪器型号"), QString::fromStdString(ascan.instrumentName)},
+        {QObject::tr("水平线性"), QString::number(ascan.performance.horizontalLinearity, 'f', 2)},
+        {QObject::tr("垂直线性"), QString::number(ascan.performance.verticalLinearity, 'f', 2)},
+        {QObject::tr("分辨力"), QString::number(ascan.performance.resolution, 'f', 1)},
+        {QObject::tr("动态范围"), QString::number(ascan.performance.dynamicRange, 'f', 1)},
+        {QObject::tr("灵敏度余量"), QString::number(ascan.performance.sensitivity, 'f', 1)},
+        {QObject::tr("检测单位"), ""},
     };
-    return Yo::File::Render::Excel::Render("excel_templates/T_仪器性能.xlsx", fileName, vmp);
+    return Yo::File::Render::Excel::Render("excel_templates/T_仪器性能.xlsx", _fileName, vmp);
 }
 
 void AScanInteractor::gainValueModified(qreal val) {
@@ -223,30 +222,30 @@ QVariantMap AScanInteractor::getTechnologicalParameter() {
     const auto& ch = ascan.data[getAScanCursorMax()];
 
     QVariantMap gainPrarameter = {
-        {"基本增益", QString::number(ch.baseGain,                'f', 1) + " dB"},
-        {"扫查增益", QString::number(ch.scanGain,                'f', 1) + " dB"},
-        {"表面补偿", QString::number(ch.surfaceCompentationGain, 'f', 1) + " dB"},
+        {QObject::tr("基本增益"), QString::number(ch.baseGain,                'f', 1) + " dB"},
+        {QObject::tr("扫查增益"), QString::number(ch.scanGain,                'f', 1) + " dB"},
+        {QObject::tr("表面补偿"), QString::number(ch.surfaceCompentationGain, 'f', 1) + " dB"},
     };
 
     QVariantMap probeParameter = {
-        {"探头类型", QString::fromStdWString(ascan.probe)},
-        {"探头频率", QString::number(ascan.probeFrequence, 'f', 1) + " MHz"},
-        {"晶片尺寸", QString::fromStdString(ascan.probeChipShape)},
+        {QObject::tr("探头类型"), QString::fromStdWString(ascan.probe)},
+        {QObject::tr("探头频率"), QString::number(ascan.probeFrequence, 'f', 1) + " MHz"},
+        {QObject::tr("晶片尺寸"), QString::fromStdString(ascan.probeChipShape)},
     };
 
     QVariantMap basicParameter = {
-        {"声程", QString::number(ch.axisLen, 'f', 1) + " mm"},
-        {"前沿", QString::number(ascan.frontDistance, 'f', 1) + " mm"},
-        {"零点", QString::number(ascan.zeroPointBias, 'f', 1) + " ns"},
-        {"延时", QString::number(ascan.samplingDelay, 'f', 1) + " mm"},
-        {"声速", QString::number(ascan.soundVelocity, 'f', 0) + " m/s"},
-        {"通道", QString::number(ascan.channel)},
-        {"K值", QString::number(Probe::Degree2K(ascan.angle), 'f', 2)},
+        {QObject::tr("声程"), QString::number(ch.axisLen, 'f', 1) + " mm"},
+        {QObject::tr("前沿"), QString::number(ascan.frontDistance, 'f', 1) + " mm"},
+        {QObject::tr("零点"), QString::number(ascan.zeroPointBias, 'f', 1) + " ns"},
+        {QObject::tr("延时"), QString::number(ascan.samplingDelay, 'f', 1) + " mm"},
+        {QObject::tr("声速"), QString::number(ascan.soundVelocity, 'f', 0) + " m/s"},
+        {QObject::tr("通道"), QString::number(ascan.channel)},
+        {QObject::tr("K值"), QString::number(Probe::Degree2K(ascan.angle), 'f', 2)},
     };
     return {
-        {"增益参数", gainPrarameter},
-        {"探头信息", probeParameter},
-        {"基本信息", basicParameter},
+        {QObject::tr("增益参数"), gainPrarameter},
+        {QObject::tr("探头信息"), probeParameter},
+        {QObject::tr("基本信息"), basicParameter},
     };
 }
 
@@ -366,14 +365,14 @@ void AScanInteractor::setDefaultValue() {
     setDistanceMode("N");
 }
 
-bool AScanInteractor::openFile(QString fileName) {
+bool AScanInteractor::openFile(QString _fileName) {
     setReplayVisible(false);
-    auto func = Union::AScan::AScanFileSelector::GetReadFunction(fileName.toStdWString());
+    auto func = Union::AScan::AScanFileSelector::GetReadFunction(_fileName.toStdWString());
     if (!func) {
-        QFileInfo info(fileName);
+        QFileInfo info(_fileName);
         qWarning(TAG) << "can not find readFunc of :" << info.suffix();
     }
-    auto _ascan = (func.value())(fileName.toStdWString());
+    auto _ascan = (func.value())(_fileName.toStdWString());
     if (!_ascan) {
         qDebug() << "Convert to standard type return nullopt";
         return false;
@@ -384,10 +383,10 @@ bool AScanInteractor::openFile(QString fileName) {
     } else if (ascan.data.size() == 1) {
         setReplayVisible(false);
     } else {
-        qWarning(TAG) << "no data on file:" << fileName;
+        qWarning(TAG) << "no data on file:" << _fileName;
         return false;
     }
-    QFileInfo fileInfo(fileName);
+    QFileInfo fileInfo(_fileName);
     setFileName(fileInfo.fileName());
     setDate(QString::fromStdString(_ascan->time));
     setAScanCursorMax(this->ascan.data.size() - 1);
@@ -599,7 +598,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     }
 }
 
-QLineSeries* AScanInteractor::createGateSeries(Union::Base::Gate gate, int index) {
+QLineSeries* AScanInteractor::createGateSeries(int index) {
     auto CreateGateAxis = []() {
         QValueAxis* axis = new QValueAxis;
         axis->setMin(0);
@@ -626,7 +625,7 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
     auto    line     = (QLineSeries*)series(gateName);
 
     if (!line) {
-        line = createGateSeries(gate, index);
+        line = createGateSeries(index);
     }
     QList<QPointF> gateList = {};
     if (gate.enable) {

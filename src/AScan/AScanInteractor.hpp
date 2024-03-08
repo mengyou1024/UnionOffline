@@ -65,7 +65,7 @@ public:
     void             updateAScanSeries(const Union::AScan::AScanData& data);
     QLineSeries*     createQuadraticCurveSeries(const QString& name, QPointF pt, QSizeF sz);
     void             updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
-    QLineSeries*     createGateSeries(Union::Base::Gate gate, int index = 0);
+    QLineSeries*     createGateSeries(int index = 0);
     void             updateGateSeries(Union::Base::Gate gate, int index = 0);
     template <int N = 2>
     void updateGateSeries(std::array<Union::Base::Gate, N> gate);

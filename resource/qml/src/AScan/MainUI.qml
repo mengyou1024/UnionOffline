@@ -46,7 +46,7 @@ Rectangle {
             Text {
                 Layout.leftMargin: 20
                 width: 20
-                text: `声程 (${interactor.distanceMode})`
+                text: qsTr("声程") + `(${interactor.distanceMode})`
                 font.pixelSize: 20
             }
             ColumnLayout {

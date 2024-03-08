@@ -11,8 +11,8 @@ Rectangle {
     property real margin: 10
     property bool selfDestroying: false
 
-    width: 98
-    height: 98
+    implicitWidth: 98
+    implicitHeight: 98
     radius: 4
     opacity: 0
     color: "#7F0066CC"

@@ -169,6 +169,7 @@ function(morose_auto_release)
                 COMMAND echo "windeployqt ..."
                 COMMAND ${WINDEPLOYQT_EXECUTABLE}
                 --verbose 0
+                --translations zh_CN,en
                 ${MOROSE_DIST_DIR}
                 ${PLUGIN_DIRS}
                 ${QML_DIRS}
