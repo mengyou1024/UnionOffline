@@ -252,6 +252,8 @@ QVariantMap AScanInteractor::getTechnologicalParameter() {
         {QObject::tr("声速"), QString::number(ascan.soundVelocity, 'f', 0) + " m/s"},
         {QObject::tr("通道"), QString::number(ascan.channel)},
         {QObject::tr("K值"), QString::number(Probe::Degree2K(ascan.angle), 'f', 2)},
+        {QObject::tr("抑制"), QString::number(ch.suppression) + "%"},
+        {QObject::tr("角度"), QString::number(ascan.angle, 'f', 1) + "°"},
     };
     return {
         {QObject::tr("增益参数"), gainPrarameter},
