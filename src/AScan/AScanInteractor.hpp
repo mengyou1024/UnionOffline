@@ -6,6 +6,7 @@
 #include <QLineSeries>
 #include <QMetaObject>
 #include <QQuickItem>
+#include <QQuickItemGrabResult>
 #include <QSlider>
 #include <QTimer>
 #include <UnionType>
@@ -104,7 +105,7 @@ public:
     void             setDistanceMode(const QString& newDistanceMode);
 
 public slots:
-    Q_INVOKABLE bool        reportExportClicked(QString fileName);
+    Q_INVOKABLE bool        reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
     Q_INVOKABLE bool        performanceClicked(QString fileName);
     Q_INVOKABLE void        gainValueModified(qreal val);
     Q_INVOKABLE void        replayStartClicked(bool isStart);

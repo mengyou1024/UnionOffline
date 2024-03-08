@@ -143,11 +143,14 @@ Rectangle {
         ignoreUnknownSignals: true
 
         function onReportExportClicked(fileName) {
-            if (interactor.reportExportClicked(fileName)) {
-                showSuccessful(qsTr("保存成功"))
-            } else {
-                showFailed(qsTr("保存失败"))
-            }
+            chart_view.grabToImage(function (result) {
+                console.log(category, result)
+                if (interactor.reportExportClicked(fileName, result)) {
+                    showSuccessful(qsTr("保存成功"))
+                } else {
+                    showFailed(qsTr("保存失败"))
+                }
+            })
         }
 
         function onPerformanceClicked(fileName) {

@@ -9,6 +9,8 @@ static Q_LOGGING_CATEGORY(TAG, "AScanIntr");
 
 using namespace Union::Base;
 using namespace Union::AScan;
+constexpr auto SCAN_LINE_WIDTH = 1.5;
+constexpr auto GATE_LINE_WIDTH = 2.5;
 
 #if defined(QT_DEBUG)
 struct _TEST_TIME {
@@ -114,7 +116,7 @@ void AScanInteractor::setChartView(QQuickItem* newChartView) {
     emit chartViewChanged();
 }
 
-bool AScanInteractor::reportExportClicked(QString _fileName) {
+bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResult* img) {
     qDebug(TAG) << __FUNCTION__;
     if (!checkAScanCursorValid()) {
         return false;
@@ -145,10 +147,10 @@ bool AScanInteractor::reportExportClicked(QString _fileName) {
         {QObject::tr("回波延时"), QString::number(ascan.samplingDelay, 'f', 1)},
         {QObject::tr("声程范围"), QString::number(ch.axisLen, 'f', 1)},
         {QObject::tr("声速"), QString::number(ascan.soundVelocity, 'f', 0)},
-        {QObject::tr("距离"), ""},
-        {QObject::tr("水平"), ""},
-        {QObject::tr("垂直"), ""},
-        {QObject::tr("当量"), ""},
+        {QObject::tr("距离"), gateValue[0].toObject()["dist_c"].toString()},
+        {QObject::tr("水平"), gateValue[0].toObject()["dist_a"].toString()},
+        {QObject::tr("垂直"), gateValue[0].toObject()["dist_b"].toString()},
+        {QObject::tr("当量"), gateValue[0].toObject()["equi"].toString()},
         {QObject::tr("长度"), ""},
         {QObject::tr("高度"), ""},
         {QObject::tr("等级"), ""},
@@ -158,7 +160,16 @@ bool AScanInteractor::reportExportClicked(QString _fileName) {
         {QObject::tr("负责人员"), ""},
         {QObject::tr("备注"), ""},
     };
-    return Yo::File::Render::Excel::Render("excel_templates/T_报表生成.xlsx", _fileName, vmp);
+    auto result = Yo::File::Render::Excel::Render("excel_templates/T_报表生成.xlsx", _fileName, vmp);
+    if (!result) {
+        return result;
+    }
+    if (img) {
+        QXlsx::Document doc(_fileName);
+        qDebug(TAG) << "saveImage return:" << doc.insertImage(18, 0, img->image().scaled(667, 339, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+        result = doc.save();
+    }
+    return result;
 }
 
 bool AScanInteractor::performanceClicked(QString _fileName) {
@@ -431,6 +442,9 @@ QLineSeries* AScanInteractor::createAScanSeries(QPointF pt, QSizeF sz) {
         axis->setLabelFormat(fmt);
         axis->setGridLinePen(QPen(QColor(0xAEAEAE), 1, Qt::SolidLine));
         axis->setMinorGridLinePen(QPen(QColor(0xD0D0D0), 1, Qt::DashLine));
+        auto font = axis->labelsFont();
+        font.setPointSize(18);
+        axis->setLabelsFont(font);
         return axis;
     };
     QValueAxis* axisX = CreateAScanAxis("%.1fmm", pt.x(), pt.x() + sz.width());
@@ -438,7 +452,7 @@ QLineSeries* AScanInteractor::createAScanSeries(QPointF pt, QSizeF sz) {
     auto        ret   = (QLineSeries*)createSeries(QAbstractSeries::SeriesTypeLine, ASCAN_SERIES_NAME, axisX, axisY);
     auto        pen   = ret->pen();
     pen.setColor(QColor(0x336666));
-    pen.setWidth(1);
+    pen.setWidthF(SCAN_LINE_WIDTH);
     ret->setPen(pen);
     return ret;
 }
@@ -472,7 +486,7 @@ QLineSeries* AScanInteractor::createQuadraticCurveSeries(const QString& name, QP
     QValueAxis* axisY = CreateAVGAxis(pt.y(), pt.y() + sz.height());
     auto        ret   = (QLineSeries*)createSeries(QAbstractSeries::SeriesTypeLine, name, axisX, axisY);
     auto        pen   = ret->pen();
-    pen.setWidth(1);
+    pen.setWidthF(SCAN_LINE_WIDTH);
     ret->setPen(pen);
     return ret;
 }
@@ -579,7 +593,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     }
 
     // 查找曲线
-    for (auto i = 0; i < lines.size(); i++) {
+    for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
         lines[i] = (QLineSeries*)series(lineName(indexs[i]));
         if (!lines[i]) {
             lines[i] = createQuadraticCurveSeries(lineName(indexs[i]), {0.0, 0.0}, {static_cast<qreal>(chData.ascan.size()), 200.0});
@@ -587,13 +601,13 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     }
     TEST_TIME_QUICK("update QuadraticCurve series");
     // 填充数据
-    for (int i = 0; i < chData.ascan.size(); i++) {
-        for (auto j = 0; j < pts.size(); j++) {
+    for (int i = 0; std::cmp_less(i, chData.ascan.size()); i++) {
+        for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
             pts[j].emplaceBack(QPointF(i, Union::CalculateGainOutput(lineExpr(i), modifyGain(indexs[j]))));
         }
     }
     // 替换曲线数据
-    for (auto i = 0; i < pts.size(); i++) {
+    for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
         lines[i]->replace(pts[i]);
     }
 }
@@ -610,7 +624,7 @@ QLineSeries* AScanInteractor::createGateSeries(int index) {
     QValueAxis* axisY = CreateGateAxis();
     auto        line  = (QLineSeries*)createSeries(QAbstractSeries::SeriesTypeLine, QString(GATE_SERIES_NAME).arg(index), axisX, axisY);
     auto        pen   = line->pen();
-    pen.setWidth(3);
+    pen.setWidthF(GATE_LINE_WIDTH);
     if (index == 0) {
         pen.setColor({255, 0, 0});
     } else {
@@ -629,8 +643,11 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
     }
     QList<QPointF> gateList = {};
     if (gate.enable) {
-        gateList.append({gate.pos, gate.height});
-        gateList.append({gate.pos + gate.width, gate.height});
+        constexpr auto midify_bias = 0.005;
+        gateList.append({gate.pos, gate.height + midify_bias});
+        gateList.append({gate.pos + midify_bias, gate.height});
+        gateList.append({gate.pos + gate.width - midify_bias, gate.height});
+        gateList.append({gate.pos + gate.width, gate.height + midify_bias});
         line->replace(gateList);
     } else {
         line->clear();
@@ -639,7 +656,7 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
 
 QJsonArray AScanInteractor::CreateGateValue() {
     std::array<QVariantMap, 2> _gateValue = {};
-    for (auto i = 0; i < _gateValue.size(); i++) {
+    for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
         _gateValue[i] = {
             {"amp",    "-"},
             {"dist_a", "-"},
@@ -653,7 +670,7 @@ QJsonArray AScanInteractor::CreateGateValue() {
     }
     auto        index = getAScanCurosr();
     const auto& chDat = ascan.data[index];
-    for (auto i = 0; i < _gateValue.size(); i++) {
+    for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
         auto info = chDat.GetGateResult(i);
         if (!info) {
             continue;
@@ -711,19 +728,21 @@ QJsonArray AScanInteractor::CreateGateValue() {
 
         QString _equi = "-";
         if (ascan.data[getAScanCurosr()].dac && b.has_value()) {
+            auto        r_amp      = Union::CalculateGainOutput(_amp, chDat.surfaceCompentationGain);
             const auto& _ascan     = ascan.data[getAScanCurosr()];
             auto        lineExpr   = _ascan.getDACLineExpr();
             auto        slValue    = lineExpr((b.value() - _ascan.axisBias) / _ascan.axisLen * _ascan.ascan.size());
             auto        modifyGain = _ascan.baseGain + _ascan.scanGain + _ascan.surfaceCompentationGain - _ascan.dac->baseGain + _ascan.std.slBias;
             slValue                = Union::CalculateGainOutput(slValue, modifyGain);
-            _equi                  = QString::asprintf("SL%+.1fdB", (Union::CalculatedGain(slValue, amp)));
+            _equi                  = QString::asprintf("SL%+.1fdB", Union::CalculatedGain(slValue, r_amp));
         } else if (ascan.data[getAScanCurosr()].avg && b.has_value()) {
+            auto        r_amp      = Union::CalculateGainOutput(_amp, chDat.surfaceCompentationGain);
             const auto& _ascan     = ascan.data[getAScanCurosr()];
             auto        lineExpr   = _ascan.getAVGLineExpr();
             auto        slValue    = lineExpr((b.value() - _ascan.axisBias) / _ascan.axisLen * _ascan.ascan.size());
             auto        modifyGain = _ascan.baseGain + _ascan.scanGain + _ascan.surfaceCompentationGain - _ascan.avg->baseGain + _ascan.avg->biasGain;
             slValue                = Union::CalculateGainOutput(slValue, modifyGain);
-            _equi                  = QString::asprintf("Φ%+.1fdB", (Union::CalculatedGain(slValue, amp)));
+            _equi                  = QString::asprintf("Φ%+.1fdB", Union::CalculatedGain(slValue, r_amp));
         }
         _gateValue[i] = {
             {"amp", QString::number(amp / 2.55, 'f', 1)},
@@ -739,7 +758,7 @@ QJsonArray AScanInteractor::CreateGateValue() {
 
 template <int N>
 void AScanInteractor::updateGateSeries(std::array<Union::Base::Gate, N> gate) {
-    for (auto i = 0; i < gate.size(); i++) {
+    for (auto i = 0; std::cmp_less(i, gate.size()); i++) {
         updateGateSeries(gate[i], i);
     }
 }
