@@ -15,6 +15,11 @@ int main(int argc, char* argv[]) {
     SingleApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/img/morose.ico"));
 
+    // 创建日志目录
+    QDir logDir;
+    if (!logDir.exists("log")) {
+        logDir.mkdir("log");
+    }
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
     qInfo() << std::format("{:-^80}", "application start, version: " APP_VERSION).c_str();
