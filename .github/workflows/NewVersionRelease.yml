@@ -52,8 +52,8 @@ jobs:
     - name: CMake Config
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release
-    - name: CMake Build
-      run: cmake --build build --target generate_exe_installer Archive --config Release
+    - name: CMake Build Installer
+      run: cmake --build build --target generate_exe_installer --config Release
     # 打包输出文件
     - name: Package 
       run: |
@@ -92,16 +92,6 @@ jobs:
         asset_path: ./output/${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip
         asset_name: ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip
         asset_content_type: application/zip
-    # 上传归档源码
-    - name: Upload Archive Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/${{ matrix.app_name }}-${{steps.changelog.outputs.version}}-archive.zip
-        asset_name: ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}-archive.zip
-        asset_content_type: application/zip
     # 提交changelog
     - name: Create Changes File
       run: |
@@ -115,3 +105,15 @@ jobs:
         git commit -m "Update changelog for version ${{steps.changelog.outputs.version}}"
         git pull
         git push origin master
+    - name: CMake Build Archive
+      run: cmake --build build --target Archive --config Release
+    # 上传归档源码
+    - name: Upload Archive Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./output/${{ matrix.app_name }}-${{steps.changelog.outputs.version}}-archive.zip
+        asset_name: ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}-archive.zip
+        asset_content_type: application/zip
