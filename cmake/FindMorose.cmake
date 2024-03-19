@@ -133,7 +133,6 @@ function(morose_auto_release)
 
                 # 创建目录 防止某一类插件未使用
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${PLUGIN_DIRS}
-                COMMAND ${CMAKE_COMMAND} -E make_directory "${MOROSE_DIST_DIR}/FluentUI"
 
                 # 拷贝生成的EXE
                 COMMAND ${CMAKE_COMMAND} -E copy
@@ -150,7 +149,7 @@ function(morose_auto_release)
                 # 执行ISCC进行打包
                 COMMAND ${ISCC_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss" /Q
                 DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss ${PROJECT_NAME}
-                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
+                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}Installer-${APP_VERSION}"
             )
         else(ISCC_PATH)
             add_custom_target(
@@ -158,7 +157,6 @@ function(morose_auto_release)
 
                 # 创建目录 防止某一类插件未使用
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${PLUGIN_DIRS}
-                COMMAND ${CMAKE_COMMAND} -E make_directory "${MOROSE_DIST_DIR}/FluentUI"
 
                 # 拷贝生成的EXE
                 COMMAND ${CMAKE_COMMAND} -E copy
@@ -174,7 +172,7 @@ function(morose_auto_release)
                 ${PLUGIN_DIRS}
                 ${QML_DIRS}
                 
-                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
+                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}Installer-${APP_VERSION}"
             )
         endif(ISCC_PATH)
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
