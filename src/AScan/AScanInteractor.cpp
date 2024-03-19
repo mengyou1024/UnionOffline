@@ -679,7 +679,7 @@ QJsonArray AScanInteractor::CreateGateValue() {
         }
         auto [loc, _amp] = info.value();
         double amp       = _amp;
-        amp              = Union::CalculateGainOutput(amp, chDat.surfaceCompentationGain + softGain);
+        amp              = Union::CalculateGainOutput(amp, softGain);
         if (amp > 255.0) {
             amp = 255.0;
         }
@@ -747,7 +747,7 @@ QJsonArray AScanInteractor::CreateGateValue() {
             _equi                  = QString::asprintf("Φ%+.1fdB", Union::CalculatedGain(slValue, r_amp));
         }
         _gateValue[i] = {
-            {"amp", QString::number(amp / 2.55, 'f', 1)},
+            {"amp", QString::number(amp / 2.0, 'f', 1)},
             {"dist_a", _a},
             {"dist_b", _b},
             {"dist_c", _c},
