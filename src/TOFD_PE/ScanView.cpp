@@ -324,6 +324,28 @@ namespace TOFD_PE {
         emit chartViewChanged();
     }
 
+    qreal TofdPeInteractor::tofdSpace() const {
+        return m_tofdSpace;
+    }
+
+    void TofdPeInteractor::setTofdSpace(qreal newTofdSpace) {
+        if (qFuzzyCompare(m_tofdSpace, newTofdSpace))
+            return;
+        m_tofdSpace = newTofdSpace;
+        emit tofdSpaceChanged();
+    }
+
+    qreal TofdPeInteractor::peSpace() const {
+        return m_peSpace;
+    }
+
+    void TofdPeInteractor::setPeSpace(qreal newPeSpace) {
+        if (qFuzzyCompare(m_peSpace, newPeSpace))
+            return;
+        m_peSpace = newPeSpace;
+        emit peSpaceChanged();
+    }
+
     const std::optional<Union::__TOFD_PE::Data>& TofdPeInteractor::getData() const {
         return m_data;
     }
@@ -352,6 +374,11 @@ namespace TOFD_PE {
         } else {
             return -1;
         }
+    }
+
+    bool TofdPeInteractor::reportExport(QString filePath) {
+        qDebug(TAG) << "reportExport, filePath:" << filePath;
+        return false;
     }
 
 } // namespace TOFD_PE

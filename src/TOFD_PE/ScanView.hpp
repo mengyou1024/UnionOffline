@@ -17,9 +17,11 @@ namespace TOFD_PE {
         Q_OBJECT
         QML_ELEMENT
 
-        using TPE_SUB_DATA = std::optional<Union::__TOFD_PE::SubData>;
-        using TPE_DATA     = std::optional<Union::__TOFD_PE::Data>;
-        TPE_DATA m_data    = std::nullopt;
+        using TPE_SUB_DATA   = std::optional<Union::__TOFD_PE::SubData>;
+        using TPE_DATA       = std::optional<Union::__TOFD_PE::Data>;
+        TPE_DATA m_data      = std::nullopt;
+        qreal    m_tofdSpace = 0.0;
+        qreal    m_peSpace   = 0.0;
 
     public:
         TofdPeInteractor()  = default;
@@ -29,6 +31,19 @@ namespace TOFD_PE {
         Q_INVOKABLE bool    openFile(const QString& fileName);
         Q_INVOKABLE int     getLines() const;
         Q_INVOKABLE int     getSubLines() const;
+        Q_INVOKABLE bool    reportExport(QString filePath);
+        qreal               tofdSpace() const;
+        void                setTofdSpace(qreal newTofdSpace);
+        qreal               peSpace() const;
+        void                setPeSpace(qreal newPeSpace);
+
+    signals:
+        void tofdSpaceChanged();
+        void peSpaceChanged();
+
+    private:
+        Q_PROPERTY(qreal tofdSpace READ tofdSpace WRITE setTofdSpace NOTIFY tofdSpaceChanged FINAL)
+        Q_PROPERTY(qreal peSpace READ peSpace WRITE setPeSpace NOTIFY peSpaceChanged FINAL)
     };
 
     class ScanView : public QQuickPaintedItem {
@@ -48,17 +63,17 @@ namespace TOFD_PE {
         ScanView();
         ~ScanView();
 
-        _QITEM* chartView() const;
-        void    setChartView(_QITEM* newChartView);
-        _INTR*  intr() const;
-        void    setIntr(_INTR* newIntr);
-        bool    isPe() const;
-        void    setIsPe(bool newIsPe);
-        int     softGain() const;
-        void    setSoftGain(int newSoftGain);
-        int     cursor() const;
-        void    setCursor(int newCursor);
-
+        _QITEM*           chartView() const;
+        void              setChartView(_QITEM* newChartView);
+        _INTR*            intr() const;
+        void              setIntr(_INTR* newIntr);
+        bool              isPe() const;
+        void              setIsPe(bool newIsPe);
+        int               softGain() const;
+        void              setSoftGain(int newSoftGain);
+        int               cursor() const;
+        void              setCursor(int newCursor);
+        Q_INVOKABLE QRect getDrawable(void) const;
     signals:
         void chartViewChanged();
         void intrChanged();
@@ -74,12 +89,10 @@ namespace TOFD_PE {
 
         QPointF m_abscissaRange = {0.0, 100.0};
         QPointF m_ordinateRange = {0.0, 100.0};
-
-        QRect getDrawable(void) const;
-        void  drawAxis(QPainter* painter) const;
-        void  drawDScan(QPainter* painter) const;
-        void  drawSecondDScan(QPainter* painter) const;
-        void  updateChartView(void) const;
+        void    drawAxis(QPainter* painter) const;
+        void    drawDScan(QPainter* painter) const;
+        void    drawSecondDScan(QPainter* painter) const;
+        void    updateChartView(void) const;
 
         Q_PROPERTY(QQuickItem* chartView READ chartView WRITE setChartView NOTIFY chartViewChanged FINAL)
         Q_PROPERTY(TofdPeInteractor* intr READ intr WRITE setIntr NOTIFY intrChanged FINAL)

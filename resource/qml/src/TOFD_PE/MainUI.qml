@@ -54,6 +54,24 @@ Rectangle {
         id: cons
         ignoreUnknownSignals: true
         target: null
+
+        function onReportExportClicked(fileName) {
+            if (tofd_pe_intr.reportExport(fileName)) {
+                showSuccessful("导出成功")
+            } else {
+                showFailed("导出失败")
+            }
+        }
+
+        function onTofdSpaceValueModified(val) {
+            console.log(category, "onTofdSpaceValueModified, value:", val)
+            tofd_pe_intr.tofdSpace = val
+        }
+
+        function onPeSpaceValueModified(val) {
+            console.log(category, "onPeSpaceValueModified, value:", val)
+            tofd_pe_intr.peSpace = val
+        }
     }
 
     Connections {

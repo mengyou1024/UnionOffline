@@ -40,6 +40,12 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.rowSpan: 2
+            LinesMask {
+                x: _view.getDrawable().x
+                y: _view.getDrawable().y
+                width: _view.getDrawable().width
+                height: _view.getDrawable().height
+            }
         }
 
         Rectangle {

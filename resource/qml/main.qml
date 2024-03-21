@@ -49,6 +49,9 @@ ApplicationWindow {
                     }
                     text: qsTr("打开")
                     display: AbstractButton.TextUnderIcon
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
                 ToolButton {
                     width: 55
@@ -60,6 +63,9 @@ ApplicationWindow {
                     display: AbstractButton.TextUnderIcon
                     onClicked: {
                         actionMainType("Unknow")
+                    }
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
                     }
                 }
                 ToolButton {
@@ -73,6 +79,9 @@ ApplicationWindow {
                     onClicked: {
                         btnParamClicked()
                     }
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
                 ToolButton {
                     width: 55
@@ -82,6 +91,9 @@ ApplicationWindow {
                     icon.source: "qrc:/img/USB_51.png"
                     text: qsTr("通讯")
                     display: AbstractButton.TextUnderIcon
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
                 ToolButton {
                     width: 55
@@ -91,6 +103,9 @@ ApplicationWindow {
                     icon.source: "qrc:/img/config-language.ico"
                     text: qsTr("帮助")
                     display: AbstractButton.TextUnderIcon
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
 
                     onClicked: {
                         var comp = Qt.createComponent("About.qml")
@@ -179,6 +194,7 @@ ApplicationWindow {
                             font.pixelSize: 16
                         }
                         MouseArea {
+                            cursorShape: Qt.PointingHandCursor
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
@@ -288,7 +304,8 @@ ApplicationWindow {
         var ret = MAINUI_MAP[suffix]
         if (ret === undefined) {
             ret = "Unknow"
-            console.warn(category, "unknow suffix:", suffix)
+            showFailed("打开出错")
+            console.warn(category, `open file:${fileName} error, unknow suffix:${suffix}`)
         }
         return ret
     }

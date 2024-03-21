@@ -49,8 +49,8 @@ ScrollView {
     property alias line2XSpace: lb_line2_x_space.text
     property alias line2ZSpace: lb_line2_z_space.text
 
-    property alias editTofdSpace: te_tofd_space.text
-    property alias editPeSpace: te_pe_space.text
+    property alias editTofdSpace: tf_tofd_space.text
+    property alias editPeSpace: tf_pe_space.text
 
     // 报表生成按钮信号
     signal reportExportClicked(string fileName)
@@ -77,12 +77,18 @@ ScrollView {
                     Layout.leftMargin: 20
                     text: qsTr("TOFD显示")
                     checked: true
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
                 CheckBox {
                     id: cb_pe_show
                     Layout.rightMargin: 20
                     text: qsTr("PE显示")
                     checked: true
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
             }
         }
@@ -153,7 +159,7 @@ ScrollView {
                             currentFile: "file:///" + qsTr("报表生成")
                             title: qsTr("报表生成")
                             onAccepted: {
-                                console.log(category, currentFile)
+                                console.log(category, "emit --> reportExportClicked:", currentFile)
                                 reportExportClicked(String(currentFile).substring(8))
                             }
                         }
@@ -357,6 +363,9 @@ ScrollView {
                     CheckBox {
                         id: cb_show_time
                         text: qsTr("显示时间")
+                        HoverHandler {
+                            cursorShape: Qt.PointingHandCursor
+                        }
                     }
                     Label {
                         Layout.leftMargin: 20
@@ -510,21 +519,22 @@ ScrollView {
                     Layout.alignment: Qt.AlignHCenter
                     rows: 2
                     columns: 3
-                    Rectangle {
+                    TextField {
+                        id: tf_tofd_space
                         Layout.fillWidth: true
                         Layout.preferredHeight: 24
-                        border.color: "#d8d8d8"
-                        border.width: 1
-                        color: "white"
-                        TextInput {
-                            anchors.fill: parent
-                            id: te_tofd_space
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            validator: DoubleValidator {
-                                decimals: 1
-                                notation: DoubleValidator.StandardNotation
-                            }
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        background: Rectangle {
+                            border.color: "#d8d8d8"
+                            border.width: 1
+                            color: "white"
+                        }
+                        validator: DoubleValidator {
+                            decimals: 1
+                            notation: DoubleValidator.StandardNotation
+                            top: 1000
+                            bottom: -1000
                         }
                     }
                     Text {
@@ -533,36 +543,45 @@ ScrollView {
                     CButton {
                         text: qsTr("TOFD更改")
                         onClicked: {
-                            console.log(category, "tofdSpaceValueModified:", parseFloat(te_tofd_space.text))
-                            tofdSpaceValueModified(parseFloat(te_tofd_space.text))
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 24
-                        border.color: "#d8d8d8"
-                        border.width: 1
-                        color: "white"
-                        TextInput {
-                            id: te_pe_space
-                            anchors.fill: parent
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            validator: DoubleValidator {
-                                decimals: 1
-                                notation: DoubleValidator.StandardNotation
+                            let val = parseFloat(tf_tofd_space.text)
+                            if (isNaN(val)) {
+                                val = 0
                             }
+                            console.log(category, "emit --> tofdSpaceValueModified:", parseFloat(val))
+                            tofdSpaceValueModified(val)
                         }
                     }
 
+                    TextField {
+                        id: tf_pe_space
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 24
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        background: Rectangle {
+                            border.color: "#d8d8d8"
+                            border.width: 1
+                            color: "white"
+                        }
+                        validator: DoubleValidator {
+                            decimals: 1
+                            notation: DoubleValidator.StandardNotation
+                            top: 1000
+                            bottom: -1000
+                        }
+                    }
                     Text {
                         text: qsTr("mm")
                     }
                     CButton {
                         text: qsTr("PE更改")
                         onClicked: {
-                            console.log(category, "peSpaceValueModified:", parseFloat(te_pe_space.text))
-                            peSpaceValueModified(parseFloat(te_pe_space.text))
+                            let val = parseFloat(tf_pe_space.text)
+                            if (isNaN(val)) {
+                                val = 0
+                            }
+                            console.log(category, "emit --> peSpaceValueModified:", val)
+                            peSpaceValueModified(val)
                         }
                     }
                 }

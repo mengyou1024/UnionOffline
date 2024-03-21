@@ -58,5 +58,6 @@ T.Slider {
                 control.increase()
             }
         }
+        cursorShape: Qt.PointingHandCursor
     }
 }
