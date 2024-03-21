@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "../AScan/AScanInteractor.hpp"
+#include "../TOFD_PE/ScanView.hpp"
 #include "../morose_config.h"
 #include "qmltranslator.h"
 #include <QJsonArray>
@@ -112,6 +113,8 @@ void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_GIT_USER_NAME", GIT_USER_NAME);
     context->setContextProperty("MOROSE_GIT_USER_EMAIL", GIT_USER_EMAIL);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
+    qmlRegisterType<TOFD_PE::ScanView>("Union.TOFD_PE", 1, 0, "TofdPeScanView");
+    qmlRegisterType<TOFD_PE::TofdPeInteractor>("Union.TOFD_PE", 1, 0, "TofdPeIntr");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
@@ -156,9 +159,16 @@ void Morose::registNameFilter(QQmlContext* context) {
     QVariantList filedialog_nameFilter;
     QVariantMap  mainUi_map;
 
+    filedialog_nameFilter.emplaceBack("所有文件 (*.*)");
+    // AScan
     mainUi_map.insert(Union::AScan::AScanFileSelector::GetUINameMap().toVariantMap());
     folderListModel_nameFilter += Union::AScan::AScanFileSelector::GetFileListModelNameFilter().toVariantList();
     filedialog_nameFilter += Union::AScan::AScanFileSelector::GetFileNameFilter().toVariantList();
+
+    // TOFD_PE
+    mainUi_map.insert(".tpe", "TOFD_PE");
+    folderListModel_nameFilter.emplaceBack("*.tpe");
+    filedialog_nameFilter.emplaceBack("TOFD/PE图像 (*.tpe)");
 
     context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
     context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);

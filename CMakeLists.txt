@@ -5,7 +5,7 @@ project(UnionOffline LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(NUMCPP_NO_USE_BOOST ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Charts Core LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Charts Core LinguistTools WebEngineQuick)
 set(CMAKE_AUTORCC ON)
 qt_standard_project_setup()
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
@@ -20,7 +20,7 @@ set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleAp
 add_subdirectory("components/QXlsx/QXlsx")
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Quick Qt6::Widgets Qt6::Charts Qt6::Core)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Quick Qt6::Widgets Qt6::Charts Qt6::Core Qt6::WebEngineQuick)
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
 target_compile_options(${PROJECT_NAME} PUBLIC

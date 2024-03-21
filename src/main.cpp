@@ -7,19 +7,26 @@
 #include <QPluginLoader>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
+#include <QtWebEngineQuick>
 #include <SingleApplication.h>
-#include <Yo/File>
+#include <UnionType>
 #include <format>
 
 int main(int argc, char* argv[]) {
+    QtWebEngineQuick::initialize();
+    QNetworkProxyFactory::setUseSystemConfiguration(false);
+
+    QtWebEngineQuick::initialize();
+    QNetworkProxyFactory::setUseSystemConfiguration(false);
+
     SingleApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/img/morose.ico"));
 
-    // 创建日志目录
     QDir logDir;
     if (!logDir.exists("log")) {
         logDir.mkdir("log");
     }
+
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
     qInfo() << std::format("{:-^80}", "application start, version: " APP_VERSION).c_str();
@@ -27,7 +34,6 @@ int main(int argc, char* argv[]) {
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
-
     // 设置日志过滤规则
     QSettings logSetting("setting.ini", QSettings::IniFormat);
     logSetting.beginGroup("Rules");

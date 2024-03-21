@@ -101,10 +101,12 @@ Rectangle {
 
         ChartView {
             id: chart_view
+            readonly property bool hiddenOnResing: true
             Layout.fillWidth: true
             Layout.fillHeight: true
-            antialiasing: true
+            antialiasing: false
             legend.visible: false
+            dropShadowEnabled: true
         }
     }
 
@@ -208,10 +210,11 @@ Rectangle {
         }
 
         function onListviewIndexChanged(index, list_view) {
-            console.log(category, "listview index changed, index:", index, "filepath:", list_view.get(index, "filePath"))
+            const filePath = list_view.get(index, "filePath")
+            console.log(category, "listview index changed, index:", index, "filepath:", filePath)
             controlTarget.init()
             interactor.setDefaultValue()
-            if (interactor.openFile(list_view.get(index, "filePath"))) {
+            if (interactor.openFile(filePath)) {
                 showSuccessful(qsTr("打开成功"))
             } else {
                 showFailed(qsTr("打开失败"))
@@ -226,6 +229,17 @@ Rectangle {
                 showSuccessful(qsTr("打开成功"))
             } else {
                 showFailed(qsTr("打开失败"))
+            }
+        }
+
+        function onSplitViewResizingChanged(resizing) {
+            console.log(category, "onSplitViewResizingChanged:", resizing)
+            if (chart_view.hiddenOnResing) {
+                if (resizing) {
+                    chart_view.visible = false
+                } else {
+                    chart_view.visible = true
+                }
             }
         }
     }
