@@ -24,25 +24,25 @@ Rectangle {
         spacing: 10
         ScanView {
             id: sv_tofd
-            visible: cons.target.tofdShow
+            visible: controlTarget === null ? true : controlTarget.tofdShow
             Layout.minimumWidth: control.width - 10
             Layout.maximumWidth: control.width - 10
             Layout.minimumHeight: (control.height - parent.spacing - 10) / 2
             Layout.maximumHeight: (control.height - parent.spacing - 10) / 2
             intr: tofd_pe_intr
-            softGain: controlTarget.tofdSoftGain
+            softGain: controlTarget === null ? 0 : controlTarget.tofdSoftGain
         }
 
         ScanView {
             id: sv_pe
             isPe: true
-            visible: cons.target.peShow
+            visible: controlTarget === null ? true : controlTarget.peShow
             Layout.minimumWidth: control.width - 10
             Layout.maximumWidth: control.width - 10
             Layout.minimumHeight: (control.height - parent.spacing - 10) / 2
             Layout.maximumHeight: (control.height - parent.spacing - 10) / 2
             intr: tofd_pe_intr
-            softGain: controlTarget.peSoftGain
+            softGain: controlTarget === null ? 0 : controlTarget.peSoftGain
         }
     }
 
@@ -53,6 +53,7 @@ Rectangle {
     Connections {
         id: cons
         ignoreUnknownSignals: true
+        target: null
     }
 
     Connections {

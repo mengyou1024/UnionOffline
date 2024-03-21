@@ -24,7 +24,6 @@ ScrollView {
     Component.onCompleted: {
         console.log(ScrollBar.vertical, ScrollBar.vertical.active)
     }
-
     property alias tofdShow: cb_tofd_show.checked // TOFD显示
     property alias peShow: cb_pe_show.checked //PE显示
     property alias fileName: lb_fileName.text // 文件名
