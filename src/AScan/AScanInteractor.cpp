@@ -450,7 +450,7 @@ QLineSeries* AScanInteractor::createAScanSeries(QPointF pt, QSizeF sz) {
         return axis;
     };
     QValueAxis* axisX = CreateAScanAxis("%.1fmm", pt.x(), pt.x() + sz.width());
-    QValueAxis* axisY = CreateAScanAxis("%d%%", pt.x(), pt.x() + sz.width());
+    QValueAxis* axisY = CreateAScanAxis("%d%%", pt.y(), pt.y() + sz.height());
     auto        ret   = (QLineSeries*)createSeries(QAbstractSeries::SeriesTypeLine, ASCAN_SERIES_NAME, axisX, axisY);
     auto        pen   = ret->pen();
     pen.setColor(QColor(0x336666));
