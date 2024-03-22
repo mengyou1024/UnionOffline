@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "../AScan/AScanInteractor.hpp"
+#include "../TOFD_PE/LinesMaskEnum.hpp"
 #include "../TOFD_PE/ScanView.hpp"
 #include "../morose_config.h"
 #include "qmltranslator.h"
@@ -117,6 +118,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<TOFD_PE::TofdPeInteractor>("Union.TOFD_PE", 1, 0, "TofdPeIntr");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
+    qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::instance());
     QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
         qDebug() << "languageChanged";
         context->engine()->retranslate();
