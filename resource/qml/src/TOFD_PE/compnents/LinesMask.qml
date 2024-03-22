@@ -86,6 +86,18 @@ Canvas {
     }
 
     function moveLineEvent(status, x, y) {
+        if (x < 0) {
+            x = 0
+        } else if (x > control.width) {
+            x = control.width
+        }
+
+        if (y < 0) {
+            y = 0
+        } else if (y > control.height) {
+            y = control.height
+        }
+
         console.log(tag, "moveLineEvent status:", status)
         if (status & LinesMaskEnum.ModeX1) {
             horizontalValue1 = x / control.width

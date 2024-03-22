@@ -82,7 +82,7 @@ namespace TOFD_PE {
         // 横轴
         for (int i = 0; i <= 50; i++) {
             QLineF       li;
-            qreal        x  = drawAble.x() + ((drawAble.width() - 1) / 50.0) * i;
+            qreal        x  = std::round(drawAble.x() + ((drawAble.width() - 1) / 50.0) * i);
             qreal        y  = drawAble.bottom() + 1;
             QColor       c  = QColor(0x00cc00);
             QString      s  = QString::number((m_abscissaRange.y() - m_abscissaRange.x()) / 50.0 * i, 'f', 1);
@@ -116,7 +116,7 @@ namespace TOFD_PE {
         for (int i = 0; i <= 50; i++) {
             QLineF       li;
             qreal        x  = drawAble.left() - 1;
-            qreal        y  = (drawAble.height() - 1) / 50.0 * i;
+            qreal        y  = std::round((drawAble.height() - 1) / 50.0 * i);
             QColor       c  = QColor(0x00cc00);
             QString      s  = QString::number((m_ordinateRange.y() - m_ordinateRange.x()) / 50.0 * (50 - i), 'f', 1);
             QFontMetrics fm = painter->fontMetrics();
