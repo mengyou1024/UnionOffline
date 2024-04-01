@@ -501,10 +501,30 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
         // 检查曲线是否有值
         switch (type) {
-            case QuadraticCurveSeriesType::DAC:
-                return ascan.data[getAScanCurosr()].dac.has_value();
-            case QuadraticCurveSeriesType::AVG:
-                return ascan.data[getAScanCurosr()].avg.has_value();
+            case QuadraticCurveSeriesType::DAC: {
+                auto has_value = ascan.data[getAScanCurosr()].dac.has_value();
+                if (!has_value) {
+                    for (auto i = 0; i < 4; i++) {
+                        auto temp = (QLineSeries*)series(QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(i)));
+                        if (temp) {
+                            temp->setVisible(false);
+                        }
+                    }
+                }
+                return has_value;
+            }
+            case QuadraticCurveSeriesType::AVG: {
+                auto has_value = ascan.data[getAScanCurosr()].avg.has_value();
+                if (!has_value) {
+                    for (auto i = 0; i < 4; i++) {
+                        auto temp = (QLineSeries*)series(QString(AVG_SERIES_NAME).arg(getAVGSeriesSubName(i)));
+                        if (temp) {
+                            temp->setVisible(false);
+                        }
+                    }
+                }
+                return has_value;
+            }
             default:
                 throw std::runtime_error("QuadraticCurveSeriesType error");
         }
@@ -600,6 +620,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         if (!lines[i]) {
             lines[i] = createQuadraticCurveSeries(lineName(indexs[i]), {0.0, 0.0}, {static_cast<qreal>(chData.ascan.size()), 200.0});
         }
+        lines[i]->setVisible();
     }
     TEST_TIME_QUICK("update QuadraticCurve series");
     // 填充数据
