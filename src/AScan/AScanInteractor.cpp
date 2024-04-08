@@ -1,4 +1,5 @@
 #include "AScanInteractor.hpp"
+#include "../common/common.hpp"
 #include <QLoggingCategory>
 #include <QQmlProperty>
 #include <QValueAxis>
@@ -11,34 +12,6 @@ using namespace Union::Base;
 using namespace Union::AScan;
 constexpr auto SCAN_LINE_WIDTH = 1.5;
 constexpr auto GATE_LINE_WIDTH = 2.5;
-
-#if defined(QT_DEBUG)
-struct _TEST_TIME {
-    QElapsedTimer mstimer;
-    QString       msg;
-    _TEST_TIME(const QString& _msg) :
-    msg(_msg) {
-        mstimer.start();
-    }
-    ~_TEST_TIME() {
-        auto spend = mstimer.nsecsElapsed();
-        qDebug(TAG) << "test time:" << QString::number(spend / 1000000.0, 'f', 2).toStdString().c_str() << "ms," << msg.toStdString().c_str();
-    }
-};
-#else
-struct _TEST_TIME {
-    _TEST_TIME(const QString&) {}
-    ~_TEST_TIME() {}
-};
-#endif
-
-#define TEST_TIME_QUICK(x) auto __##__LINE__##__FILE = _TEST_TIME(x)
-
-#define TEST_TIME_START(x) \
-    {                      \
-        auto __##__LINE__##__FILE = _TEST_TIME(x)
-
-#define TEST_TIME_END() }
 
 bool AScanInteractor::getReplayVisible() const {
     return replayVisible;
@@ -280,7 +253,7 @@ size_t AScanInteractor::getAScanCurosr() const {
 
 void AScanInteractor::setAScanCurosr(size_t newAScanCurosr) {
     if (newAScanCurosr < ascan.data.size()) {
-        TEST_TIME_QUICK("update all series");
+        MOROSE_TEST_TIME_QUICK("update all series");
         // 1. 更新A扫曲线
         updateAScanSeries(ascan.data[newAScanCurosr]);
         // 2. 更新波门曲线
@@ -622,7 +595,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
         lines[i]->setVisible();
     }
-    TEST_TIME_QUICK("update QuadraticCurve series");
+    MOROSE_TEST_TIME_QUICK("update QuadraticCurve series");
     // 填充数据
     for (int i = 0; std::cmp_less(i, chData.ascan.size()); i++) {
         for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
@@ -767,8 +740,14 @@ QJsonArray AScanInteractor::CreateGateValue() {
             slValue                = Union::CalculateGainOutput(slValue, modifyGain);
             _equi                  = QString::asprintf("Φ%+.1fdB", Union::CalculatedGain(slValue, r_amp));
         }
+
+        auto _gate_amp = amp / 2.0;
+        if (_gate_amp > 100.0) {
+            _gate_amp = 100.0;
+        }
+
         _gateValue[i] = {
-            {"amp", QString::number(amp / 2.0, 'f', 1)},
+            {"amp", QString::number(_gate_amp, 'f', 1)},
             {"dist_a", _a},
             {"dist_b", _b},
             {"dist_c", _c},

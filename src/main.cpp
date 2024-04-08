@@ -8,26 +8,25 @@
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <SingleApplication.h>
-#include <Yo/File>
-#include <format>
+#include <UnionType>
 
 int main(int argc, char* argv[]) {
     SingleApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/img/morose.ico"));
 
-    // 创建日志目录
     QDir logDir;
     if (!logDir.exists("log")) {
         logDir.mkdir("log");
     }
+
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
-    qInfo() << std::format("{:-^80}", "application start, version: " APP_VERSION).c_str();
+    qInfo() << std::string(80, '-').c_str();
+    qInfo() << "application start, version: " APP_VERSION;
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
-
     // 设置日志过滤规则
     QSettings logSetting("setting.ini", QSettings::IniFormat);
     logSetting.beginGroup("Rules");
@@ -56,10 +55,9 @@ int main(int argc, char* argv[]) {
         Qt::QueuedConnection);
     Morose::registerVariable(engine.rootContext());
     Morose::loadGlobalEnvironment();
-    qDebug() << QString(100, '-').toStdString().c_str();
     engine.load(url);
     QObject::connect(&app, &QApplication::aboutToQuit, &app, []() {
-        qInfo() << std::format("{:-^80}", "application quiet").c_str();
+        qInfo() << "application quit";
     });
 
     auto rootObjs   = engine.rootObjects();

@@ -19,4 +19,7 @@ T.Button {
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 13
     }
+    HoverHandler {
+        cursorShape: Qt.PointingHandCursor
+    }
 }

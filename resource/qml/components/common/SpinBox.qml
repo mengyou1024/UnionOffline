@@ -1,7 +1,7 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.impl
+import QtQuick.Templates as T
 
 T.SpinBox {
     id: control
@@ -91,6 +91,9 @@ T.SpinBox {
             height: parent.width / 3
             color: enabled ? indicatorNormalColor : indicatorDisableColor
         }
+        HoverHandler {
+            cursorShape: Qt.PointingHandCursor
+        }
     }
 
     down.indicator: Rectangle {
@@ -108,6 +111,9 @@ T.SpinBox {
             width: parent.width / 3
             height: 2
             color: enabled ? indicatorNormalColor : indicatorDisableColor
+        }
+        HoverHandler {
+            cursorShape: Qt.PointingHandCursor
         }
     }
 

@@ -13,7 +13,6 @@
         <file>qml/components/common/Area.qml</file>
         <file>qml/src/AScan/ControlUI.qml</file>
         <file>qml/src/AScan/MainUI.qml</file>
-        <file>qml/src/AScan/qmldir</file>
         <file>qml/About.qml</file>
         <file>qml/main.qml</file>
         <file>qml/components/common/Toast.qml</file>
@@ -22,5 +21,12 @@
         <file>img/Succed.png</file>
         <file>qml/components/common/KeyValue.qml</file>
         <file>qml/src/AScan/ParamUI.qml</file>
+        <file>qml/src/OnStart/ControlUI.qml</file>
+        <file>qml/src/OnStart/MainUI.qml</file>
+        <file>qml/src/TOFD_PE/ControlUI.qml</file>
+        <file>qml/src/TOFD_PE/MainUI.qml</file>
+        <file>qml/src/TOFD_PE/compnents/ScanView.qml</file>
+        <file>qml/src/TOFD_PE/compnents/qmldir</file>
+        <file>qml/src/TOFD_PE/compnents/LinesMask.qml</file>
     </qresource>
 </RCC>

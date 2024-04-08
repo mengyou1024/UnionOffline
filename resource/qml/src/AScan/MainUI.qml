@@ -15,11 +15,6 @@ Rectangle {
     property alias controlTarget: cons.target
     property alias mainTarget: main_cons.target
 
-    property alias replayVisible: interactor.replayVisible
-    property alias fileName: interactor.fileName
-    property alias date: interactor.date
-    property alias cursorMax: interactor.aScanCursorMax
-
     readonly property var gateText: [{
             "amp": "A%:",
             "dist_a": "A→:",
@@ -101,37 +96,43 @@ Rectangle {
 
         ChartView {
             id: chart_view
+            readonly property bool hiddenOnResing: true
             Layout.fillWidth: true
             Layout.fillHeight: true
-            antialiasing: true
+            antialiasing: false
             legend.visible: false
+            dropShadowEnabled: true
         }
     }
 
     AScanInteractor {
         id: interactor
-        softGain: cons.target.softGain ? cons.target.softGain : 0
-        replayValue: cons.target.replayValue ? cons.target.replayValue : 0
+        softGain: controlTarget !== null ? controlTarget.softGain : 0
+        replayValue: controlTarget !== null ? controlTarget.replayValue : 0
         chartView: chart_view
         Binding {
+            when: controlTarget !== null
             target: controlTarget
             property: "replayVisible"
             value: interactor.replayVisible
         }
 
         Binding {
+            when: controlTarget !== null
             target: controlTarget
             property: "fileName"
             value: interactor.fileName
         }
 
         Binding {
+            when: controlTarget !== null
             target: controlTarget
             property: "date"
             value: interactor.date
         }
 
         Binding {
+            when: controlTarget !== null
             target: controlTarget
             property: "cursorMax"
             value: interactor.aScanCursorMax
@@ -141,6 +142,7 @@ Rectangle {
     Connections {
         id: cons
         ignoreUnknownSignals: true
+        target: null
 
         function onReportExportClicked(fileName) {
             chart_view.grabToImage(function (result) {
@@ -208,10 +210,11 @@ Rectangle {
         }
 
         function onListviewIndexChanged(index, list_view) {
-            console.log(category, "listview index changed, index:", index, "filepath:", list_view.get(index, "filePath"))
+            const filePath = list_view.get(index, "filePath")
+            console.log(category, "listview index changed, index:", index, "filepath:", filePath)
             controlTarget.init()
             interactor.setDefaultValue()
-            if (interactor.openFile(list_view.get(index, "filePath"))) {
+            if (interactor.openFile(filePath)) {
                 showSuccessful(qsTr("打开成功"))
             } else {
                 showFailed(qsTr("打开失败"))
@@ -226,6 +229,17 @@ Rectangle {
                 showSuccessful(qsTr("打开成功"))
             } else {
                 showFailed(qsTr("打开失败"))
+            }
+        }
+
+        function onSplitViewResizingChanged(resizing) {
+            console.log(category, "onSplitViewResizingChanged:", resizing)
+            if (chart_view.hiddenOnResing) {
+                if (resizing) {
+                    chart_view.visible = false
+                } else {
+                    chart_view.visible = true
+                }
             }
         }
     }

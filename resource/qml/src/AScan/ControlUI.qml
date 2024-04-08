@@ -9,9 +9,9 @@ Rectangle {
         id: category
         name: "AScan.ctrl"
     }
+    implicitHeight: 520
+    implicitWidth: 240
     color: "transparent"
-    border.width: 1
-    border.color: "#d8d8d8"
     property int replaySpeed: 1
     property bool isReplayStart: true
 

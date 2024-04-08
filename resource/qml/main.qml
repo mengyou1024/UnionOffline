@@ -5,7 +5,6 @@ import QtCharts
 import QtQuick.Layouts
 import Qt.labs.folderlistmodel
 import Qt.labs.platform
-import "./src/AScan"
 import "./components"
 
 ApplicationWindow {
@@ -25,235 +24,269 @@ ApplicationWindow {
     signal btnParamClicked
     signal listviewIndexChanged(var index, var list_view)
     signal openFile(string file)
+    signal splitViewResizingChanged(bool resizing)
 
-    ToolBar {
-        id: tool_bar
-        width: parent.width
+    ColumnLayout {
+        anchors.fill: parent
         spacing: 0
-        background: Rectangle {
-            color: "#e1e1e1"
-        }
+        ToolBar {
+            id: tool_bar
+            Layout.fillWidth: true
+            spacing: 0
+            background: Rectangle {
+                color: "#e1e1e1"
+            }
 
-        RowLayout {
-            ToolButton {
-                width: 55
-                height: 41
-                icon.height: 41
-                icon.width: 55
-                icon.source: "qrc:/img/folder.png"
-                onClicked: {
-                    file_dialog.open()
-                }
-                text: qsTr("打开")
-                display: AbstractButton.TextUnderIcon
-            }
-            ToolButton {
-                width: 55
-                height: 41
-                icon.height: 41
-                icon.width: 55
-                icon.source: "qrc:/img/ava_clear.png"
-                text: qsTr("清除")
-                display: AbstractButton.TextUnderIcon
-                onClicked: {
-                    actionMainType("Unknow")
-                }
-            }
-            ToolButton {
-                width: 55
-                height: 41
-                icon.height: 41
-                icon.width: 55
-                icon.source: "qrc:/img/param.png"
-                text: qsTr("工艺参数")
-                display: AbstractButton.TextUnderIcon
-                onClicked: {
-                    btnParamClicked()
-                }
-            }
-            ToolButton {
-                width: 55
-                height: 41
-                icon.height: 41
-                icon.width: 55
-                icon.source: "qrc:/img/USB_51.png"
-                text: qsTr("通讯")
-                display: AbstractButton.TextUnderIcon
-            }
-            ToolButton {
-                width: 55
-                height: 41
-                icon.height: 41
-                icon.width: 55
-                icon.source: "qrc:/img/config-language.ico"
-                text: qsTr("帮助")
-                display: AbstractButton.TextUnderIcon
-
-                onClicked: {
-                    var comp = Qt.createComponent("About.qml")
-                    if (comp.status === Component.Ready) {
-                        var about_wind = comp.createObject(parent)
-                        about_wind.winClose.connect(param => {
-                                                        console.info(category, "receive signal: winClose, parameter:", param)
-                                                    })
-                        about_wind.closing.connect(() => {
-                                                       comp.destroy()
-                                                       about_wind.destroy()
-                                                   })
-                    } else if (comp.status === Component.Error) {
-                        console.error(category, comp.errorString())
+            RowLayout {
+                ToolButton {
+                    width: 55
+                    height: 41
+                    icon.height: 41
+                    icon.width: 55
+                    icon.source: "qrc:/img/folder.png"
+                    onClicked: {
+                        file_dialog.open()
+                    }
+                    text: qsTr("打开")
+                    display: AbstractButton.TextUnderIcon
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
                     }
                 }
+                ToolButton {
+                    width: 55
+                    height: 41
+                    icon.height: 41
+                    icon.width: 55
+                    icon.source: "qrc:/img/ava_clear.png"
+                    text: qsTr("清除")
+                    display: AbstractButton.TextUnderIcon
+                    onClicked: {
+                        actionMainType("Unknow")
+                    }
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
+                }
+                ToolButton {
+                    width: 55
+                    height: 41
+                    icon.height: 41
+                    icon.width: 55
+                    icon.source: "qrc:/img/param.png"
+                    text: qsTr("工艺参数")
+                    display: AbstractButton.TextUnderIcon
+                    onClicked: {
+                        btnParamClicked()
+                    }
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
+                }
+                ToolButton {
+                    width: 55
+                    height: 41
+                    icon.height: 41
+                    icon.width: 55
+                    icon.source: "qrc:/img/USB_51.png"
+                    text: qsTr("通讯")
+                    display: AbstractButton.TextUnderIcon
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
+                }
+                ToolButton {
+                    width: 55
+                    height: 41
+                    icon.height: 41
+                    icon.width: 55
+                    icon.source: "qrc:/img/config-language.ico"
+                    text: qsTr("帮助")
+                    display: AbstractButton.TextUnderIcon
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    onClicked: {
+                        var comp = Qt.createComponent("About.qml")
+                        if (comp.status === Component.Ready) {
+                            var about_wind = comp.createObject(parent)
+                            about_wind.winClose.connect(param => {
+                                                            console.info(category, "receive signal: winClose, parameter:", param)
+                                                        })
+                            about_wind.closing.connect(() => {
+                                                           comp.destroy()
+                                                           about_wind.destroy()
+                                                       })
+                        } else if (comp.status === Component.Error) {
+                            console.error(category, comp.errorString())
+                        }
+                    }
+                }
+            }
+        }
+
+        SplitView {
+            id: split_view
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.leftMargin: 1
+            Layout.rightMargin: 1
+            handle: Rectangle {
+                id: handleDelegate
+                implicitWidth: 6
+                color: SplitHandle.pressed ? "#c6e2ff" : (SplitHandle.hovered ? Qt.lighter("#c6e2ff", 1.1) : "#c6e2ff")
+
+                containmentMask: Item {
+                    x: (handleDelegate.width - width) / 2
+                    width: 20
+                    height: split_view.height
+                }
+            }
+
+            Rectangle {
+                id: rect_list
+                SplitView.preferredWidth: 240
+                SplitView.minimumWidth: 240
+                SplitView.maximumWidth: 240
+                color: "#e0eeee"
+                radius: 5
+                clip: true
+                border.color: "#3f6feb"
+                border.width: 2
+                ListView {
+                    id: listView
+                    anchors.fill: parent
+                    anchors.margins: 2
+                    visible: false
+                    property color highlightColor: "#00e3e6"
+                    model: FolderListModel {
+                        id: folder_list
+                        showDirs: false
+                        nameFilters: FOLDERLISTMODEL_NAMEFILTER
+                        caseSensitive: false
+                        folder: file_dialog.folder
+                    }
+
+                    highlight: Rectangle {
+                        border.color: "transparent"
+                        border.width: 2
+                        radius: 5
+                        color: listView.highlightColor
+                    }
+
+                    ScrollBar.vertical: ScrollBar {}
+
+                    highlightMoveDuration: 0
+                    highlightMoveVelocity: -1
+                    highlightResizeDuration: 0
+                    highlightResizeVelocity: -1
+
+                    delegate: Rectangle {
+                        color: "transparent"
+                        width: ListView.view.width
+                        height: 35
+                        radius: 5
+                        property string fN: t.text
+                        Text {
+                            id: t
+                            text: fileName
+                            anchors.centerIn: parent
+                            font.pixelSize: 16
+                        }
+                        MouseArea {
+                            cursorShape: Qt.PointingHandCursor
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                if (index === listView.currentIndex) {
+                                    return
+                                }
+                                listView.currentIndex = index
+                                color = "transparent"
+                                console.log(category, "listview index changed, index:", index, "filepath:", folder_list.get(index, "filePath"))
+                                let filePath = folder_list.get(index, "filePath")
+                                let uiType = getMainUITypeIndex(filePath)
+                                console.log(category, "uiType:", uiType)
+                                if (uiType === mainUIType) {
+                                    listviewIndexChanged(index, folder_list)
+                                } else {
+                                    actionMainType(uiType, filePath)
+                                }
+                            }
+                            onEntered: {
+                                if (listView.currentIndex === index) {
+                                    return
+                                }
+                                color = Qt.lighter(listView.highlightColor, 1.1)
+                            }
+                            onExited: {
+                                color = "transparent"
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                color: "transparent"
+                radius: 5
+                border.color: "#3f6feb"
+                border.width: 2
+                SplitView.fillWidth: true
+                Loader {
+                    id: loader_ui
+                    clip: true
+                    anchors.margins: 2
+                    anchors.fill: parent
+                    source: ""
+                    Component.onCompleted: {
+                        console.log(category, `loader.main width:${width} height:${height}`)
+                    }
+                }
+            }
+
+            Rectangle {
+                SplitView.minimumWidth: 300
+                SplitView.maximumWidth: 300
+                SplitView.fillHeight: true
+                color: "transparent"
+                radius: 5
+                border.color: "#3f6feb"
+                border.width: 2
+
+                Loader {
+                    id: loader_ctrl
+                    clip: true
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    anchors.centerIn: parent
+
+                    source: ""
+                    onLoaded: {
+                        console.log(`loader height:${loader_ctrl.item.height} width: ${loader_ctrl.item.width}`)
+                    }
+                }
+            }
+            onResizingChanged: {
+                splitViewResizingChanged(resizing)
+            }
+        }
+
+        Rectangle {
+            Layout.preferredHeight: 20
+            color: "#b0e2ff"
+            Text {
+                x: 5
+                height: parent.height
+                text: qsTr("友联科技, 欢迎使用")
+                verticalAlignment: Text.AlignVCenter
             }
         }
     }
 
     background: Rectangle {
         color: "#e0eeee"
-    }
-
-    SplitView {
-        id: split_view
-
-        anchors.top: tool_bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        anchors.leftMargin: 1
-        anchors.rightMargin: 1
-
-        handle: Rectangle {
-            id: handleDelegate
-            implicitWidth: 6
-            color: SplitHandle.pressed ? "#c6e2ff" : (SplitHandle.hovered ? Qt.lighter("#c6e2ff", 1.1) : "#c6e2ff")
-
-            // @disable-check M16
-            containmentMask: Item {
-                x: (handleDelegate.width - width) / 2
-                width: 20
-                height: split_view.height
-            }
-        }
-
-        Rectangle {
-            id: rect_list
-            SplitView.preferredWidth: 240
-            color: "#e0eeee"
-            radius: 5
-            clip: true
-            border.color: "#3f6feb"
-            border.width: 2
-            ListView {
-                id: listView
-                anchors.fill: parent
-                anchors.margins: 2
-                visible: false
-                property color highlightColor: "#00e3e6"
-                model: FolderListModel {
-                    id: folder_list
-                    showDirs: false
-                    nameFilters: FOLDERLISTMODEL_NAMEFILTER
-                    caseSensitive: false
-                    folder: file_dialog.folder
-                }
-
-                highlight: Rectangle {
-                    border.color: "transparent"
-                    border.width: 2
-                    radius: 5
-                    color: listView.highlightColor
-                }
-
-                ScrollBar.vertical: ScrollBar {}
-
-                highlightMoveDuration: 150
-                highlightMoveVelocity: -1
-                highlightResizeDuration: 0
-                highlightResizeVelocity: -1
-
-                delegate: Rectangle {
-                    color: "transparent"
-                    width: ListView.view.width
-                    height: 35
-                    radius: 5
-                    property string fN: t.text
-                    Text {
-                        id: t
-                        text: fileName
-                        anchors.centerIn: parent
-                        font.pixelSize: 16
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            if (index === listView.currentIndex) {
-                                return
-                            }
-                            listView.currentIndex = index
-                            color = "transparent"
-                            console.log(category, "listview index changed, index:", index, "filepath:", folder_list.get(index, "filePath"))
-                            let uiType = getMainUITypeIndex(folder_list.get(index, "filePath"))
-                            if (uiType === mainUIType) {
-                                listviewIndexChanged(index, folder_list)
-                            } else {
-                                actionMainType(uiType)
-                            }
-                        }
-                        onEntered: {
-                            if (listView.currentIndex === index) {
-                                return
-                            }
-                            color = Qt.lighter(listView.highlightColor, 1.1)
-                        }
-                        onExited: {
-                            color = "transparent"
-                        }
-                    }
-                }
-            }
-        }
-
-        Rectangle {
-            color: "transparent"
-            radius: 5
-            border.color: "#3f6feb"
-            border.width: 2
-            SplitView.fillWidth: true
-            Loader {
-                id: loader_ui
-                clip: true
-                anchors.margins: 2
-                anchors.fill: parent
-            }
-        }
-
-        Rectangle {
-            SplitView.preferredWidth: 240
-            color: "transparent"
-            radius: 5
-            border.color: "#3f6feb"
-            border.width: 2
-            Loader {
-                id: loader_ctrl
-                clip: true
-                anchors.fill: parent
-                anchors.margins: 2
-            }
-        }
-    }
-
-    Rectangle {
-        height: 20
-        width: parent.width
-        color: "#b0e2ff"
-        anchors.top: split_view.bottom
-        Text {
-            height: parent.height
-            text: qsTr("友联科技, 欢迎使用")
-            verticalAlignment: Text.AlignVCenter
-        }
     }
 
     FileDialog {
@@ -268,17 +301,14 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: {
-        showMaximized()
-    }
-
     function getMainUITypeIndex(fileName) {
         let suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase()
         console.log(category, `open file suffix:${suffix}, get ui type: ${MAINUI_MAP[suffix]}`)
         var ret = MAINUI_MAP[suffix]
         if (ret === undefined) {
             ret = "Unknow"
-            console.warn(category, "unknow suffix:", suffix)
+            showFailed("打开出错")
+            console.warn(category, `open file:${fileName} error, unknow suffix:${suffix}`)
         }
         return ret
     }
@@ -291,6 +321,14 @@ ApplicationWindow {
             loader_ui.source = "src/AScan/MainUI.qml"
             loader_ui.item.controlTarget = loader_ctrl.item
             loader_ui.item.mainTarget = wnd_main
+            console.log(category, "AScan filePath:", filePath)
+            openFile(filePath)
+        } else if (type === "TOFD_PE") {
+            loader_ui.source = "src/TOFD_PE/MainUI.qml"
+            loader_ctrl.source = "src/TOFD_PE/ControlUI.qml"
+            loader_ui.item.controlTarget = loader_ctrl.item
+            loader_ui.item.mainTarget = wnd_main
+            console.log(category, "TOFD_PE filePath:", filePath)
             openFile(filePath)
         } else if (type === "Unknow") {
             listView.visible = false
@@ -311,5 +349,9 @@ ApplicationWindow {
 
     function showFailed(text) {
         toast.showFailed(text)
+    }
+
+    Component.onCompleted: {
+        // showMaximized()
     }
 }
