@@ -1,8 +1,8 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import QtCharts
-import Union.Interactor
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtCharts 2.15
+import Union.Interactor 1.0
 
 Rectangle {
     LoggingCategory {
@@ -96,7 +96,7 @@ Rectangle {
 
         ChartView {
             id: chart_view
-            readonly property bool hiddenOnResing: true
+            readonly property bool hiddenOnResing: false
             Layout.fillWidth: true
             Layout.fillHeight: true
             antialiasing: false

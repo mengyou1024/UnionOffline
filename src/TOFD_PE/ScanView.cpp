@@ -3,6 +3,7 @@
 #include <QLoggingCategory>
 #include <QQmlProperty>
 #include <QValueAxis>
+#include <QtCharts>
 #include <QtCore>
 #include <Yo/File>
 #include <span>
@@ -311,7 +312,7 @@ namespace TOFD_PE {
                 }
                 auto    result = static_cast<uint8_t>(newBias + 128);
                 QPointF pt     = {static_cast<qreal>(result), 499.0 - i};
-                data.emplaceBack(pt);
+                data.push_back(pt);
             }
             return data;
         };
@@ -334,7 +335,7 @@ namespace TOFD_PE {
                     result = _t;
                 }
                 QPointF pt = {result, 499.0 - i};
-                data.emplaceBack(pt);
+                data.push_back(pt);
             }
             return data;
         };

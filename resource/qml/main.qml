@@ -1,10 +1,10 @@
-import QtQuick
-import QtQuick.Window
-import QtQuick.Controls
-import QtCharts
-import QtQuick.Layouts
-import Qt.labs.folderlistmodel
-import Qt.labs.platform
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtCharts 2.15
+import QtQuick.Layouts 1.15
+import Qt.labs.folderlistmodel 2.15
+import Qt.labs.platform 1.1
 import "./components"
 
 ApplicationWindow {
@@ -38,75 +38,40 @@ ApplicationWindow {
             }
 
             RowLayout {
-                ToolButton {
-                    width: 55
-                    height: 41
-                    icon.height: 41
-                    icon.width: 55
-                    icon.source: "qrc:/img/folder.png"
-                    onClicked: {
-                        file_dialog.open()
-                    }
-                    text: qsTr("打开")
-                    display: AbstractButton.TextUnderIcon
-                    HoverHandler {
-                        cursorShape: Qt.PointingHandCursor
-                    }
-                }
-                ToolButton {
-                    width: 55
-                    height: 41
-                    icon.height: 41
-                    icon.width: 55
-                    icon.source: "qrc:/img/ava_clear.png"
-                    text: qsTr("清除")
-                    display: AbstractButton.TextUnderIcon
-                    onClicked: {
-                        actionMainType("Unknow")
-                    }
-                    HoverHandler {
-                        cursorShape: Qt.PointingHandCursor
-                    }
-                }
-                ToolButton {
-                    width: 55
-                    height: 41
-                    icon.height: 41
-                    icon.width: 55
-                    icon.source: "qrc:/img/param.png"
-                    text: qsTr("工艺参数")
-                    display: AbstractButton.TextUnderIcon
-                    onClicked: {
-                        btnParamClicked()
-                    }
-                    HoverHandler {
-                        cursorShape: Qt.PointingHandCursor
-                    }
-                }
-                ToolButton {
-                    width: 55
-                    height: 41
-                    icon.height: 41
-                    icon.width: 55
-                    icon.source: "qrc:/img/USB_51.png"
-                    text: qsTr("通讯")
-                    display: AbstractButton.TextUnderIcon
-                    HoverHandler {
-                        cursorShape: Qt.PointingHandCursor
-                    }
-                }
-                ToolButton {
-                    width: 55
-                    height: 41
-                    icon.height: 41
-                    icon.width: 55
-                    icon.source: "qrc:/img/config-language.ico"
-                    text: qsTr("帮助")
-                    display: AbstractButton.TextUnderIcon
-                    HoverHandler {
-                        cursorShape: Qt.PointingHandCursor
-                    }
 
+                CIconButton {
+                    img_src: "qrc:/img/folder.png"
+                    btn_txt: qsTr("打开")
+                    height: parent.height
+                    onClicked: file_dialog.open()
+                }
+
+                CIconButton {
+                    img_src: "qrc:/img/ava_clear.png"
+                    btn_txt: qsTr("清除")
+                    height: parent.height
+                    onClicked: actionMainType("Unknow")
+                }
+
+                CIconButton {
+                    implicitWidth: 60
+                    img_src: "qrc:/img/param.png"
+                    btn_txt: qsTr("工艺参数")
+                    height: parent.height
+                    onClicked: btnParamClicked()
+                }
+
+                CIconButton {
+                    implicitWidth: 80
+                    img_src: "qrc:/img/USB_51.png"
+                    btn_txt: qsTr("通讯")
+                    height: parent.height
+                }
+
+                CIconButton {
+                    img_src: "qrc:/img/config-language.ico"
+                    btn_txt: qsTr("帮助")
+                    height: parent.height
                     onClicked: {
                         var comp = Qt.createComponent("About.qml")
                         if (comp.status === Component.Ready) {
@@ -352,6 +317,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+
         // showMaximized()
     }
 }

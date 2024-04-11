@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QAbstractSeries>
 #include <QChartView>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -9,6 +10,7 @@
 #include <QQuickItemGrabResult>
 #include <QSlider>
 #include <QTimer>
+#include <QtCharts>
 #include <UnionType>
 
 class AScanInteractor : public QQuickItem {
@@ -25,8 +27,8 @@ class AScanInteractor : public QQuickItem {
     QString     distanceMode  = "N";
 
     Union::AScan::AScanType ascan          = {}; ///< A扫数据
-    size_t                  aScanCurosr    = 0;
-    size_t                  aScanCursorMax = 0;
+    int                     aScanCurosr    = 0;
+    int                     aScanCursorMax = 0;
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";
@@ -97,10 +99,10 @@ public:
     void             setChartView(QQuickItem* newChartView);
     const QJsonArray getGateValue() const;
     void             setGateValue(const QJsonArray& newGateValue);
-    size_t           getAScanCurosr() const;
-    void             setAScanCurosr(size_t newAScanCurosr);
-    size_t           getAScanCursorMax() const;
-    void             setAScanCursorMax(size_t newAScanCursorMax);
+    int              getAScanCurosr() const;
+    void             setAScanCurosr(int newAScanCurosr);
+    int              getAScanCursorMax() const;
+    void             setAScanCursorMax(int newAScanCursorMax);
     QString          getDistanceMode() const;
     void             setDistanceMode(const QString& newDistanceMode);
 
@@ -136,7 +138,7 @@ private:
     Q_PROPERTY(int replayValue READ getReplayValue WRITE setReplayValue NOTIFY replayValueChanged)
     Q_PROPERTY(QQuickItem* chartView READ getChartView WRITE setChartView NOTIFY chartViewChanged)
     Q_PROPERTY(QJsonArray gateValue READ getGateValue WRITE setGateValue NOTIFY gateValueChanged)
-    Q_PROPERTY(size_t aScanCurosr READ getAScanCurosr WRITE setAScanCurosr NOTIFY aScanCurosrChanged)
-    Q_PROPERTY(size_t aScanCursorMax READ getAScanCursorMax WRITE setAScanCursorMax NOTIFY aScanCursorMaxChanged)
+    Q_PROPERTY(int aScanCurosr READ getAScanCurosr WRITE setAScanCurosr NOTIFY aScanCurosrChanged)
+    Q_PROPERTY(int aScanCursorMax READ getAScanCursorMax WRITE setAScanCursorMax NOTIFY aScanCursorMaxChanged)
     Q_PROPERTY(QString distanceMode READ getDistanceMode WRITE setDistanceMode NOTIFY distanceModeChanged FINAL)
 };

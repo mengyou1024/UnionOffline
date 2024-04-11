@@ -1,6 +1,6 @@
-import QtQuick
-import Union.TOFD_PE
-import Qt.labs.platform
+import QtQuick 2.15
+import Union.TOFD_PE 1.0
+import Qt.labs.platform 1.1
 
 Canvas {
     LoggingCategory {

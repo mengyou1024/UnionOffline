@@ -1,7 +1,7 @@
-import QtQuick
-import QtQuick.Layouts
-import QtCharts
-import Union.TOFD_PE
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtCharts 2.15
+import Union.TOFD_PE 1.0
 
 Item {
     id: control
@@ -88,10 +88,10 @@ Item {
             cursor: intr ? Math.round(intr.getLines() * mask.horizontalValue1) : 0
             LinesMask {
                 id: mask
-                x: _view.getDrawable().x
-                y: _view.getDrawable().y
-                width: _view.getDrawable().width
-                height: _view.getDrawable().height
+                x: 35
+                y: 0
+                width: _view.width - 35
+                height: _view.height - 35
 
                 verticalText1: (ordinateRange.x + verticalValue1 * ordinateRange.y).toFixed(1) + " mm"
                 verticalText2: (ordinateRange.x + verticalValue2 * ordinateRange.y).toFixed(1) + " mm"
@@ -109,6 +109,21 @@ Item {
                                            }
                 onRollBackPrivate: {
                     rollBack()
+                }
+
+                Component.onCompleted: {
+
+                    // console.log(category, "on LinesMask Loadered")
+                    // console.log(category, `x:${x}, y:${y}, w:${width}, h:${height}`)
+                    // console.log(category, "drawAble:", _view.getDrawable())
+                    // const drawAble = _view.getDrawable()
+                    // x = drawAble.x
+                    // y = drawAble.y
+                    // width = drawAble.width
+                    // height = drawAble.height
+                    // console.log(category, "on LinesMask Loadered")
+                    // console.log(category, `x:${x}, y:${y}, w:${width}, h:${height}`)
+                    // console.log(category, "drawAble:", _view.getDrawable())
                 }
             }
         }

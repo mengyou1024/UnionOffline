@@ -7,6 +7,7 @@
 #include <QPluginLoader>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
+#include <QScreen>
 #include <SingleApplication.h>
 #include <UnionType>
 
@@ -26,7 +27,7 @@ int main(int argc, char* argv[]) {
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+    // QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     // 设置日志过滤规则
     QSettings logSetting("setting.ini", QSettings::IniFormat);
     logSetting.beginGroup("Rules");

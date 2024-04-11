@@ -1,4 +1,4 @@
-import QtQuick
+import QtQuick 2.15
 
 Column {
     property var toastComponent: toastComponent = Qt.createComponent("Toast.qml")

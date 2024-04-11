@@ -5,9 +5,20 @@ project(UnionOffline LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(NUMCPP_NO_USE_BOOST ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Charts Core LinguistTools)
-set(CMAKE_AUTORCC ON)
-qt_standard_project_setup()
+find_package(Qt6 COMPONENTS Quick Widgets Charts LinguistTools)
+
+if(NOT Qt6_FOUND)
+    find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core)
+    set(CMAKE_AUTORCC ON)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTOUIC ON)
+    find_program(WINDEPLOYQT_EXECUTABLE windeployqt.exe)
+    message(STATUS "WINDEPLOYQT_EXECUTABLE:${WINDEPLOYQT_EXECUTABLE}")
+else()
+    set(CMAKE_AUTORCC ON)
+    qt_standard_project_setup()
+endif()
+
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
 set(
     PROJECT_RES
@@ -20,7 +31,7 @@ set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleAp
 add_subdirectory("components/QXlsx/QXlsx")
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Quick Qt6::Widgets Qt6::Charts Qt6::Core)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Core)
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -36,21 +47,22 @@ find_package(Morose)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE UnionLib misc_utils SingleApplication::SingleApplication)
 
-target_link_libraries(UnionLib PRIVATE Qt6::Core misc_utils)
+target_link_libraries(UnionLib PRIVATE Qt${QT_VERSION_MAJOR}::Core misc_utils)
 target_link_libraries(UnionLib PUBLIC NumCpp)
 target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 
-file(GLOB_RECURSE PROJECT_QML_SOURCES "resource/qml/*.qml")
-qt_add_lupdate(${PROJECT_NAME} TS_FILES "translations/${PROJECT_NAME}_en.ts" SOURCES ${PROJECT_QML_SOURCES} ${PROJECT_SOURCES})
-set_source_files_properties(
-    "translations/${PROJECT_NAME}_en.ts"
-    PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations"
-)
-qt_add_lrelease(${PROJECT_NAME} TS_FILES "translations/${PROJECT_NAME}_en.ts")
+if(Qt6_FOUND)
+    file(GLOB_RECURSE PROJECT_QML_SOURCES "resource/qml/*.qml")
+    qt_add_lupdate(${PROJECT_NAME} TS_FILES "translations/${PROJECT_NAME}_en.ts" SOURCES ${PROJECT_QML_SOURCES} ${PROJECT_SOURCES})
+    set_source_files_properties(
+        "translations/${PROJECT_NAME}_en.ts"
+        PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations"
+    )
+    qt_add_lrelease(${PROJECT_NAME} TS_FILES "translations/${PROJECT_NAME}_en.ts")
+endif()
 
-
-if (Morose_FOUND)
-    if((NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json") AND (NOT CMAKE_BUILD_TYPE STREQUAL "Release"))
+if(Morose_FOUND)
+    if((NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json") AND(NOT CMAKE_BUILD_TYPE STREQUAL "Release"))
         message(WARNING "no ProductConfig.json file please see ${CMAKE_SOURCE_DIR}/config/ProductConfigTemplate.json")
     else()
         morose_add_environment_config_file(

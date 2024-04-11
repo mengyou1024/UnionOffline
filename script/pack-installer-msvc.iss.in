@@ -8,7 +8,7 @@
 #define MyAppExeName "@PROJECT_NAME@@CMAKE_EXECUTABLE_SUFFIX@"
 #define MoroseInstallDir "@MOROSE_INSTALL_DIR@"
 #define MoroseIcon  "@MOROSE_ICON@"
-#define MoroseInstallerName "@PROJECT_NAME@Installer-mingw-@APP_VERSION@"
+#define MoroseInstallerName "@PROJECT_NAME@Installer-msvc-@APP_VERSION@"
 
 [Setup]
 ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
@@ -48,7 +48,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "@MOROSE_DIST_DIR@/@PROJECT_NAME@@CMAKE_EXECUTABLE_SUFFIX@"; DestDir: "{app}"; Flags: comparetimestamp
 Source: "@MOROSE_DIST_DIR@/*"; DestDir: "{app}"; Flags: comparetimestamp recursesubdirs createallsubdirs
-; Source: "@MOROSE_DIST_DIR@/vc_redist.x64.exe"; DestDir: "{app}"; Flags: comparetimestamp
+Source: "@MOROSE_DIST_DIR@/vc_redist.x64.exe"; DestDir: "{app}"; Flags: comparetimestamp
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [UninstallDelete]
@@ -57,7 +57,7 @@ Type: files; Name: "{app}/setting.ini"
 @MOROSE_UNINSTALL_DELETE_STRING@
 
 [UninstallRun]
-; Filename: "{app}\vc_redist.x64.exe"; Parameters: /uninstall /passive 
+Filename: "{app}\vc_redist.x64.exe"; Parameters: /uninstall /passive 
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -67,4 +67,4 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-; Filename: "{app}\vc_redist.x64.exe"; Parameters: /passive; StatusMsg: "Installing Microsoft Visual C++ Runtime ..."
+Filename: "{app}\vc_redist.x64.exe"; Parameters: /passive; StatusMsg: "Installing Microsoft Visual C++ Runtime ..."

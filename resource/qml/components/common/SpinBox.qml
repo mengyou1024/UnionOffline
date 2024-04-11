@@ -1,7 +1,7 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Controls.impl
-import QtQuick.Templates as T
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+// import QtQuick.Controls.impl
+import QtQuick.Templates 2.15 as T
 
 T.SpinBox {
     id: control
@@ -30,7 +30,7 @@ T.SpinBox {
     }
 
     validator: IntValidator {
-        locale: control.locale.name
+        // locale: control.locale.name
         bottom: Math.min(control.from, control.to)
         top: Math.max(control.from, control.to)
     }

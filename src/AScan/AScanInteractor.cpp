@@ -185,7 +185,7 @@ void AScanInteractor::nextFrameClicked() {
 
 void AScanInteractor::timeSliderMoved(qreal val) {
     qDebug(TAG) << __FUNCTION__ << "val" << val;
-    setAScanCurosr((size_t)(val));
+    setAScanCurosr(static_cast<int>(val));
 }
 
 void AScanInteractor::seriesRemoved(QAbstractSeries* series) {
@@ -247,12 +247,12 @@ void AScanInteractor::setGateValue(const QJsonArray& newGateValue) {
     emit gateValueChanged();
 }
 
-size_t AScanInteractor::getAScanCurosr() const {
+int AScanInteractor::getAScanCurosr() const {
     return aScanCurosr;
 }
 
-void AScanInteractor::setAScanCurosr(size_t newAScanCurosr) {
-    if (newAScanCurosr < ascan.data.size()) {
+void AScanInteractor::setAScanCurosr(int newAScanCurosr) {
+    if (std::cmp_less(newAScanCurosr, ascan.data.size())) {
         MOROSE_TEST_TIME_QUICK("update all series");
         // 1. 更新A扫曲线
         updateAScanSeries(ascan.data[newAScanCurosr]);
@@ -286,11 +286,11 @@ void AScanInteractor::setAScanCurosr(size_t newAScanCurosr) {
     emit aScanCurosrChanged();
 }
 
-size_t AScanInteractor::getAScanCursorMax() const {
+int AScanInteractor::getAScanCursorMax() const {
     return aScanCursorMax;
 }
 
-void AScanInteractor::setAScanCursorMax(size_t newAScanCursorMax) {
+void AScanInteractor::setAScanCursorMax(int newAScanCursorMax) {
     if (aScanCursorMax == newAScanCursorMax) {
         return;
     }
@@ -310,7 +310,7 @@ void AScanInteractor::setDistanceMode(const QString& newDistanceMode) {
 }
 
 bool AScanInteractor::checkAScanCursorValid() {
-    if (!(ascan.data.size() > getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
+    if (!std::cmp_greater(ascan.data.size(), getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
     }
     return true;
@@ -375,7 +375,7 @@ bool AScanInteractor::openFile(QString _fileName) {
     QFileInfo fileInfo(_fileName);
     setFileName(fileInfo.fileName());
     setDate(QString::fromStdString(_ascan->time));
-    setAScanCursorMax(this->ascan.data.size() - 1);
+    setAScanCursorMax(static_cast<int>(this->ascan.data.size() - 1));
     setAScanCurosr(0);
     return true;
 }
@@ -599,7 +599,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     // 填充数据
     for (int i = 0; std::cmp_less(i, chData.ascan.size()); i++) {
         for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
-            pts[j].emplaceBack(QPointF(i, Union::CalculateGainOutput(lineExpr(i), modifyGain(indexs[j]))));
+            pts[j].push_back(QPointF(i, Union::CalculateGainOutput(lineExpr(i), modifyGain(indexs[j]))));
         }
     }
     // 替换曲线数据

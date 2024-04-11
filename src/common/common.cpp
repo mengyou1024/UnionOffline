@@ -131,6 +131,7 @@ void Morose::registerVariable(QQmlContext* context) {
 void Morose::registeAllAScanFileSelector() {
     Union::AScan::AScanFileSelector::RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::__390N_T8_LDAT_READ);
     Union::AScan::AScanFileSelector::RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::__390N_T8_JSON_READ);
+    Union::AScan::AScanFileSelector::RegistReader("*.das", "330单幅图像", Union::__330::__330_DAS_READ);
 }
 
 QJsonObject& Morose::getGlobalEnvironment() {
@@ -162,7 +163,7 @@ void Morose::registNameFilter(QQmlContext* context) {
     QVariantList filedialog_nameFilter;
     QVariantMap  mainUi_map;
 
-    filedialog_nameFilter.emplaceBack("所有文件 (*.*)");
+    filedialog_nameFilter.push_back("所有文件 (*.*)");
     // AScan
     mainUi_map.insert(Union::AScan::AScanFileSelector::GetUINameMap().toVariantMap());
     folderListModel_nameFilter += Union::AScan::AScanFileSelector::GetFileListModelNameFilter().toVariantList();
@@ -170,8 +171,8 @@ void Morose::registNameFilter(QQmlContext* context) {
 
     // TOFD_PE
     mainUi_map.insert(".tpe", "TOFD_PE");
-    folderListModel_nameFilter.emplaceBack("*.tpe");
-    filedialog_nameFilter.emplaceBack("TOFD/PE图像 (*.tpe)");
+    folderListModel_nameFilter.push_back("*.tpe");
+    filedialog_nameFilter.push_back("TOFD/PE图像 (*.tpe)");
 
     context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
     context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);

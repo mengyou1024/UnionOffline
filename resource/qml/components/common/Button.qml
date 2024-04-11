@@ -1,6 +1,6 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Templates as T
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Templates 2.15 as T
 
 T.Button {
     property color backgroundColor: "#00e3e6"

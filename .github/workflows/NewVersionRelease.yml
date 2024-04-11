@@ -14,7 +14,7 @@ jobs:
       matrix:
         include:
           - qt_arch: win64_msvc2019_64
-            qt_ver: 6.5.*
+            qt_ver: 5.15.2
             app_name: UnionOffline
     steps:
     # 拉取仓库
@@ -23,6 +23,7 @@ jobs:
       with:
         fetch-depth: 0
         submodules: recursive
+        token: ${{ secrets.PRIVATE_TOKEN }}
     # 配置Git的username和email
     - uses: tidylabs/action-git-config-user@v1
     # 创建changelog
@@ -30,7 +31,7 @@ jobs:
       id: changelog
       uses: mengyou1024/action-changelog@v0.1.2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PRIVATE_TOKEN }}
         exclude_types: other,doc,chore
     # 安装依赖
     - name: Install dependencies
@@ -47,7 +48,7 @@ jobs:
         version: ${{ matrix.qt_ver }}
         arch: ${{ matrix.qt_arch }}
         cache: ${{steps.cache-qt.outputs.cache-hit}}
-        modules: 'qt5compat qtmultimedia qtshadertools qtimageformats qtcharts'
+        modules: 'qtcharts'
     # 配置、编译程序
     - name: CMake Config
       run: |
@@ -58,7 +59,7 @@ jobs:
     - name: Package 
       run: |
         pushd output
-        7z a -tZip ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip ./${{ matrix.app_name }}-${{steps.changelog.outputs.version}}/*
+        7z a -tZip ${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip ./${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}/*
         popd
     # 创建Release
     - name: Create Release
@@ -79,8 +80,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
-        asset_name: ${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
+        asset_path: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
+        asset_name: ${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
         asset_content_type: application/octet-stream
     # 上传压缩包
     - name: Upload Release Zip
@@ -89,11 +90,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip
-        asset_name: ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip
+        asset_path: ./output/${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip
+        asset_name: ${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip
         asset_content_type: application/zip
     # 提交changelog
     - name: Create Changes File
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git checkout master
         if((Test-Path "CHANGELOG.md") -ne "True") { echo "" > CHANGELOG.md }

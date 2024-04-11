@@ -9,7 +9,8 @@
 ]]
 macro(morose_main_setup)
     find_package(Git QUIET)
-    if (NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
+
+    if(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
         if(GIT_FOUND)
             execute_process(
                 COMMAND ${GIT_EXECUTABLE} describe --tags
@@ -73,7 +74,7 @@ macro(morose_main_setup)
             ${CMAKE_CURRENT_SOURCE_DIR}/src/morose_config.h
             @ONLY
         )
-    else (NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
+    else(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
         file(READ "${CMAKE_SOURCE_DIR}/archive.json" ARCHIVE_JSON_STRING)
         string(JSON APP_VERSION GET "${ARCHIVE_JSON_STRING}" APP_VERSION)
         string(JSON GIT_USER_NAME GET "${ARCHIVE_JSON_STRING}" GIT_USER_NAME)
@@ -96,11 +97,19 @@ function(morose_auto_release)
             set(MOROSE_UNINSTALL_DELETE_STRING "${MOROSE_UNINSTALL_DELETE_STRING}Type: filesandordirs; Name: \"{app}${ITEM}\"\n")
         endforeach(ITEM ${MOROSE_UNINSTALL_DELETE})
 
-        configure_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer.iss.in
-            ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss
-            @ONLY
-        )
+        if(MSVC)
+            configure_file(
+                ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer-msvc.iss.in
+                ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss
+                @ONLY
+            )
+        elseif(MINGW)
+            configure_file(
+                ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer.iss.in
+                ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss
+                @ONLY
+            )
+        endif()
 
         foreach(ITEM ${MOROSE_PLUGINS_TYPE})
             string(TOLOWER ${ITEM} DIR_NAME)
@@ -171,7 +180,7 @@ function(morose_auto_release)
                 ${MOROSE_DIST_DIR}
                 ${PLUGIN_DIRS}
                 ${QML_DIRS}
-                
+
                 COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}Installer-${APP_VERSION}"
             )
         endif(ISCC_PATH)
@@ -237,7 +246,6 @@ macro(morose_plugin_setup)
         target_include_directories(${SETUP_TARGET} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/../common/interface")
         message(STATUS "MOROSE_MAIN:${MOROSE_MAIN}, add plugin:[${SETUP_TARGET}]")
     endif(NOT SETUP_TARGET)
-
 endmacro(morose_plugin_setup)
 
 #[[
@@ -383,6 +391,7 @@ function(morose_add_environment_config_file)
     set(CONF_FILE_STRING "")
     get_filename_component(CONF_DEPLOY_FILE_NAME ${CONF_DEPLOY} NAME)
     get_filename_component(CONF_PRODUCT_FILE_NAME ${CONF_PRODUCT} NAME)
+
     # 拷贝ConfigFile至运行目录
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         if(CONF_RUNTIME_USE_PRODUCT)
@@ -393,15 +402,19 @@ function(morose_add_environment_config_file)
     else(CMAKE_BUILD_TYPE STREQUAL "Release")
         list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         # 拷贝ConfigFile至发布目录
         list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}" "${MOROSE_DIST_DIR}/${CONF_DIST}")
+
         # 添加至卸载的删除路径
         string(FIND "${MOROSE_UNINSTALL_DELETE}" "/${CONF_DIST}" pos)
+
         if(pos EQUAL -1)
             set(MOROSE_UNINSTALL_DELETE ${MOROSE_UNINSTALL_DELETE} "/${CONF_DIST}" CACHE INTERNAL "Morose Inno Setup delete file or directory")
         endif(pos EQUAL -1)
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
     add_custom_command(TARGET ${CONF_TARGET} POST_BUILD ${CONF_FILE_STRING})
 endfunction(morose_add_environment_config_file)
 
@@ -412,8 +425,9 @@ endfunction(morose_add_environment_config_file)
 ]]
 function(morose_add_subdirectory_path path)
     file(GLOB SUBPATH "${path}/*")
+
     foreach(ITEM ${SUBPATH})
-        if (IS_DIRECTORY "${ITEM}" AND EXISTS "${ITEM}/CMakeLists.txt")
+        if(IS_DIRECTORY "${ITEM}" AND EXISTS "${ITEM}/CMakeLists.txt")
             file(RELATIVE_PATH ITEM_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${ITEM})
             add_subdirectory(${ITEM_PATH})
         endif(IS_DIRECTORY "${ITEM}" AND EXISTS "${ITEM}/CMakeLists.txt")
@@ -424,7 +438,13 @@ set(Morose_FOUND TRUE)
 morose_main_setup()
 set(MOROSE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resource/img/morose.ico" CACHE STRING "Morose executable icon")
 set(MOROSE_OUT_DIR "${CMAKE_SOURCE_DIR}/output" CACHE STRING "Morose output directory")
-set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-${APP_VERSION}" CACHE STRING "Morose dist directory")
+
+if(MSVC)
+    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-msvc-${APP_VERSION}" CACHE STRING "Morose dist directory")
+elseif(MINGW)
+    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-mingw-${APP_VERSION}" CACHE STRING "Morose dist directory")
+endif()
+
 message(STATUS MOROSE_DIST_DIR:${MOROSE_DIST_DIR})
 set(MOROSE_PLUGINS_DIR "${MOROSE_DIST_DIR}/plugins" CACHE INTERNAL "Morose plugins directory")
 set(MOROSE_INSTALL_DIR "${MOROSE_OUT_DIR}" CACHE INTERNAL "Morose install output directory")
@@ -437,7 +457,7 @@ morose_add_subdirectory_path("extensions")
 morose_add_subdirectory_path("components")
 
 add_custom_target(
-    Archive 
+    Archive
     COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}-archive.zip
     COMMAND powershell "Copy-Item -Force -Recurse ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/output/archive/.git;\
     cd ${CMAKE_SOURCE_DIR}/output/archive/; \

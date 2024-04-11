@@ -1,7 +1,9 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
-import QtQuick.Dialogs
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls 1.4 as LQC
+import QtQuick.Dialogs 1.3
+import Qt.labs.platform 1.1
 import "../../components"
 
 ScrollView {
@@ -72,7 +74,7 @@ ScrollView {
             Layout.preferredHeight: 50
             RowLayout {
                 anchors.fill: parent
-                CheckBox {
+                LQC.CheckBox {
                     id: cb_tofd_show
                     Layout.leftMargin: 20
                     text: qsTr("TOFD显示")
@@ -81,7 +83,7 @@ ScrollView {
                         cursorShape: Qt.PointingHandCursor
                     }
                 }
-                CheckBox {
+                LQC.CheckBox {
                     id: cb_pe_show
                     Layout.rightMargin: 20
                     text: qsTr("PE显示")
@@ -360,7 +362,7 @@ ScrollView {
                     Layout.leftMargin: 10
                     Layout.rightMargin: 10
                     Layout.bottomMargin: 10
-                    CheckBox {
+                    LQC.CheckBox {
                         id: cb_show_time
                         text: qsTr("显示时间")
                         HoverHandler {

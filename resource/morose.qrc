@@ -28,5 +28,6 @@
         <file>qml/src/TOFD_PE/compnents/ScanView.qml</file>
         <file>qml/src/TOFD_PE/compnents/qmldir</file>
         <file>qml/src/TOFD_PE/compnents/LinesMask.qml</file>
+        <file>qml/components/common/IconButton.qml</file>
     </qresource>
 </RCC>

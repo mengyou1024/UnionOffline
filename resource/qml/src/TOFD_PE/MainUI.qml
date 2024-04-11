@@ -1,10 +1,10 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import QtCharts
-import Union.Interactor
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtCharts 2.15
+import Union.Interactor 1.0
 import "./compnents"
-import Union.TOFD_PE
+import Union.TOFD_PE 1.0
 
 Rectangle {
     LoggingCategory {
