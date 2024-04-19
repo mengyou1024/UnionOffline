@@ -25,9 +25,6 @@ int main(int argc, char* argv[]) {
 
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
-    qInfo() << std::string(80, '-').c_str();
-    qInfo() << "application start, version: " APP_VERSION;
-    qDebug() << app.font();
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL
@@ -47,6 +44,9 @@ int main(int argc, char* argv[]) {
     QLoggingCategory::setFilterRules(filter.toString());
     logSetting.endGroup();
     logSetting.sync();
+
+    qInfo() << std::string(80, '-').c_str();
+    qInfo() << "application start, version: " APP_VERSION;
 
     // 加载QML、注册环境变量
     const QUrl            url("qrc:/qml/main.qml");
