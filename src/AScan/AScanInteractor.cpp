@@ -230,11 +230,11 @@ QVariantList AScanInteractor::getFileNameList() {
 
 void AScanInteractor::setFileNameIndex(int idx) {
     if (ascan != nullptr) {
-        qDebug(TAG) << __FUNCTION__;
+        aScanCursor = 0; // 这里直接赋值而不是使用`setAScanCursor`是为了不触发相应的信号
         ascan->setFileNameIndex(idx);
         setAScanCursorMax(ascan->getDataSize() - 1);
-        setAScanCursor(0);
         setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
+        setReplayValue(0);
         changeDataCursor();
     }
 }

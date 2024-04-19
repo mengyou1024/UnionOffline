@@ -108,6 +108,10 @@ Rectangle {
             property: "cursorMax"
             value: interactor.aScanCursorMax
         }
+        
+        onReplayValueChanged: {
+            controlTarget.replayValue = replayValue
+        }
     }
 
     Connections {
