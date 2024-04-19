@@ -152,13 +152,13 @@ Canvas {
         MenuItem {
             text: qsTr("调校")
             onTriggered: {
-                console.log(category, "调校")
+                console.log(category, qsTr("调校"))
             }
         }
         MenuItem {
             text: qsTr("去直通波")
             onTriggered: {
-                console.log(category, "去直通波")
+                console.log(category, qsTr("去直通波"))
                 mouseArea.cursorShape = Qt.ArrowCursor
                 cursorUiStatus = MaskStatusEnum.RmThroughWave
             }
@@ -166,7 +166,7 @@ Canvas {
         MenuItem {
             text: qsTr("拉直通波")
             onTriggered: {
-                console.log(category, "拉直通波")
+                console.log(category, qsTr("拉直通波"))
                 mouseArea.cursorShape = Qt.ArrowCursor
                 cursorUiStatus = MaskStatusEnum.PullThroughWave
             }
@@ -174,7 +174,7 @@ Canvas {
         MenuItem {
             text: qsTr("撤销")
             onTriggered: {
-                console.log(category, "撤销")
+                console.log(category, qsTr("撤销"))
                 mouseArea.cursorShape = Qt.ArrowCursor
                 cursorUiStatus = MaskStatusEnum.Normal
                 rollBackPrivate()

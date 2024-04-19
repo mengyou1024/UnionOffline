@@ -19,11 +19,15 @@ int main(int argc, char* argv[]) {
     if (!logDir.exists("log")) {
         logDir.mkdir("log");
     }
+    auto font = app.font();
+    font.setFamily("Microsoft YaHei UI");
+    app.setFont(font);
 
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
+    qDebug() << app.font();
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL

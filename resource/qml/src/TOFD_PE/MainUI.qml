@@ -192,8 +192,7 @@ Rectangle {
                 // console.log(category, params)
                 var params = {
                     "参数1": {
-                        "name": "张三",
-                        "age": 18
+                        "test": "测试1"
                     }
                 }
                 var params_wnd = comp.createObject(parent, {

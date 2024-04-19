@@ -8,6 +8,8 @@ Rectangle {
     property int maskRadius: 3
     property string key: ""
     property alias value: _value.text
+    property bool displayColon: true
+    property color textColor: "black"
     width: _key.width + _value.width
     height: Math.max(_key.height, _value.height)
     clip: true
@@ -21,11 +23,12 @@ Rectangle {
             padding: 5
             leftPadding: 10
             rightPadding: 10
-            text: key + ":"
+            text: key + (displayColon ? ":" : "")
             font.pointSize: 12
             background: Rectangle {
                 color: Qt.darker("#00e3e6", 1.2)
             }
+            color: textColor
         }
         Label {
             id: _value
@@ -36,6 +39,7 @@ Rectangle {
             background: Rectangle {
                 color: Qt.lighter("#00e3e6", 1.0)
             }
+            color: textColor
         }
     }
     layer.enabled: true

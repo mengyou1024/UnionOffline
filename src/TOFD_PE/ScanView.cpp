@@ -184,16 +184,12 @@ namespace TOFD_PE {
         if (intr() == nullptr) {
             return;
         }
-        const auto& data = intr()->getData();
-        if (!data.has_value()) {
-            return;
-        }
-        const auto maxLines = std::max(data->line + 1, data->subData->line + 1);
+        const auto maxLines = intr()->getMaxLines();
         QImage     dScan(maxLines, 500, QImage::Format_RGB32);
         for (uint32_t x = 0; std::cmp_less(x, maxLines); x++) {
             for (uint32_t y = 0; std::cmp_less(y, 500); y++) {
-                if (std::cmp_less_equal(x, data->line)) {
-                    auto bias    = static_cast<int>(data->data[x * 500 + y]) - 128;
+                if (std::cmp_less(x, intr()->getLines())) {
+                    auto bias    = static_cast<int>(intr()->getTofdData()[x * 500 + y]) - 128;
                     auto newBias = Union::CalculateGainOutput((double)bias, softGain());
                     if (newBias > 72) {
                         newBias = 72;
@@ -215,16 +211,12 @@ namespace TOFD_PE {
         if (intr() == nullptr) {
             return;
         }
-        const auto& data = intr()->getData();
-        if (!data.has_value()) {
-            return;
-        }
-        const auto maxLines = std::max(data->line + 1, data->subData->line + 1);
+        const auto maxLines = intr()->getMaxLines();
         QImage     dScan(maxLines, 500, QImage::Format_RGB32);
         for (uint32_t x = 0; std::cmp_less(x, maxLines); x++) {
             for (uint32_t y = 0; std::cmp_less(y, 500); y++) {
-                if (std::cmp_less_equal(x, data->subData->line)) {
-                    auto    _t   = Union::CalculateGainOutput((double)data->subData->data[x * 500 + y], softGain());
+                if (std::cmp_less(x, intr()->getSubLines())) {
+                    auto    _t   = Union::CalculateGainOutput((double)intr()->getPeData()[x * 500 + y], softGain());
                     uint8_t gray = 0;
                     if (_t > 255.0) {
                         gray = 255;
@@ -296,11 +288,11 @@ namespace TOFD_PE {
 
         auto GetData = [&]() -> std::optional<QList<QPointF>> {
             QList<QPointF> data = {};
-            if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getData()->line) {
+            if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getLines() - 1) {
                 return std::nullopt;
             }
-            const std::span data_ptr(intr()->getData()->data.begin() + (500 * m_cursor), 500);
-            qDebug(TAG) << "data size:" << intr()->getData()->data.size();
+            const std::span data_ptr(intr()->getTofdData().begin() + (500 * m_cursor), 500);
+            qDebug(TAG) << "data size:" << intr()->getTofdData().size();
             for (auto i = 0; std::cmp_less(i, 500); i++) {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
@@ -319,10 +311,10 @@ namespace TOFD_PE {
 
         auto GetSecondData = [&]() -> std::optional<QList<QPointF>> {
             QList<QPointF> data = {};
-            if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getSubData()->line) {
+            if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getSubLines() - 1) {
                 return std::nullopt;
             }
-            const std::span data_ptr(intr()->getSubData()->data.begin() + (500 * m_cursor), 500);
+            const std::span data_ptr(intr()->getPeData().begin() + (500 * m_cursor), 500);
             for (auto i = 0; std::cmp_less(i, 500); i++) {
                 auto  raw    = data_ptr[i];
                 auto  _t     = Union::CalculateGainOutput((double)raw, softGain());

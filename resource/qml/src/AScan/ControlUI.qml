@@ -17,7 +17,7 @@ Rectangle {
     property bool isReplayStart: true
 
     property alias replayVisible: replay_area.visible // 连续回放区域显示
-    property alias fileName: lb_fileName.text // 文件名
+    property alias fileNameList: com_fileName_list.model
     property alias date: lb_date.text // 日期
     property alias softGain: gainSpinBox.value // 软件增益
     property alias replayValue: sl_timerLine.value // 时间线值
@@ -41,6 +41,8 @@ Rectangle {
     signal nextFrameClicked
     // 时间线变化信号
     signal timeSliderMoved(real val)
+    // 设置文件名索引
+    signal setFileNameIndex(int idx)
 
     ColumnLayout {
         width: parent.width
@@ -67,17 +69,15 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
-                    Label {
-                        id: lb_fileName
+
+                    CComboBox {
+                        id: com_fileName_list
                         Layout.preferredWidth: 160
                         Layout.preferredHeight: 24
-                        background: Rectangle {
-                            border.color: "#d8d8d8"
-                            border.width: 1
-                            color: "white"
+                        onCurrentIndexChanged: {
+                            console.log(category, "id: com_fileName_list ComboBox onCurrentIndexChanged")
+                            setFileNameIndex(currentIndex)
                         }
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Label {
@@ -94,6 +94,7 @@ Rectangle {
                             border.color: "#d8d8d8"
                             border.width: 1
                             color: "white"
+                            radius: 3
                         }
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -222,25 +223,43 @@ Rectangle {
                         }
                     }
                     CButton {
+                        autoRepeat: true
                         text: qsTr("上一帧")
-                        onClicked: {
-                            sl_timerLine.value -= 1
+                        function valueMinus(val) {
+                            sl_timerLine.value -= val
                             if (sl_timerLine.value < 0) {
                                 sl_timerLine.value = 0
                             }
                             timeSliderMoved(sl_timerLine.value)
                             lastFrameClicked()
                         }
+
+                        onPressAndHold: {
+                            valueMinus(1)
+                        }
+
+                        onReleased: {
+                            valueMinus(1)
+                        }
                     }
                     CButton {
+                        autoRepeat: true
                         text: qsTr("下一帧")
-                        onClicked: {
-                            sl_timerLine.value += 1
+                        function valuePlus(val) {
+                            sl_timerLine.value += val
                             if (sl_timerLine.value > sl_timerLine.to) {
                                 sl_timerLine.value = sl_timerLine.to
                             }
                             timeSliderMoved(sl_timerLine.value)
                             nextFrameClicked()
+                        }
+
+                        onReleased: {
+                            valuePlus(1)
+                        }
+
+                        onPressAndHold: {
+                            valueMinus(1)
                         }
                     }
                 }
@@ -271,6 +290,7 @@ Rectangle {
     }
 
     function init() {
+        replayTimer.stop()
         isReplayStart = true
         replaySpeed = 1
         sl_timerLine.value = 0

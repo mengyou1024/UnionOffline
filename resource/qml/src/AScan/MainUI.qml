@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtCharts 2.15
 import Union.Interactor 1.0
+import "../../components"
 
 Rectangle {
     LoggingCategory {
@@ -29,7 +30,7 @@ Rectangle {
             "equi": qsTr("当量:")
         }]
 
-    readonly property var gateTextColor: ["red", "#8470ff"]
+    readonly property var gateTextColor: ["red", Qt.darker("#8470ff", 1.5)]
 
     ColumnLayout {
         anchors.fill: parent
@@ -50,43 +51,20 @@ Rectangle {
                 spacing: 20
                 Repeater {
                     model: 2
-                    delegate: RowLayout {
+                    delegate: Flow {
                         property int gateIndex: index
                         Layout.alignment: Qt.AlignCenter
                         property var rowColor: gateTextColor[index]
+                        spacing: 20
+                        leftPadding: 20
+                        rightPadding: 20
                         Repeater {
                             model: ["amp", "dist_c", "dist_a", "dist_b", "equi"]
-                            delegate: Rectangle {
-                                Layout.alignment: Qt.AlignCenter
-                                width: 200
-                                height: 25
-                                color: "transparent"
-                                RowLayout {
-                                    Label {
-                                        Layout.preferredWidth: 40
-                                        Layout.preferredHeight: 25
-                                        background: Rectangle {
-                                            color: "transparent"
-                                        }
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
-                                        text: gateText[gateIndex][modelData]
-                                        font.pixelSize: 16
-                                        color: rowColor
-                                    }
-                                    Label {
-                                        background: Rectangle {
-                                            border.color: "#d8d8d8"
-                                            border.width: 1
-                                        }
-                                        Layout.preferredWidth: 130
-                                        Layout.preferredHeight: 25
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
-                                        text: interactor.gateValue[gateIndex][modelData]
-                                        font.pixelSize: 16
-                                    }
-                                }
+                            delegate: CKeyValue {
+                                displayColon: false
+                                key: gateText[gateIndex][modelData]
+                                value: interactor.gateValue[gateIndex][modelData]
+                                textColor: rowColor
                             }
                         }
                     }
@@ -115,13 +93,6 @@ Rectangle {
             target: controlTarget
             property: "replayVisible"
             value: interactor.replayVisible
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "fileName"
-            value: interactor.fileName
         }
 
         Binding {
@@ -186,6 +157,10 @@ Rectangle {
         function onTimeSliderMoved(val) {
             interactor.timeSliderMoved(val)
         }
+
+        function onSetFileNameIndex(idx) {
+            interactor.setFileNameIndex(idx)
+        }
     }
 
     Connections {
@@ -215,6 +190,7 @@ Rectangle {
             controlTarget.init()
             interactor.setDefaultValue()
             if (interactor.openFile(filePath)) {
+                controlTarget.fileNameList = interactor.getFileNameList()
                 showSuccessful(qsTr("打开成功"))
             } else {
                 showFailed(qsTr("打开失败"))
@@ -226,6 +202,7 @@ Rectangle {
             controlTarget.init()
             interactor.setDefaultValue()
             if (interactor.openFile(file)) {
+                controlTarget.fileNameList = interactor.getFileNameList()
                 showSuccessful(qsTr("打开成功"))
             } else {
                 showFailed(qsTr("打开失败"))

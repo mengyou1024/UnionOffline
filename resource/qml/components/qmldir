@@ -7,3 +7,4 @@ CArea 1.0 common/Area.qml
 CToast 1.0 common/ToastManager.qml
 CKeyValue 1.0 common/KeyValue.qml
 CIconButton 1.0 common/IconButton.qml
+CComboBox 1.0 common/ComboBox.qml

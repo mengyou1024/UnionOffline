@@ -2,9 +2,6 @@
     获取有关git的相关信息
     `morose_main_setup()`
     软件版本 `APP_VERSION`
-    Git仓库地址 `GIT_REPOSITORY`
-    Git用户名 `GIT_USER_NAME`
-    Git邮箱 `GIT_USER_EMAIL`
     相关变量会保存到 `morose_config.h` 文件中
 ]]
 macro(morose_main_setup)
@@ -28,34 +25,10 @@ macro(morose_main_setup)
                 message(STATUS "APP VERSION:" ${APP_VERSION})
             endif()
 
-            execute_process(
-                COMMAND ${GIT_EXECUTABLE} remote
-                OUTPUT_VARIABLE GIT_REMOTE
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            )
-            execute_process(
-                COMMAND ${GIT_EXECUTABLE} remote get-url ${GIT_REMOTE}
-                OUTPUT_VARIABLE GIT_REPOSITORY_URL
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            )
-            unset(GIT_REMOTE)
-            message(STATUS "GIT_REPOSITORY_URL:${GIT_REPOSITORY_URL}")
-            execute_process(
-                COMMAND ${GIT_EXECUTABLE} config user.name
-                OUTPUT_VARIABLE GIT_USER_NAME
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            )
-            message(STATUS "GIT_USER_NAME:${GIT_USER_NAME}")
-            execute_process(
-                COMMAND ${GIT_EXECUTABLE} config user.email
-                OUTPUT_VARIABLE GIT_USER_EMAIL
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            )
-            message(STATUS "GIT_USER_EMAIL:${GIT_USER_EMAIL}")
+            set(APP_URL "http://www.ylndt.com")
+            set(APP_PUBLISHER "Nantong Union Digital Technology Development Co., Ltd")
+            message(STATUS "APP PUBLISHER:" ${APP_PUBLISHER})
+            message(STATUS "APP URL:" ${APP_URL})
         else()
             message(WARNING "no git found, please install git: https://git-scm.com/")
         endif()
@@ -68,19 +41,18 @@ macro(morose_main_setup)
         else(ISCC_PATH)
             message(WARNING "no ISCC path found, please install inno setup and add it to path\n see: https://jrsoftware.org/isinfo.php")
         endif(ISCC_PATH)
-
-        configure_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/morose_config.h.in
-            ${CMAKE_CURRENT_SOURCE_DIR}/src/morose_config.h
-            @ONLY
-        )
     else(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
         file(READ "${CMAKE_SOURCE_DIR}/archive.json" ARCHIVE_JSON_STRING)
         string(JSON APP_VERSION GET "${ARCHIVE_JSON_STRING}" APP_VERSION)
-        string(JSON GIT_USER_NAME GET "${ARCHIVE_JSON_STRING}" GIT_USER_NAME)
-        string(JSON GIT_REPOSITORY_URL GET "${ARCHIVE_JSON_STRING}" GIT_REPOSITORY_URL)
-        string(JSON GIT_USER_EMAIL GET "${ARCHIVE_JSON_STRING}" GIT_USER_EMAIL)
+        string(JSON APP_PUBLISHER GET "${ARCHIVE_JSON_STRING}" APP_PUBLISHER)
+        string(JSON APP_URL GET "${ARCHIVE_JSON_STRING}" APP_URL)
     endif(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
+
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/morose_config.h.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/morose_config.h
+        @ONLY
+    )
 endmacro(morose_main_setup)
 
 #[[
@@ -465,9 +437,8 @@ add_custom_target(
     git submodule update --init --recursive" > nul
     COMMAND echo "{\
 \"APP_VERSION\":\"${APP_VERSION}\",\
-\"GIT_REPOSITORY_URL\": \"${GIT_REPOSITORY_URL}\",\
-\"GIT_USER_NAME\": \"${GIT_USER_NAME}\",\
-\"GIT_USER_EMAIL\": \"${GIT_USER_EMAIL}\"\
+\"APP_URL\": \"${APP_URL}\",\
+\"APP_PUBLISHER\": \"${APP_PUBLISHER}\"\
 }" > ${CMAKE_SOURCE_DIR}/output/archive/archive.json
     COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/output/archive/.git ${CMAKE_SOURCE_DIR}/output/archive/.github
     COMMAND 7z a -tZip ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}-archive.zip ${CMAKE_SOURCE_DIR}/output/archive/* -bso0

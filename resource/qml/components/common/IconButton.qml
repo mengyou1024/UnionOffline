@@ -34,7 +34,6 @@ Rectangle {
             id: button
             text: qsTr("button")
             Layout.alignment: Qt.AlignHCenter
-            font.bold: true
         }
     }
 

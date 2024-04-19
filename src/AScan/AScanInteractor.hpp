@@ -17,7 +17,6 @@ class AScanInteractor : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
     bool        replayVisible = false;
-    QString     fileName      = {};
     QString     date          = {};
     int         softGain      = {};
     int         replayValue   = {};
@@ -26,9 +25,11 @@ class AScanInteractor : public QQuickItem {
     int         replaySpeed   = 0;
     QString     distanceMode  = "N";
 
-    Union::AScan::AScanType ascan          = {}; ///< A扫数据
-    int                     aScanCurosr    = 0;
-    int                     aScanCursorMax = 0;
+    using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
+
+    ASCAN_TYPE ascan          = {}; ///< A扫数据
+    int        aScanCursor    = 0;
+    int        aScanCursorMax = 0;
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";
@@ -65,7 +66,7 @@ public:
     QAbstractSeries* createSeries(QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY);
     QLineSeries*     createAScanSeries(QPointF pt, QSizeF sz);
     void             updateAScanSeries(const QList<QPointF>& data, QPointF pt, QSizeF sz);
-    void             updateAScanSeries(const Union::AScan::AScanData& data);
+    void             updateAScanSeries(void);
     QLineSeries*     createQuadraticCurveSeries(const QString& name, QPointF pt, QSizeF sz);
     void             updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
     QLineSeries*     createGateSeries(int index = 0);
@@ -87,8 +88,6 @@ public:
 
     bool             getReplayVisible() const;
     void             setReplayVisible(bool newReplayVisible);
-    QString          getFileName() const;
-    void             setFileName(const QString& newFileName);
     QString          getDate() const;
     void             setDate(const QString& newDate);
     int              getSoftGain() const;
@@ -99,46 +98,49 @@ public:
     void             setChartView(QQuickItem* newChartView);
     const QJsonArray getGateValue() const;
     void             setGateValue(const QJsonArray& newGateValue);
-    int              getAScanCurosr() const;
-    void             setAScanCurosr(int newAScanCurosr);
+    int              getAScanCursor() const;
+    void             setAScanCursor(int newAScanCursor);
     int              getAScanCursorMax() const;
     void             setAScanCursorMax(int newAScanCursorMax);
     QString          getDistanceMode() const;
     void             setDistanceMode(const QString& newDistanceMode);
 
 public slots:
-    Q_INVOKABLE bool        reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
-    Q_INVOKABLE bool        performanceClicked(QString fileName);
-    Q_INVOKABLE void        gainValueModified(qreal val);
-    Q_INVOKABLE void        replayStartClicked(bool isStart);
-    Q_INVOKABLE void        replaySpeedClicked(int val);
-    Q_INVOKABLE void        lastFrameClicked(void);
-    Q_INVOKABLE void        nextFrameClicked(void);
-    Q_INVOKABLE void        timeSliderMoved(qreal val);
-    Q_INVOKABLE void        seriesRemoved(QAbstractSeries* series);
-    Q_INVOKABLE QVariantMap getTechnologicalParameter();
+    Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
+    Q_INVOKABLE bool         performanceClicked(QString fileName);
+    Q_INVOKABLE void         gainValueModified(qreal val);
+    Q_INVOKABLE void         replayStartClicked(bool isStart);
+    Q_INVOKABLE void         replaySpeedClicked(int val);
+    Q_INVOKABLE void         lastFrameClicked(void);
+    Q_INVOKABLE void         nextFrameClicked(void);
+    Q_INVOKABLE void         timeSliderMoved(qreal val);
+    Q_INVOKABLE void         seriesRemoved(QAbstractSeries* series);
+    Q_INVOKABLE QVariantMap  getTechnologicalParameter();
+    Q_INVOKABLE QVariantList getFileNameList(void);
+    Q_INVOKABLE void         setFileNameIndex(int idx);
 
 signals:
     void replayVisibleChanged();
-    void fileNameChanged();
     void dateChanged();
     void softGainChanged();
     void replayValueChanged();
     void chartViewChanged();
     void gateValueChanged();
-    void aScanCurosrChanged();
+    void aScanCursorChanged();
     void aScanCursorMaxChanged();
     void distanceModeChanged();
 
 private:
+    void changeDataCursor(void);
+    void updateCurrentFrame(void);
+
     Q_PROPERTY(bool replayVisible READ getReplayVisible WRITE setReplayVisible NOTIFY replayVisibleChanged)
-    Q_PROPERTY(QString fileName READ getFileName WRITE setFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QString date READ getDate WRITE setDate NOTIFY dateChanged)
     Q_PROPERTY(int softGain READ getSoftGain WRITE setSoftGain NOTIFY softGainChanged)
     Q_PROPERTY(int replayValue READ getReplayValue WRITE setReplayValue NOTIFY replayValueChanged)
     Q_PROPERTY(QQuickItem* chartView READ getChartView WRITE setChartView NOTIFY chartViewChanged)
     Q_PROPERTY(QJsonArray gateValue READ getGateValue WRITE setGateValue NOTIFY gateValueChanged)
-    Q_PROPERTY(int aScanCurosr READ getAScanCurosr WRITE setAScanCurosr NOTIFY aScanCurosrChanged)
+    Q_PROPERTY(int aScanCursor READ getAScanCursor WRITE setAScanCursor NOTIFY aScanCursorChanged)
     Q_PROPERTY(int aScanCursorMax READ getAScanCursorMax WRITE setAScanCursorMax NOTIFY aScanCursorMaxChanged)
     Q_PROPERTY(QString distanceMode READ getDistanceMode WRITE setDistanceMode NOTIFY distanceModeChanged FINAL)
 };

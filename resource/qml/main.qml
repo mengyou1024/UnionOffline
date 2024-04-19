@@ -281,26 +281,17 @@ ApplicationWindow {
     function actionMainType(type, filePath) {
         console.log(category, "load ui type:", type)
         mainUIType = type
-        if (type === "AScan") {
-            loader_ctrl.source = "src/AScan/ControlUI.qml"
-            loader_ui.source = "src/AScan/MainUI.qml"
-            loader_ui.item.controlTarget = loader_ctrl.item
-            loader_ui.item.mainTarget = wnd_main
-            console.log(category, "AScan filePath:", filePath)
-            openFile(filePath)
-        } else if (type === "TOFD_PE") {
-            loader_ui.source = "src/TOFD_PE/MainUI.qml"
-            loader_ctrl.source = "src/TOFD_PE/ControlUI.qml"
-            loader_ui.item.controlTarget = loader_ctrl.item
-            loader_ui.item.mainTarget = wnd_main
-            console.log(category, "TOFD_PE filePath:", filePath)
-            openFile(filePath)
-        } else if (type === "Unknow") {
+        if (type === "Unknow") {
             listView.visible = false
             loader_ui.source = ""
             loader_ctrl.source = ""
         } else {
-            console.warn(category, "unknow ui:", type)
+            loader_ctrl.source = "src/" + type + "/ControlUI.qml"
+            loader_ui.source = "src/" + type + "/MainUI.qml"
+            loader_ui.item.controlTarget = loader_ctrl.item
+            loader_ui.item.mainTarget = wnd_main
+            console.log(category, "AScan filePath:", filePath)
+            openFile(filePath)
         }
     }
 
