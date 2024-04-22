@@ -1,4 +1,4 @@
-#include "ScanView.hpp"
+#include "TofdPeDScanView.hpp"
 #include "../common/common.hpp"
 #include <QLoggingCategory>
 #include <QQmlProperty>
@@ -7,50 +7,51 @@
 #include <QtCore>
 #include <Yo/File>
 #include <span>
+#include <vector>
 
-static Q_LOGGING_CATEGORY(TAG, "TOFD_PE.VIEW");
+static Q_LOGGING_CATEGORY(TAG, "TOFD_PE.VIEW.DSCAN");
 
 namespace TOFD_PE {
-    TofdPeInteractor* ScanView::intr() const {
+    TofdPeInteractor* TofdPeDScanView::intr() const {
         return m_intr;
     }
 
-    void ScanView::setIntr(TofdPeInteractor* newIntr) {
+    void TofdPeDScanView::setIntr(TofdPeInteractor* newIntr) {
         if (m_intr == newIntr)
             return;
         m_intr = newIntr;
         emit intrChanged();
     }
 
-    bool ScanView::isPe() const {
+    bool TofdPeDScanView::isPe() const {
         return m_isPe;
     }
 
-    void ScanView::setIsPe(bool newIsPe) {
+    void TofdPeDScanView::setIsPe(bool newIsPe) {
         if (m_isPe == newIsPe)
             return;
         m_isPe = newIsPe;
         emit isPeChanged();
     }
 
-    int ScanView::softGain() const {
+    int TofdPeDScanView::softGain() const {
         return m_softGain;
     }
 
-    void ScanView::setSoftGain(int newSoftGain) {
+    void TofdPeDScanView::setSoftGain(int newSoftGain) {
         if (m_softGain == newSoftGain)
             return;
         m_softGain = newSoftGain;
         emit softGainChanged();
         update();
-        updateChartView();
+        updateAScan();
     }
 
-    int ScanView::cursor() const {
+    int TofdPeDScanView::cursor() const {
         return m_cursor;
     }
 
-    void ScanView::setCursor(int newCursor) {
+    void TofdPeDScanView::setCursor(int newCursor) {
         qDebug(TAG) << __FUNCTION__;
         qDebug(TAG) << "lines:" << ((intr() != nullptr) ? intr()->getLines() : -1) << "cursor:" << newCursor;
         if (!intr() || newCursor < 0 || newCursor >= intr()->getLines()) {
@@ -61,36 +62,47 @@ namespace TOFD_PE {
             return;
         m_cursor = newCursor;
         emit cursorChanged();
-        updateChartView();
+        updateAScan();
     }
 
-    QPointF ScanView::abscissaRange() const {
+    QPointF TofdPeDScanView::abscissaRange() const {
         return m_abscissaRange;
     }
 
-    void ScanView::setAbscissaRange(QPointF newAbscissaRange) {
+    void TofdPeDScanView::setAbscissaRange(QPointF newAbscissaRange) {
         if (m_abscissaRange == newAbscissaRange)
             return;
         m_abscissaRange = newAbscissaRange;
         emit abscissaRangeChanged();
     }
 
-    QPointF ScanView::ordinateRange() const {
+    QPointF TofdPeDScanView::ordinateRange() const {
         return m_ordinateRange;
     }
 
-    void ScanView::setOrdinateRange(QPointF newOrdinateRange) {
+    void TofdPeDScanView::setOrdinateRange(QPointF newOrdinateRange) {
         if (m_ordinateRange == newOrdinateRange)
             return;
         m_ordinateRange = newOrdinateRange;
         emit ordinateRangeChanged();
     }
 
-    ScanView::ScanView() {}
+    TofdPeAScanView* TofdPeDScanView::aScanView() const {
+        return m_aScanView;
+    }
 
-    ScanView::~ScanView() {}
+    void TofdPeDScanView::setAScanView(TofdPeAScanView* newAScanView) {
+        if (m_aScanView == newAScanView)
+            return;
+        m_aScanView = newAScanView;
+        emit aScanViewChanged();
+    }
 
-    void ScanView::paint(QPainter* painter) {
+    TofdPeDScanView::TofdPeDScanView() {}
+
+    TofdPeDScanView::~TofdPeDScanView() {}
+
+    void TofdPeDScanView::paint(QPainter* painter) {
         MOROSE_TEST_TIME_QUICK("painter");
         painter->fillRect(QRect(0, 0, width(), height()), QBrush(Qt::black));
         drawAxis(painter);
@@ -101,11 +113,11 @@ namespace TOFD_PE {
         }
     }
 
-    QRect ScanView::getDrawable() const {
+    QRect TofdPeDScanView::getDrawable() const {
         return QRect(AXIS_WIDTH, 0, width() - AXIS_WIDTH, height() - AXIS_WIDTH);
     }
 
-    void ScanView::drawAxis(QPainter* painter) const {
+    void TofdPeDScanView::drawAxis(QPainter* painter) const {
         const auto drawAble = getDrawable();
         painter->fillRect(QRect(0, 0, AXIS_WIDTH, height()), QBrush(0xafeeee));
         painter->fillRect(QRect(AXIS_WIDTH, drawAble.bottom() + 1, drawAble.width(), AXIS_WIDTH), QBrush(0xafeeee));
@@ -180,7 +192,7 @@ namespace TOFD_PE {
         }
     }
 
-    void ScanView::drawDScan(QPainter* painter) const {
+    void TofdPeDScanView::drawDScan(QPainter* painter) const {
         if (intr() == nullptr) {
             return;
         }
@@ -207,7 +219,7 @@ namespace TOFD_PE {
         painter->drawImage(getDrawable(), dScan);
     }
 
-    void ScanView::drawSecondDScan(QPainter* painter) const {
+    void TofdPeDScanView::drawSecondDScan(QPainter* painter) const {
         if (intr() == nullptr) {
             return;
         }
@@ -235,59 +247,9 @@ namespace TOFD_PE {
         painter->drawImage(getDrawable(), dScan);
     }
 
-    void ScanView::updateChartView() const {
-        constexpr auto CHARTVIEW_SERIES_NAME = "AScan";
-        auto           CreateSeries          = [this](QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY) -> QAbstractSeries* {
-            QAbstractSeries* ret = nullptr;
-
-            bool res = QMetaObject::invokeMethod(m_chartView, "createSeries", Q_RETURN_ARG(QAbstractSeries*, ret),
-                                                                    Q_ARG(int, type),
-                                                                    Q_ARG(QString, name),
-                                                                    Q_ARG(QAbstractAxis*, axisX), Q_ARG(QAbstractAxis*, axisY));
-            if (!res) {
-                qCritical(TAG) << "invok method `createSeries` error with parameter:" << type << name << axisX << axisY;
-            }
-            if (ret) {
-                ret->setUseOpenGL(true);
-            }
-            return ret;
-        };
-
-        auto CreateAScanAxis = [](qreal min = 0.0, qreal max = 1.0) {
-            QValueAxis* axis = new QValueAxis;
-            axis->setMin(min);
-            axis->setMax(max);
-            axis->setTickCount(10);
-            axis->setGridLinePen(QPen(QColor(0xAEAEAE), 1, Qt::DashLine));
-            return axis;
-        };
-
-        auto CreateAScanSeries = [&](QPointF pt, QSizeF sz) {
-            QValueAxis* axisX = CreateAScanAxis(pt.x(), pt.x() + sz.width());
-            QValueAxis* axisY = CreateAScanAxis(pt.y(), pt.y() + sz.height());
-            auto        ret   = (QLineSeries*)CreateSeries(QAbstractSeries::SeriesTypeLine, CHARTVIEW_SERIES_NAME, axisX, axisY);
-            auto        pen   = ret->pen();
-            pen.setColor(QColor(0x336666));
-            ret->setPen(pen);
-            return ret;
-        };
-
-        auto FindSeries = [this](QString name) {
-            QAbstractSeries* ret = nullptr;
-            QMetaObject::invokeMethod(m_chartView, "series", Q_RETURN_ARG(QAbstractSeries*, ret), Q_ARG(QString, name));
-            return ret;
-        };
-        auto series = (QLineSeries*)FindSeries(CHARTVIEW_SERIES_NAME);
-        if (!series) {
-            series   = CreateAScanSeries({0.0, 0.0}, {255.0, static_cast<double>(intr()->getAScanSize())});
-            auto pen = series->pen();
-            pen.setWidthF(1);
-            pen.setColor(Qt::yellow);
-            series->setPen(pen);
-        }
-
-        auto GetData = [&]() -> std::optional<QList<QPointF>> {
-            QList<QPointF> data = {};
+    void TofdPeDScanView::updateAScan() const {
+        auto GetData = [&]() -> std::optional<std::vector<uint8_t>> {
+            std::vector<uint8_t> data = {};
             if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getLines() - 1) {
                 return std::nullopt;
             }
@@ -302,15 +264,14 @@ namespace TOFD_PE {
                 } else if (newBias < -128) {
                     newBias = -128;
                 }
-                auto    result = static_cast<uint8_t>(newBias + 128);
-                QPointF pt     = {static_cast<qreal>(result), static_cast<double>(intr()->getAScanSize() - 1) - i};
-                data.push_back(pt);
+                auto result = static_cast<uint8_t>(newBias + 128);
+                data.emplace_back(result);
             }
             return data;
         };
 
-        auto GetSecondData = [&]() -> std::optional<QList<QPointF>> {
-            QList<QPointF> data = {};
+        auto GetSecondData = [&]() -> std::optional<std::vector<uint8_t>> {
+            std::vector<uint8_t> data = {};
             if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getSubLines() - 1) {
                 return std::nullopt;
             }
@@ -326,28 +287,20 @@ namespace TOFD_PE {
                 } else {
                     result = _t;
                 }
-                QPointF pt = {result, static_cast<double>(intr()->getAScanSize() - 1) - i};
-                data.push_back(pt);
+                data.push_back(result);
             }
             return data;
         };
-
-        QList<QPointF> data = {};
-        if (!isPe()) {
-            series->replace(GetData().value_or(data));
-        } else {
-            series->replace(GetSecondData().value_or(data));
-        }
-    }
-
-    QQuickItem* ScanView::chartView() const {
-        return m_chartView;
-    }
-
-    void ScanView::setChartView(QQuickItem* newChartView) {
-        if (m_chartView == newChartView)
+        qDebug(TAG) << "m_aScanView == nullptr:" << m_aScanView;
+        if (m_aScanView == nullptr) {
             return;
-        m_chartView = newChartView;
-        emit chartViewChanged();
+        }
+
+        std::vector<uint8_t> data = {};
+        if (!isPe()) {
+            m_aScanView->replace(GetData().value_or(data));
+        } else {
+            m_aScanView->replace(GetSecondData().value_or(data));
+        }
     }
 } // namespace TOFD_PE

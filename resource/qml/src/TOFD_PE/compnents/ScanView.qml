@@ -33,7 +33,7 @@ Item {
 
     function update() {
         _view.update()
-        _view.updateChartView()
+        _view.updateAScan()
     }
 
     GridLayout {
@@ -42,21 +42,10 @@ Item {
         columns: 2
         columnSpacing: 10
         rowSpacing: 0
-        ChartView {
-            id: cv_ascan
+        TofdPeAScanView {
+            id: _ascan_view
             Layout.preferredWidth: parent.width / 5
             Layout.fillHeight: true
-            antialiasing: false
-            legend.visible: false
-            dropShadowEnabled: true
-            backgroundRoundness: 0
-            plotAreaColor: "black"
-            margins.left: 0
-            margins.right: 0
-            margins.top: 0
-            margins.bottom: 0
-            plotArea: Qt.rect(0, 0, width, height)
-
             Canvas {
                 id: charvView_canvas
                 anchors.fill: parent
@@ -66,22 +55,22 @@ Item {
                     ctx.clearRect(0, 0, width, height)
                     ctx.beginPath()
                     ctx.strokeStyle = "red"
-                    ctx.moveTo(0.5, height * mask.verticalValue1 + 0.5)
-                    ctx.lineTo(width + 0.5, height * mask.verticalValue1 + 0.5)
+                    ctx.moveTo(0.5, height * mask.verticalValue1 - 0.5)
+                    ctx.lineTo(width + 0.5, height * mask.verticalValue1 - 0.5)
                     ctx.stroke()
                     ctx.beginPath()
                     ctx.strokeStyle = "blue"
-                    ctx.moveTo(0.5, height * mask.verticalValue2 + 0.5)
-                    ctx.lineTo(width + 0.5, height * mask.verticalValue2 + 0.5)
+                    ctx.moveTo(0.5, height * mask.verticalValue2 - 0.5)
+                    ctx.lineTo(width + 0.5, height * mask.verticalValue2 - 0.5)
                     ctx.stroke()
                     ctx.closePath()
                 }
             }
         }
 
-        TofdPeScanView {
+        TofdPeDScanView {
             id: _view
-            chartView: cv_ascan
+            aScanView: _ascan_view
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.rowSpan: 2
@@ -109,21 +98,6 @@ Item {
                                            }
                 onRollBackPrivate: {
                     rollBack()
-                }
-
-                Component.onCompleted: {
-
-                    // console.log(category, "on LinesMask Loadered")
-                    // console.log(category, `x:${x}, y:${y}, w:${width}, h:${height}`)
-                    // console.log(category, "drawAble:", _view.getDrawable())
-                    // const drawAble = _view.getDrawable()
-                    // x = drawAble.x
-                    // y = drawAble.y
-                    // width = drawAble.width
-                    // height = drawAble.height
-                    // console.log(category, "on LinesMask Loadered")
-                    // console.log(category, `x:${x}, y:${y}, w:${width}, h:${height}`)
-                    // console.log(category, "drawAble:", _view.getDrawable())
                 }
             }
         }

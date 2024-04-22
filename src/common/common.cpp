@@ -2,7 +2,8 @@
 #include "../AScan/AScanInteractor.hpp"
 #include "../TOFD_PE/LinesMaskEnum.hpp"
 #include "../TOFD_PE/MaskStatusEnum.hpp"
-#include "../TOFD_PE/ScanView.hpp"
+#include "../TOFD_PE/TofdPeAScanView.hpp"
+#include "../TOFD_PE/TofdPeDScanView.hpp"
 #include "../morose_config.h"
 #include "qmltranslator.h"
 #include <QJsonArray>
@@ -115,7 +116,8 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
 void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_APP_VERSION", APP_VERSION);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
-    qmlRegisterType<TOFD_PE::ScanView>("Union.TOFD_PE", 1, 0, "TofdPeScanView");
+    qmlRegisterType<TOFD_PE::TofdPeDScanView>("Union.TOFD_PE", 1, 0, "TofdPeDScanView");
+    qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");
     qmlRegisterType<TOFD_PE::TofdPeInteractor>("Union.TOFD_PE", 1, 0, "TofdPeIntr");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
@@ -176,10 +178,6 @@ void Morose::registNameFilter(QQmlContext* context) {
     mainUi_map.insert(Union::TOFD_PE::TofdPeFileSelector::Instance().GetUINameMap().toVariantMap());
     folderListModel_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance().GetFileListModelNameFilter().toVariantList();
     filedialog_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance().GetFileNameFilter().toVariantList();
-
-    // mainUi_map.insert(".tpe", "TOFD_PE");
-    // folderListModel_nameFilter.push_back("*.tpe");
-    // filedialog_nameFilter.push_back("TOFD/PE图像 (*.tpe)");
 
     context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
     context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);
