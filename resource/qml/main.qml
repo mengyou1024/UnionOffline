@@ -76,9 +76,6 @@ ApplicationWindow {
                         var comp = Qt.createComponent("About.qml")
                         if (comp.status === Component.Ready) {
                             var about_wind = comp.createObject(parent)
-                            about_wind.winClose.connect(param => {
-                                                            console.info(category, "receive signal: winClose, parameter:", param)
-                                                        })
                             about_wind.closing.connect(() => {
                                                            comp.destroy()
                                                            about_wind.destroy()

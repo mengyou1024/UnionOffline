@@ -28,6 +28,7 @@ namespace TOFD_PE {
         TofdPeInteractor()  = default;
         ~TofdPeInteractor() = default;
         Q_INVOKABLE bool            openFile(const QString& fileName);
+        Q_INVOKABLE int             getAScanSize() const;
         Q_INVOKABLE int             getLines() const;
         Q_INVOKABLE int             getSubLines() const;
         Q_INVOKABLE int             getMaxLines() const;

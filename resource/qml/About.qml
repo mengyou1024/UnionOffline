@@ -16,7 +16,6 @@ ApplicationWindow {
         name: "About"
     }
 
-    signal winClose(var x)
     title: qsTr("关于")
     visible: true
     flags: Qt.Dialog

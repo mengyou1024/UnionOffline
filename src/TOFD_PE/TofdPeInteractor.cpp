@@ -53,6 +53,13 @@ namespace TOFD_PE {
         return m_data != nullptr;
     }
 
+    int TofdPeInteractor::getAScanSize() const {
+        if (m_data != nullptr) {
+            return m_data->getAScanSize();
+        }
+        return -1;
+    }
+
     int TofdPeInteractor::getLines() const {
         if (m_data != nullptr) {
             return m_data->getTofdLines();

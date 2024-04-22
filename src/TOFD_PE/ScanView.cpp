@@ -185,11 +185,11 @@ namespace TOFD_PE {
             return;
         }
         const auto maxLines = intr()->getMaxLines();
-        QImage     dScan(maxLines, 500, QImage::Format_RGB32);
+        QImage     dScan(maxLines, intr()->getAScanSize(), QImage::Format_RGB32);
         for (uint32_t x = 0; std::cmp_less(x, maxLines); x++) {
-            for (uint32_t y = 0; std::cmp_less(y, 500); y++) {
+            for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
                 if (std::cmp_less(x, intr()->getLines())) {
-                    auto bias    = static_cast<int>(intr()->getTofdData()[x * 500 + y]) - 128;
+                    auto bias    = static_cast<int>(intr()->getTofdData()[x * intr()->getAScanSize() + y]) - 128;
                     auto newBias = Union::CalculateGainOutput((double)bias, softGain());
                     if (newBias > 72) {
                         newBias = 72;
@@ -212,11 +212,11 @@ namespace TOFD_PE {
             return;
         }
         const auto maxLines = intr()->getMaxLines();
-        QImage     dScan(maxLines, 500, QImage::Format_RGB32);
+        QImage     dScan(maxLines, intr()->getAScanSize(), QImage::Format_RGB32);
         for (uint32_t x = 0; std::cmp_less(x, maxLines); x++) {
-            for (uint32_t y = 0; std::cmp_less(y, 500); y++) {
+            for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
                 if (std::cmp_less(x, intr()->getSubLines())) {
-                    auto    _t   = Union::CalculateGainOutput((double)intr()->getPeData()[x * 500 + y], softGain());
+                    auto    _t   = Union::CalculateGainOutput((double)intr()->getPeData()[x * intr()->getAScanSize() + y], softGain());
                     uint8_t gray = 0;
                     if (_t > 255.0) {
                         gray = 255;
@@ -279,7 +279,7 @@ namespace TOFD_PE {
         };
         auto series = (QLineSeries*)FindSeries(CHARTVIEW_SERIES_NAME);
         if (!series) {
-            series   = CreateAScanSeries({0.0, 0.0}, {255.0, 500.0});
+            series   = CreateAScanSeries({0.0, 0.0}, {255.0, static_cast<double>(intr()->getAScanSize())});
             auto pen = series->pen();
             pen.setWidthF(1);
             pen.setColor(Qt::yellow);
@@ -291,9 +291,9 @@ namespace TOFD_PE {
             if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getLines() - 1) {
                 return std::nullopt;
             }
-            const std::span data_ptr(intr()->getTofdData().begin() + (500 * m_cursor), 500);
+            const std::span data_ptr(intr()->getTofdData().begin() + (intr()->getAScanSize() * m_cursor), intr()->getAScanSize());
             qDebug(TAG) << "data size:" << intr()->getTofdData().size();
-            for (auto i = 0; std::cmp_less(i, 500); i++) {
+            for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
                 auto newBias = Union::CalculateGainOutput((double)bias, softGain());
@@ -303,7 +303,7 @@ namespace TOFD_PE {
                     newBias = -128;
                 }
                 auto    result = static_cast<uint8_t>(newBias + 128);
-                QPointF pt     = {static_cast<qreal>(result), 499.0 - i};
+                QPointF pt     = {static_cast<qreal>(result), static_cast<double>(intr()->getAScanSize() - 1) - i};
                 data.push_back(pt);
             }
             return data;
@@ -314,8 +314,8 @@ namespace TOFD_PE {
             if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getSubLines() - 1) {
                 return std::nullopt;
             }
-            const std::span data_ptr(intr()->getPeData().begin() + (500 * m_cursor), 500);
-            for (auto i = 0; std::cmp_less(i, 500); i++) {
+            const std::span data_ptr(intr()->getPeData().begin() + (intr()->getAScanSize() * m_cursor), intr()->getAScanSize());
+            for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto  raw    = data_ptr[i];
                 auto  _t     = Union::CalculateGainOutput((double)raw, softGain());
                 qreal result = 0;
@@ -326,7 +326,7 @@ namespace TOFD_PE {
                 } else {
                     result = _t;
                 }
-                QPointF pt = {result, 499.0 - i};
+                QPointF pt = {result, static_cast<double>(intr()->getAScanSize() - 1) - i};
                 data.push_back(pt);
             }
             return data;
