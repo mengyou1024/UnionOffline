@@ -213,4 +213,8 @@ Item {
             }
         }
     }
+
+    function reInitMask() {
+        mask.reInitLines()
+    }
 }

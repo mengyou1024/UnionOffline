@@ -362,4 +362,16 @@ Canvas {
                                                                   return it !== event.key
                                                               })
                      }
+
+    function reInitLines() {
+        horizontalValue1 = 0
+        horizontalValue2 = 0
+        verticalValue1 = 0
+        verticalValue2 = 0
+
+        horizontalValue1 = 0.05
+        horizontalValue2 = 0.1
+        verticalValue1 = 0.45
+        verticalValue2 = 0.55
+    }
 }

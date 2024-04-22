@@ -234,14 +234,20 @@ Rectangle {
     }
 
     function initAfterOpenFile() {
-        sv_pe.update()
+        console.log(category, "tofd_pe_intr.getSubAngle():", tofd_pe_intr.getSubAngle())
+        console.log(category, "reInitMask")
+        console.log(category, `delay:${tofd_pe_intr.getDelay()}, range:${tofd_pe_intr.getRange()}`)
+
         sv_pe.ordinateRange = Qt.point(0, tofd_pe_intr.getSubRange())
         sv_pe.abscissaRange = Qt.point(0, tofd_pe_intr.getMaxLines())
-        sv_tofd.update()
-        console.log(category, `delay:${tofd_pe_intr.getDelay()}, range:${tofd_pe_intr.getRange()}`)
+
         sv_tofd.ordinateRange = Qt.point(tofd_pe_intr.getDelay(), tofd_pe_intr.getRange())
         sv_tofd.abscissaRange = Qt.point(0, tofd_pe_intr.getMaxLines())
+
         sv_pe._angle = tofd_pe_intr.getSubAngle()
-        console.log(category, "tofd_pe_intr.getSubAngle():", tofd_pe_intr.getSubAngle())
+        sv_pe.reInitMask()
+        sv_tofd.reInitMask()
+        sv_pe.update()
+        sv_tofd.update()
     }
 }
