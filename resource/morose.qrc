@@ -30,5 +30,6 @@
         <file>qml/src/TOFD_PE/compnents/LinesMask.qml</file>
         <file>qml/components/common/IconButton.qml</file>
         <file>qml/components/common/ComboBox.qml</file>
+        <file>qml/src/TOFD_PE/ParamUI.qml</file>
     </qresource>
 </RCC>

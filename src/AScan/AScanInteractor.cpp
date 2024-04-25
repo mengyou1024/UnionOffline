@@ -115,7 +115,7 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
         {QObject::tr("负责人员"), ""},
         {QObject::tr("备注"), ""},
     };
-    auto result = Yo::File::Render::Excel::Render("excel_templates/T_报表生成.xlsx", _fileName, vmp);
+    auto result = Yo::File::Render::Excel::Render("excel_templates/AScan/T_报表生成.xlsx", _fileName, vmp);
     if (!result) {
         return result;
     }
@@ -142,7 +142,7 @@ bool AScanInteractor::performanceClicked(QString _fileName) {
         {QObject::tr("灵敏度余量"), QString::number(performance.sensitivity, 'f', 1)},
         {QObject::tr("检测单位"), ""},
     };
-    return Yo::File::Render::Excel::Render("excel_templates/T_仪器性能.xlsx", _fileName, vmp);
+    return Yo::File::Render::Excel::Render("excel_templates/AScan/T_仪器性能.xlsx", _fileName, vmp);
 }
 
 void AScanInteractor::gainValueModified(qreal val) {

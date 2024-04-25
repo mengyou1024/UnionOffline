@@ -19,6 +19,7 @@ Rectangle {
     color: "transparent"
     id: control
     ColumnLayout {
+        id: grab_view
         anchors.fill: parent
         anchors.margins: 5
         spacing: 10
@@ -91,14 +92,14 @@ Rectangle {
         when: controlTarget !== null
         target: controlTarget
         property: "line1ZLeft"
-        value: sv_tofd.vText1
+        value: (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue1 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText1
     }
 
     Binding {
         when: controlTarget !== null
         target: controlTarget
         property: "line1ZRight"
-        value: sv_tofd.vText2
+        value: (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue2 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText2
     }
 
     Binding {
@@ -112,7 +113,14 @@ Rectangle {
         when: controlTarget !== null
         target: controlTarget
         property: "line1ZSpace"
-        value: sv_tofd.vSpace + " mm"
+        value: (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.vSpace * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vSpace + " mm"
+    }
+
+    Binding {
+        when: controlTarget !== null
+        target: controlTarget
+        property: "depth"
+        value: (controlTarget === null ? false : controlTarget.showTime) ? sv_tofd.vSpace + " mm" : ""
     }
 
     Binding {
@@ -163,11 +171,13 @@ Rectangle {
         target: null
 
         function onReportExportClicked(fileName) {
-            if (tofd_pe_intr.reportExport(fileName)) {
-                showSuccessful("导出成功")
-            } else {
-                showFailed("导出失败")
-            }
+            grab_view.grabToImage(function (result) {
+                if (tofd_pe_intr.reportExport(fileName, result)) {
+                    showSuccessful("导出成功")
+                } else {
+                    showFailed("导出失败")
+                }
+            })
         }
 
         function onTofdSpaceValueModified(val) {
@@ -185,18 +195,11 @@ Rectangle {
         id: main_cons
         ignoreUnknownSignals: true
         function onBtnParamClicked() {
-            var comp = Qt.createComponent("qrc:/qml/src/AScan/ParamUI.qml")
+            var comp = Qt.createComponent("qrc:/qml/src/TOFD_PE/ParamUI.qml")
             if (comp.status === Component.Ready) {
-                // TODO: 获取参数
-                // const params = interactor.getTechnologicalParameter()
-                // console.log(category, params)
-                var params = {
-                    "参数1": {
-                        "test": "测试1"
-                    }
-                }
                 var params_wnd = comp.createObject(parent, {
-                                                       "params": params
+                                                       "tofd_params": tofd_pe_intr.getTofdParam(),
+                                                       "pe_params": tofd_pe_intr.getPeParam()
                                                    })
                 params_wnd.closing.connect(() => {
                                                comp.destroy()

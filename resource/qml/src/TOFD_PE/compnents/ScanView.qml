@@ -19,6 +19,8 @@ Item {
     property alias vValue2: mask.verticalValue2
     property alias vText1: mask.verticalText1
     property alias vText2: mask.verticalText2
+    property real rVValue1: (ordinateRange.x + vValue1 * ordinateRange.y).toFixed(1)
+    property real rVValue2: (ordinateRange.x + vValue2 * ordinateRange.y).toFixed(1)
     property real vSpace: ((ordinateRange.x + vValue2 * ordinateRange.y) - (ordinateRange.x + vValue1 * ordinateRange.y)).toFixed(1)
     property real hSpace: ((abscissaRange.x + hValue2 * abscissaRange.y) - (abscissaRange.x + hValue1 * abscissaRange.y)).toFixed(1)
     property alias showRightMenu: mask.showRightMenu

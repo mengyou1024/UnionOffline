@@ -538,6 +538,7 @@ ScrollView {
                             top: 1000
                             bottom: -1000
                         }
+                        placeholderText: "102"
                     }
                     Text {
                         text: qsTr("mm")

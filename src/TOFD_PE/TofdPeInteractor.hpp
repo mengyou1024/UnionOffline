@@ -23,6 +23,7 @@ namespace TOFD_PE {
         DATA_PTR m_data      = nullptr;
         qreal    m_tofdSpace = 0.0;
         qreal    m_peSpace   = 0.0;
+        QString  m_file      = "";
 
     public:
         TofdPeInteractor()  = default;
@@ -32,7 +33,7 @@ namespace TOFD_PE {
         Q_INVOKABLE int             getLines() const;
         Q_INVOKABLE int             getSubLines() const;
         Q_INVOKABLE int             getMaxLines() const;
-        Q_INVOKABLE bool            reportExport(QString filePath) const;
+        Q_INVOKABLE bool            reportExport(QString filePath, QQuickItemGrabResult* img = nullptr) const;
         const std::vector<uint8_t>& getTofdData() const;
         const std::vector<uint8_t>& getPeData() const;
         Q_INVOKABLE qreal           getDelay() const;
@@ -45,6 +46,9 @@ namespace TOFD_PE {
         void                        setTofdSpace(qreal newTofdSpace);
         qreal                       peSpace() const;
         void                        setPeSpace(qreal newPeSpace);
+
+        Q_INVOKABLE const QJsonObject getTofdParam() const;
+        Q_INVOKABLE const QJsonObject getPeParam() const;
 
     signals:
         void tofdSpaceChanged();
