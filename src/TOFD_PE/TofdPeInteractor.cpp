@@ -200,6 +200,7 @@ namespace TOFD_PE {
         if (m_data != nullptr) {
             m_data->rollback();
         }
+        emit updatePrivateData();
     }
 
 } // namespace TOFD_PE
