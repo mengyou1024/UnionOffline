@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "../AScan/AScanInteractor.hpp"
+#include "../SerialRunner.hpp"
 #include "../TOFD_PE/LinesMaskEnum.hpp"
 #include "../TOFD_PE/MaskStatusEnum.hpp"
 #include "../TOFD_PE/TofdPeAScanView.hpp"
@@ -8,7 +9,10 @@
 #include "qmltranslator.h"
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QObject>
 #include <QQmlEngine>
+#include <QSerialPort>
+#include <QSerialPortInfo>
 #include <UnionType>
 
 void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
@@ -119,6 +123,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<TOFD_PE::TofdPeDScanView>("Union.TOFD_PE", 1, 0, "TofdPeDScanView");
     qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");
     qmlRegisterType<TOFD_PE::TofdPeInteractor>("Union.TOFD_PE", 1, 0, "TofdPeIntr");
+    qmlRegisterType<Union::Extra::SerialRuner>("Union.Extra", 1, 0, "SerialRunner");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::instance());
@@ -136,6 +141,7 @@ void Morose::registeAllAScanFileSelector() {
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
+    Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
 }
 
 QJsonObject& Morose::getGlobalEnvironment() {
@@ -182,7 +188,6 @@ void Morose::registNameFilter(QQmlContext* context) {
     context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
     context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);
     context->setContextProperty("MAINUI_MAP", mainUi_map);
-
     qDebug() << "FOLDERLISTMODEL_NAMEFILTER:" << folderListModel_nameFilter;
     qDebug() << "FILEDIALOG_NAMEFILTER:" << filedialog_nameFilter;
     qDebug() << "MAINUI_MAP:" << mainUi_map;

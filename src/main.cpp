@@ -50,6 +50,12 @@ int main(int argc, char* argv[]) {
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
 
+    QTemporaryDir tempDir;
+    QSettings     cacheSetting("setting.ini", QSettings::IniFormat);
+    cacheSetting.beginGroup("Cache");
+    cacheSetting.setValue("dir", tempDir.path());
+    qInfo() << "register cache dir:" << tempDir.path();
+
     // 加载QML、注册环境变量
     const QUrl            url("qrc:/qml/main.qml");
     QQmlApplicationEngine engine;
@@ -62,6 +68,7 @@ int main(int argc, char* argv[]) {
         Qt::QueuedConnection);
     Morose::registerVariable(engine.rootContext());
     Morose::loadGlobalEnvironment();
+
     engine.load(url);
     QObject::connect(&app, &QApplication::aboutToQuit, &app, []() {
         qInfo() << "application quit";

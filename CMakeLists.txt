@@ -8,7 +8,7 @@ set(NUMCPP_NO_USE_BOOST ON)
 find_package(Qt6 COMPONENTS Quick Widgets Charts LinguistTools)
 
 if(NOT Qt6_FOUND)
-    find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core)
+    find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core SerialPort)
     set(CMAKE_AUTORCC ON)
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTOUIC ON)
@@ -31,7 +31,7 @@ set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleAp
 add_subdirectory("components/QXlsx/QXlsx")
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::SerialPort)
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -47,7 +47,7 @@ find_package(Morose)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE UnionLib misc_utils SingleApplication::SingleApplication)
 
-target_link_libraries(UnionLib PRIVATE Qt${QT_VERSION_MAJOR}::Core misc_utils)
+target_link_libraries(UnionLib PRIVATE Qt${QT_VERSION_MAJOR}::Core misc_utils Qt${QT_VERSION_MAJOR}::SerialPort)
 target_link_libraries(UnionLib PUBLIC NumCpp)
 target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 

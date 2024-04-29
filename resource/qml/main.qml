@@ -5,6 +5,7 @@ import QtCharts 2.15
 import QtQuick.Layouts 1.15
 import Qt.labs.folderlistmodel 2.15
 import Qt.labs.platform 1.1
+import Qt.labs.settings 1.1
 import "./components"
 
 ApplicationWindow {
@@ -66,6 +67,23 @@ ApplicationWindow {
                     img_src: "qrc:/img/USB_51.png"
                     btn_txt: qsTr("通讯")
                     height: parent.height
+                    onClicked: {
+                        var comp = Qt.createComponent("Communicate.qml")
+                        if (comp.status === Component.Ready) {
+                            var com_wnd = comp.createObject(parent)
+                            com_wnd.closing.connect(() => {
+                                                        comp.destroy()
+                                                        com_wnd.destroy()
+                                                    })
+                            com_wnd.saveTemporaryFile.connect(filePath => {
+                                                                  console.log(category, "on saveTemporaryFile trigger file:", filePath)
+                                                                  actionMainType(getMainUITypeIndex(filePath), filePath)
+                                                                  listView.currentIndex = -1
+                                                              })
+                        } else if (comp.status === Component.Error) {
+                            console.error(category, comp.errorString())
+                        }
+                    }
                 }
 
                 CIconButton {

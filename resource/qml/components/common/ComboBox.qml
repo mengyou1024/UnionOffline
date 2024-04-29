@@ -12,9 +12,9 @@ T.ComboBox {
     rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
 
     // 可在此定义多为改变的特殊属性，在调用时直接指定此属性即可
-    // font.family: "Microsoft YaHei"
     property color fontColor: "black" // 字体颜色
     property color backgroundColor: "#00e3e6" // 背景色
+    property int popupImplicitHeight: -1
     hoverEnabled: true
 
     onHoveredChanged: canvas.requestPaint()
@@ -93,7 +93,6 @@ T.ComboBox {
 
         font: control.font
         color: control.fontColor
-        //color: control.editable ? control.palette.text : control.palette.buttonText
         selectionColor: control.palette.highlight
         selectedTextColor: control.palette.highlightedText
         verticalAlignment: Text.AlignVCenter
@@ -123,7 +122,6 @@ T.ComboBox {
     popup: T.Popup {
         y: control.height
         width: control.width
-        //height: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin);
         height: contentItem.implicitHeight
         topMargin: 3
         bottomMargin: 3
@@ -132,11 +130,11 @@ T.ComboBox {
             // 防止显示过界
             clip: true
             //禁止滑动
-            interactive: false
+            interactive: true
             //禁用橡皮筋效果
             boundsBehavior: Flickable.StopAtBounds
 
-            implicitHeight: contentHeight
+            implicitHeight: popupImplicitHeight > 0 ? Math.min(popupImplicitHeight, contentHeight) : contentHeight
             model: control.delegateModel
             currentIndex: control.highlightedIndex
             highlightMoveDuration: 0
