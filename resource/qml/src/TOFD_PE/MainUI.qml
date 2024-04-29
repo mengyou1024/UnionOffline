@@ -38,6 +38,30 @@ Rectangle {
             onRollBack: {
                 tofd_pe_intr.rollBack()
             }
+
+            onHValue1Changed: {
+                if (controlTarget.verticalLineFollowing) {
+                    sv_pe.hValue1 = hValue1
+                }
+            }
+
+            onHValue2Changed: {
+                if (controlTarget.verticalLineFollowing) {
+                    sv_pe.hValue2 = hValue2
+                }
+            }
+
+            onVValue1Changed: {
+                if (controlTarget.horizontalLineFollowing) {
+                    sv_pe.vValue1 = vValue1
+                }
+            }
+
+            onVValue2Changed: {
+                if (controlTarget.horizontalLineFollowing) {
+                    sv_pe.vValue2 = vValue2
+                }
+            }
         }
 
         ScanView {
@@ -62,6 +86,30 @@ Rectangle {
                 console.log(category, "Math.sin(_angle):", Math.sin(_angle))
                 console.log(category, "_vTextShowValue1:", _vTextShowValue1)
                 console.log(category, "(Math.sin(_angle) * _vTextShowValue2).toFixed(1):", (Math.sin(_angle) * _vTextShowValue2).toFixed(1))
+            }
+
+            onHValue1Changed: {
+                if (controlTarget.verticalLineFollowing) {
+                    sv_tofd.hValue1 = hValue1
+                }
+            }
+
+            onHValue2Changed: {
+                if (controlTarget.verticalLineFollowing) {
+                    sv_tofd.hValue2 = hValue2
+                }
+            }
+
+            onVValue1Changed: {
+                if (controlTarget.horizontalLineFollowing) {
+                    sv_tofd.vValue1 = vValue1
+                }
+            }
+
+            onVValue2Changed: {
+                if (controlTarget.horizontalLineFollowing) {
+                    sv_tofd.vValue2 = vValue2
+                }
             }
         }
     }

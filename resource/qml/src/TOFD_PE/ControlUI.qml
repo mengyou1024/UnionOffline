@@ -7,10 +7,9 @@ import Qt.labs.platform 1.1
 import "../../components"
 
 ScrollView {
-    implicitHeight: 900
-
+    implicitHeight: 930
     implicitWidth: 280
-    contentHeight: 900
+    contentHeight: 930
     contentWidth: 260
 
     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
@@ -30,6 +29,8 @@ ScrollView {
     property alias peShow: cb_pe_show.checked //PE显示
     property alias fileName: lb_fileName.text // 文件名
     property alias date: lb_date.text // 日期
+    property alias verticalLineFollowing: cb_vertical_line_following.checked // 垂直坐标跟随
+    property alias horizontalLineFollowing: cb_horizontal_line_following.checked // 水平坐标跟随
 
     property alias tofdSoftGain: tofdGainSpinBox.value
     property alias peSoftGain: peGainSpinBox.value
@@ -71,23 +72,45 @@ ScrollView {
             areaText: qsTr("显示")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
-            RowLayout {
+            Layout.preferredHeight: 80
+            GridLayout {
                 anchors.fill: parent
+                anchors.margins: 20
+                rows: 2
+                columns: 2
+                columnSpacing: 10
+                rowSpacing: 10
                 LQC.CheckBox {
                     id: cb_tofd_show
-                    Layout.leftMargin: 20
                     text: qsTr("TOFD显示")
                     checked: true
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
                     }
                 }
+
                 LQC.CheckBox {
                     id: cb_pe_show
-                    Layout.rightMargin: 20
                     text: qsTr("PE显示")
                     checked: true
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
+                }
+
+                LQC.CheckBox {
+                    id: cb_vertical_line_following
+                    text: qsTr("垂直线联动")
+                    checked: true
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
+                }
+
+                LQC.CheckBox {
+                    id: cb_horizontal_line_following
+                    text: qsTr("水平线联动")
+                    checked: false
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
                     }
