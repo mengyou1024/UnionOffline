@@ -255,6 +255,7 @@ ApplicationWindow {
 
         Rectangle {
             Layout.preferredHeight: 20
+            Layout.fillWidth: true
             color: "#b0e2ff"
             Text {
                 x: 5
