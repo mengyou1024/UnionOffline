@@ -11,11 +11,12 @@ ApplicationWindow {
     signal saveTemporaryFile(string file)
 
     id: root_wnd
+
     minimumWidth: 238
     minimumHeight: 98
+    maximumWidth: 238
+    maximumHeight: 98
 
-    // maximumWidth: 238
-    // maximumHeight: 95
     LoggingCategory {
         id: tag
         name: "Communicate"
@@ -74,9 +75,6 @@ ApplicationWindow {
                 anchors.fill: parent
                 indeterminate: true
                 visible: serial.isRunning
-                Component.onCompleted: {
-                    console.log("height:", height)
-                }
             }
         }
     }
