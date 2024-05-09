@@ -78,57 +78,34 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     if (!checkAScanCursorValid()) {
         return false;
     }
-    // TODO: 生成数据
-    QVariantMap vmp = {
-        {QObject::tr("检测单位"), ""},
-        {QObject::tr("报告编写"), ""},
-        {QObject::tr("委托单位"), ""},
-        {QObject::tr("检测日期"), QString::fromStdString(ascan->getDate(getAScanCursor()))},
-        {QObject::tr("名称"), ""},
-        {QObject::tr("编号"), ""},
-        {QObject::tr("表面热处理"), ""},
-        {QObject::tr("材质"), ""},
-        {QObject::tr("表面粗糙度"), ""},
-        {QObject::tr("探头型号"), QString::fromStdWString(ascan->getProbe(getAScanCursor()))},
-        {QObject::tr("晶片尺寸"), QString::fromStdString(ascan->getProbeChipShape(getAScanCursor()))},
-        {QObject::tr("前沿"), QString::number(ascan->getFrontDistance(getAScanCursor()), 'f', 1)},
-        {QObject::tr("探头K值"), QString::number(Probe::Degree2K(ascan->getAngle(getAScanCursor())), 'f', 2)},
-        {QObject::tr("频率"), QString::number(ascan->getProbeFrequence(getAScanCursor()), 'f', 1)},
-        {QObject::tr("折射角"), QString::number(ascan->getAngle(getAScanCursor()), 'f', 2)},
-        {QObject::tr("零点"), QString::number(ascan->getZeroPointBias(getAScanCursor()), 'f', 1)},
-        {QObject::tr("仪器型号"), QString::fromStdString(ascan->getInstrumentName())},
-        {QObject::tr("灵敏度"), QString::number(ascan->getPerformance(getAScanCursor()).sensitivity, 'f', 1)},
-        {QObject::tr("回波抑制"), QString::number(ascan->getSupression(getAScanCursor()))},
-        {QObject::tr("回波延时"), QString::number(ascan->getSamplingDelay(getAScanCursor()), 'f', 1)},
-        {QObject::tr("声程范围"), QString::number(ascan->getAxisLen(getAScanCursor()), 'f', 1)},
-        {QObject::tr("声速"), QString::number(ascan->getSoundVelocity(getAScanCursor()), 'f', 0)},
-        {QObject::tr("距离"), gateValue[0].toObject()["dist_c"].toString()},
-        {QObject::tr("水平"), gateValue[0].toObject()["dist_a"].toString()},
-        {QObject::tr("垂直"), gateValue[0].toObject()["dist_b"].toString()},
-        {QObject::tr("当量"), gateValue[0].toObject()["equi"].toString()},
-        {QObject::tr("长度"), ""},
-        {QObject::tr("高度"), ""},
-        {QObject::tr("等级"), ""},
-        {QObject::tr("探伤结果"), ""},
-        {QObject::tr("探伤标准"), ""},
-        {QObject::tr("探伤人员"), ""},
-        {QObject::tr("负责人员"), ""},
-        {QObject::tr("备注"), ""},
-    };
-    auto result = Yo::File::Render::Excel::Render("excel_templates/AScan/T_报表生成.xlsx", _fileName, vmp);
+    auto vmp            = ascan->createReportValueMap(getAScanCursor(), getSoftGain());
+    auto excel_template = "excel_templates/AScan/T_报表生成.xlsx";
+    auto img_x          = 18;
+    auto img_y          = 0;
+    auto img_sw         = 667;
+    auto img_sh         = 339;
+
+    if (dynamic_cast<Union::__390::DAAType*>(ascan.get()) != nullptr) {
+        excel_template = "excel_templates/AScan/T_报表生成390.xlsx";
+        img_x          = 20;
+        img_y          = 1;
+        img_sw         = 480;
+        img_sh         = 300;
+    }
+
+    auto result = Yo::File::Render::Excel::Render(excel_template, _fileName, vmp);
     if (!result) {
         return result;
     }
     if (img) {
         QXlsx::Document doc(_fileName);
-        qDebug(TAG) << "saveImage return:" << doc.insertImage(18, 0, img->image().scaled(667, 339, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+        qDebug(TAG) << "saveImage return:" << doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
         result = doc.save();
     }
     return result;
 }
 
 bool AScanInteractor::performanceClicked(QString _fileName) {
-    qDebug(TAG) << __FUNCTION__;
     if (!checkAScanCursorValid()) {
         return false;
     }
@@ -186,34 +163,7 @@ QVariantMap AScanInteractor::getTechnologicalParameter() {
         return {};
     }
 
-    QVariantMap gainPrarameter = {
-        {QObject::tr("基本增益"), QString::number(ascan->getBaseGain(getAScanCursor()),                'f', 1) + " dB"},
-        {QObject::tr("扫查增益"), QString::number(ascan->getScanGain(getAScanCursor()),                'f', 1) + " dB"},
-        {QObject::tr("表面补偿"), QString::number(ascan->getSurfaceCompentationGain(getAScanCursor()), 'f', 1) + " dB"},
-    };
-
-    QVariantMap probeParameter = {
-        {QObject::tr("探头类型"), QString::fromStdWString(ascan->getProbe(getAScanCursor()))},
-        {QObject::tr("探头频率"), QString::number(ascan->getProbeFrequence(getAScanCursor()), 'f', 1) + " MHz"},
-        {QObject::tr("晶片尺寸"), QString::fromStdString(ascan->getProbeChipShape(getAScanCursor()))},
-    };
-
-    QVariantMap basicParameter = {
-        {QObject::tr("声程"), QString::number(ascan->getAxisLen(getAScanCursor()), 'f', 1) + " mm"},
-        {QObject::tr("前沿"), QString::number(ascan->getFrontDistance(getAScanCursor()), 'f', 1) + " mm"},
-        {QObject::tr("零点"), QString::number(ascan->getZeroPointBias(getAScanCursor()), 'f', 1) + " ns"},
-        {QObject::tr("延时"), QString::number(ascan->getSamplingDelay(getAScanCursor()), 'f', 1) + " mm"},
-        {QObject::tr("声速"), QString::number(ascan->getSoundVelocity(getAScanCursor()), 'f', 0) + " m/s"},
-        {QObject::tr("通道"), QString::number(ascan->getChannel(getAScanCursor()))},
-        {QObject::tr("K值"), QString::number(Probe::Degree2K(ascan->getAngle(getAScanCursor())), 'f', 2)},
-        {QObject::tr("抑制"), QString::number(ascan->getSupression(getAScanCursor())) + "%"},
-        {QObject::tr("角度"), QString::number(ascan->getAngle(getAScanCursor()), 'f', 1) + "°"},
-    };
-    return {
-        {QObject::tr("增益参数"), gainPrarameter},
-        {QObject::tr("探头信息"), probeParameter},
-        {QObject::tr("基本信息"), basicParameter},
-    };
+    return ascan->createTechnologicalParameter(getAScanCursor());
 }
 
 QVariantList AScanInteractor::getFileNameList() {
@@ -490,7 +440,8 @@ QLineSeries* AScanInteractor::createQuadraticCurveSeries(const QString& name, QP
 }
 
 void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) {
-    auto CHECK_VALID = [&]() {
+    // begin define lambda ->{
+    auto CheckValid = [&]() {
         // 检查数据指针是否有效
         if (!checkAScanCursorValid()) {
             return false;
@@ -525,12 +476,12 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
                 throw std::runtime_error("QuadraticCurveSeriesType error");
         }
     };
-    if (!CHECK_VALID()) {
+    if (!CheckValid()) {
         return;
     }
 
     // 获取曲线名称
-    const auto lineName = [&](int index) -> QString {
+    const auto LineName = [&](int index) -> QString {
         switch (type) {
             case QuadraticCurveSeriesType::DAC:
                 return QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(index));
@@ -541,7 +492,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
     };
     // 获取isSubLine
-    const auto isSubLine = [&]() {
+    const auto IsSubline = [&]() {
         switch (type) {
             case QuadraticCurveSeriesType::DAC:
                 return ascan->getDAC(getAScanCursor())->isSubline;
@@ -550,9 +501,9 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
             default:
                 throw std::runtime_error("QuadraticCurveSeriesType error");
         }
-    }();
+    };
     // 获取曲线表达式
-    const auto lineExpr = [&]() {
+    const auto LineExpr = [&]() {
         switch (type) {
             case QuadraticCurveSeriesType::DAC:
                 return ascan->getDACLineExpr(getAScanCursor());
@@ -563,45 +514,27 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
     }();
     // 获取增益修改
-    const auto modifyGain = [&](int index) {
-        double xlBias = 0.0;
-        double _bGain = 0.0;
-        switch (type) {
-            case QuadraticCurveSeriesType::DAC:
-                _bGain = ascan->getDAC(getAScanCursor())->baseGain;
-                break;
-            case QuadraticCurveSeriesType::AVG:
-                _bGain = ascan->getAVG(getAScanCursor())->baseGain;
-                break;
-            default:
-                throw std::runtime_error("QuadraticCurveSeriesType error");
-        }
-        switch (index) {
+    const auto ModifyGain = [&](int idx) {
+        double ret = 0.0;
+        switch (idx) {
             case 1:
-                xlBias = ascan->getDACStandard(getAScanCursor()).rlBias;
+                ret = ascan->getDACStandard(getAScanCursor()).rlBias;
                 break;
             case 2:
-                xlBias = ascan->getDACStandard(getAScanCursor()).slBias;
+                ret = ascan->getDACStandard(getAScanCursor()).slBias;
                 break;
             case 3:
-                xlBias = ascan->getDACStandard(getAScanCursor()).elBias;
+                ret = ascan->getDACStandard(getAScanCursor()).elBias;
         }
-        switch (type) {
-            case QuadraticCurveSeriesType::DAC:
-                return ascan->getBaseGain(getAScanCursor()) + ascan->getScanGain(getAScanCursor()) - _bGain + xlBias + softGain;
-            case QuadraticCurveSeriesType::AVG:
-                return ascan->getBaseGain(getAScanCursor()) + ascan->getScanGain(getAScanCursor()) +
-                       ascan->getSurfaceCompentationGain(getAScanCursor()) - _bGain + xlBias + softGain +
-                       ascan->getAVG(getAScanCursor())->biasGain;
-            default:
-                throw std::runtime_error("QuadraticCurveSeriesType error");
-        }
+        return ret + getSoftGain();
     };
+    // } <- end define lambda
 
+    // ↓↓↓函数逻辑开始↓↓↓
     std::vector<QLineSeries*>   lines  = {};
     std::vector<QList<QPointF>> pts    = {};
     std::vector<int>            indexs = {};
-    if (!isSubLine) {
+    if (!IsSubline()) {
         lines.resize(1);
         pts.resize(1);
         indexs = {0};
@@ -611,9 +544,55 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         indexs = {1, 2, 3};
     }
 
+    bool is_das_or_dat = dynamic_cast<Union::__330::DASType*>(ascan.get()) || dynamic_cast<Union::__330::DATType*>(ascan.get());
+
+    if (is_das_or_dat) {
+        lines.resize(3);
+        pts.resize(3);
+        indexs = {1, 2, 3};
+        // 隐藏未使用的曲线
+        for (auto i = 0; std::cmp_less(i, 4); i++) {
+            auto line = (QLineSeries*)series(LineName(i));
+            if (line) {
+                auto find_result = std::find(indexs.begin(), indexs.end(), i);
+                if (find_result == indexs.end()) {
+                    line->setVisible(false);
+                    line->deleteLater();
+                }
+            }
+        }
+        // 查找曲线
+        for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
+            lines[i] = (QLineSeries*)series(LineName(indexs[i]));
+            if (!lines[i]) {
+                lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
+            }
+            // 重新设置DAC曲线的坐标轴范围
+            lines[i]->attachedAxes().at(0)->setMin(0.0);
+            lines[i]->attachedAxes().at(0)->setMax(static_cast<qreal>(ascan->getAxisLen(getAScanCursor())));
+            lines[i]->attachedAxes().at(1)->setMin(0.0);
+            lines[i]->attachedAxes().at(1)->setMax(100.0);
+            lines[i]->setVisible();
+        }
+
+        for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
+            lines[i]->clear();
+            auto _das_convert = dynamic_cast<Union::__330::DASType*>(ascan.get());
+            auto _dat_convert = dynamic_cast<Union::__330::DATType*>(ascan.get());
+            if (_das_convert) {
+                qDebug(TAG) << "is das";
+                lines[i]->replace(_das_convert->unResolvedGetDacLines(getAScanCursor())[i]);
+            } else if (_dat_convert) {
+                qDebug(TAG) << "is dat";
+                lines[i]->replace(_dat_convert->unResolvedGetDacLines(getAScanCursor())[i]);
+            }
+        }
+        return;
+    }
+
     // 隐藏未使用的曲线
     for (auto i = 0; std::cmp_less(i, 4); i++) {
-        auto line = (QLineSeries*)series(lineName(i));
+        auto line = (QLineSeries*)series(LineName(i));
         if (line) {
             auto find_result = std::find(indexs.begin(), indexs.end(), i);
             if (find_result == indexs.end()) {
@@ -621,13 +600,17 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
             }
         }
     }
-
     // 查找曲线
     for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
-        lines[i] = (QLineSeries*)series(lineName(indexs[i]));
+        lines[i] = (QLineSeries*)series(LineName(indexs[i]));
         if (!lines[i]) {
-            lines[i] = createQuadraticCurveSeries(lineName(indexs[i]), {0.0, 0.0}, {static_cast<qreal>(ascan->getScanData(getAScanCursor()).size()), 200.0});
+            lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
         }
+        // 重新设置DAC曲线的坐标轴范围
+        lines[i]->attachedAxes().at(0)->setMin(0.0);
+        lines[i]->attachedAxes().at(0)->setMax(static_cast<qreal>(ascan->getScanData(getAScanCursor()).size()));
+        lines[i]->attachedAxes().at(1)->setMin(0.0);
+        lines[i]->attachedAxes().at(1)->setMax(200.0);
         lines[i]->setVisible();
     }
 
@@ -635,7 +618,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     // 填充数据
     for (int i = 0; std::cmp_less(i, ascan->getScanData(getAScanCursor()).size()); i++) {
         for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
-            pts[j].push_back(QPointF(i, Union::CalculateGainOutput(lineExpr(i), modifyGain(indexs[j]))));
+            pts[j].push_back(QPointF(i, Union::CalculateGainOutput(LineExpr(i), ModifyGain(indexs[j]))));
         }
     }
     // 替换曲线数据
@@ -687,111 +670,21 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
 }
 
 QJsonArray AScanInteractor::CreateGateValue() {
-    std::array<QVariantMap, 2> _gateValue = {};
-    for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
-        _gateValue[i] = {
-            {"amp",    "-"},
-            {"dist_a", "-"},
-            {"dist_b", "-"},
-            {"dist_c", "-"},
-            {"equi",   "-"},
-        };
-    }
     if (!checkAScanCursorValid()) {
+        std::array<QVariantMap, 2> _gateValue = {};
+        for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
+            _gateValue[i] = {
+                {"amp",    "-"},
+                {"dist_a", "-"},
+                {"dist_b", "-"},
+                {"dist_c", "-"},
+                {"equi",   "-"},
+            };
+        }
         return QJsonArray::fromVariantList({_gateValue[0], _gateValue[1]});
     }
-    for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
-        auto info = ascan->getGateResult(getAScanCursor(), i);
-        if (!info) {
-            continue;
-        }
-        auto [loc, _amp] = info.value();
-        double amp       = _amp;
-        amp              = Union::CalculateGainOutput(amp, softGain);
-        if (amp > 255.0) {
-            amp = 255.0;
-        }
-        QString               _a = "-";
-        QString               _b = "-";
-        QString               _c = "-";
-        std::optional<double> a  = std::nullopt;
-        std::optional<double> b  = std::nullopt;
-        std::optional<double> c  = std::nullopt;
-        switch (ascan->getDistanceMode(getAScanCursor())) {
-            case Union::AScan::DistanceMode::DistanceMode_Y: {
-                b = Union::ValueMap(loc, ascan->getAxisRange(getAScanCursor()));
-                if (std::abs(ascan->getAngle(getAScanCursor())) > 0.0001) {
-                    a = b.value() / Union::Base::Probe::Degree2K(ascan->getAngle(getAScanCursor()));
-                    c = b.value() / std::sin(Union::Base::Probe::Degree2Rd(ascan->getAngle(getAScanCursor())));
-                }
-                break;
-            }
-            case Union::AScan::DistanceMode::DistanceMode_X: {
-                a = Union::ValueMap(loc, ascan->getAxisRange(getAScanCursor()));
-                if (std::abs(ascan->getAngle(getAScanCursor())) > 0.0001) {
-                    b = Union::Base::Probe::Degree2K(ascan->getAngle(getAScanCursor())) * b.value();
-                    c = b.value() / std::cos(Union::Base::Probe::Degree2Rd(ascan->getAngle(getAScanCursor())));
-                }
-                break;
-            }
-            case Union::AScan::DistanceMode::DistanceMode_S: {
-                c = Union::ValueMap(loc, ascan->getAxisRange(getAScanCursor()));
-                if (std::abs(ascan->getAngle(getAScanCursor())) > 0.0001) {
-                    a = c.value() * std::cos(Union::Base::Probe::Degree2Rd(ascan->getAngle(getAScanCursor())));
-                    b = c.value() * std::sin(Union::Base::Probe::Degree2Rd(ascan->getAngle(getAScanCursor())));
-                }
-                break;
-            }
-        }
 
-        if (a) {
-            _a = QString::number(a.value(), 'f', 1);
-        }
-
-        if (b) {
-            _b = QString::number(b.value(), 'f', 1);
-        }
-
-        if (c) {
-            _c = QString::number(c.value(), 'f', 1);
-        }
-
-        QString _equi = "-";
-        if (ascan->getDAC(getAScanCursor()) && b.has_value()) {
-            auto r_amp      = Union::CalculateGainOutput(_amp, ascan->getSurfaceCompentationGain(getAScanCursor()));
-            auto lineExpr   = ascan->getDACLineExpr(getAScanCursor());
-            auto slValue    = lineExpr((b.value() - ascan->getAxisBias(getAScanCursor())) / ascan->getAxisLen(getAScanCursor()) * ascan->getScanData(getAScanCursor()).size());
-            auto modifyGain = ascan->getBaseGain(getAScanCursor()) + ascan->getScanGain(getAScanCursor()) +
-                              ascan->getSurfaceCompentationGain(getAScanCursor()) - ascan->getDAC(getAScanCursor())->baseGain +
-                              ascan->getDACStandard(getAScanCursor()).slBias;
-            slValue = Union::CalculateGainOutput(slValue, modifyGain);
-            _equi   = QString::asprintf("SL%+.1fdB", Union::CalculatedGain(slValue, r_amp));
-        } else if (ascan->getAVG(getAScanCursor()) && b.has_value()) {
-            auto r_amp      = Union::CalculateGainOutput(_amp, ascan->getSurfaceCompentationGain(getAScanCursor()));
-            auto lineExpr   = ascan->getAVGLineExpr(getAScanCursor());
-            auto slValue    = lineExpr((b.value() - ascan->getAxisBias(getAScanCursor())) / ascan->getAxisLen(getAScanCursor()) * ascan->getScanData(getAScanCursor()).size());
-            auto modifyGain = ascan->getBaseGain(getAScanCursor()) + ascan->getScanGain(getAScanCursor()) +
-                              ascan->getSurfaceCompentationGain(getAScanCursor()) - ascan->getAVG(getAScanCursor())->baseGain +
-                              ascan->getDACStandard(getAScanCursor()).slBias;
-            slValue = Union::CalculateGainOutput(slValue, modifyGain);
-            _equi   = QString::asprintf("Φ%+.1fdB", Union::CalculatedGain(slValue, r_amp));
-        }
-
-        auto _gate_amp = amp / 2.0;
-        if (_gate_amp > 100.0) {
-            _gate_amp = 100.0;
-        }
-
-        _gateValue[i] = {
-            {"amp", QString::number(_gate_amp, 'f', 1)},
-            {"dist_a", _a},
-            {"dist_b", _b},
-            {"dist_c", _c},
-            {"equi", _equi},
-        };
-    }
-
-    return QJsonArray::fromVariantList({_gateValue[0], _gateValue[1]});
+    return ascan->createGateValue(getAScanCursor(), getSoftGain());
 }
 
 template <int N>

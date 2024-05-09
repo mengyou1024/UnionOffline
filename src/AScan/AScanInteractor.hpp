@@ -67,7 +67,7 @@ public:
     QLineSeries*     createAScanSeries(QPointF pt, QSizeF sz);
     void             updateAScanSeries(const QList<QPointF>& data, QPointF pt, QSizeF sz);
     void             updateAScanSeries(void);
-    QLineSeries*     createQuadraticCurveSeries(const QString& name, QPointF pt, QSizeF sz);
+    QLineSeries*     createQuadraticCurveSeries(const QString& name, QPointF pt = {0.0, 0.0}, QSizeF sz = {100.0, 100.0});
     void             updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
     QLineSeries*     createGateSeries(int index = 0);
     void             updateGateSeries(Union::Base::Gate gate, int index = 0);

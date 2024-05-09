@@ -140,6 +140,7 @@ void Morose::registeAllAScanFileSelector() {
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
+    Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390单幅图像", Union::__390::DAAType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
 }

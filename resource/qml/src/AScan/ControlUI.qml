@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls 1.4 as LQC
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
@@ -22,6 +23,7 @@ Rectangle {
     property alias softGain: gainSpinBox.value // 软件增益
     property alias replayValue: sl_timerLine.value // 时间线值
     property alias cursorMax: sl_timerLine.to
+    property alias replayContinuous: cb_continuous.checked
 
     // 报表导出信号
     signal reportExportClicked(var fileName)
@@ -203,6 +205,10 @@ Rectangle {
                             if (isReplayStart === false) {
                                 replayTimer.stop()
                             } else {
+                                if (replayContinuous && fileNameList.length >= 1) {
+                                    com_fileName_list.currentIndex = 0
+                                }
+
                                 if (sl_timerLine.value === sl_timerLine.to) {
                                     sl_timerLine.value = sl_timerLine.from
                                 }
@@ -266,7 +272,7 @@ Rectangle {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 20
+                    Layout.bottomMargin: 10
                     CSlider {
                         id: sl_timerLine
                         from: 0
@@ -279,10 +285,21 @@ Rectangle {
                 }
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 20
+                    Layout.bottomMargin: 10
                     Label {
                         text: qsTr("第 ") + (sl_timerLine.value + 1) + qsTr(" 帧 / 共 ") + (sl_timerLine.to + 1) + qsTr(" 帧")
                         font.pixelSize: 16
+                    }
+                }
+
+                LQC.CheckBox {
+                    id: cb_continuous
+                    text: qsTr("连续播放所有文件")
+                    checked: true
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.bottomMargin: 10
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
                     }
                 }
             }
@@ -305,8 +322,18 @@ Rectangle {
             var newValue = sl_timerLine.value + 1
             sl_timerLine.value += 1
             if (newValue > sl_timerLine.to) {
-                isReplayStart = true
-                stop()
+                if (replayContinuous === true && fileNameList.length >= 1) {
+                    if (com_fileName_list.currentIndex < fileNameList.length - 1) {
+                        com_fileName_list.currentIndex++
+                        sl_timerLine.value = 0
+                    } else {
+                        isReplayStart = true
+                        stop()
+                    }
+                } else {
+                    isReplayStart = true
+                    stop()
+                }
             } else {
                 sl_timerLine.value = newValue
                 timeSliderMoved(sl_timerLine.value)
