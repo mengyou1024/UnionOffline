@@ -16,14 +16,15 @@
 class AScanInteractor : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
-    bool        replayVisible = false;
-    QString     date          = {};
-    int         softGain      = {};
-    int         replayValue   = {};
-    QQuickItem* chartView     = nullptr;
-    QJsonArray  gateValue     = {};
-    int         replaySpeed   = 0;
-    QString     distanceMode  = "N";
+    bool        replayVisible  = false;
+    QString     date           = {};
+    int         softGain       = {};
+    int         replayValue    = {};
+    QQuickItem* chartView      = nullptr;
+    QJsonArray  gateValue      = {};
+    int         replaySpeed    = 0;
+    QString     distanceMode   = "N";
+    bool        hasCameraImage = false;
 
     using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
 
@@ -105,6 +106,11 @@ public:
     QString          getDistanceMode() const;
     void             setDistanceMode(const QString& newDistanceMode);
 
+    Q_INVOKABLE QImage getCameraImage(void) const;
+
+    bool getHasCameraImage() const;
+    void setHasCameraImage(bool newHasCameraImage);
+
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
     Q_INVOKABLE bool         performanceClicked(QString fileName);
@@ -130,6 +136,8 @@ signals:
     void aScanCursorMaxChanged();
     void distanceModeChanged();
 
+    void hasCameraImageChanged();
+
 private:
     void changeDataCursor(void);
     void updateCurrentFrame(void);
@@ -143,4 +151,5 @@ private:
     Q_PROPERTY(int aScanCursor READ getAScanCursor WRITE setAScanCursor NOTIFY aScanCursorChanged)
     Q_PROPERTY(int aScanCursorMax READ getAScanCursorMax WRITE setAScanCursorMax NOTIFY aScanCursorMaxChanged)
     Q_PROPERTY(QString distanceMode READ getDistanceMode WRITE setDistanceMode NOTIFY distanceModeChanged FINAL)
+    Q_PROPERTY(bool hasCameraImage READ getHasCameraImage WRITE setHasCameraImage NOTIFY hasCameraImageChanged FINAL)
 };

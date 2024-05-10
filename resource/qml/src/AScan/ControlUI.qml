@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import "../../components"
+import Union.AScan 1.0
 
 Rectangle {
     LoggingCategory {
@@ -24,6 +25,9 @@ Rectangle {
     property alias replayValue: sl_timerLine.value // 时间线值
     property alias cursorMax: sl_timerLine.to
     property alias replayContinuous: cb_continuous.checked
+    property alias imageVisible: img_rect.visible
+
+    signal showImage
 
     // 报表导出信号
     signal reportExportClicked(var fileName)
@@ -48,7 +52,6 @@ Rectangle {
 
     ColumnLayout {
         width: parent.width
-        height: replay_area.visible ? 520 : 320
         anchors.centerIn: parent
         CArea {
             areaText: qsTr("文件")
@@ -304,6 +307,45 @@ Rectangle {
                 }
             }
         }
+
+        Rectangle {
+            property color borderColor: "#00e3e6"
+            id: img_rect
+            Layout.margins: 2
+            Layout.preferredWidth: childrenRect.width + 6
+            Layout.preferredHeight: childrenRect.height + 6
+            Layout.alignment: Qt.AlignHCenter
+            color: "transparent"
+            border.color: borderColor
+            border.width: 3
+            CImage {
+                id: img_camera
+                anchors.centerIn: parent
+                anchors.margins: 3
+                maxHeight: 180
+                maxWidth: 240
+                MouseArea {
+                    id: mouseArea_ic
+                    anchors.fill: parent
+                    hoverEnabled: true
+
+                    //接受左键和右键输入
+                    acceptedButtons: Qt.LeftButton
+
+                    onClicked: showImage()
+
+                    onEntered: {
+                        img_rect.border.color = Qt.darker(img_rect.borderColor, 1.5)
+                        cursorShape = Qt.PointingHandCursor
+                    }
+
+                    onExited: {
+                        img_rect.border.color = img_rect.borderColor
+                        cursorShape = Qt.ArrowCursor
+                    }
+                }
+            }
+        }
     }
 
     function init() {
@@ -339,5 +381,9 @@ Rectangle {
                 timeSliderMoved(sl_timerLine.value)
             }
         }
+    }
+
+    function setImage(img) {
+        img_camera.setImage(img, true)
     }
 }

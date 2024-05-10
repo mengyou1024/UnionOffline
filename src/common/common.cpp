@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "../AScan/AScanInteractor.hpp"
+#include "../AScan/CImage.hpp"
 #include "../SerialRunner.hpp"
 #include "../TOFD_PE/LinesMaskEnum.hpp"
 #include "../TOFD_PE/MaskStatusEnum.hpp"
@@ -124,6 +125,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");
     qmlRegisterType<TOFD_PE::TofdPeInteractor>("Union.TOFD_PE", 1, 0, "TofdPeIntr");
     qmlRegisterType<Union::Extra::SerialRuner>("Union.Extra", 1, 0, "SerialRunner");
+    qmlRegisterType<AScan::CImage>("Union.AScan", 1, 0, "CImage");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::instance());
@@ -138,6 +140,7 @@ void Morose::registerVariable(QQmlContext* context) {
 
 void Morose::registeAllAScanFileSelector() {
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
+    Union::AScan::AScanFileSelector::Instance().RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390单幅图像", Union::__390::DAAType::FromFile);

@@ -139,6 +139,10 @@ T.ComboBox {
             currentIndex: control.highlightedIndex
             highlightMoveDuration: 0
 
+            delegate: Rectangle {
+                color: "red"
+            }
+
             Rectangle {
                 z: 10
                 width: parent.width

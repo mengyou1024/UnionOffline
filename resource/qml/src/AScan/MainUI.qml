@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 import QtCharts 2.15
 import Union.Interactor 1.0
 import "../../components"
+import Union.AScan 1.0
 
 Rectangle {
     LoggingCategory {
@@ -88,6 +89,16 @@ Rectangle {
         softGain: controlTarget !== null ? controlTarget.softGain : 0
         replayValue: controlTarget !== null ? controlTarget.replayValue : 0
         chartView: chart_view
+        onAScanCursorChanged: {
+            console.log("onAScanCursorChanged & setimage")
+            if (interactor.hasCameraImage) {
+                controlTarget.setImage(interactor.getCameraImage())
+                if (pop_img.opened) {
+                    img_popup.setImageAndZoomIn(interactor.getCameraImage(), 2)
+                }
+            }
+        }
+
         Binding {
             when: controlTarget !== null
             target: controlTarget
@@ -108,7 +119,14 @@ Rectangle {
             property: "cursorMax"
             value: interactor.aScanCursorMax
         }
-        
+
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
+            property: "imageVisible"
+            value: interactor.hasCameraImage
+        }
+
         onReplayValueChanged: {
             controlTarget.replayValue = replayValue
         }
@@ -165,6 +183,12 @@ Rectangle {
         function onSetFileNameIndex(idx) {
             interactor.setFileNameIndex(idx)
         }
+
+        function onShowImage() {
+            console.log("on click image")
+            img_popup.setImageAndZoomIn(interactor.getCameraImage(), 2)
+            pop_img.open()
+        }
     }
 
     Connections {
@@ -191,26 +215,11 @@ Rectangle {
         function onListviewIndexChanged(index, list_view) {
             const filePath = list_view.get(index, "filePath")
             console.log(category, "listview index changed, index:", index, "filepath:", filePath)
-            controlTarget.init()
-            interactor.setDefaultValue()
-            if (interactor.openFile(filePath)) {
-                controlTarget.fileNameList = interactor.getFileNameList()
-                showSuccessful(qsTr("打开成功"))
-            } else {
-                showFailed(qsTr("打开失败"))
-            }
+            openFileAction(filePath)
         }
 
-        function onOpenFile(file) {
-            console.log(category, "open file:", file)
-            controlTarget.init()
-            interactor.setDefaultValue()
-            if (interactor.openFile(file)) {
-                controlTarget.fileNameList = interactor.getFileNameList()
-                showSuccessful(qsTr("打开成功"))
-            } else {
-                showFailed(qsTr("打开失败"))
-            }
+        function onOpenFile(filePath) {
+            openFileAction(filePath)
         }
 
         function onSplitViewResizingChanged(resizing) {
@@ -222,6 +231,36 @@ Rectangle {
                     chart_view.visible = true
                 }
             }
+        }
+    }
+
+    function openFileAction(filePath) {
+        controlTarget.init()
+        interactor.setDefaultValue()
+        if (interactor.openFile(filePath)) {
+            controlTarget.fileNameList = interactor.getFileNameList()
+            if (interactor.hasCameraImage) {
+                controlTarget.setImage(interactor.getCameraImage())
+            }
+            showSuccessful(qsTr("打开成功"))
+        } else {
+            showFailed(qsTr("打开失败"))
+        }
+    }
+
+    Popup {
+        id: pop_img
+        anchors.centerIn: parent
+        width: 0
+        height: 0
+        modal: true
+        background: Rectangle {
+            color: "transparent"
+        }
+
+        CImage {
+            id: img_popup
+            anchors.centerIn: parent
         }
     }
 }

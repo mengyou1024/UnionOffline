@@ -276,6 +276,21 @@ void AScanInteractor::setDistanceMode(const QString& newDistanceMode) {
     emit distanceModeChanged();
 }
 
+QImage AScanInteractor::getCameraImage() const {
+    return ascan->getCameraImage(getAScanCursor());
+}
+
+bool AScanInteractor::getHasCameraImage() const {
+    return hasCameraImage;
+}
+
+void AScanInteractor::setHasCameraImage(bool newHasCameraImage) {
+    if (hasCameraImage == newHasCameraImage)
+        return;
+    hasCameraImage = newHasCameraImage;
+    emit hasCameraImageChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(ascan ? ascan->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -324,6 +339,7 @@ void AScanInteractor::setDefaultValue() {
 
 bool AScanInteractor::openFile(QString _fileName) {
     setReplayVisible(false);
+    setHasCameraImage(false);
     auto func = Union::AScan::AScanFileSelector::Instance().GetReadFunction(_fileName.toStdWString());
     if (!func.has_value()) {
         QFileInfo info(_fileName);
@@ -346,6 +362,7 @@ bool AScanInteractor::openFile(QString _fileName) {
     qDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
     setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
     setAScanCursorMax(ascan->getDataSize() - 1);
+    setHasCameraImage(ascan->hasCameraImage());
     if (getAScanCursor() == 0) {
         changeDataCursor();
     }

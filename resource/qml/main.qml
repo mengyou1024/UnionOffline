@@ -15,7 +15,7 @@ ApplicationWindow {
     }
 
     minimumWidth: 1636
-    minimumHeight: 864
+    minimumHeight: 870
     visible: true
     id: wnd_main
     title: qsTr("通用离线分析软件")
@@ -128,7 +128,7 @@ ApplicationWindow {
                 id: rect_list
                 SplitView.preferredWidth: 240
                 SplitView.minimumWidth: 240
-                SplitView.maximumWidth: 240
+                // SplitView.maximumWidth: 240
                 color: "#e0eeee"
                 radius: 5
                 clip: true
@@ -228,7 +228,7 @@ ApplicationWindow {
 
             Rectangle {
                 SplitView.minimumWidth: 300
-                SplitView.maximumWidth: 300
+                // SplitView.maximumWidth: 300
                 SplitView.fillHeight: true
                 color: "transparent"
                 radius: 5
