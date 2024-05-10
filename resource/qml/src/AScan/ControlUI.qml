@@ -70,7 +70,8 @@ Rectangle {
                     columnSpacing: 5
                     rowSpacing: 20
                     Label {
-                        text: qsTr("文件名:")
+                        text: qsTr("子文件名:")
+                        Layout.alignment: Qt.AlignHCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -86,7 +87,8 @@ Rectangle {
                     }
 
                     Label {
-                        text: qsTr("日   期:")
+                        text: qsTr("日期:")
+                        Layout.alignment: Qt.AlignHCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -297,7 +299,7 @@ Rectangle {
 
                 LQC.CheckBox {
                     id: cb_continuous
-                    text: qsTr("连续播放所有文件")
+                    text: qsTr("连续播放所有子文件")
                     checked: true
                     Layout.alignment: Qt.AlignHCenter
                     Layout.bottomMargin: 10
