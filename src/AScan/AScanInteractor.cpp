@@ -277,6 +277,9 @@ void AScanInteractor::setDistanceMode(const QString& newDistanceMode) {
 }
 
 QImage AScanInteractor::getCameraImage() const {
+    if (ascan == nullptr) {
+        return QImage();
+    }
     return ascan->getCameraImage(getAScanCursor());
 }
 
