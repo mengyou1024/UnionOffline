@@ -561,9 +561,8 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     std::vector<QList<QPointF>> pts    = {};
     std::vector<int>            indexs = {};
 
-    bool is_das_or_dat = dynamic_cast<Union::__330::DASType*>(ascan.get()) || dynamic_cast<Union::__330::DATType*>(ascan.get());
-
-    if (is_das_or_dat) {
+    auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get());
+    if (_convert != nullptr) {
         lines.resize(3);
         pts.resize(3);
         indexs = {1, 2, 3};
@@ -594,7 +593,6 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
 
         for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
             lines[i]->clear();
-            auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get());
             if (_convert) {
                 auto lineVector    = _convert->unResolvedGetDacLines(getAScanCursor())[i];
                 auto transformFunc = [this](QPointF pt) {

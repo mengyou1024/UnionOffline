@@ -7,14 +7,18 @@ import Qt.labs.platform 1.1
 import "../../components"
 import Union.AScan 1.0
 
-Rectangle {
+ScrollView {
     LoggingCategory {
         id: category
         name: "AScan.ctrl"
     }
-    implicitHeight: 520
-    implicitWidth: 240
-    color: "transparent"
+    background: Rectangle {
+        color: "transparent"
+    }
+
+    contentWidth: 260
+    implicitWidth: 280
+
     property int replaySpeed: 1
     property bool isReplayStart: true
 
@@ -50,9 +54,10 @@ Rectangle {
     // 设置文件名索引
     signal setFileNameIndex(int idx)
 
+    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+
     ColumnLayout {
-        width: parent.width
-        anchors.centerIn: parent
+        width: 260
         CArea {
             areaText: qsTr("文件")
             Layout.margins: 2
