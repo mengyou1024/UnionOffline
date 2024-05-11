@@ -47,7 +47,6 @@ int main(int argc, char* argv[]) {
     QLoggingCategory::setFilterRules(filter.toString());
     logSetting.endGroup();
     logSetting.sync();
-    qDebug() << "Qt::AA_EnableHighDpiScaling" << QCoreApplication::testAttribute(Qt::AA_EnableHighDpiScaling);
 
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
