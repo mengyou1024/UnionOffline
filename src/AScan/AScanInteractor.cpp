@@ -81,7 +81,7 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     auto vmp            = ascan->createReportValueMap(getAScanCursor(), getSoftGain());
     auto excel_template = "excel_templates/AScan/T_报表生成.xlsx";
     auto img_x          = 18;
-    auto img_y          = 0;
+    auto img_y          = 2;
     auto img_sw         = 667;
     auto img_sh         = 339;
 
@@ -100,6 +100,11 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     if (img) {
         QXlsx::Document doc(_fileName);
         qDebug(TAG) << "saveImage return:" << doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+        if (ascan->hasCameraImage()) {
+            auto cameraImage = ascan->getCameraImage(getAScanCursor());
+            cameraImage      = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
+            doc.insertImage(35, 2, cameraImage);
+        }
         result = doc.save();
     }
     return result;
