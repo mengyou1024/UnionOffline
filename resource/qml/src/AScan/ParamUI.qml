@@ -25,6 +25,8 @@ ApplicationWindow {
 
     ScrollView {
         anchors.fill: parent
+        anchors.topMargin: 10
+        anchors.bottomMargin: 10
         ColumnLayout {
             anchors.fill: parent
             spacing: 0
