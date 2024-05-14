@@ -100,8 +100,9 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     if (img) {
         QXlsx::Document doc(_fileName);
         qDebug(TAG) << "saveImage return:" << doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
-        if (ascan->hasCameraImage()) {
-            auto cameraImage = ascan->getCameraImage(getAScanCursor());
+        auto img_ascan = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
+        if (img_ascan) {
+            auto cameraImage = img_ascan->getCameraImage(getAScanCursor());
             cameraImage      = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
             doc.insertImage(35, 2, cameraImage);
         }
@@ -277,10 +278,19 @@ void AScanInteractor::setDistanceMode(const QString& newDistanceMode) {
 }
 
 QImage AScanInteractor::getCameraImage() const {
-    if (ascan == nullptr) {
+    auto img_ascan = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
+    if (img_ascan == nullptr) {
         return QImage();
     }
-    return ascan->getCameraImage(getAScanCursor());
+    return img_ascan->getCameraImage(getAScanCursor());
+}
+
+QVariantList AScanInteractor::getRailWeldDot() const {
+    auto railweld_ascan = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(ascan.get());
+    if (railweld_ascan) {
+        return QVariantList({railweld_ascan->getDotX(), railweld_ascan->getDotY(), railweld_ascan->getDotZ()});
+    }
+    return {};
 }
 
 bool AScanInteractor::getHasCameraImage() const {
@@ -292,6 +302,17 @@ void AScanInteractor::setHasCameraImage(bool newHasCameraImage) {
         return;
     hasCameraImage = newHasCameraImage;
     emit hasCameraImageChanged();
+}
+
+bool AScanInteractor::getShowRailWeldDigramSpecial() const {
+    return showRailWeldDigramSpecial;
+}
+
+void AScanInteractor::setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial) {
+    if (showRailWeldDigramSpecial == newShowRailWeldDigramSpecial)
+        return;
+    showRailWeldDigramSpecial = newShowRailWeldDigramSpecial;
+    emit showRailWeldDigramSpecialChanged();
 }
 
 bool AScanInteractor::checkAScanCursorValid() {
@@ -342,6 +363,7 @@ void AScanInteractor::setDefaultValue() {
 bool AScanInteractor::openFile(QString _fileName) {
     setReplayVisible(false);
     setHasCameraImage(false);
+    setShowRailWeldDigramSpecial(false);
     auto func = Union::AScan::AScanFileSelector::Instance().GetReadFunction(_fileName.toStdWString());
     if (!func.has_value()) {
         QFileInfo info(_fileName);
@@ -364,11 +386,16 @@ bool AScanInteractor::openFile(QString _fileName) {
     qDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
     setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
     setAScanCursorMax(ascan->getDataSize() - 1);
-    setHasCameraImage(ascan->hasCameraImage());
+    if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get()) != nullptr) {
+        setHasCameraImage(true);
+    }
     if (getAScanCursor() == 0) {
         changeDataCursor();
     }
     setAScanCursor(0);
+    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(ascan.get())) {
+        setShowRailWeldDigramSpecial(true);
+    }
     return true;
 }
 

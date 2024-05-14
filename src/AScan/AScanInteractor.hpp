@@ -16,15 +16,16 @@
 class AScanInteractor : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
-    bool        replayVisible  = false;
-    QString     date           = {};
-    int         softGain       = {};
-    int         replayValue    = {};
-    QQuickItem* chartView      = nullptr;
-    QJsonArray  gateValue      = {};
-    int         replaySpeed    = 0;
-    QString     distanceMode   = "N";
-    bool        hasCameraImage = false;
+    bool        replayVisible             = false;
+    QString     date                      = {};
+    int         softGain                  = {};
+    int         replayValue               = {};
+    QQuickItem* chartView                 = nullptr;
+    QJsonArray  gateValue                 = {};
+    int         replaySpeed               = 0;
+    QString     distanceMode              = "N";
+    bool        hasCameraImage            = false;
+    bool        showRailWeldDigramSpecial = false;
 
     using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
 
@@ -106,10 +107,14 @@ public:
     QString          getDistanceMode() const;
     void             setDistanceMode(const QString& newDistanceMode);
 
-    Q_INVOKABLE QImage getCameraImage(void) const;
+    Q_INVOKABLE QImage       getCameraImage(void) const;
+    Q_INVOKABLE QVariantList getRailWeldDot(void) const;
 
     bool getHasCameraImage() const;
     void setHasCameraImage(bool newHasCameraImage);
+
+    bool getShowRailWeldDigramSpecial() const;
+    void setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
 
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -135,8 +140,8 @@ signals:
     void aScanCursorChanged();
     void aScanCursorMaxChanged();
     void distanceModeChanged();
-
     void hasCameraImageChanged();
+    void showRailWeldDigramSpecialChanged();
 
 private:
     void changeDataCursor(void);
@@ -152,4 +157,5 @@ private:
     Q_PROPERTY(int aScanCursorMax READ getAScanCursorMax WRITE setAScanCursorMax NOTIFY aScanCursorMaxChanged)
     Q_PROPERTY(QString distanceMode READ getDistanceMode WRITE setDistanceMode NOTIFY distanceModeChanged FINAL)
     Q_PROPERTY(bool hasCameraImage READ getHasCameraImage WRITE setHasCameraImage NOTIFY hasCameraImageChanged FINAL)
+    Q_PROPERTY(bool showRailWeldDigramSpecial READ getShowRailWeldDigramSpecial WRITE setShowRailWeldDigramSpecial NOTIFY showRailWeldDigramSpecialChanged FINAL)
 };

@@ -30,6 +30,7 @@ ScrollView {
     property alias cursorMax: sl_timerLine.to
     property alias replayContinuous: cb_continuous.checked
     property alias imageVisible: img_rect.visible
+    property alias showRailWeldDigram: area_rail_weld_digram.visible
 
     signal showImage
 
@@ -353,6 +354,20 @@ ScrollView {
                 }
             }
         }
+
+        CArea {
+            id: area_rail_weld_digram
+            areaText: qsTr("钢轨焊缝示意图")
+            Layout.margins: 2
+            Layout.fillWidth: true
+            Layout.preferredHeight: 460
+            RailWeldDigram {
+                id: rail_weld_digram
+                anchors.fill: parent
+                anchors.margins: 10
+                anchors.topMargin: 20
+            }
+        }
     }
 
     function init() {
@@ -392,5 +407,13 @@ ScrollView {
 
     function setImage(img) {
         img_camera.setImage(img, true)
+    }
+
+    function setRailWeldDot(val) {
+        if (val.length === 3) {
+            rail_weld_digram.dotX = val[0]
+            rail_weld_digram.dotY = val[1]
+            rail_weld_digram.dotZ = val[2]
+        }
     }
 }

@@ -127,6 +127,13 @@ Rectangle {
             value: interactor.hasCameraImage
         }
 
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
+            property: "showRailWeldDigram"
+            value: interactor.showRailWeldDigramSpecial
+        }
+
         onReplayValueChanged: {
             controlTarget.replayValue = replayValue
         }
@@ -242,6 +249,10 @@ Rectangle {
             if (interactor.hasCameraImage) {
                 controlTarget.setImage(interactor.getCameraImage())
             }
+            if (interactor.showRailWeldDigramSpecial) {
+                controlTarget.setRailWeldDot(interactor.getRailWeldDot())
+            }
+
             showSuccessful(qsTr("打开成功"))
         } else {
             showFailed(qsTr("打开失败"))
