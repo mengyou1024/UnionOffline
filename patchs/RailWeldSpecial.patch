@@ -1,18 +1,22 @@
-From bccbddbbd58c5cb2676bdd60b1f7dd909318e782 Mon Sep 17 00:00:00 2001
+From b0b69845af49f8cae6d45dbe6aad0ae98764eeb2 Mon Sep 17 00:00:00 2001
 From: mengyou <1523038073@qq.com>
-Date: Tue, 14 May 2024 11:47:09 +0800
-Subject: [PATCH] chore: init patchs RailWeldSpecial
+Date: Tue, 14 May 2024 16:49:59 +0800
+Subject: [PATCH] =?UTF-8?q?patch:=20=E6=9B=B4=E6=96=B0=E9=92=A2=E8=BD=A8?=
+ =?UTF-8?q?=E7=84=8A=E7=BC=9D=E8=A1=A5=E4=B8=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 ---
  CMakeLists.txt                    |  2 +-
  cmake/FindMorose.cmake            |  1 +
  resource/qml/About.qml            |  2 +-
- resource/qml/main.qml             | 26 +-------------------------
+ resource/qml/main.qml             |  3 ++-
  script/pack-installer-msvc.iss.in |  2 +-
  script/pack-installer.iss.in      |  2 +-
- src/common/common.cpp             | 11 -----------
+ src/common/common.cpp             | 14 +++++++-------
  translations/UnionOffline_en.ts   |  2 +-
- 8 files changed, 7 insertions(+), 41 deletions(-)
+ 8 files changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4199914..b82b649 100644
@@ -52,7 +56,7 @@ index c1b8bdb..300c29b 100644
              Text {
                  Layout.fillWidth: true
 diff --git a/resource/qml/main.qml b/resource/qml/main.qml
-index f68f426..3202179 100644
+index f68f426..ef84c1e 100644
 --- a/resource/qml/main.qml
 +++ b/resource/qml/main.qml
 @@ -18,7 +18,7 @@ ApplicationWindow {
@@ -64,37 +68,14 @@ index f68f426..3202179 100644
  
      property string mainUIType: "Unknow"
  
-@@ -62,30 +62,6 @@ ApplicationWindow {
-                     onClicked: btnParamClicked()
-                 }
- 
--                CIconButton {
--                    implicitWidth: 80
--                    img_src: "qrc:/img/USB_51.png"
--                    btn_txt: qsTr("通讯")
--                    height: parent.height
--                    onClicked: {
--                        var comp = Qt.createComponent("Communicate.qml")
--                        if (comp.status === Component.Ready) {
--                            var com_wnd = comp.createObject(parent)
--                            com_wnd.closing.connect(() => {
--                                                        comp.destroy()
--                                                        com_wnd.destroy()
--                                                    })
--                            com_wnd.saveTemporaryFile.connect(filePath => {
--                                                                  console.log(category, "on saveTemporaryFile trigger file:", filePath)
--                                                                  actionMainType(getMainUITypeIndex(filePath), filePath)
--                                                                  listView.currentIndex = -1
--                                                              })
--                        } else if (comp.status === Component.Error) {
--                            console.error(category, comp.errorString())
--                        }
--                    }
--                }
--
-                 CIconButton {
-                     img_src: "qrc:/img/config-language.ico"
-                     btn_txt: qsTr("帮助")
+@@ -67,6 +67,7 @@ ApplicationWindow {
+                     img_src: "qrc:/img/USB_51.png"
+                     btn_txt: qsTr("通讯")
+                     height: parent.height
++                    visible: false
+                     onClicked: {
+                         var comp = Qt.createComponent("Communicate.qml")
+                         if (comp.status === Component.Ready) {
 diff --git a/script/pack-installer-msvc.iss.in b/script/pack-installer-msvc.iss.in
 index 560f60d..dd8a63d 100644
 --- a/script/pack-installer-msvc.iss.in
@@ -122,10 +103,10 @@ index 769681a..080f63f 100644
  AppVersion={#MyAppVersion}
  ;AppVerName={#MyAppName} {#MyAppVersion}
 diff --git a/src/common/common.cpp b/src/common/common.cpp
-index 81dbd33..e4194cb 100644
+index 69e1cda..c02894a 100644
 --- a/src/common/common.cpp
 +++ b/src/common/common.cpp
-@@ -141,13 +141,8 @@ void Morose::registerVariable(QQmlContext* context) {
+@@ -142,18 +142,18 @@ void Morose::registerVariable(QQmlContext* context) {
  }
  
  void Morose::registeAllAScanFileSelector() {
@@ -133,25 +114,24 @@ index 81dbd33..e4194cb 100644
 -    Union::AScan::AScanFileSelector::Instance().RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
 -    Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
 -    Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
++    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
++    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
++    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
++    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
      Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
      Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
 -    Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
++    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
+ }
+ 
+ void Morose::registeAllTofdPeFileSelector() {
+-    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
+-    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
++    // Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
++    // Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
  }
  
  QJsonObject& Morose::getGlobalEnvironment() {
-@@ -185,12 +180,6 @@ void Morose::registNameFilter(QQmlContext* context) {
-     folderListModel_nameFilter += Union::AScan::AScanFileSelector::Instance().GetFileListModelNameFilter().toVariantList();
-     filedialog_nameFilter += Union::AScan::AScanFileSelector::Instance().GetFileNameFilter().toVariantList();
- 
--    // TOFD_PE
--    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
--    mainUi_map.insert(Union::TOFD_PE::TofdPeFileSelector::Instance().GetUINameMap().toVariantMap());
--    folderListModel_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance().GetFileListModelNameFilter().toVariantList();
--    filedialog_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance().GetFileNameFilter().toVariantList();
--
-     context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
-     context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);
-     context->setContextProperty("MAINUI_MAP", mainUi_map);
 diff --git a/translations/UnionOffline_en.ts b/translations/UnionOffline_en.ts
 index 209f3ee..331a2cb 100644
 --- a/translations/UnionOffline_en.ts
