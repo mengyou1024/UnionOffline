@@ -53,21 +53,22 @@ namespace Union::AScan::RailWeld {
         painter->translate(QPointF{117.5, 143.48});
         painter->rotate(180);
 
-        constexpr QPointF A     = {0, 0};
-        constexpr QPointF B     = {114, 0};
-        constexpr QPointF C     = {114, 11};
-        constexpr QPointF D     = {67, 24.19};
-        constexpr QPointF E     = {57, 27};
-        constexpr QPointF F     = {47, 24.19};
-        constexpr QPointF G     = {0, 11};
-        constexpr QPointF H     = {47, 96.19};
-        constexpr QPointF I     = {57, 91.90};
-        constexpr QPointF J     = {67, 96.19};
-        constexpr QPointF K     = {92, 106.90};
-        constexpr QPointF L     = {92, 136.90};
-        constexpr QPointF M     = {22, 136.90};
-        constexpr QPointF N     = {22, 106.90};
-        QVector<QLineF>   lines = {
+        constexpr QPointF A = {0, 0};
+        constexpr QPointF B = {114, 0};
+        constexpr QPointF C = {114, 11};
+        constexpr QPointF D = {67, 24.19};
+        constexpr QPointF E = {57, 27};
+        constexpr QPointF F = {47, 24.19};
+        constexpr QPointF G = {0, 11};
+        constexpr QPointF H = {47, 96.19};
+        constexpr QPointF I = {57, 91.90};
+        constexpr QPointF J = {67, 96.19};
+        constexpr QPointF K = {92, 106.90};
+        constexpr QPointF L = {92, 136.90};
+        constexpr QPointF M = {22, 136.90};
+        constexpr QPointF N = {22, 106.90};
+
+        const static QVector<QLineF> lines = {
             {A, B},
             {B, C},
             {C, E},
@@ -101,7 +102,7 @@ namespace Union::AScan::RailWeld {
         painter->scale(scale_factor, scale_factor);
         painter->translate(QPointF{10, 10});
 
-        QVector<QRectF> rects = {
+        const static QVector<QRectF> rects = {
             {0, 0,   240, 30},
             {0, 30,  240, 65},
             {0, 95,  240, 5 },
