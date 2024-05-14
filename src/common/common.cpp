@@ -137,6 +137,7 @@ void Morose::registerVariable(QQmlContext* context) {
         context->engine()->retranslate();
     });
     registeAllAScanFileSelector();
+    registeAllTofdPeFileSelector();
     registNameFilter(context);
 }
 
@@ -148,6 +149,11 @@ void Morose::registeAllAScanFileSelector() {
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
+}
+
+void Morose::registeAllTofdPeFileSelector() {
+    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
+    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
 }
 
 QJsonObject& Morose::getGlobalEnvironment() {
@@ -186,7 +192,6 @@ void Morose::registNameFilter(QQmlContext* context) {
     filedialog_nameFilter += Union::AScan::AScanFileSelector::Instance().GetFileNameFilter().toVariantList();
 
     // TOFD_PE
-    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
     mainUi_map.insert(Union::TOFD_PE::TofdPeFileSelector::Instance().GetUINameMap().toVariantMap());
     folderListModel_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance().GetFileListModelNameFilter().toVariantList();
     filedialog_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance().GetFileNameFilter().toVariantList();

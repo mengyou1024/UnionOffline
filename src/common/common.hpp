@@ -30,6 +30,7 @@ namespace Morose {
     void logMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
     void registerVariable(QQmlContext* context);
     void registeAllAScanFileSelector();
+    void registeAllTofdPeFileSelector();
     void registNameFilter(QQmlContext* context);
 
     QJsonObject& loadGlobalEnvironment();
