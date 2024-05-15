@@ -30,6 +30,7 @@ T.ComboBox {
             color: control.fontColor
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
+            // @disable-check M16
             renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter
         }

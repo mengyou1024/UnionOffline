@@ -57,7 +57,9 @@ Rectangle {
                         Layout.alignment: Qt.AlignCenter
                         property var rowColor: gateTextColor[index]
                         spacing: 20
+                        // @disable-check M16
                         leftPadding: 20
+                        // @disable-check M16
                         rightPadding: 20
                         Repeater {
                             model: ["amp", "dist_c", "dist_a", "dist_b", "equi"]

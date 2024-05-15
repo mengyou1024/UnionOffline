@@ -50,7 +50,9 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
                         spacing: 20
+                        // @disable-check M16
                         leftPadding: 20
+                        // @disable-check M16
                         rightPadding: 20
                         Repeater {
                             model: Object.keys(params[pModelData])
