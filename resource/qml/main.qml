@@ -128,7 +128,6 @@ ApplicationWindow {
                 id: rect_list
                 SplitView.preferredWidth: 240
                 SplitView.minimumWidth: 240
-                // SplitView.maximumWidth: 240
                 color: "#e0eeee"
                 radius: 5
                 clip: true
@@ -139,6 +138,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     anchors.margins: 2
                     visible: false
+                    clip: true
                     property color highlightColor: "#00e3e6"
                     model: FolderListModel {
                         id: folder_list
@@ -228,7 +228,6 @@ ApplicationWindow {
 
             Rectangle {
                 SplitView.minimumWidth: 300
-                // SplitView.maximumWidth: 300
                 SplitView.fillHeight: true
                 color: "transparent"
                 radius: 5
@@ -324,7 +323,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-
-        // showMaximized()
+        showMaximized()
     }
 }
