@@ -192,6 +192,7 @@ Canvas {
         property bool enableMove: false
         property bool enableDrawRectangle: false
         property var currentEventStatusEnum: LinesMaskEnum.Normal
+        property bool enableLineFastMove: false
 
         onCurrentEventStatusEnumChanged: requestPaint()
 
@@ -210,9 +211,23 @@ Canvas {
         onClicked: event => {
                        if (event.button === Qt.RightButton) {
                            if (showRightMenu) {
-                               _menu.open()
+                               if (enableLineFastMove === false) {
+                                   _menu.open()
+                               }
                            }
                        }
+                       if (enableLineFastMove) {
+                           if (cursorUiStatus === MaskStatusEnum.Normal) {
+                               if (event.button === Qt.LeftButton) {
+                                   horizontalValue1 = mouseX / width
+                                   verticalValue1 = mouseY / height
+                               } else if (event.button === Qt.RightButton) {
+                                   horizontalValue2 = mouseX / width
+                                   verticalValue2 = mouseY / height
+                               }
+                           }
+                       }
+
                        forceActiveFocus()
                    }
 
@@ -252,18 +267,6 @@ Canvas {
                             drawRectY2 = 0
                         }
                     }
-
-        onDoubleClicked: event => {
-                             if (cursorUiStatus === MaskStatusEnum.Normal) {
-                                 if (event.button === Qt.LeftButton) {
-                                     horizontalValue1 = mouseX / width
-                                     verticalValue1 = mouseY / height
-                                 } else if (event.button === Qt.RightButton) {
-                                     horizontalValue2 = mouseX / width
-                                     verticalValue2 = mouseY / height
-                                 }
-                             }
-                         }
 
         onPositionChanged: {
             if (cursorUiStatus === MaskStatusEnum.Normal) {
@@ -352,12 +355,19 @@ Canvas {
     property var _keyEventList: []
 
     Keys.onPressed: event => {
+                        if (event.key === Qt.Key_Control) {
+                            mouseArea.enableLineFastMove = true
+                        }
+
                         if (_keyEventList.indexOf(event.key) < 0) {
                             _keyEventList.push(event.key)
                         }
                         keyClickEvent(_keyEventList)
                     }
     Keys.onReleased: event => {
+                         if (event.key === Qt.Key_Control) {
+                             mouseArea.enableLineFastMove = false
+                         }
                          _keyEventList = _keyEventList.filter(it => {
                                                                   return it !== event.key
                                                               })
