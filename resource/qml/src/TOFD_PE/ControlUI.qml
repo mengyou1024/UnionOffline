@@ -7,9 +7,7 @@ import Qt.labs.platform 1.1
 import "../../components"
 
 ScrollView {
-    implicitHeight: 830
     implicitWidth: 280
-    contentHeight: 830
     contentWidth: 260
 
     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
@@ -150,20 +148,18 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("增益")
+            areaText: qsTr("TOFD软件增益")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 200
+            Layout.preferredHeight: 80
+            visible: tofdShow
             ColumnLayout {
                 anchors.fill: parent
+                anchors.topMargin: 15
                 RowLayout {
-                    Layout.topMargin: 20
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
                     spacing: 20
-                    Label {
-                        text: qsTr("TOFD软件增益:")
-                    }
                     CSpinBox {
                         id: tofdGainSpinBox
                         from: -50
@@ -174,7 +170,6 @@ ScrollView {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 20
                     CSlider {
                         from: -50
                         to: 50
@@ -185,14 +180,20 @@ ScrollView {
                         }
                     }
                 }
-
+            }
+        }
+        CArea {
+            areaText: qsTr("PE软件增益:")
+            Layout.margins: 2
+            Layout.fillWidth: true
+            Layout.preferredHeight: 80
+            visible: peShow
+            ColumnLayout {
+                anchors.topMargin: 15
+                anchors.fill: parent
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
-                    spacing: 20
-                    Label {
-                        text: qsTr("PE软件增益:")
-                    }
                     CSpinBox {
                         id: peGainSpinBox
                         from: -50
@@ -203,7 +204,7 @@ ScrollView {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 20
+                    Layout.bottomMargin: 5
                     CSlider {
                         from: -50
                         to: 50
@@ -218,10 +219,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("测量线距离1")
+            areaText: qsTr("TOFD测量线")
             Layout.margins: 2
             Layout.fillWidth: true
             Layout.preferredHeight: 180
+            visible: tofdShow
             ColumnLayout {
                 anchors.fill: parent
                 GridLayout {
@@ -366,10 +368,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("测量线距离2")
+            areaText: qsTr("PE测量线")
             Layout.margins: 2
             Layout.fillWidth: true
             Layout.preferredHeight: 150
+            visible: peShow
             ColumnLayout {
                 anchors.fill: parent
                 GridLayout {
@@ -486,16 +489,17 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("TOFD/PE间距")
+            areaText: qsTr("TOFD间距")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 95
+            Layout.preferredHeight: 65
+            visible: tofdShow
             ColumnLayout {
                 anchors.fill: parent
                 GridLayout {
                     Layout.margins: 10
                     Layout.alignment: Qt.AlignHCenter
-                    rows: 2
+                    rows: 1
                     columns: 3
                     TextField {
                         id: tf_tofd_space
@@ -530,7 +534,23 @@ ScrollView {
                             tofdSpaceValueModified(val)
                         }
                     }
+                }
+            }
+        }
 
+        CArea {
+            areaText: qsTr("PE间距")
+            Layout.margins: 2
+            Layout.fillWidth: true
+            Layout.preferredHeight: 65
+            visible: peShow
+            ColumnLayout {
+                anchors.fill: parent
+                GridLayout {
+                    Layout.margins: 10
+                    Layout.alignment: Qt.AlignHCenter
+                    rows: 1
+                    columns: 3
                     TextField {
                         id: tf_pe_space
                         Layout.fillWidth: true
