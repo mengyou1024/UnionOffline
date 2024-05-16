@@ -7,9 +7,9 @@ import Qt.labs.platform 1.1
 import "../../components"
 
 ScrollView {
-    implicitHeight: 930
+    implicitHeight: 830
     implicitWidth: 280
-    contentHeight: 930
+    contentHeight: 830
     contentWidth: 260
 
     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
@@ -27,8 +27,6 @@ ScrollView {
     }
     property alias tofdShow: cb_tofd_show.checked // TOFD显示
     property alias peShow: cb_pe_show.checked //PE显示
-    property alias fileName: lb_fileName.text // 文件名
-    property alias date: lb_date.text // 日期
     property alias verticalLineFollowing: cb_vertical_line_following.checked // 垂直坐标跟随
     property alias horizontalLineFollowing: cb_horizontal_line_following.checked // 水平坐标跟随
 
@@ -117,63 +115,18 @@ ScrollView {
                 }
             }
         }
+
         CArea {
-            areaText: qsTr("文件")
+            areaText: qsTr("报表")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 160
+            Layout.preferredHeight: 60
             ColumnLayout {
                 anchors.fill: parent
-                GridLayout {
-                    id: file_info
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 20
-                    Layout.fillWidth: true
-                    columns: 2
-                    rows: 2
-                    columnSpacing: 5
-                    rowSpacing: 20
-                    Label {
-                        text: qsTr("文件名:")
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Label {
-                        id: lb_fileName
-                        Layout.preferredWidth: 160
-                        Layout.preferredHeight: 24
-                        background: Rectangle {
-                            border.color: "#d8d8d8"
-                            border.width: 1
-                            color: "white"
-                        }
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Label {
-                        text: qsTr("日   期:")
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Label {
-                        id: lb_date
-                        Layout.preferredWidth: 160
-                        Layout.preferredHeight: 24
-                        background: Rectangle {
-                            border.color: "#d8d8d8"
-                            border.width: 1
-                            color: "white"
-                        }
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 15
+                    Layout.topMargin: 15
+                    Layout.bottomMargin: 5
                     spacing: 5
                     CButton {
                         text: qsTr("报表生成")
