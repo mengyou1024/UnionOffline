@@ -41,6 +41,7 @@ Rectangle {
             spacing: 20
             Layout.alignment: Qt.AlignHCenter
             Text {
+                Layout.topMargin: 20
                 Layout.leftMargin: 20
                 width: 20
                 text: qsTr("声程") + `(${interactor.distanceMode})`
@@ -51,7 +52,7 @@ Rectangle {
                 Layout.fillWidth: true
                 spacing: 20
                 Repeater {
-                    model: 2
+                    model: 1
                     delegate: Flow {
                         property int gateIndex: index
                         Layout.alignment: Qt.AlignCenter
