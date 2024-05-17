@@ -586,4 +586,9 @@ ScrollView {
             }
         }
     }
+
+    function reInit() {
+        tf_pe_space.text = "0"
+        tf_tofd_space.text = "0"
+    }
 }

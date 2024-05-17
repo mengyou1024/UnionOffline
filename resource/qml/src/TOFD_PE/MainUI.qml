@@ -287,6 +287,10 @@ Rectangle {
     }
 
     function initAfterOpenFile() {
+        tofd_pe_intr.peSpace = 0
+        tofd_pe_intr.tofdSpace = 0
+        controlTarget.reInit()
+
         console.log(category, "tofd_pe_intr.getSubAngle():", tofd_pe_intr.getSubAngle())
         console.log(category, "reInitMask")
         console.log(category, `delay:${tofd_pe_intr.getDelay()}, range:${tofd_pe_intr.getRange()}`)
