@@ -85,12 +85,16 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     auto img_sw         = 667;
     auto img_sh         = 339;
 
-    if (dynamic_cast<Union::__390::DAAType*>(ascan.get()) != nullptr) {
-        excel_template = "excel_templates/AScan/T_报表生成390.xlsx";
+    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(ascan.get())) {
+        excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
         img_x          = 20;
         img_y          = 1;
         img_sw         = 480;
         img_sh         = 300;
+    }
+
+    if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get())) {
+        excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
     }
 
     auto result = Yo::File::Render::Excel::Render(excel_template, _fileName, vmp);
