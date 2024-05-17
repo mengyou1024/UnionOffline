@@ -52,8 +52,6 @@ namespace TOFD_PE {
     }
 
     void TofdPeDScanView::setCursor(int newCursor) {
-        qDebug(TAG) << __FUNCTION__;
-        qDebug(TAG) << "lines:" << ((intr() != nullptr) ? intr()->getLines() : -1) << "cursor:" << newCursor;
         if (!intr() || newCursor < 0 || newCursor >= intr()->getLines()) {
             return;
         }
@@ -103,7 +101,6 @@ namespace TOFD_PE {
     TofdPeDScanView::~TofdPeDScanView() {}
 
     void TofdPeDScanView::paint(QPainter* painter) {
-        MOROSE_TEST_TIME_QUICK("painter");
         painter->fillRect(QRect(0, 0, width(), height()), QBrush(Qt::black));
         drawAxis(painter);
         if (isPe()) {
@@ -200,8 +197,9 @@ namespace TOFD_PE {
         QImage     dScan(maxLines, intr()->getAScanSize(), QImage::Format_RGB32);
         for (uint32_t x = 0; std::cmp_less(x, maxLines); x++) {
             for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
-                if (std::cmp_less(x, intr()->getLines())) {
-                    auto bias    = static_cast<int>(intr()->getTofdData()[x * intr()->getAScanSize() + y]) - 128;
+                auto index_x = static_cast<int>(x) + static_cast<int>(intr()->tofdSpace());
+                if (std::cmp_less(index_x, intr()->getLines()) && std::cmp_greater_equal(index_x, 0)) {
+                    auto bias    = static_cast<int>(intr()->getTofdData()[index_x * intr()->getAScanSize() + y]) - 128;
                     auto newBias = Union::CalculateGainOutput((double)bias, softGain());
                     if (newBias > 72) {
                         newBias = 72;
@@ -227,8 +225,9 @@ namespace TOFD_PE {
         QImage     dScan(maxLines, intr()->getAScanSize(), QImage::Format_RGB32);
         for (uint32_t x = 0; std::cmp_less(x, maxLines); x++) {
             for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
-                if (std::cmp_less(x, intr()->getSubLines())) {
-                    auto    _t   = Union::CalculateGainOutput((double)intr()->getPeData()[x * intr()->getAScanSize() + y], softGain());
+                auto index_x = static_cast<int>(x) + static_cast<int>(intr()->peSpace());
+                if (std::cmp_less(index_x, intr()->getSubLines()) && std::cmp_greater_equal(index_x, 0)) {
+                    auto    _t   = Union::CalculateGainOutput((double)intr()->getPeData()[index_x * intr()->getAScanSize() + y], softGain());
                     uint8_t gray = 0;
                     if (_t > 255.0) {
                         gray = 255;
@@ -254,7 +253,6 @@ namespace TOFD_PE {
                 return std::nullopt;
             }
             const std::span data_ptr(intr()->getTofdData().begin() + (intr()->getAScanSize() * m_cursor), intr()->getAScanSize());
-            qDebug(TAG) << "data size:" << intr()->getTofdData().size();
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
@@ -291,7 +289,6 @@ namespace TOFD_PE {
             }
             return data;
         };
-        qDebug(TAG) << "m_aScanView == nullptr:" << m_aScanView;
         if (m_aScanView == nullptr) {
             return;
         }

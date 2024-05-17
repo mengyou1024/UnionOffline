@@ -504,7 +504,7 @@ ScrollView {
                     TextField {
                         id: tf_tofd_space
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 24
+                        Layout.preferredHeight: 28
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         background: Rectangle {
@@ -512,13 +512,11 @@ ScrollView {
                             border.width: 1
                             color: "white"
                         }
-                        validator: DoubleValidator {
-                            decimals: 1
-                            notation: DoubleValidator.StandardNotation
+                        validator: IntValidator {
                             top: 1000
                             bottom: -1000
                         }
-                        placeholderText: "102"
+                        text: "0"
                     }
                     Text {
                         text: qsTr("mm")
@@ -528,6 +526,7 @@ ScrollView {
                         onClicked: {
                             let val = parseFloat(tf_tofd_space.text)
                             if (isNaN(val)) {
+                                tf_tofd_space.text = "0"
                                 val = 0
                             }
                             console.log(category, "emit --> tofdSpaceValueModified:", parseFloat(val))
@@ -554,7 +553,7 @@ ScrollView {
                     TextField {
                         id: tf_pe_space
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 24
+                        Layout.preferredHeight: 28
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         background: Rectangle {
@@ -562,12 +561,11 @@ ScrollView {
                             border.width: 1
                             color: "white"
                         }
-                        validator: DoubleValidator {
-                            decimals: 1
-                            notation: DoubleValidator.StandardNotation
+                        validator: IntValidator {
                             top: 1000
                             bottom: -1000
                         }
+                        text: "0"
                     }
                     Text {
                         text: qsTr("mm")
@@ -577,6 +575,7 @@ ScrollView {
                         onClicked: {
                             let val = parseFloat(tf_pe_space.text)
                             if (isNaN(val)) {
+                                tf_pe_space.text = "0"
                                 val = 0
                             }
                             console.log(category, "emit --> peSpaceValueModified:", val)

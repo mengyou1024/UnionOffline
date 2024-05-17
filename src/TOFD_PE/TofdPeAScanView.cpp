@@ -1,5 +1,4 @@
 #include "TofdPeAScanView.hpp"
-#include "../common/common.hpp"
 #include <QLoggingCategory>
 #include <QQmlProperty>
 #include <QValueAxis>
@@ -15,7 +14,6 @@ namespace TOFD_PE {
     }
 
     void TofdPeAScanView::paint(QPainter* painter) {
-        MOROSE_TEST_TIME_QUICK("Update TOFD/PE AScan.");
         painter->fillRect(QRect(0, 0, width(), height()), Qt::black);
         drawGridLines(painter);
         drawAScanLine(painter);

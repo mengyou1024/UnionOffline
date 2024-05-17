@@ -231,11 +231,13 @@ Rectangle {
         function onTofdSpaceValueModified(val) {
             console.log(category, "onTofdSpaceValueModified, value:", val)
             tofd_pe_intr.tofdSpace = val
+            sv_tofd.update()
         }
 
         function onPeSpaceValueModified(val) {
             console.log(category, "onPeSpaceValueModified, value:", val)
             tofd_pe_intr.peSpace = val
+            sv_pe.update()
         }
     }
 
