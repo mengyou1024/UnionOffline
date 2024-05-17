@@ -51,6 +51,8 @@ ScrollView {
     property alias editTofdSpace: tf_tofd_space.text
     property alias editPeSpace: tf_pe_space.text
 
+    property alias hasPe: cb_pe_show.enabled
+
     // 报表生成按钮信号
     signal reportExportClicked(string fileName)
     // TOFD软件增益变化信号
@@ -91,6 +93,11 @@ ScrollView {
                     checked: true
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
+                    }
+                    onEnabledChanged: {
+                        if (enabled === false) {
+                            checked = false
+                        }
                     }
                 }
 

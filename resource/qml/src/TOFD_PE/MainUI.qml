@@ -290,6 +290,7 @@ Rectangle {
         tofd_pe_intr.peSpace = 0
         tofd_pe_intr.tofdSpace = 0
         controlTarget.reInit()
+        controlTarget.hasPe = tofd_pe_intr.hasPe()
 
         console.log(category, "tofd_pe_intr.getSubAngle():", tofd_pe_intr.getSubAngle())
         console.log(category, "reInitMask")

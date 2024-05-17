@@ -31,6 +31,13 @@ namespace TOFD_PE {
         emit peSpaceChanged();
     }
 
+    bool TofdPeInteractor::hasPe() const {
+        if (m_data != nullptr) {
+            return m_data->hasPe();
+        }
+        return false;
+    }
+
     const QJsonObject TofdPeInteractor::getTofdParam() const {
         if (m_data != nullptr) {
             return m_data->getTofdParam();

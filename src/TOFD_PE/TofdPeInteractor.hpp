@@ -46,6 +46,7 @@ namespace TOFD_PE {
         void                        setTofdSpace(qreal newTofdSpace);
         qreal                       peSpace() const;
         void                        setPeSpace(qreal newPeSpace);
+        Q_INVOKABLE bool            hasPe() const;
 
         Q_INVOKABLE const QJsonObject getTofdParam() const;
         Q_INVOKABLE const QJsonObject getPeParam() const;
