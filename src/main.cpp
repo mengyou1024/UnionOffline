@@ -50,7 +50,11 @@ int main(int argc, char* argv[]) {
 
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
-
+    qInfo() << "app start param:";
+    for (auto i = 0; i < argc; i++) {
+        qInfo() << argv[i];
+    }
+    qInfo() << std::string(80, '-').c_str();
     QTemporaryDir tempDir;
     QSettings     cacheSetting("setting.ini", QSettings::IniFormat);
     cacheSetting.beginGroup("Cache");
