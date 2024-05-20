@@ -210,7 +210,7 @@ ScrollView {
                     columns: 2
                     CButton {
                         text: isReplayStart ? qsTr("播放") : qsTr("停止")
-                        onClicked: {
+                        onReleased: {
                             replayStartClicked(isReplayStart)
                             console.log(category, "isReplayStart:", isReplayStart)
                             if (isReplayStart === false) {
@@ -231,7 +231,7 @@ ScrollView {
 
                     CButton {
                         text: qsTr("×" + replaySpeed + ">>")
-                        onClicked: {
+                        onReleased: {
                             replaySpeed *= 2
                             if (replaySpeed > 8) {
                                 replaySpeed = 1
