@@ -1,5 +1,4 @@
 #include "TofdPeDScanView.hpp"
-#include "../common/common.hpp"
 #include <QLoggingCategory>
 #include <QQmlProperty>
 #include <QValueAxis>
@@ -8,8 +7,6 @@
 #include <Yo/File>
 #include <span>
 #include <vector>
-
-static Q_LOGGING_CATEGORY(TAG, "TOFD_PE.VIEW.DSCAN");
 
 namespace TOFD_PE {
     TofdPeInteractor* TofdPeDScanView::intr() const {
