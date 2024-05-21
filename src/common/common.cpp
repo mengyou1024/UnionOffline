@@ -153,7 +153,7 @@ void Morose::registeAllAScanFileSelector() {
 
 void Morose::registeAllTofdPeFileSelector() {
     Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
-    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
+    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TOF::TofType::FromFile);
 }
 
 QJsonObject& Morose::getGlobalEnvironment() {

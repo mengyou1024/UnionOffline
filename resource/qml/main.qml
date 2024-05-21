@@ -117,6 +117,7 @@ ApplicationWindow {
                 implicitWidth: 6
                 color: SplitHandle.pressed ? "#c6e2ff" : (SplitHandle.hovered ? Qt.lighter("#c6e2ff", 1.1) : "#c6e2ff")
 
+                // @disable-check M16
                 containmentMask: Item {
                     x: (handleDelegate.width - width) / 2
                     width: 20
@@ -176,6 +177,7 @@ ApplicationWindow {
                             font.pixelSize: 16
                         }
                         MouseArea {
+                            // @disable-check M16
                             cursorShape: Qt.PointingHandCursor
                             anchors.fill: parent
                             hoverEnabled: true

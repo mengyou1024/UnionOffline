@@ -597,5 +597,7 @@ ScrollView {
     function reInit() {
         tf_pe_space.text = "0"
         tf_tofd_space.text = "0"
+        cb_pe_show.checked = true
+        hasPe = true
     }
 }
