@@ -26,10 +26,8 @@ Rectangle {
         ScanView {
             id: sv_tofd
             visible: controlTarget === null ? true : controlTarget.tofdShow
-            Layout.minimumWidth: control.width - 10
-            Layout.maximumWidth: control.width - 10
-            Layout.minimumHeight: (control.height - parent.spacing - 10) / 2
-            Layout.maximumHeight: (control.height - parent.spacing - 10) / 2
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             intr: tofd_pe_intr
             softGain: controlTarget === null ? 0 : controlTarget.tofdSoftGain
             onThorughWaveEvent: (x, y, w, h, isPull) => {
@@ -72,10 +70,8 @@ Rectangle {
             id: sv_pe
             isPe: true
             visible: controlTarget === null ? true : controlTarget.peShow
-            Layout.minimumWidth: control.width - 10
-            Layout.maximumWidth: control.width - 10
-            Layout.minimumHeight: (control.height - parent.spacing - 10) / 2
-            Layout.maximumHeight: (control.height - parent.spacing - 10) / 2
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             intr: tofd_pe_intr
             softGain: controlTarget === null ? 0 : controlTarget.peSoftGain
             vText1: `(↘${_vTextShowValue1}  →${(Math.cos(_angle) * _vTextShowValue1).toFixed(1)}  ↓${(Math.sin(_angle) * _vTextShowValue1).toFixed(1)})`
