@@ -99,10 +99,11 @@ namespace TOFD_PE {
 
     void TofdPeDScanView::paint(QPainter* painter) {
         painter->fillRect(QRect(0, 0, width(), height()), QBrush(Qt::black));
-        drawAxis(painter);
         if (isPe()) {
+            drawAxis(painter);
             drawSecondDScan(painter);
         } else {
+            drawTofdVerticalAxis(painter);
             drawDScan(painter);
         }
     }
@@ -112,77 +113,77 @@ namespace TOFD_PE {
     }
 
     void TofdPeDScanView::drawAxis(QPainter* painter) const {
-        const auto drawAble = getDrawable();
-        painter->fillRect(QRect(0, 0, AXIS_WIDTH, height()), QBrush(0xafeeee));
-        painter->fillRect(QRect(AXIS_WIDTH, drawAble.bottom() + 1, drawAble.width(), AXIS_WIDTH), QBrush(0xafeeee));
-        // 水平
-        for (int i = 0; i <= 50; i++) {
-            QLineF       li;
-            qreal        x  = std::round(drawAble.x() + ((drawAble.width() - 1) / 50.0) * i);
-            qreal        y  = drawAble.bottom() + 1;
-            QColor       c  = QColor(0x00cc00);
-            QString      s  = QString::number(m_abscissaRange.x() + m_abscissaRange.y() / 50.0 * i, 'f', 0);
-            QFontMetrics fm = painter->fontMetrics();
-            painter->setPen(c);
-            if (i % 10 == 0) {
-                li = {x, y, x, y + 15};
-                if (i == 0) {
-                    c = QColor(255, 0, 0);
-                    painter->setPen(c);
-                } else {
-                    c = QColor(0, 0, 0);
-                    painter->setPen(c);
-                }
-                QRect fmRect   = fm.boundingRect(s);
-                QRect drawRect = {};
-                if (i != 50) {
-                    drawRect = QRect(QPoint(li.p2().x() + 5, li.p2().y() - 5), QSize(fmRect.width(), fmRect.height()));
-                } else {
-                    drawRect = QRect(QPoint(li.p2().x() - fmRect.width() - 5, li.p2().y() - 5), QSize(fmRect.width(), fmRect.height()));
-                }
-                painter->drawText(drawRect, Qt::AlignCenter, s);
-            } else if (i % 5 == 0) {
-                li = {x, y, x, y + 10};
-            } else {
-                li = {x, y, x, y + 5};
-            }
-            painter->drawLine(li);
+        drawHorizontalAxis(painter);
+        drawVerticalAxis(painter);
+    }
+
+    void TofdPeDScanView::drawTofdVerticalAxis(QPainter* painter) const {
+        drawHorizontalAxis(painter);
+        if (intr() == nullptr) {
+            drawVerticalAxis(painter);
         }
+        // 1. 反向推导出零点位置
+        const auto zp_h     = intr()->getVerticalAxisZeroPoint() * getDrawable().height();
+        const auto drawAble = getDrawable();
+
         // 垂直
-        for (int i = 0; i <= 50; i++) {
-            QLineF       li;
-            qreal        x  = drawAble.left() - 1;
-            qreal        y  = std::round((drawAble.height() - 1) / 50.0 * (50 - i));
-            QColor       c  = QColor(0x00cc00);
-            QString      s  = QString::number(m_ordinateRange.x() + m_ordinateRange.y() / 50.0 * (50 - i), 'f', 1);
-            QFontMetrics fm = painter->fontMetrics();
-            painter->setPen(c);
-            if (i % 10 == 0) {
-                li = {x - 15, y, x, y};
-                if (i == 50) {
-                    c = QColor(255, 0, 0);
-                    painter->setPen(c);
-                } else {
-                    c = QColor(0, 0, 0);
-                    painter->setPen(c);
-                }
+        if (zp_h < 0 || zp_h > drawAble.height()) {
+            // 如果零点超过坐标轴区域, 则正常绘制
+            drawVerticalAxis(painter, [this](double v) { return intr()->getTofdDepth(v); });
+        } else {
+            painter->fillRect(QRect(0, 0, AXIS_WIDTH, height()), QBrush(0xafeeee));
+            painter->setPen(QColor(255, 0, 0));
+            painter->drawLine(drawAble.left() - 16, zp_h, drawAble.left() - 1, zp_h);
+
+            auto DrawText = [=](QString s, QPointF pt) {
+                QFontMetricsF fm       = painter->fontMetrics();
+                QRectF        fmRect   = fm.boundingRect(s);
+                QRectF        drawRect = QRectF(QPointF(0, 0), QSizeF(fmRect.width(), fmRect.height()));
                 painter->save();
-                QRect fmRect   = fm.boundingRect(s);
-                QRect drawRect = QRect(QPoint(0, 0), QSize(fmRect.width(), fmRect.height()));
-                if (i != 0) {
-                    painter->translate(li.p1().x() + 5, li.p1().y() + 5);
-                } else {
-                    painter->translate(li.p1().x() + 5, li.p1().y() + 5);
-                }
+                painter->translate(pt.x() + 5, pt.y() + 5);
                 painter->rotate(90);
                 painter->drawText(drawRect, Qt::AlignCenter, s);
                 painter->restore();
-            } else if (i % 5 == 0) {
-                li = {x - 10, y, x, y};
-            } else {
-                li = {x - 5, y, x, y};
+            };
+            DrawText("0mm", QPointF(drawAble.left() - 1 - 15, zp_h));
+
+            qreal step = std::round((drawAble.height() - 1) / 50.0);
+
+            const auto GET_DRAW_PARAM = [](int idx) -> std::tuple<int, QColor, bool> {
+                idx %= 10;
+                if (idx == 0) {
+                    return std::make_tuple(AXIS_WIDTH - 16, Qt::black, true);
+                } else if (idx == 5) {
+                    return std::make_tuple(AXIS_WIDTH - 11, 0x00cc00, false);
+                }
+                return std::make_tuple(AXIS_WIDTH - 6, 0x00cc00, false);
+            };
+
+            using _My_t = std::tuple<int, QColor, bool>;
+
+            const auto DRAW_AXIS = [=, this](const _My_t param, double y) {
+                const auto& [start, color, need_draw_text] = param;
+                painter->setPen(color);
+                painter->drawLine(start, y, drawAble.left() - 1, y);
+                if (need_draw_text) {
+                    auto val = static_cast<double>(y) / static_cast<double>(drawAble.height());
+                    auto str = QString::number(intr()->getTofdDepth(val));
+                    DrawText(str, QPointF(start, y));
+                }
+            };
+
+            int draw_times = 0;
+            // 向上画
+            while ((++draw_times * step) - zp_h < 0) {
+                auto y = zp_h - (draw_times * step);
+                DRAW_AXIS(GET_DRAW_PARAM(draw_times), y);
             }
-            painter->drawLine(li);
+            draw_times = 0;
+            // 向下画
+            while ((++draw_times * step) + zp_h < drawAble.height()) {
+                auto y = zp_h + (draw_times * step);
+                DRAW_AXIS(GET_DRAW_PARAM(draw_times), y);
+            }
         }
     }
 
@@ -241,6 +242,85 @@ namespace TOFD_PE {
             }
         }
         painter->drawImage(getDrawable(), dScan);
+    }
+
+    void TofdPeDScanView::drawHorizontalAxis(QPainter* painter) const {
+        const auto drawAble = getDrawable();
+        painter->fillRect(QRect(AXIS_WIDTH, drawAble.bottom() + 1, drawAble.width(), AXIS_WIDTH), QBrush(0xafeeee));
+        // 水平
+        for (int i = 0; i <= 50; i++) {
+            QLineF        li;
+            qreal         x  = std::round(drawAble.x() + ((drawAble.width() - 1) / 50.0) * i);
+            qreal         y  = drawAble.bottom() + 1;
+            QColor        c  = QColor(0x00cc00);
+            QString       s  = QString::number(m_abscissaRange.x() + m_abscissaRange.y() / 50.0 * i, 'f', 0);
+            QFontMetricsF fm = painter->fontMetrics();
+            painter->setPen(c);
+            if (i % 10 == 0) {
+                li = {x, y, x, y + 15};
+                if (i == 0) {
+                    c = QColor(255, 0, 0);
+                    painter->setPen(c);
+                } else {
+                    c = QColor(0, 0, 0);
+                    painter->setPen(c);
+                }
+                QRectF fmRect   = fm.boundingRect(s);
+                QRectF drawRect = {};
+                if (i != 50) {
+                    drawRect = QRectF(QPointF(li.p2().x() + 5, li.p2().y() - 5), QSizeF(fmRect.width(), fmRect.height()));
+                } else {
+                    drawRect = QRectF(QPointF(li.p2().x() - fmRect.width() - 5, li.p2().y() - 5), QSizeF(fmRect.width(), fmRect.height()));
+                }
+                painter->drawText(drawRect, Qt::AlignCenter, s);
+            } else if (i % 5 == 0) {
+                li = {x, y, x, y + 10};
+            } else {
+                li = {x, y, x, y + 5};
+            }
+            painter->drawLine(li);
+        }
+    }
+
+    void TofdPeDScanView::drawVerticalAxis(QPainter* painter, std::optional<std::function<double(double)>> axisFunc) const {
+        const auto drawAble = getDrawable();
+        painter->fillRect(QRect(0, 0, AXIS_WIDTH, height()), QBrush(0xafeeee));
+        // 垂直
+        for (int i = 0; i <= 50; i++) {
+            QLineF  li;
+            qreal   x = drawAble.left() - 1;
+            qreal   y = std::round((drawAble.height() - 1) / 50.0 * (50 - i));
+            QColor  c = QColor(0x00cc00);
+            QString s = QString::number(m_ordinateRange.x() + m_ordinateRange.y() / 50.0 * (50 - i), 'f', 1);
+            if (axisFunc.has_value()) {
+                s = QString::number(axisFunc.value()((50.0 - i) / 50.0), 'f', 1);
+            }
+            QFontMetricsF fm = painter->fontMetrics();
+            painter->setPen(c);
+            if (i % 10 == 0) {
+                li = {x - 15, y, x, y};
+                if (i == 50) {
+                    c = QColor(255, 0, 0);
+                    painter->setPen(c);
+                } else {
+                    c = QColor(0, 0, 0);
+                    painter->setPen(c);
+                }
+                painter->save();
+                QRectF fmRect   = fm.boundingRect(s);
+                QRectF drawRect = QRectF(QPointF(0, 0), QSizeF(fmRect.width(), fmRect.height()));
+
+                painter->translate(li.p1().x() + 5, li.p1().y() + 5);
+                painter->rotate(90);
+                painter->drawText(drawRect, Qt::AlignCenter, s);
+                painter->restore();
+            } else if (i % 5 == 0) {
+                li = {x - 10, y, x, y};
+            } else {
+                li = {x - 5, y, x, y};
+            }
+            painter->drawLine(li);
+        }
     }
 
     void TofdPeDScanView::updateAScan() const {

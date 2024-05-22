@@ -30,11 +30,31 @@ Rectangle {
             Layout.fillHeight: true
             intr: tofd_pe_intr
             softGain: controlTarget === null ? 0 : controlTarget.tofdSoftGain
+
+            vText1: `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
+            vText2: `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+
+            onAdjustDepth: depth => {
+                               tofd_pe_intr.adjustDepth(depth)
+                               vText1 = Qt.binding(() => {
+                                                       return `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
+                                                   })
+                               vText2 = Qt.binding(() => {
+                                                       return `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+                                                   })
+                           }
+
             onThorughWaveEvent: (x, y, w, h, isPull) => {
                                     tofd_pe_intr.throughWaveEvent(x, y, w, h, isPull)
                                 }
             onRollBack: {
                 tofd_pe_intr.rollBack()
+                vText1 = Qt.binding(() => {
+                                        return `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
+                                    })
+                vText2 = Qt.binding(() => {
+                                        return `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+                                    })
             }
 
             onHValue1Changed: {

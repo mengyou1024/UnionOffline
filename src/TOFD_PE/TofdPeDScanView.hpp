@@ -46,9 +46,8 @@ namespace TOFD_PE {
         void              setAbscissaRange(QPointF newAbscissaRange);
         QPointF           ordinateRange() const;
         void              setOrdinateRange(QPointF newOrdinateRange);
-
-        TofdPeAScanView* aScanView() const;
-        void             setAScanView(TofdPeAScanView* newAScanView);
+        TofdPeAScanView*  aScanView() const;
+        void              setAScanView(TofdPeAScanView* newAScanView);
 
     signals:
         void intrChanged();
@@ -57,7 +56,6 @@ namespace TOFD_PE {
         void cursorChanged();
         void abscissaRangeChanged();
         void ordinateRangeChanged();
-
         void aScanViewChanged();
 
     protected:
@@ -65,9 +63,13 @@ namespace TOFD_PE {
 
     private:
         inline static constexpr auto AXIS_WIDTH = 35;
-        void                         drawAxis(QPainter* painter) const;
-        void                         drawDScan(QPainter* painter) const;
-        void                         drawSecondDScan(QPainter* painter) const;
+
+        void drawAxis(QPainter* painter) const;
+        void drawTofdVerticalAxis(QPainter* painter) const;
+        void drawDScan(QPainter* painter) const;
+        void drawSecondDScan(QPainter* painter) const;
+        void drawHorizontalAxis(QPainter* painter) const;
+        void drawVerticalAxis(QPainter* painter, std::optional<std::function<double(double)>> axisFunc = std::nullopt) const;
 
         Q_PROPERTY(TofdPeInteractor* intr READ intr WRITE setIntr NOTIFY intrChanged FINAL)
         Q_PROPERTY(bool isPe READ isPe WRITE setIsPe NOTIFY isPeChanged FINAL)

@@ -52,6 +52,31 @@ namespace TOFD_PE {
         return QJsonObject();
     }
 
+    double TofdPeInteractor::getTofdDepth(double val) const {
+        if (m_data == nullptr) {
+            return Union::KeepDecimals<1>(Union::ValueMap(val, {0.0, 100.0}));
+        }
+        if (m_adjsutDepthFunc == std::nullopt) {
+            double half_pcs = m_data->getPCS() / 2;
+            double time_mm  = val * m_data->getTofdRange() + m_data->getTofdDelay();
+            double sign     = 1.0;
+            if (half_pcs > time_mm) {
+                sign = -1.0;
+            }
+            return Union::KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(time_mm, 2) - std::pow(half_pcs, 2))));
+        } else {
+            return m_adjsutDepthFunc.value()(val);
+        }
+    }
+
+    double TofdPeInteractor::getVerticalAxisZeroPoint() const {
+        if (m_getVerticalAixsZero == std::nullopt) {
+            double half_pcs = m_data->getPCS() / 2;
+            return (half_pcs - m_data->getTofdDelay()) / m_data->getTofdRange();
+        }
+        return m_getVerticalAixsZero.value()();
+    }
+
     void TofdPeInteractor::removeThroughWaveEvent(qreal x, qreal y, qreal w, qreal h) {
         if (m_data != nullptr) {
             m_data->removeThroughWaveEvent(x, y, w, h);
@@ -202,11 +227,31 @@ namespace TOFD_PE {
         emit updatePrivateData();
     }
 
+    void TofdPeInteractor::adjustDepth(qreal depth) {
+        if (m_data == nullptr) {
+            return;
+        }
+
+        m_getVerticalAixsZero = [=] { return depth; };
+
+        m_adjsutDepthFunc = [=, this](double val) -> double {
+            double distance   = depth * m_data->getTofdRange() + m_data->getTofdDelay();
+            double current_mm = val * m_data->getTofdRange() + m_data->getTofdDelay();
+            double sign       = 1.0;
+            if (distance > current_mm) {
+                sign = -1.0;
+            }
+            return Union::KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(current_mm, 2) - std::pow(distance, 2))));
+        };
+        emit updatePrivateData();
+    }
+
     void TofdPeInteractor::rollBack() {
         qDebug(TAG) << "撤销";
         if (m_data != nullptr) {
             m_data->rollback();
         }
+        m_adjsutDepthFunc = std::nullopt;
         emit updatePrivateData();
     }
 

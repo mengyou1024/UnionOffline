@@ -19,37 +19,44 @@ namespace TOFD_PE {
         Q_OBJECT
         QML_ELEMENT
 
-        using DATA_PTR       = std::unique_ptr<Union::TOFD_PE::TofdPeIntf>;
-        DATA_PTR m_data      = nullptr;
-        qreal    m_tofdSpace = 0.0;
-        qreal    m_peSpace   = 0.0;
-        QString  m_file      = "";
+        using DATA_PTR        = std::unique_ptr<Union::TOFD_PE::TofdPeIntf>;
+        using ADJUST_FUNC     = std::optional<std::function<double(double)>>;
+        using VAXIS_ZERO_FUNC = std::optional<std::function<double(void)>>;
+
+        DATA_PTR        m_data                = nullptr;
+        qreal           m_tofdSpace           = 0.0;
+        qreal           m_peSpace             = 0.0;
+        QString         m_file                = "";
+        ADJUST_FUNC     m_adjsutDepthFunc     = std::nullopt;
+        VAXIS_ZERO_FUNC m_getVerticalAixsZero = std::nullopt;
 
     public:
         TofdPeInteractor()  = default;
         ~TofdPeInteractor() = default;
-        Q_INVOKABLE bool            openFile(const QString& fileName);
-        Q_INVOKABLE int             getAScanSize() const;
-        Q_INVOKABLE int             getLines() const;
-        Q_INVOKABLE int             getSubLines() const;
-        Q_INVOKABLE int             getMaxLines() const;
-        Q_INVOKABLE bool            reportExport(QString filePath, QQuickItemGrabResult* img = nullptr) const;
-        const std::vector<uint8_t>& getTofdData() const;
-        const std::vector<uint8_t>& getPeData() const;
-        Q_INVOKABLE qreal           getDelay() const;
-        Q_INVOKABLE qreal           getRange() const;
-        Q_INVOKABLE qreal           getSubRange() const;
-        Q_INVOKABLE qreal           getSubAngle() const;
-        Q_INVOKABLE void            throughWaveEvent(qreal x, qreal y, qreal w, qreal h, bool isPull);
-        Q_INVOKABLE void            rollBack();
-        qreal                       tofdSpace() const;
-        void                        setTofdSpace(qreal newTofdSpace);
-        qreal                       peSpace() const;
-        void                        setPeSpace(qreal newPeSpace);
-        Q_INVOKABLE bool            hasPe() const;
-
+        Q_INVOKABLE bool              openFile(const QString& fileName);
+        Q_INVOKABLE int               getAScanSize() const;
+        Q_INVOKABLE int               getLines() const;
+        Q_INVOKABLE int               getSubLines() const;
+        Q_INVOKABLE int               getMaxLines() const;
+        Q_INVOKABLE bool              reportExport(QString filePath, QQuickItemGrabResult* img = nullptr) const;
+        const std::vector<uint8_t>&   getTofdData() const;
+        const std::vector<uint8_t>&   getPeData() const;
+        Q_INVOKABLE qreal             getDelay() const;
+        Q_INVOKABLE qreal             getRange() const;
+        Q_INVOKABLE qreal             getSubRange() const;
+        Q_INVOKABLE qreal             getSubAngle() const;
+        Q_INVOKABLE void              throughWaveEvent(qreal x, qreal y, qreal w, qreal h, bool isPull);
+        Q_INVOKABLE void              adjustDepth(qreal depth);
+        Q_INVOKABLE void              rollBack();
+        qreal                         tofdSpace() const;
+        void                          setTofdSpace(qreal newTofdSpace);
+        qreal                         peSpace() const;
+        void                          setPeSpace(qreal newPeSpace);
+        Q_INVOKABLE bool              hasPe() const;
         Q_INVOKABLE const QJsonObject getTofdParam() const;
         Q_INVOKABLE const QJsonObject getPeParam() const;
+        Q_INVOKABLE double            getTofdDepth(double val) const;
+        double                        getVerticalAxisZeroPoint() const;
 
     signals:
         void tofdSpaceChanged();

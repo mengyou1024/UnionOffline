@@ -32,6 +32,7 @@ Canvas {
 
     signal thorughWaveEventPrivate(real x, real y, real w, real h, bool isPull)
     signal rollBackPrivate
+    signal adjustDepthPrivate(real depth)
 
     readonly property real x1: Math.round((width - 1) * horizontalValue1) + 0.5
     readonly property real x2: Math.round((width - 1) * horizontalValue2) + 0.5
@@ -153,6 +154,8 @@ Canvas {
             text: qsTr("调校")
             onTriggered: {
                 console.log(category, qsTr("调校"))
+                adjustDepthPrivate(verticalValue1)
+                control.requestPaint()
             }
         }
         MenuItem {

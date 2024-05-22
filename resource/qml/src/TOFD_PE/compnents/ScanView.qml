@@ -27,6 +27,7 @@ Item {
 
     signal thorughWaveEvent(real x, real y, real w, real h, bool isPull)
     signal rollBack
+    signal adjustDepth(real depth)
 
     LoggingCategory {
         id: category
@@ -101,6 +102,10 @@ Item {
                 onRollBackPrivate: {
                     rollBack()
                 }
+
+                onAdjustDepthPrivate: depth => {
+                                          adjustDepth(depth)
+                                      }
             }
         }
 
