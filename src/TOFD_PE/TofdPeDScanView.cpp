@@ -133,7 +133,7 @@ namespace TOFD_PE {
         } else {
             painter->fillRect(QRect(0, 0, AXIS_WIDTH, height()), QBrush(0xafeeee));
             painter->setPen(QColor(255, 0, 0));
-            painter->drawLine(drawAble.left() - 16, zp_h, drawAble.left() - 1, zp_h);
+            painter->drawLine(QPointF(drawAble.left() - 16, zp_h), QPointF(drawAble.left() - 1, zp_h));
 
             auto DrawText = [=](QString s, QPointF pt) {
                 QFontMetricsF fm       = painter->fontMetrics();
@@ -164,7 +164,7 @@ namespace TOFD_PE {
             const auto DRAW_AXIS = [=, this](const _My_t param, double y) {
                 const auto& [start, color, need_draw_text] = param;
                 painter->setPen(color);
-                painter->drawLine(start, y, drawAble.left() - 1, y);
+                painter->drawLine(QPointF(start, y), QPointF(drawAble.left() - 1, y));
                 if (need_draw_text) {
                     auto val = static_cast<double>(y) / static_cast<double>(drawAble.height());
                     auto str = QString::number(intr()->getTofdDepth(val));
