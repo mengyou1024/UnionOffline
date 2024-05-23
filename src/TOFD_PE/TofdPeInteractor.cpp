@@ -70,6 +70,9 @@ namespace TOFD_PE {
     }
 
     double TofdPeInteractor::getVerticalAxisZeroPoint() const {
+        if (m_data == nullptr) {
+            return 0.0;
+        }
         if (m_getVerticalAixsZero == std::nullopt) {
             double half_pcs = m_data->getPCS() / 2;
             return (half_pcs - m_data->getTofdDelay()) / m_data->getTofdRange();

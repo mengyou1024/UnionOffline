@@ -145,7 +145,6 @@ ApplicationWindow {
                         id: folder_list
                         showDirs: false
                         nameFilters: FOLDERLISTMODEL_NAMEFILTER
-                        // @disable-check M16
                         caseSensitive: false
                         folder: file_dialog.folder
                     }

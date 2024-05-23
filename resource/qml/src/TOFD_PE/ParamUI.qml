@@ -51,6 +51,12 @@ ApplicationWindow {
 
                 anchors.fill: parent
                 spacing: 5
+                Item {
+                    Layout.preferredWidth: root.width
+                    Layout.alignment: Qt.AlignHCenter
+                    height: 20
+                }
+
                 Repeater {
                     model: Object.keys(tofd_params)
                     delegate: ColumnLayout {
@@ -72,7 +78,9 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignHCenter
                             spacing: 20
+                            // @disable-check M16
                             leftPadding: 20
+                            // @disable-check M16
                             rightPadding: 20
                             Repeater {
                                 model: Object.keys(tofd_params[pModelData])
@@ -83,6 +91,12 @@ ApplicationWindow {
                             }
                         }
                     }
+                }
+
+                Item {
+                    Layout.preferredWidth: root.width
+                    Layout.alignment: Qt.AlignHCenter
+                    height: 20
                 }
             }
         }
@@ -109,6 +123,13 @@ ApplicationWindow {
             ColumnLayout {
                 anchors.fill: parent
                 spacing: 5
+
+                Item {
+                    Layout.preferredWidth: root.width
+                    Layout.alignment: Qt.AlignHCenter
+                    height: 20
+                }
+
                 Repeater {
                     model: Object.keys(pe_params)
                     delegate: ColumnLayout {
@@ -130,7 +151,9 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignHCenter
                             spacing: 20
+                            // @disable-check M16
                             leftPadding: 20
+                            // @disable-check M16
                             rightPadding: 20
                             Repeater {
                                 model: Object.keys(pe_params[pModelData])
@@ -141,6 +164,12 @@ ApplicationWindow {
                             }
                         }
                     }
+                }
+
+                Item {
+                    Layout.preferredWidth: root.width
+                    Layout.alignment: Qt.AlignHCenter
+                    height: 20
                 }
             }
         }
