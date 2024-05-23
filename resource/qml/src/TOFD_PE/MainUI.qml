@@ -33,6 +33,7 @@ Rectangle {
 
             vText1: `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
             vText2: `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+            vSpace: Math.round((tofd_pe_intr.getTofdDepth(vValue2) - tofd_pe_intr.getTofdDepth(vValue1)) * 10) / 10
 
             onAdjustDepth: depth => {
                                tofd_pe_intr.adjustDepth(depth)
@@ -41,6 +42,9 @@ Rectangle {
                                                    })
                                vText2 = Qt.binding(() => {
                                                        return `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+                                                   })
+                               vSpace = Qt.binding(() => {
+                                                       return Math.round((tofd_pe_intr.getTofdDepth(vValue2) - tofd_pe_intr.getTofdDepth(vValue1)) * 10) / 10
                                                    })
                            }
 
@@ -54,6 +58,9 @@ Rectangle {
                                     })
                 vText2 = Qt.binding(() => {
                                         return `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+                                    })
+                vSpace = Qt.binding(() => {
+                                        return Math.round((tofd_pe_intr.getTofdDepth(vValue2) - tofd_pe_intr.getTofdDepth(vValue1)) * 10) / 10
                                     })
             }
 
