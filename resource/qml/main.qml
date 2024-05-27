@@ -27,6 +27,9 @@ ApplicationWindow {
     signal openFile(string file)
     signal splitViewResizingChanged(bool resizing)
 
+    property string mainUi_name: ""
+    property string fileName2Open: ""
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
@@ -222,8 +225,16 @@ ApplicationWindow {
                     anchors.margins: 2
                     anchors.fill: parent
                     source: ""
+                    asynchronous: true
                     Component.onCompleted: {
                         console.log(category, `loader.main width:${width} height:${height}`)
+                    }
+                    onLoaded: {
+                        loader_ui.item.controlTarget = loader_ctrl.item
+                        loader_ui.item.mainTarget = wnd_main
+                        console.log("main ui loaded")
+                        console.log(category, "openFile, filePath:", fileName2Open)
+                        openFile(fileName2Open)
                     }
                 }
             }
@@ -242,10 +253,11 @@ ApplicationWindow {
                     anchors.fill: parent
                     anchors.margins: 10
                     anchors.centerIn: parent
+                    asynchronous: true
 
                     source: ""
                     onLoaded: {
-                        console.log(`loader height:${loader_ctrl.item.height} width: ${loader_ctrl.item.width}`)
+                        loader_ui.source = mainUi_name
                     }
                 }
             }
@@ -263,6 +275,17 @@ ApplicationWindow {
                 height: parent.height
                 text: qsTr("友联科技, 欢迎使用")
                 verticalAlignment: Text.AlignVCenter
+            }
+
+            ProgressBar {
+                function isLoading() {
+                    return loader_ctrl.status === Loader.Loading || loader_ui.status === Loader.Loading
+                }
+                height: parent.height
+                width: 100
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                value: isLoading() ? (loader_ctrl.progress + loader_ui.progress) / 2 : 0
             }
         }
     }
@@ -304,11 +327,8 @@ ApplicationWindow {
             loader_ctrl.source = ""
         } else {
             loader_ctrl.source = "src/" + type + "/ControlUI.qml"
-            loader_ui.source = "src/" + type + "/MainUI.qml"
-            loader_ui.item.controlTarget = loader_ctrl.item
-            loader_ui.item.mainTarget = wnd_main
-            console.log(category, "AScan filePath:", filePath)
-            openFile(filePath)
+            mainUi_name = "src/" + type + "/MainUI.qml"
+            fileName2Open = filePath
         }
     }
 
