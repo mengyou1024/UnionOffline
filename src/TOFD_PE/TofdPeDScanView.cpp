@@ -49,7 +49,7 @@ namespace TOFD_PE {
     }
 
     void TofdPeDScanView::setCursor(int newCursor) {
-        if (!intr() || newCursor < 0 || newCursor >= intr()->getLines()) {
+        if (!intr() || newCursor < 0 || newCursor >= intr()->getMaxLines()) {
             return;
         }
 
@@ -325,11 +325,15 @@ namespace TOFD_PE {
 
     void TofdPeDScanView::updateAScan() const {
         auto GetData = [&]() -> std::optional<std::vector<uint8_t>> {
-            std::vector<uint8_t> data = {};
-            if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getLines() - 1) {
+            if (intr() == nullptr) {
                 return std::nullopt;
             }
-            const std::span data_ptr(intr()->getTofdData().begin() + (intr()->getAScanSize() * m_cursor), intr()->getAScanSize());
+            auto _cursor = m_cursor + intr()->tofdSpace();
+            if (_cursor < 0 || _cursor >= intr()->getLines()) {
+                return std::nullopt;
+            }
+            std::vector<uint8_t> data = {};
+            const std::span      data_ptr(intr()->getTofdData().begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
@@ -346,11 +350,15 @@ namespace TOFD_PE {
         };
 
         auto GetSecondData = [&]() -> std::optional<std::vector<uint8_t>> {
-            std::vector<uint8_t> data = {};
-            if (m_cursor < 0 || intr() == nullptr || m_cursor > intr()->getSubLines() - 1) {
+            if (intr() == nullptr) {
                 return std::nullopt;
             }
-            const std::span data_ptr(intr()->getPeData().begin() + (intr()->getAScanSize() * m_cursor), intr()->getAScanSize());
+            auto _cursor = m_cursor + intr()->peSpace();
+            if (_cursor < 0 || _cursor >= intr()->getSubLines()) {
+                return std::nullopt;
+            }
+            std::vector<uint8_t> data = {};
+            const std::span      data_ptr(intr()->getPeData().begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto  raw    = data_ptr[i];
                 auto  _t     = Union::CalculateGainOutput((double)raw, softGain());

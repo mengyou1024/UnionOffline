@@ -77,7 +77,7 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.rowSpan: 2
-            cursor: intr ? Math.round(intr.getLines() * mask.horizontalValue1) : 0
+            cursor: intr ? Math.floor(intr.getMaxLines() * mask.horizontalValue1) : 0
             LinesMask {
                 id: mask
                 x: 35
