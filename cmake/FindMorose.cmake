@@ -116,7 +116,7 @@ function(morose_auto_release)
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${PLUGIN_DIRS}
 
                 # 拷贝生成的EXE
-                COMMAND ${CMAKE_COMMAND} -E copy
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
                 "${MOROSE_DIST_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
 
@@ -140,7 +140,7 @@ function(morose_auto_release)
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${PLUGIN_DIRS}
 
                 # 拷贝生成的EXE
-                COMMAND ${CMAKE_COMMAND} -E copy
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
                 "${MOROSE_DIST_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
 
@@ -195,7 +195,7 @@ macro(morose_plugin_setup)
     string(TOLOWER ${SETUP_TYPE} SETUP_TYPE)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}"
         "${MOROSE_RUNTIME_PLUGINS_DIR}/${SETUP_TYPE}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}"
         COMMAND echo "copy plugin [${SETUP_TYPE}/${PROJECT_NAME}] to runtime directory"
         COMMENT "copy plugin [${SETUP_TYPE}/${PROJECT_NAME}] to runtime directory"
@@ -204,7 +204,7 @@ macro(morose_plugin_setup)
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}"
             "${MOROSE_PLUGINS_DIR}/${SETUP_TYPE}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}"
             COMMAND echo "copy plugin [${SETUP_TYPE}/${PROJECT_NAME}] to bundle directory"
             COMMENT "copy plugin [${SETUP_TYPE}/${PROJECT_NAME}] to bundle directory"
@@ -247,6 +247,7 @@ function(morose_copy)
     if(COPY_FILES)
         # 拷贝文件[列表]
         set(COPY_FILE_STRING "")
+        set(DEP_FILE_STRING "")
 
         foreach(ITEM ${COPY_FILES})
             get_filename_component(COPY_FILENAME ${ITEM} NAME)
@@ -259,18 +260,26 @@ function(morose_copy)
                 endif(COPY_FILE_LEN EQUAL "1")
             endif(COPY_RENAME)
 
-            list(APPEND COPY_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
+            list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
+            list(APPEND COPY_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
 
             if(CMAKE_BUILD_TYPE STREQUAL "Release")
-                list(APPEND COPY_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
+                list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
+                list(APPEND COPY_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
             endif(CMAKE_BUILD_TYPE STREQUAL "Release")
         endforeach(ITEM ${COPY_FILES})
 
         add_custom_command(
-            TARGET ${COPY_TARGET} POST_BUILD
+            TARGET MOROSE_COPY POST_BUILD
 
             # 拷贝文件至运行目录
             ${COPY_FILE_STRING}
+            COMMENT "copy file"
+            DEPENDS
+            "${DEP_FILE_STRING}"
+            BYPRODUCTS
+            "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_FILENAME}"
+            "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_FILENAME}"
         )
 
         if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -298,6 +307,7 @@ function(morose_copy)
     if(COPY_DIRS)
         # 拷贝目录[列表]
         set(COPY_DIR_STRING "")
+        set(DEP_FILE_STRING "")
 
         foreach(ITEM ${COPY_DIRS})
             get_filename_component(COPY_DIRNAME ${ITEM} NAME)
@@ -309,19 +319,25 @@ function(morose_copy)
                     set(COPY_DIRNAME ${COPY_RENAME})
                 endif(COPY_DIR_LEN EQUAL "1")
             endif(COPY_RENAME)
-
-            list(APPEND COPY_DIR_STRING COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}")
+            list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
+            list(APPEND COPY_DIR_STRING COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}")
 
             if(CMAKE_BUILD_TYPE STREQUAL "Release")
-                list(APPEND COPY_DIR_STRING COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}")
+                list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
+                list(APPEND COPY_DIR_STRING COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}")
             endif(CMAKE_BUILD_TYPE STREQUAL "Release")
         endforeach(ITEM ${COPY_DIRS})
 
         add_custom_command(
-            TARGET ${COPY_TARGET} POST_BUILD
+            TARGET MOROSE_COPY POST_BUILD
 
             # 拷贝的是目录
             ${COPY_DIR_STRING}
+            DEPENDS
+            "${DEP_FILE_STRING}"
+            BYPRODUCTS
+            "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
+            "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
         )
 
         if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -367,17 +383,17 @@ function(morose_add_environment_config_file)
     # 拷贝ConfigFile至运行目录
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         if(CONF_RUNTIME_USE_PRODUCT)
-            list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
+            list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
         else(CONF_RUNTIME_USE_PRODUCT)
-            list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
+            list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
         endif(CONF_RUNTIME_USE_PRODUCT)
     else(CMAKE_BUILD_TYPE STREQUAL "Release")
-        list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
+        list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}" "${CMAKE_BINARY_DIR}/${CONF_DIST}")
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         # 拷贝ConfigFile至发布目录
-        list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}" "${MOROSE_DIST_DIR}/${CONF_DIST}")
+        list(APPEND CONF_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}" "${MOROSE_DIST_DIR}/${CONF_DIST}")
 
         # 添加至卸载的删除路径
         string(FIND "${MOROSE_UNINSTALL_DELETE}" "/${CONF_DIST}" pos)
@@ -387,7 +403,20 @@ function(morose_add_environment_config_file)
         endif(pos EQUAL -1)
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
-    add_custom_command(TARGET ${CONF_TARGET} POST_BUILD ${CONF_FILE_STRING})
+    set(CONFIG_DEPS "")
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(CONFIG_DEPS "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}")
+    else(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(CONFIG_DEPS "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}")
+    endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
+    add_custom_target(
+        MOROSE_COPY ALL
+        COMMAND ${CONF_FILE_STRING}
+        COMMENT "MOROSE COPY"
+        DEPENDS "${CONFIG_DEPS}"
+        BYPRODUCTS "${CMAKE_BINARY_DIR}/${CONF_DIST}"
+    )
 endfunction(morose_add_environment_config_file)
 
 #[[
