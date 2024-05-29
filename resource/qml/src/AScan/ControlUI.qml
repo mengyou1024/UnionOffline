@@ -31,6 +31,7 @@ ScrollView {
     property alias replayContinuous: cb_continuous.checked
     property alias imageVisible: img_rect.visible
     property alias showRailWeldDigram: area_rail_weld_digram.visible
+    property int replayTimerBaseInterval: 40
 
     signal showImage
 
@@ -85,7 +86,7 @@ ScrollView {
                     CComboBox {
                         id: com_fileName_list
                         Layout.preferredWidth: 160
-                        Layout.preferredHeight: 24
+                        Layout.preferredHeight: 28
                         onCurrentIndexChanged: {
                             console.log(category, "id: com_fileName_list ComboBox onCurrentIndexChanged")
                             setFileNameIndex(currentIndex)
@@ -102,7 +103,7 @@ ScrollView {
                     Label {
                         id: lb_date
                         Layout.preferredWidth: 160
-                        Layout.preferredHeight: 24
+                        Layout.preferredHeight: 28
                         background: Rectangle {
                             border.color: "#d8d8d8"
                             border.width: 1
@@ -306,6 +307,7 @@ ScrollView {
                 LQC.CheckBox {
                     id: cb_continuous
                     text: qsTr("连续播放所有子文件")
+                    enabled: fileNameList.length > 1
                     checked: true
                     Layout.alignment: Qt.AlignHCenter
                     Layout.bottomMargin: 10
@@ -380,7 +382,11 @@ ScrollView {
 
     Timer {
         id: replayTimer
-        interval: 40 / replaySpeed
+        interval: replayTimerBaseInterval / replaySpeed
+        onIntervalChanged: {
+            console.log("interval:", interval)
+        }
+
         repeat: true
         onTriggered: {
             var newValue = sl_timerLine.value + 1

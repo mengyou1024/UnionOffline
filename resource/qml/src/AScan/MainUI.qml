@@ -137,6 +137,13 @@ Rectangle {
             value: interactor.showRailWeldDigramSpecial
         }
 
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
+            property: "replayTimerBaseInterval"
+            value: interactor.replayTimerInterval
+        }
+
         onReplayValueChanged: {
             controlTarget.replayValue = replayValue
         }

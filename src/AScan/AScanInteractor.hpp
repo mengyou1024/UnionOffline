@@ -26,6 +26,7 @@ class AScanInteractor : public QQuickItem {
     QString     distanceMode              = "N";
     bool        hasCameraImage            = false;
     bool        showRailWeldDigramSpecial = false;
+    int         replayTimerInterval       = 0;
 
     using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
 
@@ -116,6 +117,9 @@ public:
     bool getShowRailWeldDigramSpecial() const;
     void setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
 
+    int getReplayTimerInterval() const;
+    void setReplayTimerInterval(int newReplayTimerInterval);
+
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
     Q_INVOKABLE bool         performanceClicked(QString fileName);
@@ -143,6 +147,8 @@ signals:
     void hasCameraImageChanged();
     void showRailWeldDigramSpecialChanged();
 
+    void replayTimerIntervalChanged();
+
 private:
     void changeDataCursor(void);
     void updateCurrentFrame(void);
@@ -158,4 +164,5 @@ private:
     Q_PROPERTY(QString distanceMode READ getDistanceMode WRITE setDistanceMode NOTIFY distanceModeChanged FINAL)
     Q_PROPERTY(bool hasCameraImage READ getHasCameraImage WRITE setHasCameraImage NOTIFY hasCameraImageChanged FINAL)
     Q_PROPERTY(bool showRailWeldDigramSpecial READ getShowRailWeldDigramSpecial WRITE setShowRailWeldDigramSpecial NOTIFY showRailWeldDigramSpecialChanged FINAL)
+    Q_PROPERTY(int replayTimerInterval READ getReplayTimerInterval WRITE setReplayTimerInterval NOTIFY replayTimerIntervalChanged FINAL)
 };

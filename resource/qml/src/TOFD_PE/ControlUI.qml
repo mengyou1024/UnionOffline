@@ -105,8 +105,14 @@ ScrollView {
                     id: cb_vertical_line_following
                     text: qsTr("垂直线联动")
                     checked: true
+                    enabled: hasPe
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
+                    }
+                    onEnabledChanged: {
+                        if (enabled === false) {
+                            checked = false
+                        }
                     }
                 }
 
@@ -114,8 +120,14 @@ ScrollView {
                     id: cb_horizontal_line_following
                     text: qsTr("水平线联动")
                     checked: false
+                    enabled: hasPe
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
+                    }
+                    onEnabledChanged: {
+                        if (enabled === false) {
+                            checked = false
+                        }
                     }
                 }
             }
@@ -598,6 +610,11 @@ ScrollView {
         tf_pe_space.text = "0"
         tf_tofd_space.text = "0"
         cb_pe_show.checked = true
+        peGainSpinBox.value = 0
+        tofdGainSpinBox.value = 0
+        cb_horizontal_line_following.checked = false
+        cb_vertical_line_following.checked = true
+        cb_show_time.checked = false
         hasPe = true
     }
 }

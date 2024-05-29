@@ -319,6 +319,17 @@ void AScanInteractor::setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpe
     emit showRailWeldDigramSpecialChanged();
 }
 
+int AScanInteractor::getReplayTimerInterval() const {
+    return replayTimerInterval;
+}
+
+void AScanInteractor::setReplayTimerInterval(int newReplayTimerInterval) {
+    if (replayTimerInterval == newReplayTimerInterval)
+        return;
+    replayTimerInterval = newReplayTimerInterval;
+    emit replayTimerIntervalChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(ascan ? ascan->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -381,6 +392,7 @@ bool AScanInteractor::openFile(QString _fileName) {
     }
     if (ascan->getDataSize() > 1) {
         setReplayVisible(true);
+        setReplayTimerInterval(ascan->getReplayTimerInterval());
     } else if (ascan->getDataSize() == 1) {
         setReplayVisible(false);
     } else {
