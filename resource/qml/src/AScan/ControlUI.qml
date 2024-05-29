@@ -307,7 +307,7 @@ ScrollView {
                 LQC.CheckBox {
                     id: cb_continuous
                     text: qsTr("连续播放所有子文件")
-                    enabled: fileNameList.length > 1
+                    enabled: fileNameList ? fileNameList.length > 1 : false
                     checked: true
                     Layout.alignment: Qt.AlignHCenter
                     Layout.bottomMargin: 10
