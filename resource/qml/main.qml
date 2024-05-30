@@ -320,15 +320,21 @@ ApplicationWindow {
 
     function actionMainType(type, filePath) {
         console.log(category, "load ui type:", type)
+        let lastMainUIType = mainUIType
         mainUIType = type
         if (type === "Unknow") {
             listView.visible = false
             loader_ui.source = ""
             loader_ctrl.source = ""
         } else {
-            loader_ctrl.source = "src/" + type + "/ControlUI.qml"
-            mainUi_name = "src/" + type + "/MainUI.qml"
-            fileName2Open = filePath
+            if (lastMainUIType !== mainUIType) {
+                loader_ctrl.source = "src/" + type + "/ControlUI.qml"
+                mainUi_name = "src/" + type + "/MainUI.qml"
+                fileName2Open = filePath
+            } else {
+                let index = folder_list.indexOf("file:///" + filePath)
+                listviewIndexChanged(index, folder_list)
+            }
         }
     }
 
