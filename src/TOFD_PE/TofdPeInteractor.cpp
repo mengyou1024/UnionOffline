@@ -99,7 +99,9 @@ namespace TOFD_PE {
         if (!READ_FUNC.has_value()) {
             return false;
         }
-        m_data = (READ_FUNC.value())(fileName.toStdWString());
+        m_data                = (READ_FUNC.value())(fileName.toStdWString());
+        m_getVerticalAixsZero = std::nullopt;
+        m_adjsutDepthFunc     = std::nullopt;
         if (m_data != nullptr) {
             m_file = fileName;
             return true;
