@@ -64,6 +64,12 @@ endif()
 if(Morose_FOUND)
     if((NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json") AND(NOT CMAKE_BUILD_TYPE STREQUAL "Release"))
         message(WARNING "no ProductConfig.json file please see ${CMAKE_SOURCE_DIR}/config/ProductConfigTemplate.json")
+        morose_add_environment_config_file(
+            TARGET ${PROJECT_NAME}
+            DEPLOY "config/DeployConfig.json"
+            PRODUCT "config/DeployConfig.json"
+            DIST "Config.json"
+        )
     else()
         morose_add_environment_config_file(
             TARGET ${PROJECT_NAME}
