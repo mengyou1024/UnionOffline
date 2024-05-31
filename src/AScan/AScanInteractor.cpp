@@ -676,7 +676,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
         // 重新设置DAC曲线的坐标轴范围
         lines[i]->attachedAxes().at(0)->setMin(0.0);
-        lines[i]->attachedAxes().at(0)->setMax(static_cast<qreal>(ascan->getScanData(getAScanCursor()).size()));
+        lines[i]->attachedAxes().at(0)->setMax(495.0);
         lines[i]->attachedAxes().at(1)->setMin(0.0);
         lines[i]->attachedAxes().at(1)->setMax(200.0);
         lines[i]->setVisible();
@@ -685,7 +685,10 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     // 填充数据
     for (int i = 0; std::cmp_less(i, ascan->getScanData(getAScanCursor()).size()); i++) {
         for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
-            pts[j].push_back(QPointF(i, Union::CalculateGainOutput(LineExpr(i), ModifyGain(indexs[j]))));
+            auto val = LineExpr(i);
+            if (val.has_value()) {
+                pts[j].push_back(QPointF(i, Union::CalculateGainOutput(val.value(), ModifyGain(indexs[j]))));
+            }
         }
     }
     // 替换曲线数据
