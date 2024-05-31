@@ -338,9 +338,7 @@ namespace TOFD_PE {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
                 auto newBias = Union::CalculateGainOutput((double)bias, softGain());
-                if (newBias > 72) {
-                    newBias = 72;
-                } else if (newBias < -128) {
+                if (newBias < -128) {
                     newBias = -128;
                 }
                 auto result = static_cast<uint8_t>(newBias + 128);
