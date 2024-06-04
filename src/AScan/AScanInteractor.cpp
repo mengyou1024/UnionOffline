@@ -382,12 +382,12 @@ bool AScanInteractor::openFile(QString _fileName) {
     auto func = Union::AScan::AScanFileSelector::Instance().GetReadFunction(_fileName.toStdWString());
     if (!func.has_value()) {
         QFileInfo info(_fileName);
-        qWarning(TAG) << "can not find readFunc of :" << info.suffix();
+        qWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
         return false;
     }
     ascan = (func.value())(_fileName.toStdWString());
     if (!ascan) {
-        qWarning(TAG) << "Readfile error:" << _fileName;
+        qCritical(TAG) << "read file error, fileName:" << _fileName;
         return false;
     }
     qDebug(QLoggingCategory("TEST")) << "是否是直探头:" << ascan->isStraightBeamProbe(0);

@@ -97,6 +97,7 @@ namespace TOFD_PE {
         MOROSE_TEST_TIME_QUICK("open file:" + fileName);
         auto READ_FUNC = Union::TOFD_PE::TofdPeFileSelector::Instance().GetReadFunction(fileName.toStdWString());
         if (!READ_FUNC.has_value()) {
+            qCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
             return false;
         }
         m_data                = (READ_FUNC.value())(fileName.toStdWString());
@@ -106,6 +107,7 @@ namespace TOFD_PE {
             m_file = fileName;
             return true;
         }
+        qCritical(TAG) << "read file error, fileName:" << fileName;
         return false;
     }
 
