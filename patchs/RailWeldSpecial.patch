@@ -1,25 +1,25 @@
-From b0b69845af49f8cae6d45dbe6aad0ae98764eeb2 Mon Sep 17 00:00:00 2001
+From 045e4dd6659a6643b212bda7e85a7cca87a62c7b Mon Sep 17 00:00:00 2001
 From: mengyou <1523038073@qq.com>
-Date: Tue, 14 May 2024 16:49:59 +0800
-Subject: [PATCH] =?UTF-8?q?patch:=20=E6=9B=B4=E6=96=B0=E9=92=A2=E8=BD=A8?=
- =?UTF-8?q?=E7=84=8A=E7=BC=9D=E8=A1=A5=E4=B8=81?=
+Date: Tue, 4 Jun 2024 11:32:52 +0800
+Subject: [PATCH] =?UTF-8?q?chore:=20=E9=92=A2=E8=BD=A8=E7=84=8A=E7=BC=9D?=
+ =?UTF-8?q?=E7=89=B9=E5=8C=96?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 ---
- CMakeLists.txt                    |  2 +-
- cmake/FindMorose.cmake            |  1 +
- resource/qml/About.qml            |  2 +-
- resource/qml/main.qml             |  3 ++-
- script/pack-installer-msvc.iss.in |  2 +-
- script/pack-installer.iss.in      |  2 +-
- src/common/common.cpp             | 14 +++++++-------
- translations/UnionOffline_en.ts   |  2 +-
- 8 files changed, 15 insertions(+), 13 deletions(-)
+ CMakeLists.txt                    | 2 +-
+ cmake/FindMorose.cmake            | 1 +
+ morose_config.h.in                | 4 ++--
+ resource/qml/About.qml            | 2 +-
+ resource/qml/main.qml             | 3 ++-
+ script/pack-installer-msvc.iss.in | 2 +-
+ script/pack-installer.iss.in      | 2 +-
+ translations/UnionOffline_en.ts   | 2 +-
+ 8 files changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4199914..b82b649 100644
+index c900b7e..a2dad89 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -31,7 +31,7 @@ index 4199914..b82b649 100644
  set(CMAKE_CXX_STANDARD 20)
  set(NUMCPP_NO_USE_BOOST ON)
 diff --git a/cmake/FindMorose.cmake b/cmake/FindMorose.cmake
-index 9eac144..0dfc8fe 100644
+index 999290e..8ad21b8 100644
 --- a/cmake/FindMorose.cmake
 +++ b/cmake/FindMorose.cmake
 @@ -22,6 +22,7 @@ macro(morose_main_setup)
@@ -42,6 +42,18 @@ index 9eac144..0dfc8fe 100644
                  message(STATUS "APP VERSION:" ${APP_VERSION})
              endif()
  
+diff --git a/morose_config.h.in b/morose_config.h.in
+index f724039..5bb7228 100644
+--- a/morose_config.h.in
++++ b/morose_config.h.in
+@@ -2,5 +2,5 @@
+ 
+ #define APP_VERSION                    "@APP_VERSION@"
+ 
+-#define ENABLE_UNION_GENERIC           (1) ///< 使用通用仪器接口
+-#define ENABLE_RAILWELE_SPECIALIZATION (0) ///< 使用钢轨焊缝特化接口
++#define ENABLE_UNION_GENERIC           (0) ///< 使用通用仪器接口
++#define ENABLE_RAILWELE_SPECIALIZATION (1) ///< 使用钢轨焊缝特化接口
 diff --git a/resource/qml/About.qml b/resource/qml/About.qml
 index c1b8bdb..300c29b 100644
 --- a/resource/qml/About.qml
@@ -56,7 +68,7 @@ index c1b8bdb..300c29b 100644
              Text {
                  Layout.fillWidth: true
 diff --git a/resource/qml/main.qml b/resource/qml/main.qml
-index f68f426..ef84c1e 100644
+index 6eca0c4..9ef3133 100644
 --- a/resource/qml/main.qml
 +++ b/resource/qml/main.qml
 @@ -18,7 +18,7 @@ ApplicationWindow {
@@ -68,7 +80,7 @@ index f68f426..ef84c1e 100644
  
      property string mainUIType: "Unknow"
  
-@@ -67,6 +67,7 @@ ApplicationWindow {
+@@ -70,6 +70,7 @@ ApplicationWindow {
                      img_src: "qrc:/img/USB_51.png"
                      btn_txt: qsTr("通讯")
                      height: parent.height
@@ -102,36 +114,6 @@ index 769681a..080f63f 100644
  AppName={#MyAppName}
  AppVersion={#MyAppVersion}
  ;AppVerName={#MyAppName} {#MyAppVersion}
-diff --git a/src/common/common.cpp b/src/common/common.cpp
-index 69e1cda..c02894a 100644
---- a/src/common/common.cpp
-+++ b/src/common/common.cpp
-@@ -142,18 +142,18 @@ void Morose::registerVariable(QQmlContext* context) {
- }
- 
- void Morose::registeAllAScanFileSelector() {
--    Union::AScan::AScanFileSelector::Instance().RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
--    Union::AScan::AScanFileSelector::Instance().RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
--    Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
--    Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
-+    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
-+    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
-+    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
-+    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
-     Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
-     Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
--    Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
-+    // Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
- }
- 
- void Morose::registeAllTofdPeFileSelector() {
--    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
--    Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TOF::TofType::FromFile);
-+    // Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
-+    // Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TOF::TofType::FromFile);
- }
- 
- QJsonObject& Morose::getGlobalEnvironment() {
 diff --git a/translations/UnionOffline_en.ts b/translations/UnionOffline_en.ts
 index 209f3ee..331a2cb 100644
 --- a/translations/UnionOffline_en.ts
