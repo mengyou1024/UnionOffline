@@ -390,7 +390,6 @@ bool AScanInteractor::openFile(QString _fileName) {
         qCritical(TAG) << "read file error, fileName:" << _fileName;
         return false;
     }
-    qDebug(QLoggingCategory("TEST")) << "是否是直探头:" << ascan->isStraightBeamProbe(0);
     if (ascan->getDataSize() > 1) {
         setReplayVisible(true);
         setReplayTimerInterval(ascan->getReplayTimerInterval());
