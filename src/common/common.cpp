@@ -142,18 +142,26 @@ void Morose::registerVariable(QQmlContext* context) {
 }
 
 void Morose::registeAllAScanFileSelector() {
+#if ENABLE_UNION_GENERIC
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
-    Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
+#endif
+
+#if ENABLE_RAILWELE_SPECIALIZATION
+    Union::AScan::AScanFileSelector::Instance().RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
+    Union::AScan::AScanFileSelector::Instance().RegistReader("*.HFD", "390钢轨焊缝连续图像", Union::__390::HFDATType::FromFile);
+#endif
 }
 
 void Morose::registeAllTofdPeFileSelector() {
+#if ENABLE_UNION_GENERIC
     Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
     Union::TOFD_PE::TofdPeFileSelector::Instance().RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TOF::TofType::FromFile);
+#endif
 }
 
 QJsonObject& Morose::getGlobalEnvironment() {

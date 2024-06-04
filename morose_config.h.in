@@ -1,3 +1,6 @@
 #pragma once
 
-#define APP_VERSION    "@APP_VERSION@"
+#define APP_VERSION                    "@APP_VERSION@"
+
+#define ENABLE_UNION_GENERIC           (1) ///< 使用通用仪器接口
+#define ENABLE_RAILWELE_SPECIALIZATION (0) ///< 使用钢轨焊缝特化接口
