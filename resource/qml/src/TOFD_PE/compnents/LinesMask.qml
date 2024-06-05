@@ -91,10 +91,18 @@ Canvas {
             ctx.stroke()
             ctx.font = "16px 微软雅黑"
             ctx.textAlign = "right"
-            ctx.textBaseline = "top"
+            if (verticalValue2 < 0.5) {
+                ctx.textBaseline = "top"
+            } else {
+                ctx.textBaseline = "bottom"
+            }
             ctx.fillStyle = "blue"
             ctx.fillText(verticalText2, width, y2)
-            ctx.textAlign = "letf"
+            if (horizontalValue2 < 0.5) {
+                ctx.textAlign = "left"
+            } else {
+                ctx.textAlign = "right"
+            }
             ctx.textBaseline = "bottom"
             ctx.fillText(horizontalText2, x2, height)
 
@@ -133,11 +141,20 @@ Canvas {
             ctx.stroke()
             ctx.closePath()
 
+            if (verticalValue1 < 0.5) {
+                ctx.textBaseline = "top"
+            } else {
+                ctx.textBaseline = "bottom"
+            }
             ctx.textAlign = "left"
-            ctx.textBaseline = "bottom"
+            // ctx.textBaseline = "bottom"
             ctx.fillStyle = "red"
             ctx.fillText(verticalText1, 0, y1)
-            ctx.textAlign = "left"
+            if (horizontalValue1 < 0.5) {
+                ctx.textAlign = "left"
+            } else {
+                ctx.textAlign = "right"
+            }
             ctx.textBaseline = "top"
             ctx.fillText(horizontalText1, x1, 0)
         } else if (cursorUiStatus === MaskStatusEnum.RmThroughWave || cursorUiStatus === MaskStatusEnum.PullThroughWave) {
