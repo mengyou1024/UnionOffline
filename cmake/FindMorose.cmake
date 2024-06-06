@@ -441,9 +441,9 @@ set(MOROSE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resource/img/morose.ico" CACHE STRI
 set(MOROSE_OUT_DIR "${CMAKE_SOURCE_DIR}/output" CACHE STRING "Morose output directory")
 
 if(MSVC)
-    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-msvc-${APP_VERSION}" CACHE STRING "Morose dist directory")
+    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-msvc-${APP_VERSION}" CACHE STRING "Morose dist directory" FORCE)
 elseif(MINGW)
-    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-mingw-${APP_VERSION}" CACHE STRING "Morose dist directory")
+    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-mingw-${APP_VERSION}" CACHE STRING "Morose dist directory" FORCE)
 endif()
 
 message(STATUS MOROSE_DIST_DIR:${MOROSE_DIST_DIR})
