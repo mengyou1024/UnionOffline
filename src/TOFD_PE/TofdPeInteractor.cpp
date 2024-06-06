@@ -57,7 +57,17 @@ namespace TOFD_PE {
             return Union::KeepDecimals<1>(Union::ValueMap(val, {0.0, 100.0}));
         }
         if (m_adjsutDepthFunc == std::nullopt) {
-            return Union::KeepDecimals<1>(Union::ValueMap(val, {m_data->getTofdDelay(), m_data->getTofdDelay() + m_data->getTofdRange()}));
+            if (m_adjsutDepthFunc == std::nullopt) {
+                double half_pcs = m_data->getPCS() / 2;
+                double time_mm  = val * m_data->getTofdRange() + m_data->getTofdDelay();
+                double sign     = 1.0;
+                if (half_pcs > time_mm) {
+                    sign = -1.0;
+                }
+                return Union::KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(time_mm, 2) - std::pow(half_pcs, 2))));
+            } else {
+                return m_adjsutDepthFunc.value()(val);
+            }
         } else {
             return m_adjsutDepthFunc.value()(val);
         }
