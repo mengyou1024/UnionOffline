@@ -270,7 +270,7 @@ function(morose_copy)
         endforeach(ITEM ${COPY_FILES})
 
         add_custom_command(
-            TARGET MOROSE_COPY POST_BUILD
+            TARGET ${COPY_TARGET} POST_BUILD
 
             # 拷贝文件至运行目录
             ${COPY_FILE_STRING}
@@ -319,6 +319,7 @@ function(morose_copy)
                     set(COPY_DIRNAME ${COPY_RENAME})
                 endif(COPY_DIR_LEN EQUAL "1")
             endif(COPY_RENAME)
+
             list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
             list(APPEND COPY_DIR_STRING COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}")
 
@@ -329,7 +330,7 @@ function(morose_copy)
         endforeach(ITEM ${COPY_DIRS})
 
         add_custom_command(
-            TARGET MOROSE_COPY POST_BUILD
+            TARGET ${COPY_TARGET} POST_BUILD
 
             # 拷贝的是目录
             ${COPY_DIR_STRING}
@@ -404,6 +405,7 @@ function(morose_add_environment_config_file)
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
     set(CONFIG_DEPS "")
+
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         set(CONFIG_DEPS "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}")
     else(CMAKE_BUILD_TYPE STREQUAL "Release")
