@@ -45,26 +45,20 @@ target_link_libraries(UnionLib PUBLIC NumCpp)
 target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 
 if(Morose_FOUND)
-    if((NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json") AND(NOT CMAKE_BUILD_TYPE STREQUAL "Release"))
+    set(PRODUCT_CONFIG_FILE "config/ProductConfig.json")
+    if(NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json")
         message(WARNING "no ProductConfig.json file please see ${CMAKE_SOURCE_DIR}/config/ProductConfigTemplate.json")
-        morose_add_environment_config_file(
-            TARGET ${PROJECT_NAME}
-            DEPLOY "config/DeployConfig.json"
-            PRODUCT "config/DeployConfig.json"
-            DIST "Config.json"
-        )
-    else()
-        morose_add_environment_config_file(
-            TARGET ${PROJECT_NAME}
-            DEPLOY "config/DeployConfig.json"
-            PRODUCT "config/ProductConfig.json"
-            DIST "Config.json"
-        )
+        set(PRODUCT_CONFIG_FILE "config/DeployConfig.json")
     endif()
 
+    morose_add_environment_config_file(
+        TARGET ${PROJECT_NAME}
+        DEPLOY "config/DeployConfig.json"
+        PRODUCT ${PRODUCT_CONFIG_FILE}
+        DIST "Config.json"
+    )
+
     morose_copy(TARGET ${PROJECT_NAME} DIRS "excel_templates")
-
     morose_add_qml_dirs("resource/qml")
-
     morose_auto_release()
 endif(Morose_FOUND)
