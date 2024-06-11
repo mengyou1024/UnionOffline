@@ -12,7 +12,7 @@
 #include <UnionType>
 
 int main(int argc, char* argv[]) {
-    QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     SingleApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/img/morose.ico"));
 
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
     // 高DPI适配策略
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置QMl渲染引擎使用OPENGL
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 2, 0))
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
