@@ -56,6 +56,7 @@ Rectangle {
                     delegate: Flow {
                         property int gateIndex: index
                         Layout.alignment: Qt.AlignCenter
+                        Layout.fillWidth: true
                         property var rowColor: gateTextColor[index]
                         spacing: 20
                         // @disable-check M16
