@@ -57,7 +57,7 @@ Type: files; Name: "{app}/setting.ini"
 @MOROSE_UNINSTALL_DELETE_STRING@
 
 [UninstallRun]
-Filename: "{app}\vc_redist.x64.exe"; Parameters: /uninstall /passive 
+Filename: "{app}\vc_redist.x64.exe"; Parameters: /uninstall /passive /norestart
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -67,4 +67,4 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-Filename: "{app}\vc_redist.x64.exe"; Parameters: /passive; StatusMsg: "Installing Microsoft Visual C++ Runtime ..."
+Filename: "{app}\vc_redist.x64.exe"; Parameters: /passive /norestart; StatusMsg: "Installing Microsoft Visual C++ Runtime ..."
