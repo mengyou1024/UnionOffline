@@ -1,21 +1,21 @@
-From d0eefef550b15369dcabe02339e6517186611fb1 Mon Sep 17 00:00:00 2001
+From 904ebbeef8959b8f81bc2d25952813e375318db1 Mon Sep 17 00:00:00 2001
 From: mengyou <1523038073@qq.com>
-Date: Tue, 4 Jun 2024 15:54:28 +0800
-Subject: [PATCH] patchs: railweld specializatioon
+Date: Wed, 12 Jun 2024 08:44:41 +0800
+Subject: [PATCH] chore: update railweld patch
 
 ---
  CMakeLists.txt                    | 2 +-
- cmake/FindMorose.cmake            | 5 ++++-
+ cmake/FindMorose.cmake            | 3 ++-
  morose_config.h.in                | 4 ++--
  resource/qml/About.qml            | 2 +-
  resource/qml/main.qml             | 3 ++-
  script/pack-installer-msvc.iss.in | 2 +-
  script/pack-installer.iss.in      | 2 +-
  translations/UnionOffline_en.ts   | 2 +-
- 8 files changed, 13 insertions(+), 9 deletions(-)
+ 8 files changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c900b7e..a2dad89 100644
+index 5d4a44a..32c2b13 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -27,26 +27,10 @@ index c900b7e..a2dad89 100644
  set(CMAKE_CXX_STANDARD 20)
  set(NUMCPP_NO_USE_BOOST ON)
 diff --git a/cmake/FindMorose.cmake b/cmake/FindMorose.cmake
-index 999290e..9c7f1e1 100644
+index 0fce0fe..11a2e93 100644
 --- a/cmake/FindMorose.cmake
 +++ b/cmake/FindMorose.cmake
-@@ -319,6 +319,7 @@ function(morose_copy)
-                     set(COPY_DIRNAME ${COPY_RENAME})
-                 endif(COPY_DIR_LEN EQUAL "1")
-             endif(COPY_RENAME)
-+
-             list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
-             list(APPEND COPY_DIR_STRING COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}")
- 
-@@ -404,6 +405,7 @@ function(morose_add_environment_config_file)
-     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
- 
-     set(CONFIG_DEPS "")
-+
-     if(CMAKE_BUILD_TYPE STREQUAL "Release")
-         set(CONFIG_DEPS "${CMAKE_SOURCE_DIR}/${CONF_PRODUCT}")
-     else(CMAKE_BUILD_TYPE STREQUAL "Release")
-@@ -463,7 +465,8 @@ add_custom_target(
+@@ -465,7 +465,8 @@ add_custom_target(
      COMMAND powershell "Copy-Item -Force -Recurse ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/output/archive/.git;\
      cd ${CMAKE_SOURCE_DIR}/output/archive/; \
      git reset --hard;\
@@ -103,7 +87,7 @@ index 6eca0c4..9ef3133 100644
                          var comp = Qt.createComponent("Communicate.qml")
                          if (comp.status === Component.Ready) {
 diff --git a/script/pack-installer-msvc.iss.in b/script/pack-installer-msvc.iss.in
-index 560f60d..dd8a63d 100644
+index 5c61f38..adddebf 100644
 --- a/script/pack-installer-msvc.iss.in
 +++ b/script/pack-installer-msvc.iss.in
 @@ -13,7 +13,7 @@
@@ -116,7 +100,7 @@ index 560f60d..dd8a63d 100644
  AppVersion={#MyAppVersion}
  ;AppVerName={#MyAppName} {#MyAppVersion}
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
-index 769681a..080f63f 100644
+index 4e68190..62997aa 100644
 --- a/script/pack-installer.iss.in
 +++ b/script/pack-installer.iss.in
 @@ -13,7 +13,7 @@
