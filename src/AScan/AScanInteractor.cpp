@@ -228,10 +228,12 @@ void AScanInteractor::changeDataCursor() {
 }
 
 void AScanInteractor::updateCurrentFrame() {
-    updateAScanSeries(ascan->getAScanSeriesData(getAScanCursor(), softGain), {ascan->getAxisBias(getAScanCursor()), 0}, {ascan->getAxisLen(getAScanCursor()), 100.0});
-    updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
-    updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
-    setGateValue(CreateGateValue());
+    if (ascan != nullptr) {
+        updateAScanSeries(ascan->getAScanSeriesData(getAScanCursor(), softGain), {ascan->getAxisBias(getAScanCursor()), 0}, {ascan->getAxisLen(getAScanCursor()), 100.0});
+        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+        setGateValue(CreateGateValue());
+    }
 }
 
 const QJsonArray AScanInteractor::getGateValue() const {
