@@ -26,7 +26,8 @@ ApplicationWindow {
     signal listviewIndexChanged(var index, var list_view)
     signal openFile(string file)
     signal splitViewResizingChanged(bool resizing)
-
+    property bool listview_unfold: true
+    property bool controlui_unflod: true
     property string mainUi_name: ""
     property string fileName2Open: ""
 
@@ -109,29 +110,17 @@ ApplicationWindow {
             }
         }
 
-        SplitView {
-            id: split_view
+        RowLayout {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.leftMargin: 1
             Layout.rightMargin: 1
-            handle: Rectangle {
-                id: handleDelegate
-                implicitWidth: 6
-                color: SplitHandle.pressed ? "#c6e2ff" : (SplitHandle.hovered ? Qt.lighter("#c6e2ff", 1.1) : "#c6e2ff")
-
-                // @disable-check M16
-                containmentMask: Item {
-                    x: (handleDelegate.width - width) / 2
-                    width: 20
-                    height: split_view.height
-                }
-            }
 
             Rectangle {
+                visible: listview_unfold
                 id: rect_list
-                SplitView.preferredWidth: 240
-                SplitView.minimumWidth: 240
+                Layout.preferredWidth: 240
+                Layout.fillHeight: true
                 color: "#e0eeee"
                 radius: 5
                 clip: true
@@ -218,7 +207,8 @@ ApplicationWindow {
                 radius: 5
                 border.color: "#3f6feb"
                 border.width: 2
-                SplitView.fillWidth: true
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 Loader {
                     id: loader_ui
                     clip: true
@@ -237,11 +227,92 @@ ApplicationWindow {
                         openFile(fileName2Open)
                     }
                 }
+
+                Rectangle {
+                    id: listview_unfold_ctrl
+                    width: 32
+                    height: 32
+                    z: 1
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    radius: 16
+                    clip: true
+                    color: "#b0e2ff"
+                    antialiasing: true
+                    opacity: 0.2
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/img/arrow.png"
+                        rotation: listview_unfold ? 90 : -90
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                listview_unfold = !listview_unfold
+                            }
+                            onEntered: {
+                                listview_unfold_ctrl.opacity = 1
+                                listview_unfold_ctrl.color = Qt.darker("#b0e2ff", 1.2)
+                            }
+                            onExited: {
+                                listview_unfold_ctrl.opacity = 0.2
+                                listview_unfold_ctrl.color = "#b0e2ff"
+                            }
+                        }
+                        Behavior on rotation {
+                            NumberAnimation {
+                                duration: 300
+                            }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: controlui_unfold_ctrl
+                    width: 32
+                    height: 32
+                    z: 1
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 5
+                    radius: 16
+                    clip: true
+                    color: "#b0e2ff"
+                    antialiasing: true
+                    opacity: 0.2
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/img/arrow.png"
+                        rotation: controlui_unflod ? -90 : 90
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                controlui_unflod = !controlui_unflod
+                            }
+                            onEntered: {
+                                controlui_unfold_ctrl.opacity = 1
+                                controlui_unfold_ctrl.color = Qt.darker("#b0e2ff", 1.2)
+                            }
+                            onExited: {
+                                controlui_unfold_ctrl.opacity = 0.2
+                                controlui_unfold_ctrl.color = "#b0e2ff"
+                            }
+                        }
+                        Behavior on rotation {
+                            NumberAnimation {
+                                duration: 300
+                            }
+                        }
+                    }
+                }
             }
 
             Rectangle {
-                SplitView.minimumWidth: 300
-                SplitView.fillHeight: true
+                visible: controlui_unflod
+                Layout.preferredWidth: 300
+                Layout.fillHeight: true
                 color: "transparent"
                 radius: 5
                 border.color: "#3f6feb"
@@ -260,9 +331,6 @@ ApplicationWindow {
                         loader_ui.source = mainUi_name
                     }
                 }
-            }
-            onResizingChanged: {
-                splitViewResizingChanged(resizing)
             }
         }
 

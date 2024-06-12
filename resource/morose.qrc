@@ -32,5 +32,6 @@
         <file>qml/components/common/ComboBox.qml</file>
         <file>qml/src/TOFD_PE/ParamUI.qml</file>
         <file>qml/Communicate.qml</file>
+        <file>img/arrow.png</file>
     </qresource>
 </RCC>
