@@ -36,40 +36,32 @@ Rectangle {
     ColumnLayout {
         anchors.fill: parent
         spacing: 10
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 20
+        Row {
             Layout.alignment: Qt.AlignHCenter
-            Text {
-                Layout.topMargin: 20
-                Layout.leftMargin: 20
-                width: 20
-                text: qsTr("声程") + `(${interactor.distanceMode})`
-                font.pixelSize: 20
+            Layout.topMargin: 20
+            spacing: 15
+            Column {
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    text: qsTr("声程") + `(${interactor.distanceMode})`
+                    font.pixelSize: 20
+                }
             }
-            ColumnLayout {
-                Layout.topMargin: 20
-                Layout.fillWidth: true
-                spacing: 20
+            Column {
+                spacing: 5
                 Repeater {
                     model: 1
-                    delegate: Flow {
+                    delegate: Row {
                         property int gateIndex: index
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.fillWidth: true
-                        property var rowColor: gateTextColor[index]
-                        spacing: 20
-                        // @disable-check M16
-                        leftPadding: 20
-                        // @disable-check M16
-                        rightPadding: 20
+                        spacing: 15
                         Repeater {
                             model: ["amp", "dist_c", "dist_a", "dist_b", "equi"]
                             delegate: CKeyValue {
+                                Layout.alignment: Qt.AlignHCenter
                                 displayColon: false
                                 key: gateText[gateIndex][modelData]
                                 value: interactor.gateValue[gateIndex][modelData]
-                                textColor: rowColor
+                                textColor: gateTextColor[gateIndex]
                             }
                         }
                     }
