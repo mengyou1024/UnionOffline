@@ -12,6 +12,7 @@ namespace Union::AScan::RailWeld {
         if (m_dotX == newDotX)
             return;
         m_dotX = newDotX;
+        update();
         emit dotXChanged();
     }
 
@@ -23,6 +24,7 @@ namespace Union::AScan::RailWeld {
         if (m_dotY == newDotY)
             return;
         m_dotY = newDotY;
+        update();
         emit dotYChanged();
     }
 
@@ -34,6 +36,7 @@ namespace Union::AScan::RailWeld {
         if (m_dotZ == newDotZ)
             return;
         m_dotZ = newDotZ;
+        update();
         emit dotZChanged();
     }
 
