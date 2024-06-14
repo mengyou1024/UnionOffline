@@ -115,6 +115,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.leftMargin: 1
             Layout.rightMargin: 1
+            spacing: 2
 
             Rectangle {
                 visible: listview_unfold
