@@ -46,9 +46,9 @@ Name: "ChineseSimplified"; MessagesFile: "@CMAKE_SOURCE_DIR@/Language/ChineseSim
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkablealone
 
 [Files]
-Source: "@MOROSE_DIST_DIR@/@PROJECT_NAME@@CMAKE_EXECUTABLE_SUFFIX@"; DestDir: "{app}"; Flags: comparetimestamp
-Source: "@MOROSE_DIST_DIR@/*"; DestDir: "{app}"; Flags: comparetimestamp recursesubdirs createallsubdirs
-Source: "@MOROSE_DIST_DIR@/vc_redist.x64.exe"; DestDir: "{app}"; Flags: comparetimestamp
+Source: "@MOROSE_DIST_DIR@/@PROJECT_NAME@@CMAKE_EXECUTABLE_SUFFIX@"; DestDir: "{app}"
+Source: "@MOROSE_DIST_DIR@/*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+Source: "@MOROSE_DIST_DIR@/vc_redist.x64.exe"; DestDir: "{app}"
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [UninstallDelete]
