@@ -27,6 +27,7 @@ class AScanInteractor : public QQuickItem {
     bool        hasCameraImage            = false;
     bool        showRailWeldDigramSpecial = false;
     int         replayTimerInterval       = 0;
+    bool        reportEnabled             = true;
 
     using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
 
@@ -113,12 +114,12 @@ public:
 
     bool getHasCameraImage() const;
     void setHasCameraImage(bool newHasCameraImage);
-
     bool getShowRailWeldDigramSpecial() const;
     void setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
-
-    int getReplayTimerInterval() const;
+    int  getReplayTimerInterval() const;
     void setReplayTimerInterval(int newReplayTimerInterval);
+    bool getReportEnabled() const;
+    void setReportEnabled(bool newReportEnabled);
 
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -146,8 +147,8 @@ signals:
     void distanceModeChanged();
     void hasCameraImageChanged();
     void showRailWeldDigramSpecialChanged();
-
     void replayTimerIntervalChanged();
+    void reportEnabledChanged();
 
 private:
     void changeDataCursor(void);
@@ -165,4 +166,5 @@ private:
     Q_PROPERTY(bool hasCameraImage READ getHasCameraImage WRITE setHasCameraImage NOTIFY hasCameraImageChanged FINAL)
     Q_PROPERTY(bool showRailWeldDigramSpecial READ getShowRailWeldDigramSpecial WRITE setShowRailWeldDigramSpecial NOTIFY showRailWeldDigramSpecialChanged FINAL)
     Q_PROPERTY(int replayTimerInterval READ getReplayTimerInterval WRITE setReplayTimerInterval NOTIFY replayTimerIntervalChanged FINAL)
+    Q_PROPERTY(bool reportEnabled READ getReportEnabled WRITE setReportEnabled NOTIFY reportEnabledChanged FINAL)
 };

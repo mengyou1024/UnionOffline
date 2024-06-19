@@ -137,6 +137,13 @@ Rectangle {
             value: interactor.replayTimerInterval
         }
 
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
+            property: "reportEnable"
+            value: interactor.reportEnabled
+        }
+
         onReplayValueChanged: {
             controlTarget.replayValue = replayValue
         }

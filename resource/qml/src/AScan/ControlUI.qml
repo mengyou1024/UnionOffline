@@ -32,6 +32,7 @@ ScrollView {
     property alias imageVisible: img_rect.visible
     property alias showRailWeldDigram: area_rail_weld_digram.visible
     property int replayTimerBaseInterval: 40
+    property alias reportEnable: btn_report.enabled
 
     signal showImage
 
@@ -139,6 +140,7 @@ ScrollView {
                     spacing: 5
                     CButton {
                         text: qsTr("报表生成")
+                        id: btn_report
                         FileDialog {
                             id: f_report_dialog
                             fileMode: FileDialog.SaveFile

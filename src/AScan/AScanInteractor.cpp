@@ -332,6 +332,17 @@ void AScanInteractor::setReplayTimerInterval(int newReplayTimerInterval) {
     emit replayTimerIntervalChanged();
 }
 
+bool AScanInteractor::getReportEnabled() const {
+    return reportEnabled;
+}
+
+void AScanInteractor::setReportEnabled(bool newReportEnabled) {
+    if (reportEnabled == newReportEnabled)
+        return;
+    reportEnabled = newReportEnabled;
+    emit reportEnabledChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(ascan ? ascan->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -401,6 +412,7 @@ bool AScanInteractor::openFile(QString _fileName) {
         qWarning(TAG) << "no data on file:" << _fileName;
         return false;
     }
+    setReportEnabled(ascan->getReportEnable());
     qDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
     setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
     setAScanCursorMax(ascan->getDataSize() - 1);
