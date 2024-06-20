@@ -24,7 +24,15 @@ set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleAp
 add_subdirectory("components/QXlsx/QXlsx")
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::SerialPort)
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+    Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Charts
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::SerialPort
+)
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -38,13 +46,28 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 find_package(Morose)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE UnionLib misc_utils SingleApplication::SingleApplication)
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+    UnionLib
+    misc_utils
+    SingleApplication::SingleApplication
+)
 
-target_link_libraries(UnionLib PRIVATE Qt${QT_VERSION_MAJOR}::Core misc_utils Qt${QT_VERSION_MAJOR}::SerialPort Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(
+    UnionLib
+    PUBLIC
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::SerialPort
+    Qt${QT_VERSION_MAJOR}::Widgets
+    misc_utils
+    protobuf::libprotobuf
+)
 target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 
 if(Morose_FOUND)
     set(PRODUCT_CONFIG_FILE "config/ProductConfig.json")
+
     if(NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json")
         message(WARNING "no ProductConfig.json file please see ${CMAKE_SOURCE_DIR}/config/ProductConfigTemplate.json")
         set(PRODUCT_CONFIG_FILE "config/DeployConfig.json")

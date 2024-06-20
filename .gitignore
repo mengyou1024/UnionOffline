@@ -113,3 +113,4 @@ output/*
 .vscode/
 config/ProductConfig.json
 pack-installer.iss
+components/protobuf/
