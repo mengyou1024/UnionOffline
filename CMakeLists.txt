@@ -41,7 +41,6 @@ find_package(Morose)
 target_link_libraries(${PROJECT_NAME} PRIVATE UnionLib misc_utils SingleApplication::SingleApplication)
 
 target_link_libraries(UnionLib PRIVATE Qt${QT_VERSION_MAJOR}::Core misc_utils Qt${QT_VERSION_MAJOR}::SerialPort Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(UnionLib PUBLIC NumCpp)
 target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 
 if(Morose_FOUND)
