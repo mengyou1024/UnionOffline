@@ -224,6 +224,11 @@ void AScanInteractor::changeDataCursor() {
             default:
                 setDistanceMode("N");
         }
+        // 7. 更新摄像头控件
+        auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
+        if (camera_special != nullptr) {
+            setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
+        }
     }
 }
 
@@ -416,8 +421,9 @@ bool AScanInteractor::openFile(QString _fileName) {
     qDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
     setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
     setAScanCursorMax(ascan->getDataSize() - 1);
-    if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get()) != nullptr) {
-        setHasCameraImage(true);
+    auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
+    if (camera_special != nullptr) {
+        setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
     }
     if (getAScanCursor() == 0) {
         changeDataCursor();
