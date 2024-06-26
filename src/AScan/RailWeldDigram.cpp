@@ -41,8 +41,6 @@ namespace Union::AScan::RailWeld {
     }
 
     void RailWeldDigram::paint(QPainter* painter) {
-        // painter->fillRect(QRect(0, 0, width(), height()), QBrush(Qt::yellow));
-
         painter->setRenderHint(QPainter::Antialiasing);
         paintDigrameA(painter);
         paintDigrameB(painter);

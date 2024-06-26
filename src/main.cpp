@@ -28,10 +28,6 @@ int main(int argc, char* argv[]) {
     qInstallMessageHandler(Morose::logMessageHandler);
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-    // 设置QMl渲染引擎使用OPENGL
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 2, 0))
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
-#endif
     // 设置日志过滤规则
     QSettings logSetting("setting.ini", QSettings::IniFormat);
     logSetting.beginGroup("Rules");
