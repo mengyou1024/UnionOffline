@@ -149,6 +149,7 @@ void Morose::registeAllAScanFileSelector() {
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
     Union::AScan::AScanFileSelector::Instance().RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
+    Union::AScan::AScanFileSelector::Instance().RegistReader("*.mdat", "390N、T8图像", Union::__390N_T8::MDATType::UnType::FromFile);
 #endif
 
 #if ENABLE_RAILWELE_SPECIALIZATION || defined(QT_DEBUG)
