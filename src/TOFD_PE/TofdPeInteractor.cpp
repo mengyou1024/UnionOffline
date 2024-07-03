@@ -104,7 +104,16 @@ namespace TOFD_PE {
             qCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
             return false;
         }
-        m_data                = (READ_FUNC.value())(fileName.toStdWString());
+        try {
+            m_data = (READ_FUNC.value())(fileName.toStdWString());
+        } catch (std::exception& e) {
+#if !defined(QT_DEBUG)
+            qFatal(e.what());
+#else
+            qCritical(TAG) << e.what();
+#endif
+            m_data = nullptr;
+        }
         m_getVerticalAixsZero = std::nullopt;
         m_adjsutDepthFunc     = std::nullopt;
         if (m_data != nullptr) {

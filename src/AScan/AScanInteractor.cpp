@@ -1,5 +1,4 @@
 #include "AScanInteractor.hpp"
-#include "../common/common.hpp"
 #include <QLoggingCategory>
 #include <QQmlProperty>
 #include <QValueAxis>
@@ -403,7 +402,17 @@ bool AScanInteractor::openFile(QString _fileName) {
         qWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
         return false;
     }
-    ascan = (func.value())(_fileName.toStdWString());
+    try {
+        ascan = (func.value())(_fileName.toStdWString());
+    } catch (std::exception& e) {
+#if !defined(QT_DEBUG)
+        qFatal(e.what());
+#else
+        qCritical(TAG) << e.what();
+#endif
+        ascan = nullptr;
+    }
+
     if (!ascan) {
         qCritical(TAG) << "read file error, fileName:" << _fileName;
         return false;
