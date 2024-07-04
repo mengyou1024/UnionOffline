@@ -54,7 +54,7 @@ jobs:
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release
     - name: CMake Build Installer
-      run: cmake --build build --target generate_exe_installer --config Release
+      run: cmake --build build --target all generate_exe_installer --config Release
     # 打包输出文件
     - name: Package 
       run: |
