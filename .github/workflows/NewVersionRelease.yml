@@ -48,7 +48,7 @@ jobs:
         version: ${{ matrix.qt_ver }}
         arch: ${{ matrix.qt_arch }}
         cache: ${{steps.cache-qt.outputs.cache-hit}}
-        modules: 'qtcharts'
+        modules: 'qtcharts qtnetworkauth'
     # 配置、编译程序
     - name: CMake Config
       run: |
