@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.15
 import Qt.labs.folderlistmodel 2.15
 import Qt.labs.platform 1.1
 import Qt.labs.settings 1.1
+import Morose.Utils 1.0
 import "./components"
 
 ApplicationWindow {
@@ -354,7 +355,17 @@ ApplicationWindow {
                 width: 100
                 anchors.right: parent.right
                 anchors.rightMargin: 10
-                value: isLoading() ? (loader_ctrl.progress + loader_ui.progress) / 2 : 0
+                value: getValue()
+
+                function getValue() {
+                    if (isLoading()) {
+                        return (loader_ctrl.progress + loader_ui.progress) / 2
+                    } else if (GlobalCppProgress.enable) {
+                        return GlobalCppProgress.progress
+                    } else {
+                        return 0
+                    }
+                }
             }
         }
     }
@@ -420,6 +431,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        showMaximized()
+
+        // show()
     }
 }

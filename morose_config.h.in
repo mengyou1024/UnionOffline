@@ -4,3 +4,6 @@
 
 #define ENABLE_UNION_GENERIC           (1) ///< 使用通用仪器接口
 #define ENABLE_RAILWELE_SPECIALIZATION (0) ///< 使用钢轨焊缝特化接口
+
+#define MOROSE_ENABLE_UPGRADE          (1) ///< 使用软件升级功能
+#define MOROSE_DEBUG_UPGRADE           (0) ///< 调试软件升级功能

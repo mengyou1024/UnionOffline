@@ -8,9 +8,14 @@
 #include "../TOFD_PE/TofdPeAScanView.hpp"
 #include "../TOFD_PE/TofdPeDScanView.hpp"
 #include "../morose_config.h"
+#include "GlobalCppProgress.hpp"
 #include "qmltranslator.h"
+#include <QEventLoop>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QObject>
 #include <QQmlEngine>
 #include <QSerialPort>
@@ -107,7 +112,7 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
     if (type == QtCriticalMsg || type == QtFatalMsg) {
         QFile _file("./log/error.txt");
         _file.open(QFile::WriteOnly | QIODevice::Append);
-        QTextStream _text_stream(&file);
+        QTextStream _text_stream(&_file);
         _text_stream << message << "\n";
         _file.flush();
         _file.close();
@@ -132,6 +137,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::instance());
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "MaskStatusEnum", TOFD_PE::MaskStatusEnum::instance());
+    qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "GlobalCppProgress", Morose::Utils::GlobalCppProgress::Instance());
     QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
         qDebug() << "languageChanged";
         context->engine()->retranslate();
@@ -211,4 +217,51 @@ void Morose::registNameFilter(QQmlContext* context) {
     qDebug() << "FOLDERLISTMODEL_NAMEFILTER:" << folderListModel_nameFilter;
     qDebug() << "FILEDIALOG_NAMEFILTER:" << filedialog_nameFilter;
     qDebug() << "MAINUI_MAP:" << mainUi_map;
+}
+
+#include "UpgradeFromGitee.hpp"
+
+std::optional<QString> Morose::checkForUpdate() {
+    // constexpr auto RELEASE_URL = "https://gitee.com/mengyou1024/UnionOfflineInstaller/releases/latest";
+
+    // auto            manager = std::make_unique<QNetworkAccessManager>();
+    // QNetworkRequest req;
+    // req.setUrl(QUrl(RELEASE_URL));
+    // req.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json;charset=UTF-8"));
+    // req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
+    // auto       reply = (*manager).get(req);
+    // QEventLoop eventLoop;
+    // QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
+    // eventLoop.exec(QEventLoop::ExcludeUserInputEvents);
+    // int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    // qDebug() << "statusCode:" << statusCode;
+    // QString                   str = reply->readAll();
+    // static QRegularExpression reg(".+(/mengyou1024/UnionOfflineInstaller/.+?\\.exe)");
+    // auto                      match = reg.match(str);
+    // QUrl                      downLoadUrl;
+    // if (match.hasMatch()) {
+    //     downLoadUrl = "https://gitee.com" + match.captured(1);
+    //     qDebug(QLoggingCategory("upgrade")) << "download url:"
+    //                                         << downLoadUrl;
+    // }
+    // reply->deleteLater();
+    // reply     = nullptr;
+    // auto file = std::make_shared<QFile>(R"(C:\Users\mengyou\Desktop\download.exe)");
+    // file->open(QFile::WriteOnly);
+    // QNetworkRequest req_download;
+    // req_download.setUrl(downLoadUrl);
+    // req_download.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
+    // reply = (*manager).get(req_download);
+    // QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
+    // QObject::connect(reply, &QNetworkReply::downloadProgress, &eventLoop, [reply, file](qint64 recvd, qint64 total) {
+    //     if (total > 0) {
+    //         file->write(reply->readAll());
+    //         qDebug(QLoggingCategory("upgrade")) << "recvd/total=" << recvd << "/" << total;
+    //     }
+    // });
+    // eventLoop.exec();
+    // qDebug(QLoggingCategory("upgrade")) << "done";
+    Utils::UpgradeImpl::UpgradeFromGitee gitee("https://gitee.com/mengyou1024/UnionOfflineInstaller/releases/latest");
+    gitee.downloadRemoteInstaller(nullptr);
+    return std::nullopt;
 }

@@ -86,7 +86,6 @@ Rectangle {
         replayValue: controlTarget !== null ? controlTarget.replayValue : 0
         chartView: chart_view
         onAScanCursorChanged: {
-            console.log("onAScanCursorChanged & setimage")
             if (interactor.hasCameraImage) {
                 controlTarget.setImage(interactor.getCameraImage())
                 if (pop_img.opened) {

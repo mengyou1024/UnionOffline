@@ -114,3 +114,4 @@ output/*
 config/ProductConfig.json
 pack-installer.iss
 components/protobuf/
+components/ssl/

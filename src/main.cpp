@@ -1,3 +1,4 @@
+#include "common/UpgradeInterface.hpp"
 #include "common/common.hpp"
 #include "morose_config.h"
 #include <QApplication>
@@ -8,6 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <QScreen>
+#include <QSslSocket>
 #include <SingleApplication.h>
 #include <UnionType>
 
@@ -51,6 +53,28 @@ int main(int argc, char* argv[]) {
         qInfo() << argv[i];
     }
     qInfo() << std::string(80, '-').c_str();
+    qDebug() << "ssl build version:" << QSslSocket::sslLibraryBuildVersionString();
+    qDebug() << "supprot ssl:" << QSslSocket::supportsSsl();
+    qDebug() << "ssl lib version:" << QSslSocket::sslLibraryVersionString();
+
+    using Morose::Utils::UpgradeInterfaceFactory;
+#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE) | MOROSE_DEBUG_UPGRADE
+    QSettings upgradeSetting("setting.ini", QSettings::IniFormat);
+    upgradeSetting.beginGroup("Upgrade");
+    auto check_upgrade = upgradeSetting.value("checkUpgrade");
+    if (check_upgrade.isNull()) {
+        upgradeSetting.setValue("checkUpgrade", true);
+        upgradeSetting.endGroup();
+        upgradeSetting.sync();
+        upgradeSetting.beginGroup("Upgrade");
+        check_upgrade = upgradeSetting.value("checkUpgrade");
+    }
+    if (check_upgrade.toBool()) {
+        UpgradeInterfaceFactory::Instance().createInterface(UpgradeInterfaceFactory::UpgradeInterfaceType::Gitee);
+        UpgradeInterfaceFactory::Instance().checkForUpgrade();
+    }
+#endif
+
     QTemporaryDir tempDir;
     QSettings     cacheSetting("setting.ini", QSettings::IniFormat);
     cacheSetting.beginGroup("Cache");
@@ -71,10 +95,11 @@ int main(int argc, char* argv[]) {
     Morose::loadGlobalEnvironment();
 
     engine.load(url);
-    QObject::connect(&app, &QApplication::aboutToQuit, &app, []() {
+    QObject::connect(&app, &QApplication::aboutToQuit, &app, [&tempDir]() {
+        QDir temp_dir(tempDir.path());
+        temp_dir.removeRecursively();
         qInfo() << "application quit";
     });
-
     auto rootObjs   = engine.rootObjects();
     auto mainWindow = qobject_cast<QQuickWindow*>(rootObjs.first());
     QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, [mainWindow]() {

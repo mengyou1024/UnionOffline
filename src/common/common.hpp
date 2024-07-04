@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 #include <QQmlContext>
+#include <QRegularExpressionMatch>
 #include <QtCore>
 
 namespace Morose {
@@ -35,6 +36,8 @@ namespace Morose {
 
     QJsonObject& loadGlobalEnvironment();
     QJsonObject& getGlobalEnvironment();
+
+    std::optional<QString> checkForUpdate();
 } // namespace Morose
 
 #define MOROSE_TEST_TIME_QUICK(x) auto __##__LINE__##__FILE = Morose::_TEST_TIME(x)

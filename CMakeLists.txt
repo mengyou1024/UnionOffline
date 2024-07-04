@@ -5,7 +5,7 @@ project(UnionOffline LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(NUMCPP_NO_USE_BOOST ON)
 
-find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core SerialPort)
+find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core SerialPort Network)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -16,7 +16,7 @@ file(GLOB_RECURSE PROJECT_SOURCES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
 set(
     PROJECT_RES
     resource/morose.qrc
-    icon.rc
+    resource/icon.rc
 )
 
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
@@ -27,11 +27,12 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
 target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE
-    Qt${QT_VERSION_MAJOR}::Quick
-    Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::Charts
-    Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::SerialPort
+    Qt5::Quick
+    Qt5::Widgets
+    Qt5::Charts
+    Qt5::Core
+    Qt5::SerialPort
+    Qt5::Network
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
@@ -57,9 +58,9 @@ target_link_libraries(
 target_link_libraries(
     UnionLib
     PUBLIC
-    Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::SerialPort
-    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt5::Core
+    Qt5::SerialPort
+    Qt5::Widgets
     misc_utils
     protobuf::libprotobuf
 )
@@ -81,6 +82,8 @@ if(Morose_FOUND)
     )
 
     morose_copy(TARGET ${PROJECT_NAME} DIRS "excel_templates")
+    morose_copy(TARGET ${PROJECT_NAME} FILES "components/ssl/libssl-1_1-x64.dll")
+    morose_copy(TARGET ${PROJECT_NAME} FILES "components/ssl/libcrypto-1_1-x64.dll")
     morose_add_qml_dirs("resource/qml")
     morose_auto_release()
 endif(Morose_FOUND)
