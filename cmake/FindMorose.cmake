@@ -412,8 +412,8 @@ function(morose_add_environment_config_file)
         set(CONFIG_DEPS "${CMAKE_SOURCE_DIR}/${CONF_DEPLOY}")
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
-    add_custom_target(
-        MOROSE_COPY ALL
+    add_custom_command(
+        TARGET ${CONF_TARGET} POST_BUILD
         COMMAND ${CONF_FILE_STRING}
         COMMENT "MOROSE COPY"
         DEPENDS "${CONFIG_DEPS}"
