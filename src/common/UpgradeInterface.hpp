@@ -81,8 +81,6 @@ namespace Morose::Utils {
 
         void createInterface(UpgradeInterfaceType type);
         void checkForUpgrade();
-        void setActionFoundNewVersion(_F_V f);
-        bool setActionDownloadInstallerOk(_F_D f);
 
     private:
         void startDownload();
