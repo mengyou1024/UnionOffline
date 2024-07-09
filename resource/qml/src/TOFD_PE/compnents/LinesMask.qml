@@ -247,12 +247,11 @@ Canvas {
                                }
                            }
                        }
-
-                       forceActiveFocus()
                    }
 
         onEntered: {
             inArea = true
+            forceActiveFocus()
             requestPaint()
         }
 

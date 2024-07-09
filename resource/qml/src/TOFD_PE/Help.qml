@@ -24,9 +24,9 @@ ApplicationWindow {
     }
     ColumnLayout {
         anchors.centerIn: parent
-
         Layout.fillHeight: true
         spacing: 26
+
         Text {
             Layout.fillWidth: true
             verticalAlignment: Qt.AlignVCenter
@@ -54,11 +54,19 @@ ApplicationWindow {
             font.pixelSize: 18
             text: qsTr("WASD: 移动红色线条")
         }
+
         Text {
             Layout.fillWidth: true
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: 18
             text: qsTr("↑←↓→: 移动蓝色线条")
+        }
+
+        Text {
+            Layout.fillWidth: true
+            verticalAlignment: Qt.AlignVCenter
+            font.pixelSize: 18
+            text: qsTr("(鼠标需先进入图谱区域)")
         }
     }
 }
