@@ -33,5 +33,6 @@
         <file>qml/src/TOFD_PE/ParamUI.qml</file>
         <file>qml/Communicate.qml</file>
         <file>img/arrow.png</file>
+        <file>qml/src/TOFD_PE/Help.qml</file>
     </qresource>
 </RCC>

@@ -73,9 +73,9 @@ ApplicationWindow {
                     btn_txt: qsTr("通讯")
                     height: parent.height
                     onClicked: {
-                        var comp = Qt.createComponent("Communicate.qml")
+                        let comp = Qt.createComponent("Communicate.qml")
                         if (comp.status === Component.Ready) {
-                            var com_wnd = comp.createObject(parent)
+                            let com_wnd = comp.createObject(parent)
                             com_wnd.closing.connect(() => {
                                                         comp.destroy()
                                                         com_wnd.destroy()
@@ -96,9 +96,15 @@ ApplicationWindow {
                     btn_txt: qsTr("帮助")
                     height: parent.height
                     onClicked: {
-                        var comp = Qt.createComponent("About.qml")
+                        let helpFile = "qrc:/qml/src/" + mainUIType + "/Help.qml"
+                        console.log("helpFile:", helpFile)
+                        if (!FileExists.isFileExists(helpFile.substring(3))) {
+                            helpFile = "About.qml"
+                        }
+
+                        let comp = Qt.createComponent(helpFile)
                         if (comp.status === Component.Ready) {
-                            var about_wind = comp.createObject(parent)
+                            let about_wind = comp.createObject(parent)
                             about_wind.closing.connect(() => {
                                                            comp.destroy()
                                                            about_wind.destroy()
@@ -389,7 +395,7 @@ ApplicationWindow {
     function getMainUITypeIndex(fileName) {
         let suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase()
         console.log(category, `open file suffix:${suffix}, get ui type: ${MAINUI_MAP[suffix]}`)
-        var ret = MAINUI_MAP[suffix]
+        let ret = MAINUI_MAP[suffix]
         if (ret === undefined) {
             ret = "Unknow"
             showFailed("打开出错")
