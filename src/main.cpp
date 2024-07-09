@@ -10,6 +10,7 @@
 #include <QQuickWindow>
 #include <QScreen>
 #include <QSslSocket>
+#include <QStandardPaths>
 #include <SingleApplication.h>
 #include <UnionType>
 
@@ -28,6 +29,20 @@ int main(int argc, char* argv[]) {
 
     // 注册日志处理回调函数
     qInstallMessageHandler(Morose::logMessageHandler);
+
+    // 删除缓存目录
+    QDir _userTempDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    _userTempDir.setNameFilters({"UnionOffline*"});
+    for (auto& it : (_userTempDir.entryInfoList())) {
+        if (it.isDir()) {
+            qDebug() << "remove cache dir:" << it;
+            QDir(it.absoluteFilePath()).removeRecursively();
+        } else if (it.isFile()) {
+            qDebug() << "remove cache file:" << it;
+            QFile(it.absoluteFilePath()).remove();
+        }
+    }
+
     // 高DPI适配策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置日志过滤规则

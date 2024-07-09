@@ -431,7 +431,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-
-        // show()
+        showMaximized()
     }
 }
