@@ -8,6 +8,7 @@
 #include "../TOFD_PE/TofdPeAScanView.hpp"
 #include "../TOFD_PE/TofdPeDScanView.hpp"
 #include "../morose_config.h"
+#include "./FileExists.hpp"
 #include "GlobalCppProgress.hpp"
 #include "qmltranslator.h"
 #include <QEventLoop>
@@ -138,6 +139,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::instance());
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "MaskStatusEnum", TOFD_PE::MaskStatusEnum::instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "GlobalCppProgress", Morose::Utils::GlobalCppProgress::Instance());
+    qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "FileExists", Morose::Utils::FileExists::Instance());
     QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
         qDebug() << "languageChanged";
         context->engine()->retranslate();
