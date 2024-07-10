@@ -13,7 +13,7 @@ namespace TOFD_PE {
         };
         Q_ENUM(_MaskStatusEnum)
 
-        static MaskStatusEnum* instance();
+        static MaskStatusEnum* Instance();
 
     private:
         MaskStatusEnum() = default;

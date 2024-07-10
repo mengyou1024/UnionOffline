@@ -396,14 +396,14 @@ bool AScanInteractor::openFile(QString _fileName) {
     setReplayVisible(false);
     setHasCameraImage(false);
     setShowRailWeldDigramSpecial(false);
-    auto func = Union::AScan::AScanFileSelector::Instance().GetReadFunction(_fileName.toStdWString());
-    if (!func.has_value()) {
+    auto READ_FUNC = Union::AScan::AScanFileSelector::Instance()->GetReadFunction(_fileName.toStdWString());
+    if (!READ_FUNC.has_value()) {
         QFileInfo info(_fileName);
         qWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
         return false;
     }
     try {
-        ascan = (func.value())(_fileName.toStdWString());
+        ascan = (READ_FUNC.value())(_fileName.toStdWString());
     } catch (std::exception& e) {
 #if !defined(QT_DEBUG)
         qFatal(e.what());

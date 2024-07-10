@@ -7,7 +7,7 @@
 
 namespace TOFD_PE {
 
-    MaskStatusEnum* MaskStatusEnum::instance() {
+    MaskStatusEnum* MaskStatusEnum::Instance() {
         static MaskStatusEnum inst;
         return &inst;
     }

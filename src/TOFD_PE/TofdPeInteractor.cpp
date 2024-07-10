@@ -99,7 +99,7 @@ namespace TOFD_PE {
     bool TofdPeInteractor::openFile(const QString& fileName) {
         m_file.clear();
         MOROSE_TEST_TIME_QUICK("open file:" + fileName);
-        auto READ_FUNC = Union::TOFD_PE::TofdPeFileSelector::Instance().GetReadFunction(fileName.toStdWString());
+        auto READ_FUNC = Union::TOFD_PE::TofdPeFileSelector::Instance()->GetReadFunction(fileName.toStdWString());
         if (!READ_FUNC.has_value()) {
             qCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
             return false;

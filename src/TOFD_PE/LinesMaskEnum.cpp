@@ -7,7 +7,7 @@
 
 namespace TOFD_PE {
 
-    LinesMakeEnum* LinesMakeEnum::instance() {
+    LinesMakeEnum* LinesMakeEnum::Instance() {
         static LinesMakeEnum inst;
         return &inst;
     }

@@ -85,8 +85,8 @@ int main(int argc, char* argv[]) {
         check_upgrade = upgradeSetting.value("checkUpgrade");
     }
     if (check_upgrade.toBool()) {
-        UpgradeInterfaceFactory::Instance().createInterface(UpgradeInterfaceFactory::UpgradeInterfaceType::Gitee);
-        UpgradeInterfaceFactory::Instance().checkForUpgrade();
+        UpgradeInterfaceFactory::Instance()->createInterface(UpgradeInterfaceFactory::UpgradeInterfaceType::Gitee);
+        UpgradeInterfaceFactory::Instance()->checkForUpgrade();
     }
 #endif
 

@@ -77,7 +77,7 @@ namespace Morose::Utils {
             Gitee,
         };
 
-        static UpgradeInterfaceFactory& Instance();
+        static UpgradeInterfaceFactory* Instance();
 
         void createInterface(UpgradeInterfaceType type);
         void checkForUpgrade();

@@ -50,9 +50,9 @@ namespace Morose::Utils {
         return (m_data & 0xFFFFFFFF);
     }
 
-    UpgradeInterfaceFactory& UpgradeInterfaceFactory::Instance() {
+    UpgradeInterfaceFactory* UpgradeInterfaceFactory::Instance() {
         static UpgradeInterfaceFactory inst;
-        return inst;
+        return &inst;
     }
 
     void UpgradeInterfaceFactory::createInterface(UpgradeInterfaceType type) {
@@ -75,6 +75,7 @@ namespace Morose::Utils {
         // 1. 检查远程版本是否大于当前版本
 #if !MOROSE_DEBUG_UPGRADE
         if (m_interface->getRemoteInstallerVersion() <= Version::AppVersion()) {
+            m_interface = nullptr;
             return;
         }
 #endif
@@ -88,7 +89,7 @@ namespace Morose::Utils {
         QObject::connect(
             &tray, &QSystemTrayIcon::messageClicked, this, [&tray, this]() {
                 qDebug(TAG) << "开始下载";
-                QString msg = "版本号:" + UpgradeInterfaceFactory::Instance().m_interface->getRemoteInstallerVersion().getVersonString();
+                QString msg = "版本号:" + UpgradeInterfaceFactory::Instance()->m_interface->getRemoteInstallerVersion().getVersonString();
                 QObject::disconnect(&tray, &QSystemTrayIcon::messageClicked, nullptr, nullptr);
                 tray.showMessage(QObject::tr("开始后台下载升级程序"), msg, QSystemTrayIcon::Information, 3000);
                 m_downloadThread = QThread::create([this]() {

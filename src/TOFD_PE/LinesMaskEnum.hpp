@@ -19,7 +19,7 @@ namespace TOFD_PE {
         };
         Q_ENUM(CursorType)
 
-        static LinesMakeEnum* instance();
+        static LinesMakeEnum* Instance();
 
     private:
         LinesMakeEnum() = default;
