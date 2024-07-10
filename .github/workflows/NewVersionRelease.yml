@@ -52,7 +52,7 @@ jobs:
     # 配置、编译程序
     - name: CMake Config
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release
+        cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release
     - name: CMake Build Installer
       run: cmake --build build --target generate_exe_installer --config Release
     # 打包输出文件
@@ -83,16 +83,6 @@ jobs:
         asset_path: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
         asset_name: ${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
         asset_content_type: application/octet-stream
-    - name: Upload To Gitee
-      uses: mengyou1024/gitee-action@v0.0.0
-      with: 
-        accessToken: ${{ secrets.GITEE_ACCESS_TOKEN }}
-        username: "mengyou1024"
-        repo: "UnionOfflineInstaller"
-        release_tag: ${{steps.changelog.outputs.version}}
-        release_name: Release ${{ github.ref }}
-        release_body: ${{ steps.changelog.outputs.changes }}
-        release_file: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
     # 上传压缩包
     - name: Upload Release Zip
       uses: actions/upload-release-asset@v1
@@ -103,6 +93,17 @@ jobs:
         asset_path: ./output/${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip
         asset_name: ${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip
         asset_content_type: application/zip
+    # 上传升级程序到Gitee
+    - name: Upload To Gitee
+      uses: mengyou1024/gitee-action@v0.0.0
+      with: 
+        accessToken: ${{ secrets.GITEE_ACCESS_TOKEN }}
+        username: "mengyou1024"
+        repo: "UnionOfflineInstaller"
+        release_tag: ${{steps.changelog.outputs.version}}
+        release_name: Release ${{ github.ref }}
+        release_body: ${{ steps.changelog.outputs.changes }}
+        release_file: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
     # 提交changelog
     - name: Create Changes File
       env:
