@@ -6,11 +6,18 @@ set(CMAKE_CXX_STANDARD 20)
 set(NUMCPP_NO_USE_BOOST ON)
 
 find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core SerialPort Network)
+
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-find_program(WINDEPLOYQT_EXECUTABLE windeployqt.exe)
+
+find_program(WINDEPLOYQT_EXECUTABLE windeployqt.exe REQUIRED)
+find_program(LUPDATE_EXECUTABLE lupdate.exe REQUIRED)
+find_program(LRELEASE_EXECUTABLE lrelease.exe REQUIRED)
+
 message(STATUS "WINDEPLOYQT_EXECUTABLE:${WINDEPLOYQT_EXECUTABLE}")
+message(STATUS "LUPDATE_EXECUTABLE:${LUPDATE_EXECUTABLE}")
+message(STATUS "LRELEASE_EXECUTABLE:${LRELEASE_EXECUTABLE}")
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
 set(
@@ -22,6 +29,36 @@ set(
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
 
 add_subdirectory("components/QXlsx/QXlsx")
+
+file(GLOB_RECURSE LUPDATE_SOURCES 
+    "src/*.h" 
+    "src/*.c" 
+    "src/*.hpp" 
+    "src/*.cpp" 
+    "src/*.cxx" 
+    "src/*.cc" 
+    "resource/*.qml"
+    "components/union/include_private/*.h"
+    "components/union/include_private/*.hpp"
+    "components/union/src/*.h"
+    "components/union/src/*.c"
+    "components/union/src/*.hpp"
+    "components/union/src/*.cpp"
+    "components/union/src/*.cc"
+    "components/union/src/*.cxx"
+)
+
+add_custom_target(
+    lupdate
+    COMMAND ${LUPDATE_EXECUTABLE} ${LUPDATE_SOURCES} -ts translations/UnionOffline_en.ts
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_custom_target(
+    lrelease
+    COMMAND ${LRELEASE_EXECUTABLE} translations/UnionOffline_en.ts
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
 target_link_libraries(
