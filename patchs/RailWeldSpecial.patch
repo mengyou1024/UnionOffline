@@ -1,7 +1,7 @@
-From 904ebbeef8959b8f81bc2d25952813e375318db1 Mon Sep 17 00:00:00 2001
+From 310c3d481e18e4a99d389e7403d16386f6437e58 Mon Sep 17 00:00:00 2001
 From: mengyou <1523038073@qq.com>
-Date: Wed, 12 Jun 2024 08:44:41 +0800
-Subject: [PATCH] chore: update railweld patch
+Date: Wed, 10 Jul 2024 08:57:12 +0800
+Subject: [PATCH] patchs: update railweld specialization patch
 
 ---
  CMakeLists.txt                    | 2 +-
@@ -15,7 +15,7 @@ Subject: [PATCH] chore: update railweld patch
  8 files changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5d4a44a..32c2b13 100644
+index be77a54..0d95c5e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -27,10 +27,10 @@ index 5d4a44a..32c2b13 100644
  set(CMAKE_CXX_STANDARD 20)
  set(NUMCPP_NO_USE_BOOST ON)
 diff --git a/cmake/FindMorose.cmake b/cmake/FindMorose.cmake
-index 0fce0fe..11a2e93 100644
+index b64d407..1c04b41 100644
 --- a/cmake/FindMorose.cmake
 +++ b/cmake/FindMorose.cmake
-@@ -465,7 +465,8 @@ add_custom_target(
+@@ -489,7 +489,8 @@ add_custom_target(
      COMMAND powershell "Copy-Item -Force -Recurse ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/output/archive/.git;\
      cd ${CMAKE_SOURCE_DIR}/output/archive/; \
      git reset --hard;\
@@ -41,10 +41,10 @@ index 0fce0fe..11a2e93 100644
  \"APP_VERSION\":\"${APP_VERSION}\",\
  \"APP_URL\": \"${APP_URL}\",\
 diff --git a/morose_config.h.in b/morose_config.h.in
-index f724039..5bb7228 100644
+index 1a240d1..285306c 100644
 --- a/morose_config.h.in
 +++ b/morose_config.h.in
-@@ -2,5 +2,5 @@
+@@ -2,8 +2,8 @@
  
  #define APP_VERSION                    "@APP_VERSION@"
  
@@ -52,6 +52,9 @@ index f724039..5bb7228 100644
 -#define ENABLE_RAILWELE_SPECIALIZATION (0) ///< 使用钢轨焊缝特化接口
 +#define ENABLE_UNION_GENERIC           (0) ///< 使用通用仪器接口
 +#define ENABLE_RAILWELE_SPECIALIZATION (1) ///< 使用钢轨焊缝特化接口
+ 
+ #define MOROSE_ENABLE_UPGRADE          (1) ///< 使用软件升级功能
+ #define MOROSE_DEBUG_UPGRADE           (0) ///< 调试软件升级功能
 diff --git a/resource/qml/About.qml b/resource/qml/About.qml
 index c1b8bdb..300c29b 100644
 --- a/resource/qml/About.qml
@@ -66,10 +69,10 @@ index c1b8bdb..300c29b 100644
              Text {
                  Layout.fillWidth: true
 diff --git a/resource/qml/main.qml b/resource/qml/main.qml
-index 6eca0c4..9ef3133 100644
+index 94d4e36..581eb08 100644
 --- a/resource/qml/main.qml
 +++ b/resource/qml/main.qml
-@@ -18,7 +18,7 @@ ApplicationWindow {
+@@ -19,7 +19,7 @@ ApplicationWindow {
      minimumHeight: 870
      visible: true
      id: wnd_main
@@ -78,16 +81,16 @@ index 6eca0c4..9ef3133 100644
  
      property string mainUIType: "Unknow"
  
-@@ -70,6 +70,7 @@ ApplicationWindow {
+@@ -72,6 +72,7 @@ ApplicationWindow {
                      img_src: "qrc:/img/USB_51.png"
                      btn_txt: qsTr("通讯")
                      height: parent.height
 +                    visible: false
                      onClicked: {
-                         var comp = Qt.createComponent("Communicate.qml")
+                         let comp = Qt.createComponent("Communicate.qml")
                          if (comp.status === Component.Ready) {
 diff --git a/script/pack-installer-msvc.iss.in b/script/pack-installer-msvc.iss.in
-index 5c61f38..adddebf 100644
+index fffb477..cd41452 100644
 --- a/script/pack-installer-msvc.iss.in
 +++ b/script/pack-installer-msvc.iss.in
 @@ -13,7 +13,7 @@
@@ -100,7 +103,7 @@ index 5c61f38..adddebf 100644
  AppVersion={#MyAppVersion}
  ;AppVerName={#MyAppName} {#MyAppVersion}
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
-index 4e68190..62997aa 100644
+index 17e66df..5d022d1 100644
 --- a/script/pack-installer.iss.in
 +++ b/script/pack-installer.iss.in
 @@ -13,7 +13,7 @@
