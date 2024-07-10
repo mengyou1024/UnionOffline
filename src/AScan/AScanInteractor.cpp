@@ -347,6 +347,14 @@ void AScanInteractor::setReportEnabled(bool newReportEnabled) {
     emit reportEnabledChanged();
 }
 
+bool AScanInteractor::isGateEnable(int gate_idx) const {
+    if (ascan == nullptr) {
+        return false;
+    }
+    auto gate = ascan->getGate(getAScanCursor());
+    return gate.at(gate_idx % 2).enable;
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(ascan ? ascan->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;

@@ -121,6 +121,8 @@ public:
     bool getReportEnabled() const;
     void setReportEnabled(bool newReportEnabled);
 
+    Q_INVOKABLE bool isGateEnable(int gate_idx) const;
+
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
     Q_INVOKABLE bool         performanceClicked(QString fileName);

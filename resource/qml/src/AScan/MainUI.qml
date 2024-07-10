@@ -30,6 +30,7 @@ Rectangle {
             "dist_c": "B↘:",
             "equi": qsTr("当量:")
         }]
+    property var gateEnable: [false, false]
 
     readonly property var gateTextColor: ["red", Qt.darker("#8470ff", 1.5)]
 
@@ -50,10 +51,11 @@ Rectangle {
             Column {
                 spacing: 5
                 Repeater {
-                    model: 1
+                    model: 2
                     delegate: Row {
                         property int gateIndex: index
                         spacing: 15
+                        visible: gateEnable[gateIndex]
                         Repeater {
                             model: ["amp", "dist_c", "dist_a", "dist_b", "equi"]
                             delegate: CKeyValue {
@@ -65,6 +67,17 @@ Rectangle {
                             }
                         }
                     }
+                }
+            }
+
+            Column {
+                anchors.verticalCenter: parent.verticalCenter
+                visible: gateEnable[1]
+                CKeyValue {
+                    property real value_A: parseFloat(interactor.gateValue[0]["dist_b"])
+                    property real value_B: parseFloat(interactor.gateValue[1]["dist_b"])
+                    key: qsTr("B-A(↓)")
+                    value: Math.round((value_B - value_A) * 10.0) / 10.0
                 }
             }
         }
@@ -92,6 +105,8 @@ Rectangle {
                     img_popup.setImageAndZoomIn(interactor.getCameraImage(), 2)
                 }
             }
+            let _gateEnable = [interactor.isGateEnable(0), interactor.isGateEnable(1)]
+            gateEnable = _gateEnable
         }
 
         Binding {
@@ -261,7 +276,8 @@ Rectangle {
             if (interactor.showRailWeldDigramSpecial) {
                 controlTarget.setRailWeldDot(interactor.getRailWeldDot())
             }
-
+            let _gateEnable = [interactor.isGateEnable(0), interactor.isGateEnable(1)]
+            gateEnable = _gateEnable
             showSuccessful(qsTr("打开成功"))
         } else {
             showFailed(qsTr("打开失败"))
