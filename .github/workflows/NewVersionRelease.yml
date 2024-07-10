@@ -101,7 +101,7 @@ jobs:
         username: "mengyou1024"
         repo: "UnionOfflineInstaller"
         release_tag: ${{steps.changelog.outputs.version}}
-        release_name: Release ${{ github.ref }}
+        release_name: Release ${{steps.changelog.outputs.version}}
         release_body: ${{ steps.changelog.outputs.changes }}
         release_file: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
     # 提交changelog
