@@ -188,7 +188,11 @@ QVariantList AScanInteractor::getFileNameList() {
 
 void AScanInteractor::setFileNameIndex(int idx) {
     if (ascan != nullptr) {
-        aScanCursor = 0; // 这里直接赋值而不是使用`setAScanCursor`是为了不触发相应的信号
+        auto _last_idx = ascan->getFileNameIndex();
+        if (_last_idx == idx) {
+            return;
+        }
+        aScanCursor = 0;
         ascan->setFileNameIndex(idx);
         setAScanCursorMax(ascan->getDataSize() - 1);
         setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
@@ -726,7 +730,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
         // 重新设置DAC曲线的坐标轴范围
         lines[i]->attachedAxes().at(0)->setMin(0.0);
-        lines[i]->attachedAxes().at(0)->setMax(495.0);
+        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(ascan->getScanData(getAScanCursor()).size()));
         lines[i]->attachedAxes().at(1)->setMin(0.0);
         lines[i]->attachedAxes().at(1)->setMax(200.0);
         lines[i]->setVisible();
