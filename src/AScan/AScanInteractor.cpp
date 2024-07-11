@@ -203,10 +203,15 @@ void AScanInteractor::changeDataCursor() {
         updateAScanSeries();
         // 2. 更新波门曲线
         updateGateSeries<2>(ascan->getGate(getAScanCursor()));
-        // 3. 更新DAC曲线
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
-        // 4. 更新AVG曲线
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+        if (dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get()) != nullptr) {
+            update330N_DAC_AVG_Series();
+        } else {
+            // 3. 更新DAC曲线
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+            // 4. 更新AVG曲线
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+        }
+
         // 5. 更新AScan图的波门信息显示
         setGateValue(CreateGateValue());
         // 6. 更新显示的声程模式
@@ -234,8 +239,12 @@ void AScanInteractor::changeDataCursor() {
 void AScanInteractor::updateCurrentFrame() {
     if (ascan != nullptr) {
         updateAScanSeries(ascan->getAScanSeriesData(getAScanCursor(), softGain), {ascan->getAxisBias(getAScanCursor()), 0}, {ascan->getAxisLen(getAScanCursor()), 100.0});
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+        if (dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get()) != nullptr) {
+            update330N_DAC_AVG_Series();
+        } else {
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+        }
         setGateValue(CreateGateValue());
     }
 }
@@ -360,6 +369,60 @@ bool AScanInteractor::checkAScanCursorValid() {
         return false;
     }
     return true;
+}
+
+void AScanInteractor::update330N_DAC_AVG_Series() {
+    const auto LineName = [&](int index) -> QString {
+        return QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(index));
+    };
+
+    std::vector<QLineSeries*>   lines  = {};
+    std::vector<QList<QPointF>> pts    = {};
+    std::vector<int>            indexs = {};
+
+    auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get());
+    if (_convert != nullptr) {
+        lines.resize(3);
+        pts.resize(3);
+        indexs = {1, 2, 3};
+        // 隐藏未使用的曲线
+        for (auto i = 0; std::cmp_less(i, 4); i++) {
+            auto line = (QLineSeries*)series(LineName(i));
+            if (line) {
+                auto find_result = std::find(indexs.begin(), indexs.end(), i);
+                if (find_result == indexs.end()) {
+                    line->setVisible(false);
+                    line->deleteLater();
+                }
+            }
+        }
+        // 查找曲线
+        for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
+            lines[i] = (QLineSeries*)series(LineName(indexs[i]));
+            if (!lines[i]) {
+                lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
+            }
+            // 重新设置DAC曲线的坐标轴范围
+            lines[i]->attachedAxes().at(0)->setMin(ascan->getAxisBias(getAScanCursor()));
+            lines[i]->attachedAxes().at(0)->setMax(ascan->getAxisLen(getAScanCursor()));
+            lines[i]->attachedAxes().at(1)->setMin(0.0);
+            lines[i]->attachedAxes().at(1)->setMax(100.0);
+            lines[i]->setVisible();
+        }
+
+        for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
+            lines[i]->clear();
+            if (_convert) {
+                auto lineVector    = _convert->unResolvedGetDacLines(getAScanCursor())[i];
+                auto transformFunc = [this](QPointF pt) {
+                    return QPointF(pt.x(), Union::CalculateGainOutput(pt.y(), static_cast<double>(getSoftGain())));
+                };
+                std::transform(lineVector.begin(), lineVector.end(), lineVector.begin(), transformFunc);
+                lines[i]->replace(lineVector);
+            }
+        }
+        return;
+    }
 }
 
 AScanInteractor::AScanInteractor() {
@@ -546,12 +609,6 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
             return false;
         }
 
-        auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get());
-
-        if (_convert && type == QuadraticCurveSeriesType::DAC) {
-            return true;
-        }
-
         // 检查曲线是否有值
         switch (type) {
             case QuadraticCurveSeriesType::DAC: {
@@ -640,50 +697,6 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     std::vector<QLineSeries*>   lines  = {};
     std::vector<QList<QPointF>> pts    = {};
     std::vector<int>            indexs = {};
-
-    auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(ascan.get());
-    if (_convert != nullptr) {
-        lines.resize(3);
-        pts.resize(3);
-        indexs = {1, 2, 3};
-        // 隐藏未使用的曲线
-        for (auto i = 0; std::cmp_less(i, 4); i++) {
-            auto line = (QLineSeries*)series(LineName(i));
-            if (line) {
-                auto find_result = std::find(indexs.begin(), indexs.end(), i);
-                if (find_result == indexs.end()) {
-                    line->setVisible(false);
-                    line->deleteLater();
-                }
-            }
-        }
-        // 查找曲线
-        for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
-            lines[i] = (QLineSeries*)series(LineName(indexs[i]));
-            if (!lines[i]) {
-                lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
-            }
-            // 重新设置DAC曲线的坐标轴范围
-            lines[i]->attachedAxes().at(0)->setMin(ascan->getAxisBias(getAScanCursor()));
-            lines[i]->attachedAxes().at(0)->setMax(ascan->getAxisLen(getAScanCursor()));
-            lines[i]->attachedAxes().at(1)->setMin(0.0);
-            lines[i]->attachedAxes().at(1)->setMax(100.0);
-            lines[i]->setVisible();
-        }
-
-        for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
-            lines[i]->clear();
-            if (_convert) {
-                auto lineVector    = _convert->unResolvedGetDacLines(getAScanCursor())[i];
-                auto transformFunc = [this](QPointF pt) {
-                    return QPointF(pt.x(), Union::CalculateGainOutput(pt.y(), static_cast<double>(getSoftGain())));
-                };
-                std::transform(lineVector.begin(), lineVector.end(), lineVector.begin(), transformFunc);
-                lines[i]->replace(lineVector);
-            }
-        }
-        return;
-    }
 
     if (!IsSubline()) {
         lines.resize(1);
