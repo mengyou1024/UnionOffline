@@ -1,21 +1,21 @@
-From 310c3d481e18e4a99d389e7403d16386f6437e58 Mon Sep 17 00:00:00 2001
+From b7880d0b6717d7a3c3ece037f78aba7da4d050e3 Mon Sep 17 00:00:00 2001
 From: mengyou <1523038073@qq.com>
-Date: Wed, 10 Jul 2024 08:57:12 +0800
+Date: Thu, 11 Jul 2024 14:21:27 +0800
 Subject: [PATCH] patchs: update railweld specialization patch
 
 ---
  CMakeLists.txt                    | 2 +-
  cmake/FindMorose.cmake            | 3 ++-
- morose_config.h.in                | 4 ++--
+ morose_config.h.in                | 6 +++---
  resource/qml/About.qml            | 2 +-
  resource/qml/main.qml             | 3 ++-
  script/pack-installer-msvc.iss.in | 2 +-
  script/pack-installer.iss.in      | 2 +-
  translations/UnionOffline_en.ts   | 2 +-
- 8 files changed, 11 insertions(+), 9 deletions(-)
+ 8 files changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index be77a54..0d95c5e 100644
+index af3c6c8..18c24f9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -41,7 +41,7 @@ index b64d407..1c04b41 100644
  \"APP_VERSION\":\"${APP_VERSION}\",\
  \"APP_URL\": \"${APP_URL}\",\
 diff --git a/morose_config.h.in b/morose_config.h.in
-index 1a240d1..285306c 100644
+index 1a240d1..5c85df8 100644
 --- a/morose_config.h.in
 +++ b/morose_config.h.in
 @@ -2,8 +2,8 @@
@@ -53,7 +53,8 @@ index 1a240d1..285306c 100644
 +#define ENABLE_UNION_GENERIC           (0) ///< 使用通用仪器接口
 +#define ENABLE_RAILWELE_SPECIALIZATION (1) ///< 使用钢轨焊缝特化接口
  
- #define MOROSE_ENABLE_UPGRADE          (1) ///< 使用软件升级功能
+-#define MOROSE_ENABLE_UPGRADE          (1) ///< 使用软件升级功能
++#define MOROSE_ENABLE_UPGRADE          (0) ///< 使用软件升级功能
  #define MOROSE_DEBUG_UPGRADE           (0) ///< 调试软件升级功能
 diff --git a/resource/qml/About.qml b/resource/qml/About.qml
 index c1b8bdb..300c29b 100644
