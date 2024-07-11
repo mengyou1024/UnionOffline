@@ -139,6 +139,7 @@ public slots:
     Q_INVOKABLE QVariantMap  getTechnologicalParameter();
     Q_INVOKABLE QVariantList getFileNameList(void);
     Q_INVOKABLE void         setFileNameIndex(int idx);
+    Q_INVOKABLE bool         railWeldSpecial_ZeroPointInFoot();
 
 signals:
     void replayVisibleChanged();

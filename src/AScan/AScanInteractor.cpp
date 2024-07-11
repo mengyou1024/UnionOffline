@@ -201,6 +201,14 @@ void AScanInteractor::setFileNameIndex(int idx) {
     }
 }
 
+bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
+    auto railweld_ptr = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(ascan.get());
+    if (railweld_ptr != nullptr) {
+        return railweld_ptr->zeroPointInFoot();
+    }
+    return false;
+}
+
 void AScanInteractor::changeDataCursor() {
     if (std::cmp_less(getAScanCursor(), ascan ? ascan->getDataSize() : 0)) {
         // 1. 更新A扫曲线

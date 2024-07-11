@@ -33,6 +33,7 @@ ScrollView {
     property alias showRailWeldDigram: area_rail_weld_digram.visible
     property int replayTimerBaseInterval: 40
     property alias reportEnable: btn_report.enabled
+    property alias railweldSpecial_ZeroPointInFoot: rail_weld_digram.zeroPointInFoot
 
     signal showImage
 
@@ -365,12 +366,16 @@ ScrollView {
             areaText: qsTr("钢轨焊缝示意图")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 460
+            Layout.preferredHeight: 518
             RailWeldDigram {
                 id: rail_weld_digram
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.topMargin: 20
+
+                onZeroPointInFootChanged: {
+                    update()
+                }
             }
         }
     }

@@ -158,6 +158,13 @@ Rectangle {
             value: interactor.reportEnabled
         }
 
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
+            property: "railweldSpecial_ZeroPointInFoot"
+            value: interactor.railWeldSpecial_ZeroPointInFoot()
+        }
+
         onReplayValueChanged: {
             controlTarget.replayValue = replayValue
         }
