@@ -406,10 +406,12 @@ ScrollView {
                         sl_timerLine.value = 0
                     } else {
                         isReplayStart = true
+                        replayStartClicked(false)
                         stop()
                     }
                 } else {
                     isReplayStart = true
+                    replayStartClicked(false)
                     stop()
                 }
             } else {

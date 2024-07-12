@@ -12,10 +12,14 @@
 #include <QTimer>
 #include <QtCharts>
 #include <UnionType>
+#include <chrono>
 
 class AScanInteractor : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
+
+    using _STD_TP = std::chrono::system_clock::time_point;
+
     bool        replayVisible             = false;
     QString     date                      = {};
     int         softGain                  = {};
@@ -28,6 +32,8 @@ class AScanInteractor : public QQuickItem {
     bool        showRailWeldDigramSpecial = false;
     int         replayTimerInterval       = 0;
     bool        reportEnabled             = true;
+    bool        m_isPlaying               = false;
+    _STD_TP     m_lastUpdateGateValueTime = std::chrono::system_clock::now();
 
     using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
 

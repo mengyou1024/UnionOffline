@@ -137,6 +137,7 @@ void AScanInteractor::gainValueModified(qreal val) {
 
 void AScanInteractor::replayStartClicked(bool isStart) {
     qDebug(TAG) << __FUNCTION__ << "isStart" << isStart;
+    m_isPlaying = isStart;
 }
 
 void AScanInteractor::replaySpeedClicked(int val) {
@@ -801,6 +802,13 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
 }
 
 QJsonArray AScanInteractor::CreateGateValue() {
+    using namespace std::chrono_literals;
+    auto _cur_t = std::chrono::system_clock::now();
+    if (m_isPlaying && (_cur_t - m_lastUpdateGateValueTime < 200ms)) {
+        return getGateValue();
+    }
+
+    m_lastUpdateGateValueTime = _cur_t;
     if (!checkAScanCursorValid()) {
         std::array<QVariantMap, 2> _gateValue = {};
         for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
