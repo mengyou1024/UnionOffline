@@ -1,3 +1,35 @@
+# v2.0.240712 - 2024-07-12
+
+## 🎉 New Features
+- 为优化软件在高DPI显示器下的UI增加控件隐藏和展开listview和ctrl界面
+- 安装包安装时不再检查文件的时间戳
+- A扫增加.mdat格式读取接口
+- 增加TOFD/PE的帮助
+- 限制A扫图像播放时波门数据的刷新频率
+
+## 🐛 Bugfixes
+- 校准后撤销不正常
+- tofd/pe直通波校准错误
+- 打包生成的目录名称未强制设置
+- 波们参数在高DPI模式下占据屏幕的高度过大
+- 修复波门结果显示UI存在的问题
+- 修复打开AScan文件失败后调整软件增益触发异常
+- 钢轨焊缝示意图在切换文件后未刷新
+- release 缺少Config.json
+
+## 🧱 Build System
+- 移除子模块NumCpp
+- morose_add_subdirectory_path会搜索压缩文件并解压缩(减少预编译库的大小)
+- 添加newtwork modules
+- 修复clean无法删除目录
+- 增加用于软件升级的安装包发布流程
+- 修改发布流程
+
+## Patchs
+- update railweld specialization patch
+- 更新钢轨焊缝特化补丁
+
+
 # v2.0.240604 - 2024-06-04
 
 ## 🎉 New Features
