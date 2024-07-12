@@ -433,7 +433,6 @@ void AScanInteractor::update330N_DAC_AVG_Series() {
                 lines[i]->replace(lineVector);
             }
         }
-        return;
     }
 }
 
