@@ -32,6 +32,10 @@ ApplicationWindow {
     property string mainUi_name: ""
     property string fileName2Open: ""
 
+    Conditional {
+        id: listview_updated
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
@@ -147,6 +151,10 @@ ApplicationWindow {
                         nameFilters: FOLDERLISTMODEL_NAMEFILTER
                         caseSensitive: false
                         folder: file_dialog.folder
+
+                        onFolderChanged: {
+                            listview_updated.conditionRlease()
+                        }
                     }
 
                     highlight: Rectangle {
@@ -419,6 +427,16 @@ ApplicationWindow {
                 fileName2Open = filePath
             } else {
                 let index = folder_list.indexOf("file:///" + filePath)
+                if (index < 0) {
+                    folder_list.folder = ""
+                    folder_list.folder = Qt.binding(() => {
+                                                        return file_dialog.folder
+                                                    })
+                    listview_updated.waitCondition()
+                    index = folder_list.indexOf("file:///" + filePath)
+                    listView.currentIndex = index
+                }
+
                 listviewIndexChanged(index, folder_list)
             }
         }
