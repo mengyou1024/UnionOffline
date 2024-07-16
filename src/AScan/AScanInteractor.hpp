@@ -47,12 +47,17 @@ class AScanInteractor : public QQuickItem {
     inline static constexpr auto AVG_SERIES_NAME   = "AVG:%1";
     inline static constexpr auto DAC_SERIES_NAME   = "DAC:%1";
 
+    inline static constexpr auto DAC_AVG_SUB_NAME_MAX = 7;
+
     constexpr auto getDACSeriesSubName(int index) {
         switch (index) {
             case 0: return "BL";
             case 1: return "EL";
             case 2: return "SL";
             case 3: return "RL";
+            case 4: return "L4";
+            case 5: return "L5";
+            case 6: return "L6";
             default:
                 throw std::runtime_error("index out of range");
         }
@@ -70,6 +75,8 @@ class AScanInteractor : public QQuickItem {
 
     [[deprecated("该函数需要重构, 向标准格式转换")]]
     void update330N_DAC_AVG_Series();
+
+    void CMP000Special_UpdateDacSeries();
 
 public:
     AScanInteractor();
