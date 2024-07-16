@@ -393,7 +393,8 @@ ApplicationWindow {
         nameFilters: FILEDIALOG_NAMEFILTER
         onAccepted: {
             listView.currentIndex = folder_list.indexOf(file_dialog.file)
-            rect_list.visible = true
+            listview_unfold = true
+            listview_unfold_ctrl.visible = true
             let filePath = String(file_dialog.file).substring(8)
             actionMainType(getMainUITypeIndex(filePath), filePath)
         }
@@ -416,7 +417,8 @@ ApplicationWindow {
         let lastMainUIType = mainUIType
         mainUIType = type
         if (type === "Unknow") {
-            rect_list.visible = false
+            listview_unfold = false
+            listview_unfold_ctrl.visible = false
             loader_ctrl.source = "src/OnStart/ControlUI.qml"
             mainUi_name = "src/OnStart/MainUI.qml"
         } else {
