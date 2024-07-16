@@ -34,5 +34,16 @@
         <file>qml/Communicate.qml</file>
         <file>img/arrow.png</file>
         <file>qml/src/TOFD_PE/Help.qml</file>
+        <file>qml/src/OnStart/components/ImageCard.qml</file>
+        <file>qml/src/OnStart/components/qmldir</file>
+        <file>img/instruments/PXUT-330N/description.md</file>
+        <file>img/instruments/PXUT-390N/description.md</file>
+        <file>img/instruments/PXUT-F4/description.md</file>
+        <file>img/instruments/PXUT-330N/cover.png</file>
+        <file>img/instruments/PXUT-330N/image.png</file>
+        <file>img/instruments/PXUT-390N/cover.png</file>
+        <file>img/instruments/PXUT-390N/image.png</file>
+        <file>img/instruments/PXUT-F4/cover.png</file>
+        <file>img/instruments/PXUT-F4/image.png</file>
     </qresource>
 </RCC>

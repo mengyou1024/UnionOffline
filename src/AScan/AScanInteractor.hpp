@@ -32,6 +32,7 @@ class AScanInteractor : public QQuickItem {
     bool        showRailWeldDigramSpecial = false;
     int         replayTimerInterval       = 0;
     bool        reportEnabled             = true;
+    bool        dateEnabled               = true;
     bool        m_isPlaying               = false;
     _STD_TP     m_lastUpdateGateValueTime = std::chrono::system_clock::now();
 
@@ -121,6 +122,8 @@ public:
     Q_INVOKABLE QImage       getCameraImage(void) const;
     Q_INVOKABLE QVariantList getRailWeldDot(void) const;
 
+    Q_INVOKABLE bool isGateEnable(int gate_idx) const;
+
     bool getHasCameraImage() const;
     void setHasCameraImage(bool newHasCameraImage);
     bool getShowRailWeldDigramSpecial() const;
@@ -129,8 +132,8 @@ public:
     void setReplayTimerInterval(int newReplayTimerInterval);
     bool getReportEnabled() const;
     void setReportEnabled(bool newReportEnabled);
-
-    Q_INVOKABLE bool isGateEnable(int gate_idx) const;
+    bool getDateEnabled() const;
+    void setDateEnabled(bool newDateEnabled);
 
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -161,6 +164,7 @@ signals:
     void showRailWeldDigramSpecialChanged();
     void replayTimerIntervalChanged();
     void reportEnabledChanged();
+    void dateEnabledChanged();
 
 private:
     void changeDataCursor(void);
@@ -179,4 +183,5 @@ private:
     Q_PROPERTY(bool showRailWeldDigramSpecial READ getShowRailWeldDigramSpecial WRITE setShowRailWeldDigramSpecial NOTIFY showRailWeldDigramSpecialChanged FINAL)
     Q_PROPERTY(int replayTimerInterval READ getReplayTimerInterval WRITE setReplayTimerInterval NOTIFY replayTimerIntervalChanged FINAL)
     Q_PROPERTY(bool reportEnabled READ getReportEnabled WRITE setReportEnabled NOTIFY reportEnabledChanged FINAL)
+    Q_PROPERTY(bool dateEnabled READ getDateEnabled WRITE setDateEnabled NOTIFY dateEnabledChanged FINAL)
 };

@@ -282,6 +282,7 @@ void AScanInteractor::setAScanCursor(int newAScanCursor) {
     if (aScanCursor == newAScanCursor) {
         return;
     }
+    qDebug() << "aScanCursor:" << aScanCursor;
     aScanCursor = newAScanCursor;
     emit aScanCursorChanged();
 }
@@ -375,6 +376,17 @@ bool AScanInteractor::isGateEnable(int gate_idx) const {
     }
     auto gate = ascan->getGate(getAScanCursor());
     return gate.at(gate_idx % 2).enable;
+}
+
+bool AScanInteractor::getDateEnabled() const {
+    return dateEnabled;
+}
+
+void AScanInteractor::setDateEnabled(bool newDateEnabled) {
+    if (dateEnabled == newDateEnabled)
+        return;
+    dateEnabled = newDateEnabled;
+    emit dateEnabledChanged();
 }
 
 bool AScanInteractor::checkAScanCursorValid() {
@@ -510,6 +522,7 @@ bool AScanInteractor::openFile(QString _fileName) {
         return false;
     }
     setReportEnabled(ascan->getReportEnable());
+    setDateEnabled(ascan->getDateEnable());
     qDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
     setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
     setAScanCursorMax(ascan->getDataSize() - 1);

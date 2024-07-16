@@ -9,6 +9,7 @@
 #include "../TOFD_PE/TofdPeDScanView.hpp"
 #include "../morose_config.h"
 #include "./FileExists.hpp"
+#include "./FileReader.hpp"
 #include "./QmlConditionalVariable.hpp"
 #include "GlobalCppProgress.hpp"
 #include "qmltranslator.h"
@@ -136,6 +137,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<AScan::CImage>("Union.AScan", 1, 0, "CImage");
     qmlRegisterType<Union::AScan::RailWeld::RailWeldDigram>("Union.AScan", 1, 0, "RailWeldDigram");
     qmlRegisterType<Morose::Utils::QmlConditionalVariable>("Morose.Utils", 1, 0, "Conditional");
+    qmlRegisterType<Morose::Utils::FileReader>("Morose.Utils", 1, 0, "FileReader");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::Instance());

@@ -161,6 +161,13 @@ Rectangle {
         Binding {
             when: controlTarget !== null
             target: controlTarget
+            property: "dateEnable"
+            value: interactor.dateEnabled
+        }
+
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
             property: "railweldSpecial_ZeroPointInFoot"
             value: interactor.railWeldSpecial_ZeroPointInFoot()
         }

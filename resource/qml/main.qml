@@ -142,7 +142,6 @@ ApplicationWindow {
                     id: listView
                     anchors.fill: parent
                     anchors.margins: 2
-                    visible: false
                     clip: true
                     property color highlightColor: "#00e3e6"
                     model: FolderListModel {
@@ -394,7 +393,7 @@ ApplicationWindow {
         nameFilters: FILEDIALOG_NAMEFILTER
         onAccepted: {
             listView.currentIndex = folder_list.indexOf(file_dialog.file)
-            listView.visible = true
+            rect_list.visible = true
             let filePath = String(file_dialog.file).substring(8)
             actionMainType(getMainUITypeIndex(filePath), filePath)
         }
@@ -417,9 +416,9 @@ ApplicationWindow {
         let lastMainUIType = mainUIType
         mainUIType = type
         if (type === "Unknow") {
-            listView.visible = false
-            loader_ui.source = ""
-            loader_ctrl.source = ""
+            rect_list.visible = false
+            loader_ctrl.source = "src/OnStart/ControlUI.qml"
+            mainUi_name = "src/OnStart/MainUI.qml"
         } else {
             if (lastMainUIType !== mainUIType) {
                 loader_ctrl.source = "src/" + type + "/ControlUI.qml"
@@ -455,6 +454,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        actionMainType("Unknow")
         showMaximized()
     }
 }

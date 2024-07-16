@@ -1,5 +1,4 @@
 #include "FileExists.hpp"
-#include "qdebug.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QUrl>
@@ -20,5 +19,10 @@ namespace Morose::Utils {
     bool FileExists::isDir(const QString& fileName) const {
         QFileInfo file(fileName);
         return file.isDir();
+    }
+
+    QStringList FileExists::listDir(const QString& dirName) const {
+        QDir dir(dirName);
+        return dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
     }
 } // namespace Morose::Utils

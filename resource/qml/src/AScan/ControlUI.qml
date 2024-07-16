@@ -33,6 +33,7 @@ ScrollView {
     property alias showRailWeldDigram: area_rail_weld_digram.visible
     property int replayTimerBaseInterval: 40
     property alias reportEnable: btn_report.enabled
+    property bool dateEnable: true
     property alias railweldSpecial_ZeroPointInFoot: rail_weld_digram.zeroPointInFoot
 
     signal showImage
@@ -101,12 +102,14 @@ ScrollView {
                         Layout.alignment: Qt.AlignHCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
+                        enabled: dateEnable
                     }
 
                     Label {
                         id: lb_date
                         Layout.preferredWidth: 160
                         Layout.preferredHeight: 28
+                        enabled: dateEnable
                         background: Rectangle {
                             border.color: "#d8d8d8"
                             border.width: 1
