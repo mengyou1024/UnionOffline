@@ -52,6 +52,7 @@ namespace Morose::Utils {
 
     UpgradeInterfaceFactory* UpgradeInterfaceFactory::Instance() {
         static UpgradeInterfaceFactory inst;
+        qDebug(TAG) << "instance id:" << &inst;
         return &inst;
     }
 
@@ -66,6 +67,7 @@ namespace Morose::Utils {
                 m_interface = nullptr;
                 break;
         }
+        emit instanceReady();
     }
 
     void UpgradeInterfaceFactory::checkForUpgrade() {
@@ -85,7 +87,6 @@ namespace Morose::Utils {
         version_change = Version::AppVersion().getVersonString() + "-->" + m_interface->getRemoteInstallerVersion().getVersonString();
         version_change += "\n点击开始下载";
         auto& tray = GetGlobakSystemTrayIcon();
-        tray.showMessage(QObject::tr("更新可用"), version_change);
         QObject::connect(
             &tray, &QSystemTrayIcon::messageClicked, this, [&tray, this]() {
                 qDebug(TAG) << "开始下载";
@@ -99,6 +100,7 @@ namespace Morose::Utils {
                 });
                 m_downloadThread->start();
             });
+        tray.showMessage(QObject::tr("更新可用"), version_change);
     }
 
     void UpgradeInterfaceFactory::startDownload() {
@@ -125,6 +127,7 @@ namespace Morose::Utils {
         std::call_once(showFlag, [&]() {
             inst.show();
         });
+        qDebug(TAG) << "get instance id:" << &inst;
         return inst;
     }
 

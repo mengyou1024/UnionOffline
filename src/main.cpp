@@ -85,8 +85,15 @@ int main(int argc, char* argv[]) {
         check_upgrade = upgradeSetting.value("checkUpgrade");
     }
     if (check_upgrade.toBool()) {
-        UpgradeInterfaceFactory::Instance()->createInterface(UpgradeInterfaceFactory::UpgradeInterfaceType::Gitee);
-        UpgradeInterfaceFactory::Instance()->checkForUpgrade();
+        auto inst = UpgradeInterfaceFactory::Instance();
+        QObject::connect(inst, &UpgradeInterfaceFactory::instanceReady, inst, [=]() {
+            inst->checkForUpgrade();
+            QObject::disconnect(inst, &UpgradeInterfaceFactory::instanceReady, nullptr, nullptr);
+        });
+        std::thread upgrade_thread([=]() {
+            inst->createInterface(UpgradeInterfaceFactory::UpgradeInterfaceType::Gitee);
+        });
+        upgrade_thread.detach();
     }
 #endif
 

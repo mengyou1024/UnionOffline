@@ -81,6 +81,8 @@ namespace Morose::Utils {
 
         void createInterface(UpgradeInterfaceType type);
         void checkForUpgrade();
+    signals:
+        void instanceReady(void);
 
     private:
         void startDownload();
