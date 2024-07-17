@@ -45,7 +45,7 @@ Rectangle {
         delegate: ImageCard {
             property color normalColor: "#e0eeee"
             anchors.horizontalCenter: parent.horizontalCenter
-            imgSource: `qrc:/img/instruments/${modelData}/cover.png` // "qrc:/img/USB_51.png"
+            imgSource: `qrc:/img/instruments/${modelData}/cover.png`
             text: modelData
             width: parent.width
             border.width: 2
