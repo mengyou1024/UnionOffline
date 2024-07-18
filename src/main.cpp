@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDir>
+#include <QFont>
 #include <QGuiApplication>
 #include <QPluginLoader>
 #include <QQmlApplicationEngine>

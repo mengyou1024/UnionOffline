@@ -159,9 +159,6 @@ void Morose::registeAllAScanFileSelector() {
 #endif
 
 #if ENABLE_UNION_GENERIC || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.ldat", "390N、T8连续图像", Union::__390N_T8::LDAT::FromFile);
-    _ascan_register->RegistReader("*.vdata", "390N、T8带摄像头图像", Union::__390N_T8::VDATA::FromFile);
-    _ascan_register->RegistReader("*.json", "390N、T8单幅图像", Union::__390N_T8::T8_390N_JSON::FromFile);
     _ascan_register->RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
     _ascan_register->RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
     _ascan_register->RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);

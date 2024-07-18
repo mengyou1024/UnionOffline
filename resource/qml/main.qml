@@ -73,6 +73,7 @@ ApplicationWindow {
 
                 CIconButton {
                     implicitWidth: 80
+                    visible: false
                     img_src: "qrc:/img/USB_51.png"
                     btn_txt: qsTr("通讯")
                     height: parent.height
