@@ -16,11 +16,10 @@ Rectangle {
     id: control
 
     ScrollView {
+        id: _scroll
+
         anchors.fill: parent
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical: ScrollBar {
-            id: _scrollbar
-        }
 
         ColumnLayout {
             width: control.width
@@ -41,7 +40,7 @@ Rectangle {
                 textFormat: TextEdit.MarkdownText
                 text: controlTarget !== null ? controlTarget.description : ""
                 onTextChanged: {
-                    _scrollbar.position = 0
+                    _scroll.ScrollBar.vertical.position = 0
                 }
 
                 font.pixelSize: 16
