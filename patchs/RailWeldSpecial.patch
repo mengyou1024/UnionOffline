@@ -1,28 +1,28 @@
-From b7880d0b6717d7a3c3ece037f78aba7da4d050e3 Mon Sep 17 00:00:00 2001
+From 19aba2cd97f419c49aeba89d8fa6d7e5d2261475 Mon Sep 17 00:00:00 2001
 From: mengyou <1523038073@qq.com>
-Date: Thu, 11 Jul 2024 14:21:27 +0800
+Date: Fri, 19 Jul 2024 08:35:44 +0800
 Subject: [PATCH] patchs: update railweld specialization patch
 
 ---
- CMakeLists.txt                    | 2 +-
+ CMakeLists.txt                    | 4 ++--
  cmake/FindMorose.cmake            | 3 ++-
  morose_config.h.in                | 6 +++---
- resource/qml/About.qml            | 2 +-
- resource/qml/main.qml             | 3 ++-
  script/pack-installer-msvc.iss.in | 2 +-
  script/pack-installer.iss.in      | 2 +-
- translations/UnionOffline_en.ts   | 2 +-
- 8 files changed, 12 insertions(+), 10 deletions(-)
+ 5 files changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index af3c6c8..18c24f9 100644
+index 05e7767..ee4bd74 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1,6 +1,6 @@
+@@ -1,8 +1,8 @@
  cmake_minimum_required(VERSION 3.20)
  
 -project(UnionOffline LANGUAGES CXX)
 +project(RailWeldOffline LANGUAGES CXX)
+ 
+-set(PROJECT_NAME_ZH_CN "390N离线分析软件")
++set(PROJECT_NAME_ZH_CN "390钢轨焊缝离线分析软件")
  
  set(CMAKE_CXX_STANDARD 20)
  set(NUMCPP_NO_USE_BOOST ON)
@@ -41,12 +41,12 @@ index b64d407..1c04b41 100644
  \"APP_VERSION\":\"${APP_VERSION}\",\
  \"APP_URL\": \"${APP_URL}\",\
 diff --git a/morose_config.h.in b/morose_config.h.in
-index 1a240d1..5c85df8 100644
+index a460a70..05b03aa 100644
 --- a/morose_config.h.in
 +++ b/morose_config.h.in
-@@ -2,8 +2,8 @@
- 
- #define APP_VERSION                    "@APP_VERSION@"
+@@ -4,8 +4,8 @@
+ #define APP_NAME_ZH_CN                 "@PROJECT_NAME_ZH_CN@"
+ #define APP_NAME_ZH_CN_TR              QObject::tr("@PROJECT_NAME_ZH_CN@")
  
 -#define ENABLE_UNION_GENERIC           (1) ///< 使用通用仪器接口
 -#define ENABLE_RAILWELE_SPECIALIZATION (0) ///< 使用钢轨焊缝特化接口
@@ -56,79 +56,32 @@ index 1a240d1..5c85df8 100644
 -#define MOROSE_ENABLE_UPGRADE          (1) ///< 使用软件升级功能
 +#define MOROSE_ENABLE_UPGRADE          (0) ///< 使用软件升级功能
  #define MOROSE_DEBUG_UPGRADE           (0) ///< 调试软件升级功能
-diff --git a/resource/qml/About.qml b/resource/qml/About.qml
-index c1b8bdb..300c29b 100644
---- a/resource/qml/About.qml
-+++ b/resource/qml/About.qml
-@@ -40,7 +40,7 @@ ApplicationWindow {
-                 Layout.fillWidth: true
-                 verticalAlignment: Qt.AlignVCenter
-                 font.pixelSize: 18
--                text: `通用离线分析软件 ${MOROSE_APP_VERSION}`
-+                text: `钢轨焊缝离线分析软件 ${MOROSE_APP_VERSION}`
-             }
-             Text {
-                 Layout.fillWidth: true
-diff --git a/resource/qml/main.qml b/resource/qml/main.qml
-index 94d4e36..581eb08 100644
---- a/resource/qml/main.qml
-+++ b/resource/qml/main.qml
-@@ -19,7 +19,7 @@ ApplicationWindow {
-     minimumHeight: 870
-     visible: true
-     id: wnd_main
--    title: qsTr("通用离线分析软件")
-+    title: qsTr("钢轨焊缝离线分析软件")
- 
-     property string mainUIType: "Unknow"
- 
-@@ -72,6 +72,7 @@ ApplicationWindow {
-                     img_src: "qrc:/img/USB_51.png"
-                     btn_txt: qsTr("通讯")
-                     height: parent.height
-+                    visible: false
-                     onClicked: {
-                         let comp = Qt.createComponent("Communicate.qml")
-                         if (comp.status === Component.Ready) {
 diff --git a/script/pack-installer-msvc.iss.in b/script/pack-installer-msvc.iss.in
-index fffb477..cd41452 100644
+index b489fa8..2bd0d58 100644
 --- a/script/pack-installer-msvc.iss.in
 +++ b/script/pack-installer-msvc.iss.in
-@@ -13,7 +13,7 @@
+@@ -14,7 +14,7 @@
  [Setup]
  ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
  ; (要生成新的GUID，请在IDE中单击Tools | generate GUID。)
 -AppId={{65C66E39-C539-4D2D-9DEF-664965A9C599}
 +AppId={{E966BD6F-B7A2-41DD-A96F-FE4DAD7F994E}
- AppName={#MyAppName}
+ AppName={#MyAppNameZhCN}
  AppVersion={#MyAppVersion}
  ;AppVerName={#MyAppName} {#MyAppVersion}
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
-index 17e66df..5d022d1 100644
+index 37b4030..55c7007 100644
 --- a/script/pack-installer.iss.in
 +++ b/script/pack-installer.iss.in
-@@ -13,7 +13,7 @@
+@@ -14,7 +14,7 @@
  [Setup]
  ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
  ; (要生成新的GUID，请在IDE中单击Tools | generate GUID。)
 -AppId={{65C66E39-C539-4D2D-9DEF-664965A9C599}
 +AppId={{E966BD6F-B7A2-41DD-A96F-FE4DAD7F994E}
- AppName={#MyAppName}
+ AppName={#MyAppNameZhCN}
  AppVersion={#MyAppVersion}
  ;AppVerName={#MyAppName} {#MyAppVersion}
-diff --git a/translations/UnionOffline_en.ts b/translations/UnionOffline_en.ts
-index 209f3ee..331a2cb 100644
---- a/translations/UnionOffline_en.ts
-+++ b/translations/UnionOffline_en.ts
-@@ -521,7 +521,7 @@
-     <name>main</name>
-     <message>
-         <location filename="../resource/qml/main.qml" line="20"/>
--        <source>通用离线分析软件</source>
-+        <source>钢轨焊缝离线分析软件</source>
-         <translation type="unfinished"></translation>
-     </message>
-     <message>
 -- 
 2.43.0.windows.1
 

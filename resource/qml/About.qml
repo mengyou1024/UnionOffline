@@ -40,7 +40,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 verticalAlignment: Qt.AlignVCenter
                 font.pixelSize: 18
-                text: `通用离线分析软件 ${MOROSE_APP_VERSION}`
+                text: `${MOROSE_APP_NAME_ZH_CN} ${MOROSE_APP_VERSION}`
             }
             Text {
                 Layout.fillWidth: true

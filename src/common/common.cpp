@@ -129,6 +129,7 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
 
 void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_APP_VERSION", APP_VERSION);
+    context->setContextProperty("MOROSE_APP_NAME_ZH_CN", APP_NAME_ZH_CN_TR);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
     qmlRegisterType<TOFD_PE::TofdPeDScanView>("Union.TOFD_PE", 1, 0, "TofdPeDScanView");
     qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");

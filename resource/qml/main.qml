@@ -19,7 +19,7 @@ ApplicationWindow {
     minimumHeight: 870
     visible: true
     id: wnd_main
-    title: qsTr("通用离线分析软件")
+    title: `${MOROSE_APP_NAME_ZH_CN}`
 
     property string mainUIType: "Unknow"
 
