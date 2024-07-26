@@ -11,7 +11,7 @@ namespace Morose::Utils {
         timeoutTimer.setSingleShot(true);
         timeoutTimer.setInterval(timeout_ms);
         timeoutTimer.callOnTimeout([&]() {
-            qDebug(QLoggingCategory("Conditional")) << "timeout when wait condition";
+            qCDebug(QLoggingCategory("Conditional")) << "timeout when wait condition";
             eventloop.quit();
         });
         connect(this, &QmlConditionalVariable::conditionRlease, &eventloop, &QEventLoop::quit);

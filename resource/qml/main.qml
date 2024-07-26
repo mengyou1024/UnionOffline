@@ -238,9 +238,11 @@ ApplicationWindow {
                     onLoaded: {
                         loader_ui.item.controlTarget = loader_ctrl.item
                         loader_ui.item.mainTarget = wnd_main
-                        console.log("main ui loaded")
-                        console.log(category, "openFile, filePath:", fileName2Open)
-                        openFile(fileName2Open)
+                        if (mainUIType !== "Unknow") {
+                            console.log("main ui loaded")
+                            console.log(category, "openFile, filePath:", fileName2Open)
+                            openFile(fileName2Open)
+                        }
                     }
                 }
 

@@ -115,3 +115,4 @@ config/ProductConfig.json
 pack-installer.iss
 components/protobuf/
 components/ssl/
+components/ftd2xx_static/

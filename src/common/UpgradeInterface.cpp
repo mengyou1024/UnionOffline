@@ -5,7 +5,7 @@
 #include <QStandardPaths>
 #include <QSystemTrayIcon>
 
-static Q_LOGGING_CATEGORY(TAG, "Upgrade.Intf");
+[[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Upgrade.Intf");
 
 namespace Morose::Utils {
 
@@ -21,12 +21,9 @@ namespace Morose::Utils {
             auto minor = match.captured(2).toLongLong();
             auto patch = match.captured(3).toLongLong();
             m_data     = ((major & 0xFFFFll) << 48) | ((minor & 0xFFFFll) << 32) | (patch & 0xFFFFFFFFll);
+        } else {
+            qCCritical(TAG) << "create version error";
         }
-#if defined(QT_DEBUG)
-        else {
-            qFatal("create version error");
-        }
-#endif
     }
 
     QString Version::getVersonString() const {
@@ -52,7 +49,7 @@ namespace Morose::Utils {
 
     UpgradeInterfaceFactory* UpgradeInterfaceFactory::Instance() {
         static UpgradeInterfaceFactory inst;
-        qDebug(TAG) << "instance id:" << &inst;
+        qCDebug(TAG) << "instance id:" << &inst;
         return &inst;
     }
 
@@ -89,7 +86,7 @@ namespace Morose::Utils {
         auto& tray = GetGlobakSystemTrayIcon();
         QObject::connect(
             &tray, &QSystemTrayIcon::messageClicked, this, [&tray, this]() {
-                qDebug(TAG) << "开始下载";
+                qCDebug(TAG) << "开始下载";
                 QString msg = "版本号:" + UpgradeInterfaceFactory::Instance()->m_interface->getRemoteInstallerVersion().getVersonString();
                 QObject::disconnect(&tray, &QSystemTrayIcon::messageClicked, nullptr, nullptr);
                 tray.showMessage(QObject::tr("开始后台下载升级程序"), msg, QSystemTrayIcon::Information, 3000);
@@ -127,7 +124,7 @@ namespace Morose::Utils {
         std::call_once(showFlag, [&]() {
             inst.show();
         });
-        qDebug(TAG) << "get instance id:" << &inst;
+        qCDebug(TAG) << "get instance id:" << &inst;
         return inst;
     }
 

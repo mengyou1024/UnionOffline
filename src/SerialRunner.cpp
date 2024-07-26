@@ -16,7 +16,7 @@ namespace Union::Extra {
             m_runner->setAutoDelete(false);
             connect(m_runner.get(), &_Runner::runDone, this, [&](QString fileName) {
                 m_fileName = fileName;
-                qDebug(TAG) << "recv event runDone, fileName:" << m_fileName;
+                qCDebug(TAG) << "recv event runDone, fileName:" << m_fileName;
                 emit fileNameChanged();
                 setIsRunning(false);
             });
@@ -28,7 +28,7 @@ namespace Union::Extra {
             setIsRunning(true);
             QThreadPool::globalInstance()->start(m_runner.get());
         } else {
-            qWarning(TAG) << "serial thread already running";
+            qCWarning(TAG) << "serial thread already running";
         }
     }
 
@@ -39,7 +39,7 @@ namespace Union::Extra {
         for (const auto& port : qAsConst(ports)) {
             ret.push_back(port.portName());
         }
-        qDebug(TAG) << ret;
+        qCDebug(TAG) << ret;
         return ret;
     }
 
@@ -76,7 +76,7 @@ namespace Union::Extra {
     }
 
     void _Runner::_run() {
-        qDebug(TAG) << "thread run";
+        qCDebug(TAG) << "thread run";
         QSerialPort port(m_portName);
         if (!port.open(QIODevice::ReadWrite)) {
             m_fileName = "";

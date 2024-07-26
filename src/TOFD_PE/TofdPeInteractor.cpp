@@ -101,17 +101,13 @@ namespace TOFD_PE {
         MOROSE_TEST_TIME_QUICK("open file:" + fileName);
         auto READ_FUNC = Union::TOFD_PE::TofdPeFileSelector::Instance()->GetReadFunction(fileName.toStdWString());
         if (!READ_FUNC.has_value()) {
-            qCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
+            qCCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
             return false;
         }
         try {
             m_data = (READ_FUNC.value())(fileName.toStdWString());
         } catch (std::exception& e) {
-#if !defined(QT_DEBUG)
-            qFatal(e.what());
-#else
-            qCritical(TAG) << e.what();
-#endif
+            qCCritical(TAG) << e.what();
             m_data = nullptr;
         }
         m_getVerticalAixsZero = std::nullopt;
@@ -120,7 +116,7 @@ namespace TOFD_PE {
             m_file = fileName;
             return true;
         }
-        qCritical(TAG) << "read file error, fileName:" << fileName;
+        qCCritical(TAG) << "read file error, fileName:" << fileName;
         return false;
     }
 
@@ -153,7 +149,7 @@ namespace TOFD_PE {
 
     bool TofdPeInteractor::reportExport(QString filePath, QQuickItemGrabResult* img) const {
         using Union::TOFD_PE::TofdPeIntf;
-        qDebug(TAG) << "reportExport, filePath:" << filePath;
+        qCDebug(TAG) << "reportExport, filePath:" << filePath;
         if (!m_file.isEmpty() || m_data == nullptr) {
             QVariantMap map = {
                 {"FileName", m_file},
@@ -192,7 +188,7 @@ namespace TOFD_PE {
             }
             if (img) {
                 QXlsx::Document doc(filePath);
-                qDebug(TAG) << "Svae image return:" << doc.insertImage(13, 0, img->image());
+                qCDebug(TAG) << "Svae image return:" << doc.insertImage(13, 0, img->image());
                 return doc.save();
             }
         }
@@ -267,7 +263,7 @@ namespace TOFD_PE {
     }
 
     void TofdPeInteractor::rollBack() {
-        qDebug(TAG) << "撤销";
+        qCDebug(TAG) << "撤销";
         if (m_data != nullptr) {
             m_data->rollback();
         }

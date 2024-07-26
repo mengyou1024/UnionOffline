@@ -4,7 +4,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-static Q_LOGGING_CATEGORY(TAG, "Upgrade.Gitee");
+[[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Upgrade.Gitee");
 
 namespace Morose::Utils::UpgradeImpl {
 
@@ -18,20 +18,21 @@ namespace Morose::Utils::UpgradeImpl {
         QEventLoop eventLoop;
         QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
         eventLoop.exec(QEventLoop::ExcludeUserInputEvents);
+        [[maybe_unused]]
         int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        qDebug() << "statusCode:" << statusCode;
+        qCDebug(TAG) << "statusCode:" << statusCode;
         QString                   str = reply->readAll();
         static QRegularExpression reg_download_url(".+(/mengyou1024/UnionOfflineInstaller/.+?\\.exe)");
         auto                      match_download_url = reg_download_url.match(str);
         if (match_download_url.hasMatch()) {
             m_downloadUrl = "https://gitee.com" + match_download_url.captured(1);
-            qDebug(TAG) << "remote download url:" << m_downloadUrl;
+            qCDebug(TAG) << "remote download url:" << m_downloadUrl;
         }
         static QRegularExpression reg_version(".+(v\\d+\\.\\d+\\.\\d+)");
         auto                      match_version = reg_version.match(m_downloadUrl);
         if (match_version.hasMatch()) {
             m_remoteVersion = Version(match_version.captured(1));
-            qDebug(TAG) << "remote version:" << m_remoteVersion.getVersonString();
+            qCDebug(TAG) << "remote version:" << m_remoteVersion.getVersonString();
         }
     }
 
@@ -63,10 +64,10 @@ namespace Morose::Utils::UpgradeImpl {
                 if (recvd == total) {
                     *pRet = true;
                     GlobalCppProgress::Instance()->setEnable(false);
-                    qDebug(TAG) << "download installer done";
+                    qCDebug(TAG) << "download installer done";
                 }
                 if (file != nullptr) {
-                    qDebug(TAG) << "download:" << recvd << "/" << total;
+                    qCDebug(TAG) << "download:" << recvd << "/" << total;
                     GlobalCppProgress::Instance()->setProgress((qreal)recvd / (qreal)total);
                     file->write(reply->readAll());
                     file->flush();

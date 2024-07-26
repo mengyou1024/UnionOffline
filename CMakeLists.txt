@@ -7,6 +7,10 @@ set(PROJECT_NAME_ZH_CN "390N离线分析软件")
 set(CMAKE_CXX_STANDARD 20)
 set(NUMCPP_NO_USE_BOOST ON)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_definitions(QT_NO_DEBUG_OUTPUT)
+endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
 find_package(Qt5 5.15 REQUIRED COMPONENTS Quick Widgets Charts Core SerialPort Network)
 
 set(CMAKE_AUTORCC ON)
@@ -32,13 +36,13 @@ set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleAp
 
 add_subdirectory("components/QXlsx/QXlsx")
 
-file(GLOB_RECURSE LUPDATE_SOURCES 
-    "src/*.h" 
-    "src/*.c" 
-    "src/*.hpp" 
-    "src/*.cpp" 
-    "src/*.cxx" 
-    "src/*.cc" 
+file(GLOB_RECURSE LUPDATE_SOURCES
+    "src/*.h"
+    "src/*.c"
+    "src/*.hpp"
+    "src/*.cpp"
+    "src/*.cxx"
+    "src/*.cc"
     "resource/*.qml"
     "components/union/include_private/*.h"
     "components/union/include_private/*.hpp"

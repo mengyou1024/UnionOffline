@@ -73,7 +73,6 @@ void AScanInteractor::setChartView(QQuickItem* newChartView) {
 }
 
 bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResult* img) {
-    qDebug(TAG) << __FUNCTION__;
     if (!checkAScanCursorValid()) {
         return false;
     }
@@ -102,7 +101,7 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     }
     if (img) {
         QXlsx::Document doc(_fileName);
-        qDebug(TAG) << "saveImage return:" << doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+        qCDebug(TAG) << "saveImage return:" << doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
         auto img_ascan = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
         if (img_ascan) {
             auto cameraImage = img_ascan->getCameraImage(getAScanCursor());
@@ -132,25 +131,25 @@ bool AScanInteractor::performanceClicked(QString _fileName) {
 }
 
 void AScanInteractor::gainValueModified(qreal val) {
-    qDebug(TAG) << __FUNCTION__ << "val" << val;
+    qCDebug(TAG) << "val" << val;
 }
 
 void AScanInteractor::replayStartClicked(bool isStart) {
-    qDebug(TAG) << __FUNCTION__ << "isStart" << isStart;
+    qCDebug(TAG) << "isStart" << isStart;
     m_isPlaying = isStart;
 }
 
 void AScanInteractor::replaySpeedClicked(int val) {
-    qDebug(TAG) << __FUNCTION__ << "val" << val;
+    qCDebug(TAG) << "val" << val;
     replaySpeed = val;
 }
 
 void AScanInteractor::lastFrameClicked() {
-    qDebug(TAG) << __FUNCTION__;
+    qCDebug(TAG) << "";
 }
 
 void AScanInteractor::nextFrameClicked() {
-    qDebug(TAG) << __FUNCTION__;
+    qCDebug(TAG) << "";
 }
 
 void AScanInteractor::timeSliderMoved(qreal val) {
@@ -158,9 +157,8 @@ void AScanInteractor::timeSliderMoved(qreal val) {
 }
 
 void AScanInteractor::seriesRemoved(QAbstractSeries* series) {
-    qDebug(TAG) << __FUNCTION__;
-    qDebug(TAG) << series;
-    qDebug(TAG) << series->attachedAxes();
+    qCDebug(TAG) << series;
+    qCDebug(TAG) << series->attachedAxes();
     for (auto& axis : series->attachedAxes()) {
         series->detachAxis(axis);
         axis->deleteLater();
@@ -600,22 +598,18 @@ bool AScanInteractor::openFile(QString _fileName) {
     auto READ_FUNC = Union::AScan::AScanFileSelector::Instance()->GetReadFunction(_fileName.toStdWString());
     if (!READ_FUNC.has_value()) {
         QFileInfo info(_fileName);
-        qWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
+        qCWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
         return false;
     }
     try {
         ascan = (READ_FUNC.value())(_fileName.toStdWString());
     } catch (std::exception& e) {
-#if !defined(QT_DEBUG)
-        qFatal(e.what());
-#else
-        qCritical(TAG) << e.what();
-#endif
+        qCCritical(TAG) << e.what();
         ascan = nullptr;
     }
 
     if (!ascan) {
-        qCritical(TAG) << "read file error, fileName:" << _fileName;
+        qCCritical(TAG) << "read file error, fileName:" << _fileName;
         return false;
     }
     if (ascan->getDataSize() > 1) {
@@ -624,12 +618,12 @@ bool AScanInteractor::openFile(QString _fileName) {
     } else if (ascan->getDataSize() == 1) {
         setReplayVisible(false);
     } else {
-        qWarning(TAG) << "no data on file:" << _fileName;
+        qCWarning(TAG) << "no data on file:" << _fileName;
         return false;
     }
     setReportEnabled(ascan->getReportEnable());
     setDateEnabled(ascan->getDateEnable());
-    qDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
+    qCDebug(TAG) << "time:" << QString::fromStdString(ascan->getDate(getAScanCursor()));
     setDate(QString::fromStdString(ascan->getDate(getAScanCursor())));
     setAScanCursorMax(ascan->getDataSize() - 1);
     auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
@@ -654,7 +648,7 @@ QAbstractSeries* AScanInteractor::createSeries(QAbstractSeries::SeriesType type,
                                          Q_ARG(QString, name),
                                          Q_ARG(QAbstractAxis*, axisX), Q_ARG(QAbstractAxis*, axisY));
     if (!res) {
-        qCritical(TAG) << "invok method `createSeries` error with parameter:" << type << name << axisX << axisY;
+        qCCritical(TAG) << "invok method `createSeries` error with parameter:" << type << name << axisX << axisY;
     }
     if (ret) {
         ret->setUseOpenGL(true);
