@@ -101,14 +101,18 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     }
     if (img) {
         QXlsx::Document doc(_fileName);
-        qCDebug(TAG) << "saveImage return:" << doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+        result = doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+        qCInfo(TAG) << "保存A扫图像:" << result;
         auto img_ascan = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
         if (img_ascan) {
             auto cameraImage = img_ascan->getCameraImage(getAScanCursor());
-            cameraImage      = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
-            doc.insertImage(35, 2, cameraImage);
+            if (!cameraImage.isNull()) {
+                cameraImage = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
+                doc.insertImage(35, 2, cameraImage);
+            }
         }
         result = doc.save();
+        qCInfo(TAG) << "保存报表:" << result;
     }
     return result;
 }
