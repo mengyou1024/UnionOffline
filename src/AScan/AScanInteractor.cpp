@@ -508,8 +508,10 @@ void AScanInteractor::CMP000Special_UpdateDacSeries() {
     std::vector<QList<QPointF>> pts    = {};
     std::vector<int>            indexs = {};
 
-    lines.resize(cmp000_data->getDacLineNumber(getAScanCursor()));
-    pts.resize(cmp000_data->getDacLineNumber(getAScanCursor()));
+    auto dac_line_number = cmp000_data->getDacLineNumber(getAScanCursor());
+    lines.resize(dac_line_number);
+    pts.resize(dac_line_number);
+    indexs.resize(dac_line_number);
     for (auto i = 0; auto& it : indexs) {
         it = ++i;
     }
