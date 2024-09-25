@@ -8,6 +8,7 @@
   * `QSerialPort`
 * `InonSetup >= 6`
 * `QtCreator`
+* `Visual Studio >= Visual Studio 2019 版本16.10, _MSC_VER_ >= 1929`
 
 ### 编译并打包
 
