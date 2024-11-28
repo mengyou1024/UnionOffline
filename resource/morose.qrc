@@ -20,7 +20,6 @@
         <file>img/Failed.png</file>
         <file>img/Succed.png</file>
         <file>qml/components/common/KeyValue.qml</file>
-        <file>qml/src/AScan/ParamUI.qml</file>
         <file>qml/src/OnStart/ControlUI.qml</file>
         <file>qml/src/OnStart/MainUI.qml</file>
         <file>qml/src/TOFD_PE/ControlUI.qml</file>
@@ -30,7 +29,6 @@
         <file>qml/src/TOFD_PE/compnents/LinesMask.qml</file>
         <file>qml/components/common/IconButton.qml</file>
         <file>qml/components/common/ComboBox.qml</file>
-        <file>qml/src/TOFD_PE/ParamUI.qml</file>
         <file>qml/Communicate.qml</file>
         <file>img/arrow.png</file>
         <file>qml/src/TOFD_PE/Help.qml</file>
@@ -45,5 +43,6 @@
         <file>img/instruments/PXUT-390N/image.png</file>
         <file>img/instruments/PXUT-F4/cover.png</file>
         <file>img/instruments/PXUT-F4/image.png</file>
+        <file>qml/components/common/JsonTable.qml</file>
     </qresource>
 </RCC>

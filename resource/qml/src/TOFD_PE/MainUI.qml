@@ -268,11 +268,14 @@ Rectangle {
         id: main_cons
         ignoreUnknownSignals: true
         function onBtnParamClicked() {
-            var comp = Qt.createComponent("qrc:/qml/src/TOFD_PE/ParamUI.qml")
+            var comp = Qt.createComponent("qrc:/qml/components/common/JsonTable.qml")
             if (comp.status === Component.Ready) {
                 var params_wnd = comp.createObject(parent, {
-                                                       "tofd_params": tofd_pe_intr.getTofdParam(),
-                                                       "pe_params": tofd_pe_intr.getPeParam()
+                                                       "tableData": {
+                                                           "TOFD参数": tofd_pe_intr.getTofdParam(),
+                                                           "PE参数": tofd_pe_intr.getPeParam()
+                                                       },
+                                                       "title": qsTr("工艺参数")
                                                    })
                 params_wnd.closing.connect(() => {
                                                comp.destroy()

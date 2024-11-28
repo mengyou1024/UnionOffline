@@ -240,13 +240,15 @@ Rectangle {
         id: main_cons
         ignoreUnknownSignals: true
         function onBtnParamClicked() {
-            var comp = Qt.createComponent("ParamUI.qml")
+            var comp = Qt.createComponent("qrc:/qml/components/common/JsonTable.qml")
             if (comp.status === Component.Ready) {
                 // DONE: 获取参数
                 const params = interactor.getTechnologicalParameter()
                 console.log(category, params)
                 var params_wnd = comp.createObject(parent, {
-                                                       "params": params
+                                                       "tableData": params,
+                                                       "treeDepthBias": 1,
+                                                       "title": qsTr("工艺参数")
                                                    })
                 params_wnd.closing.connect(() => {
                                                comp.destroy()

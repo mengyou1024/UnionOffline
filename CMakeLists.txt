@@ -4,7 +4,7 @@ project(UnionOffline LANGUAGES CXX)
 
 set(PROJECT_NAME_ZH_CN "390N离线分析软件")
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(NUMCPP_NO_USE_BOOST ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -24,13 +24,6 @@ find_program(LRELEASE_EXECUTABLE lrelease.exe REQUIRED)
 message(STATUS "WINDEPLOYQT_EXECUTABLE:${WINDEPLOYQT_EXECUTABLE}")
 message(STATUS "LUPDATE_EXECUTABLE:${LUPDATE_EXECUTABLE}")
 message(STATUS "LRELEASE_EXECUTABLE:${LRELEASE_EXECUTABLE}")
-
-file(GLOB_RECURSE PROJECT_SOURCES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
-set(
-    PROJECT_RES
-    resource/morose.qrc
-    resource/icon.rc
-)
 
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
 
@@ -66,7 +59,35 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_RES})
+file(GLOB_RECURSE ${PROJECT_NAME}_SRC "src/*.cpp" "src/*.c" "src/*.cc" "src/*.cxx")
+file(GLOB_RECURSE ${PROJECT_NAME}_INC "src/*.h" "src/*.hpp")
+
+set(${PROJECT_NAME}_INCLUDE_DIRS "")
+
+foreach(HEAD_FILE ${${PROJECT_NAME}_INC})
+    get_filename_component(directory_name ${HEAD_FILE} DIRECTORY)
+    list(FIND ${PROJECT_NAME}_INCLUDE_DIRS ${directory_name} index)
+
+    if(${index} EQUAL -1)
+        list(APPEND ${PROJECT_NAME}_INCLUDE_DIRS ${directory_name})
+    endif()
+endforeach(HEAD_FILE ${PROJECT_NAME})
+
+
+add_executable(
+    ${PROJECT_NAME}
+    ${${PROJECT_NAME}_SRC}
+    ${${PROJECT_NAME}_INC}
+    resource/morose.qrc
+    resource/icon.rc
+)
+
+target_include_directories(
+    ${PROJECT_NAME}
+    PUBLIC
+    ${${PROJECT_NAME}_INCLUDE_DIRS}
+)
+
 target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE

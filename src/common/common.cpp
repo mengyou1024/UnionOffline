@@ -16,6 +16,7 @@
 #include <QEventLoop>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QLoggingCategory>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -24,6 +25,8 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <UnionType>
+
+static Q_LOGGING_CATEGORY(TAG, "Morose.com");
 
 void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
     static QMutex mutex;
@@ -91,11 +94,15 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
 
     QString logTimeInfo = QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz]");
     QString message     = {};
+#if ENABLE_DEBUG_FUNCTION
     if (type == QtDebugMsg) {
         message = QString("%1 %2 %3 □□□%4■■■%5").arg(logTimeInfo, logLevel, logCategory, context.function, QString("%1%2").arg(msg, QString(maxMsgLen - msgLen, ' ')));
     } else {
         message = QString("%1 %2 %3 %4").arg(logTimeInfo, logLevel, logCategory, QString("%1%2").arg(msg, QString(maxMsgLen - msgLen, ' ')));
     }
+#else
+    message = QString("%1 %2 %3 %4").arg(logTimeInfo, logLevel, logCategory, QString("%1%2").arg(msg, QString(maxMsgLen - msgLen, ' ')));
+#endif
     message.replace("\n", QString("\n") + QString(33 + maxCatelogyLen, ' '));
 
 #if defined(QT_DEBUG)
@@ -195,14 +202,14 @@ QJsonObject& Morose::loadGlobalEnvironment() {
         QJsonDocument   doc = QJsonDocument::fromJson(file.readAll(), &err);
         if (doc.isObject()) {
             getGlobalEnvironment() = doc.object();
-            qDebug() << getGlobalEnvironment();
+            qCInfo(TAG) << ("Config:\n" + doc.toJson(QJsonDocument::JsonFormat::Indented).toStdString()).c_str();
         } else {
-            qWarning() << err.errorString();
+            qCWarning(TAG) << err.errorString();
         }
         file.close();
 
     } else {
-        qWarning() << "open file: Config.json failed!";
+        qCWarning(TAG) << "open file: Config.json failed!";
     }
     return getGlobalEnvironment();
 }
