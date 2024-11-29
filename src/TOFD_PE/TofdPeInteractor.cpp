@@ -86,13 +86,21 @@ namespace TOFD_PE {
 
     void TofdPeInteractor::removeThroughWaveEvent(qreal x, qreal y, qreal w, qreal h) {
         if (m_data != nullptr) {
-            m_data->removeThroughWaveEvent(x, y, w, h);
+            try {
+                m_data->removeThroughWaveEvent(x, y, w, h);
+            } catch (std::exception& e) {
+                qCCritical(TAG) << "去直通波:" << e.what();
+            }
         }
     }
 
     void TofdPeInteractor::pullThroughWaveEvent(qreal x, qreal y, qreal w, qreal h) {
         if (m_data != nullptr) {
-            m_data->pullThroughWaveEvent(x, y, w, h);
+            try {
+                m_data->pullThroughWaveEvent(x, y, w, h);
+            } catch (std::exception& e) {
+                qCCritical(TAG) << "拉直通波" << e.what();
+            }
         }
     }
 

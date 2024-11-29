@@ -123,6 +123,7 @@ ApplicationWindow {
         }
 
         RowLayout {
+            id: row_layout
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.leftMargin: 1
@@ -225,6 +226,12 @@ ApplicationWindow {
                 border.width: 2
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+
+                BusyIndicator {
+                    anchors.centerIn: loader_ui
+                    running: loader_ui.status === Loader.Loading
+                }
+
                 Loader {
                     id: loader_ui
                     clip: true
@@ -335,6 +342,11 @@ ApplicationWindow {
                 radius: 5
                 border.color: "#3f6feb"
                 border.width: 2
+
+                BusyIndicator {
+                    anchors.centerIn: loader_ctrl
+                    running: loader_ctrl.status === Loader.Loading
+                }
 
                 Loader {
                     id: loader_ctrl
