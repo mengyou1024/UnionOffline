@@ -16,7 +16,17 @@
 #include <UnionType>
 
 int main(int argc, char* argv[]) {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    // Qt5默认未开启高DPI模式, 需要手动打开
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+    // 高DPI适配策略
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+#else
+    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::OpenGL);
+#endif
     SingleApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/img/morose.ico"));
 
@@ -44,8 +54,6 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // 高DPI适配策略
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // 设置日志过滤规则
     QSettings logSetting("setting.ini", QSettings::IniFormat);
     logSetting.beginGroup("Rules");
