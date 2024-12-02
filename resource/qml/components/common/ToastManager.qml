@@ -18,7 +18,7 @@ Column {
     function showFailed(text) {
         var toast = toastComponent.createObject(toastManager)
         toast.selfDestroying = true
-        toast.msgType = "Failed"
+        toast.msgType = "failed"
         toast.show(text, 1500)
     }
 

@@ -1,11 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>img/morose.ico</file>
-        <file>img/ava_clear.png</file>
-        <file>img/config-language.ico</file>
         <file>img/folder.png</file>
         <file>img/param.png</file>
-        <file>img/USB_51.png</file>
         <file>qml/components/qmldir</file>
         <file>qml/components/common/Button.qml</file>
         <file>qml/components/common/Slider.qml</file>
@@ -17,8 +14,8 @@
         <file>qml/main.qml</file>
         <file>qml/components/common/Toast.qml</file>
         <file>qml/components/common/ToastManager.qml</file>
-        <file>img/Failed.png</file>
-        <file>img/Succed.png</file>
+        <file>img/failed.png</file>
+        <file>img/succed.png</file>
         <file>qml/components/common/KeyValue.qml</file>
         <file>qml/src/OnStart/ControlUI.qml</file>
         <file>qml/src/OnStart/MainUI.qml</file>
@@ -44,5 +41,8 @@
         <file>img/instruments/PXUT-F4/cover.png</file>
         <file>img/instruments/PXUT-F4/image.png</file>
         <file>qml/components/common/JsonTable.qml</file>
+        <file>img/help.png</file>
+        <file>img/remove.png</file>
+        <file>img/usb.png</file>
     </qresource>
 </RCC>

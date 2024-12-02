@@ -6,7 +6,7 @@ Rectangle {
     property real time: defaultTime
     readonly property real defaultTime: 1500
     readonly property real fadeTime: 400
-    property string msgType: "Succed"
+    property string msgType: "succed"
 
     property real margin: 10
     property bool selfDestroying: false

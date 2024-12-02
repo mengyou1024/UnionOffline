@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Controls.impl 2.15
 import QtQuick.Templates 2.15 as T
 
 T.ComboBox {
@@ -19,20 +18,31 @@ T.ComboBox {
 
     onHoveredChanged: canvas.requestPaint()
 
+    HoverHandler {
+        enabled: false
+        cursorShape: Qt.PointingHandCursor
+    }
+
     // 弹出框行委托
     delegate: ItemDelegate {
         width: parent.width
         height: 28
+        clip: true
         // 行字体样式
-        contentItem: Text {
-            text: modelData
-            font: control.font
-            color: control.fontColor
-            elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
-            // @disable-check M16
-            renderType: Text.NativeRendering
-            horizontalAlignment: Text.AlignHCenter
+        contentItem: Rectangle {
+            anchors.fill: parent
+            color: highlighted ? backgroundColor : "#FFFFFF"
+            clip: true
+            Text {
+                anchors.fill: parent
+                text: modelData
+                font: control.font
+                color: control.fontColor
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
 
         palette.text: control.palette.text
@@ -60,6 +70,7 @@ T.ComboBox {
         }
 
         onPaint: {
+            let contex = getContext("2d")
             context.reset()
             context.moveTo(0, 0)
 
@@ -69,7 +80,7 @@ T.ComboBox {
             if (control.pressed) {
                 context.strokeStyle = Qt.darker(drawColor, 1.3)
             } else {
-                context.strokeStyle = control.hovered ? Qt.lighter(drawColor, 1.2) : drawColor
+                context.strokeStyle = control.activeFocus ? Qt.darker(drawColor, 2) : drawColor
             }
             context.stroke()
         }
@@ -83,7 +94,6 @@ T.ComboBox {
         bottomPadding: 6 - control.padding
 
         text: control.editable ? control.editText : control.displayText
-
         horizontalAlignment: TextField.AlignHCenter
 
         enabled: control.editable
@@ -95,15 +105,14 @@ T.ComboBox {
         font: control.font
         color: control.fontColor
         selectionColor: control.palette.highlight
-        selectedTextColor: control.palette.highlightedText
+        selectedTextColor: "#00e3e6"
         verticalAlignment: Text.AlignVCenter
-        renderType: Text.NativeRendering
 
         background: Rectangle {
             visible: control.enabled && control.editable && !control.flat
             border.width: parent && parent.activeFocus ? 2 : 1
             border.color: parent && parent.activeFocus ? control.palette.highlight : control.palette.button
-            color: control.palette.base
+            color: "#00e3e6"
         }
     }
 
@@ -134,32 +143,20 @@ T.ComboBox {
             interactive: true
             //禁用橡皮筋效果
             boundsBehavior: Flickable.StopAtBounds
+            highlightMoveDuration: 0
 
             implicitHeight: popupImplicitHeight > 0 ? Math.min(popupImplicitHeight, contentHeight) : contentHeight
             model: control.delegateModel
             currentIndex: control.highlightedIndex
-            highlightMoveDuration: 0
-
-            delegate: Rectangle {
-                color: "red"
-            }
-
-            Rectangle {
-                z: 10
-                width: parent.width
-                height: parent.height
-                color: "transparent"
-                border.color: control.palette.mid
-            }
-
             T.ScrollIndicator.vertical: ScrollIndicator {}
         }
 
         background: Rectangle {
-            color: control.pressed ? "#EEEFF7" : control.palette.window
-            border.width: 1
-            border.color: control.backgroundColor
-            radius: 3
+            z: 10
+            width: parent.width
+            height: parent.height
+            color: "transparent"
+            border.color: Qt.darker(backgroundColor, 2)
         }
     }
 }

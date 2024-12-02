@@ -44,7 +44,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             spacing: 0
             background: Rectangle {
-                color: "#e1e1e1"
+                color: "#ccd8d8"
             }
 
             RowLayout {
@@ -57,14 +57,13 @@ ApplicationWindow {
                 }
 
                 CIconButton {
-                    img_src: "qrc:/img/ava_clear.png"
+                    img_src: "qrc:/img/remove.png"
                     btn_txt: qsTr("清除")
                     height: parent.height
                     onClicked: actionMainType("Unknow")
                 }
 
                 CIconButton {
-                    implicitWidth: 60
                     img_src: "qrc:/img/param.png"
                     btn_txt: qsTr("工艺参数")
                     height: parent.height
@@ -74,7 +73,7 @@ ApplicationWindow {
                 CIconButton {
                     implicitWidth: 80
                     visible: false
-                    img_src: "qrc:/img/USB_51.png"
+                    img_src: "qrc:/img/usb.png"
                     btn_txt: qsTr("通讯")
                     height: parent.height
                     onClicked: {
@@ -97,7 +96,7 @@ ApplicationWindow {
                 }
 
                 CIconButton {
-                    img_src: "qrc:/img/config-language.ico"
+                    img_src: "qrc:/img/help.png"
                     btn_txt: qsTr("帮助")
                     height: parent.height
                     onClicked: {
@@ -138,7 +137,7 @@ ApplicationWindow {
                 color: "#e0eeee"
                 radius: 5
                 clip: true
-                border.color: "#3f6feb"
+                border.color: "#7c95c4"
                 border.width: 2
                 ListView {
                     id: listView
@@ -222,7 +221,7 @@ ApplicationWindow {
             Rectangle {
                 color: "transparent"
                 radius: 5
-                border.color: "#3f6feb"
+                border.color: "#7c95c4"
                 border.width: 2
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -263,7 +262,7 @@ ApplicationWindow {
                     anchors.leftMargin: 5
                     radius: 16
                     clip: true
-                    color: "#b0e2ff"
+                    color: "#ccd8d8"
                     antialiasing: true
                     opacity: 0.2
                     Image {
@@ -278,12 +277,13 @@ ApplicationWindow {
                             }
                             onEntered: {
                                 listview_unfold_ctrl.opacity = 1
-                                listview_unfold_ctrl.color = Qt.darker("#b0e2ff", 1.2)
+                                listview_unfold_ctrl.color = Qt.darker("#ccd8d8", 1.2)
                             }
                             onExited: {
                                 listview_unfold_ctrl.opacity = 0.2
-                                listview_unfold_ctrl.color = "#b0e2ff"
+                                listview_unfold_ctrl.color = "#ccd8d8"
                             }
+                            cursorShape: Qt.PointingHandCursor
                         }
                         Behavior on rotation {
                             NumberAnimation {
@@ -303,7 +303,7 @@ ApplicationWindow {
                     anchors.rightMargin: 5
                     radius: 16
                     clip: true
-                    color: "#b0e2ff"
+                    color: "#ccd8d8"
                     antialiasing: true
                     opacity: 0.2
                     Image {
@@ -318,12 +318,13 @@ ApplicationWindow {
                             }
                             onEntered: {
                                 controlui_unfold_ctrl.opacity = 1
-                                controlui_unfold_ctrl.color = Qt.darker("#b0e2ff", 1.2)
+                                controlui_unfold_ctrl.color = Qt.darker("#ccd8d8", 1.2)
                             }
                             onExited: {
                                 controlui_unfold_ctrl.opacity = 0.2
-                                controlui_unfold_ctrl.color = "#b0e2ff"
+                                controlui_unfold_ctrl.color = "#ccd8d8"
                             }
+                            cursorShape: Qt.PointingHandCursor
                         }
                         Behavior on rotation {
                             NumberAnimation {
@@ -340,7 +341,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 color: "transparent"
                 radius: 5
-                border.color: "#3f6feb"
+                border.color: "#7c95c4"
                 border.width: 2
 
                 BusyIndicator {
@@ -367,7 +368,7 @@ ApplicationWindow {
         Rectangle {
             Layout.preferredHeight: 20
             Layout.fillWidth: true
-            color: "#b0e2ff"
+            color: "#ccd8d8"
             Text {
                 x: 5
                 height: parent.height

@@ -15,17 +15,16 @@ Rectangle {
     //自定义点击信号
     signal clicked
 
-    implicitWidth: 45
-    implicitHeight: 55
+    implicitWidth: 48
+    implicitHeight: 60
     radius: 3
     color: "transparent"
 
     ColumnLayout {
         anchors.fill: parent
-        // spacing: 5
+        spacing: -5
         Image {
             id: icon
-            source: "qrc:/camera.png"
             fillMode: Image.PreserveAspectFit
             Layout.alignment: Qt.AlignHCenter
             clip: true
