@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./TofdPeAScanView.hpp"
-#include "./TofdPeInteractor.hpp"
+#include "TofdPeAScanView.hpp"
+#include "TofdPeInteractor.hpp"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QLineSeries>

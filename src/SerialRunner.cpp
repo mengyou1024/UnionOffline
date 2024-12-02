@@ -1,4 +1,4 @@
-#include "./SerialRunner.hpp"
+#include "SerialRunner.hpp"
 #include <QLoggingCategory>
 #include <QTemporaryFile>
 #include <QThreadPool>

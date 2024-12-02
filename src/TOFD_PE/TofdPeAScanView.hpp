@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./TofdPeInteractor.hpp"
+#include "TofdPeInteractor.hpp"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QLineSeries>

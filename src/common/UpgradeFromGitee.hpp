@@ -1,5 +1,5 @@
 #pragma once
-#include "./UpgradeInterface.hpp"
+#include "UpgradeInterface.hpp"
 #include <QFile>
 #include <QtCore>
 
