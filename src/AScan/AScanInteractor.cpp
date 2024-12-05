@@ -222,7 +222,7 @@ void AScanInteractor::changeDataCursor() {
             update330N_DAC_AVG_Series();
         } else {
             auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(ascan.get());
-            if (cmp000 != nullptr && cmp000->isSpecialEnabled(getAScanCursor())) {
+            if (cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor())) {
                 CMP000Special_UpdateDacSeries();
             } else {
                 // 3. 更新DAC曲线
@@ -263,7 +263,7 @@ void AScanInteractor::updateCurrentFrame() {
             update330N_DAC_AVG_Series();
         } else {
             auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(ascan.get());
-            if (cmp000 != nullptr && cmp000->isSpecialEnabled(getAScanCursor())) {
+            if (cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor())) {
                 CMP000Special_UpdateDacSeries();
             } else {
                 updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
@@ -911,7 +911,7 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
     if (gate.enable) {
         constexpr auto midify_bias = 0.005;
         auto           cmp000      = dynamic_cast<Union::AScan::Special::CMP000Special*>(ascan.get());
-        if (index == 1 && cmp000 != nullptr && cmp000->isSpecialEnabled(getAScanCursor()) && cmp000->gateBIsLostType(getAScanCursor())) {
+        if (index == 1 && cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor()) && cmp000->gateBIsLostType(getAScanCursor())) {
             gateList.append({gate.pos, gate.height - midify_bias});
             gateList.append({gate.pos + midify_bias, gate.height});
             gateList.append({gate.pos + gate.width - midify_bias, gate.height});
