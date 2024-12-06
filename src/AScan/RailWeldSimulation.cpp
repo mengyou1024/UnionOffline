@@ -188,7 +188,7 @@ namespace Union::AScan::RailWeld {
         painter->setFont(font);
         QFontMetricsF font_metrics = painter->fontMetrics();
         QRectF        fm_rect      = font_metrics.boundingRect(m_channelName);
-        QRectF        draw_rect    = QRectF(QPointF((width() - fm_rect.width()) / 2.0, 0), QSizeF(fm_rect.width() + 10, fm_rect.height() + 10));
+        QRectF        draw_rect    = QRectF(QPointF((width() - fm_rect.width()) / 2.0, 0), QSizeF(fm_rect.width(), fm_rect.height()));
 
         painter->drawText(draw_rect, Qt::AlignCenter, m_channelName);
 
