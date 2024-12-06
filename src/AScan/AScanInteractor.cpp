@@ -84,36 +84,34 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     auto img_sh         = 339;
 
     if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(ascan.get())) {
+        // 390钢轨特化版本
         excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
         img_x          = 20;
         img_y          = 1;
         img_sw         = 480;
         img_sh         = 300;
-    }
-
-    if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get())) {
+    } else if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get())) {
+        // 390N/T8带摄像头
         excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
     }
 
     auto result = Yo::File::Render::Excel::Render(excel_template, _fileName, vmp);
-    if (!result) {
+    if (!result || !img) {
         return result;
     }
-    if (img) {
-        QXlsx::Document doc(_fileName);
-        result = doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
-        qCInfo(TAG) << "保存A扫图像:" << result;
-        auto img_ascan = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
-        if (img_ascan) {
-            auto cameraImage = img_ascan->getCameraImage(getAScanCursor());
-            if (!cameraImage.isNull()) {
-                cameraImage = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
-                doc.insertImage(35, 2, cameraImage);
-            }
+    QXlsx::Document doc(_fileName);
+    result = doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
+    qCInfo(TAG) << "保存A扫图像:" << result;
+    auto img_ascan = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(ascan.get());
+    if (img_ascan) {
+        auto cameraImage = img_ascan->getCameraImage(getAScanCursor());
+        if (!cameraImage.isNull()) {
+            cameraImage = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
+            doc.insertImage(35, 2, cameraImage);
         }
-        result = doc.save();
-        qCInfo(TAG) << "保存报表:" << result;
     }
+    result = doc.save();
+    qCInfo(TAG) << "保存报表:" << result;
     return result;
 }
 
@@ -390,6 +388,10 @@ bool AScanInteractor::isGateEnable(int gate_idx) const {
     return gate.at(gate_idx % 2).enable;
 }
 
+QVariant AScanInteractor::getAScanIntf() const {
+    return QVariant::fromValue(reinterpret_cast<size_t>(ascan.get()));
+}
+
 bool AScanInteractor::getDateEnabled() const {
     return dateEnabled;
 }
@@ -399,6 +401,17 @@ void AScanInteractor::setDateEnabled(bool newDateEnabled) {
         return;
     dateEnabled = newDateEnabled;
     emit dateEnabledChanged();
+}
+
+bool AScanInteractor::getShowCMP001Special() const {
+    return showCMP001Special;
+}
+
+void AScanInteractor::setShowCMP001Special(bool newShowCMP001Special) {
+    if (showCMP001Special == newShowCMP001Special)
+        return;
+    showCMP001Special = newShowCMP001Special;
+    emit showCMP001SpecialChanged();
 }
 
 bool AScanInteractor::checkAScanCursorValid() {
@@ -601,6 +614,7 @@ bool AScanInteractor::openFile(QString _fileName) {
     setReplayVisible(false);
     setHasCameraImage(false);
     setShowRailWeldDigramSpecial(false);
+    setShowCMP001Special(false);
     auto READ_FUNC = Union::AScan::AScanFileSelector::Instance()->GetReadFunction(_fileName.toStdWString());
     if (!READ_FUNC.has_value()) {
         QFileInfo info(_fileName);
@@ -642,6 +656,10 @@ bool AScanInteractor::openFile(QString _fileName) {
     setAScanCursor(0);
     if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(ascan.get())) {
         setShowRailWeldDigramSpecial(true);
+    }
+    auto cmp001 = dynamic_cast<Union::AScan::Special::CMP001Special*>(ascan.get());
+    if (cmp001 && cmp001->isSpecial001Enabled(0)) {
+        setShowCMP001Special(true);
     }
     return true;
 }

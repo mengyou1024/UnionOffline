@@ -147,6 +147,13 @@ Rectangle {
         Binding {
             when: controlTarget !== null
             target: controlTarget
+            property: "showCMP001Special"
+            value: interactor.showCMP001Special
+        }
+
+        Binding {
+            when: controlTarget !== null
+            target: controlTarget
             property: "replayTimerBaseInterval"
             value: interactor.replayTimerInterval
         }
@@ -282,7 +289,8 @@ Rectangle {
     }
 
     function openFileAction(filePath) {
-        controlTarget.init()
+        controlTarget.reset_before_init()
+        controlTarget.mainIntr = interactor
         interactor.setDefaultValue()
         if (interactor.openFile(filePath)) {
             controlTarget.fileNameList = interactor.getFileNameList()
@@ -298,6 +306,7 @@ Rectangle {
         } else {
             showFailed(qsTr("打开失败"))
         }
+        controlTarget.init()
     }
 
     Popup {

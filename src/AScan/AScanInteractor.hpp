@@ -34,6 +34,7 @@ class AScanInteractor : public QQuickItem {
     bool        reportEnabled             = true;
     bool        dateEnabled               = true;
     bool        m_isPlaying               = false;
+    bool        showCMP001Special         = false;
     _STD_TP     m_lastUpdateGateValueTime = std::chrono::system_clock::now();
 
     using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
@@ -131,6 +132,8 @@ public:
 
     Q_INVOKABLE bool isGateEnable(int gate_idx) const;
 
+    Q_INVOKABLE QVariant getAScanIntf() const;
+
     bool getHasCameraImage() const;
     void setHasCameraImage(bool newHasCameraImage);
     bool getShowRailWeldDigramSpecial() const;
@@ -141,6 +144,9 @@ public:
     void setReportEnabled(bool newReportEnabled);
     bool getDateEnabled() const;
     void setDateEnabled(bool newDateEnabled);
+
+    bool getShowCMP001Special() const;
+    void setShowCMP001Special(bool newShowCMP001Special);
 
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -173,6 +179,8 @@ signals:
     void reportEnabledChanged();
     void dateEnabledChanged();
 
+    void showCMP001SpecialChanged();
+
 private:
     void changeDataCursor(void);
     void updateCurrentFrame(void);
@@ -191,4 +199,5 @@ private:
     Q_PROPERTY(int replayTimerInterval READ getReplayTimerInterval WRITE setReplayTimerInterval NOTIFY replayTimerIntervalChanged FINAL)
     Q_PROPERTY(bool reportEnabled READ getReportEnabled WRITE setReportEnabled NOTIFY reportEnabledChanged FINAL)
     Q_PROPERTY(bool dateEnabled READ getDateEnabled WRITE setDateEnabled NOTIFY dateEnabledChanged FINAL)
+    Q_PROPERTY(bool showCMP001Special READ getShowCMP001Special WRITE setShowCMP001Special NOTIFY showCMP001SpecialChanged FINAL)
 };

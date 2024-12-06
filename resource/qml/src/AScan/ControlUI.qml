@@ -35,6 +35,9 @@ ScrollView {
     property alias reportEnable: btn_report.enabled
     property bool dateEnable: true
     property alias railweldSpecial_ZeroPointInFoot: rail_weld_digram.zeroPointInFoot
+    property alias showCMP001Special: area_t8_rail.visible
+
+    property var mainIntr
 
     signal showImage
 
@@ -381,6 +384,32 @@ ScrollView {
                 }
             }
         }
+
+        CArea {
+            id: area_t8_rail
+            areaText: qsTr("钢轨仿真")
+            Layout.margins: 2
+            Layout.fillWidth: true
+            Layout.preferredHeight: 320
+            RailWeldSimulation {
+                id: t8_rail_simulation
+                anchors.fill: parent
+                anchors.margins: 10
+                anchors.topMargin: 20
+                Connections {
+                    target: mainIntr || null
+                    ignoreUnknownSignals: true
+                    enabled: mainIntr !== undefined && area_t8_rail.visible
+                    function onAScanCursorChanged() {
+                        t8_rail_simulation.cursorChanged(mainIntr.aScanCursor)
+                    }
+                }
+            }
+        }
+    }
+
+    function reset_before_init() {
+        t8_rail_simulation.ascanIntf = 0
     }
 
     function init() {
@@ -389,6 +418,8 @@ ScrollView {
         replaySpeed = 1
         sl_timerLine.value = 0
         softGain = 0
+        t8_rail_simulation.ascanIntf = mainIntr.getAScanIntf()
+        t8_rail_simulation.cursorChanged(0)
     }
 
     Timer {

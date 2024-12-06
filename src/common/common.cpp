@@ -7,7 +7,7 @@
 #include "LinesMaskEnum.hpp"
 #include "MaskStatusEnum.hpp"
 #include "QmlConditionalVariable.hpp"
-#include "RailWeldDigram.h"
+#include "RailWeldDigram.hpp"
 #include "SerialRunner.hpp"
 #include "TofdPeAScanView.hpp"
 #include "TofdPeDScanView.hpp"
@@ -28,6 +28,7 @@
 #include <QQmlEngine>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <RailWeldSimulation.hpp>
 #include <UnionType>
 
 static Q_LOGGING_CATEGORY(TAG, "Morose.com");
@@ -154,6 +155,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<Union::View::AScanView>("Union.View", 1, 0, "AScanView");
     qmlRegisterType<Union::View::BScanView>("Union.View", 1, 0, "BScanView");
     qmlRegisterType<Union::View::CScanView>("Union.View", 1, 0, "CScanView");
+    qmlRegisterType<Union::AScan::RailWeld::RailWeldSimulation>("Union.AScan", 1, 0, "RailWeldSimulation");
     auto translatorInstance = QmlTranslator::Instance();
     qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::Instance());

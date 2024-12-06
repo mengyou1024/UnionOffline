@@ -1,6 +1,7 @@
-#include "RailWeldDigram.h"
+#include "RailWeldDigram.hpp"
 #include <QBrush>
 #include <QPainter>
+
 namespace Union::AScan::RailWeld {
     bool RailWeldDigram::zeroPointInFoot() const {
         return m_zeroPointInFoot;
