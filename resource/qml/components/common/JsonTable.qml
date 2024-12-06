@@ -139,10 +139,15 @@ ApplicationWindow {
         return list
     }
 
-    Component.onCompleted: {
+    function generateTable() {
+        layout.children = []
         let textList = createList(tableData)
         for (var i = 0; i < textList.length; i++) {
             layout.children.push(textList[i])
         }
+    }
+
+    Component.onCompleted: {
+        generateTable()
     }
 }

@@ -244,6 +244,22 @@ Rectangle {
     }
 
     Connections {
+        property var wind
+        id: cursor_changed_connection
+        target: interactor
+        ignoreUnknownSignals: true
+        enabled: false
+        function onAScanCursorChanged() {
+            if (!wind) {
+                return
+            }
+
+            wind.tableData = interactor.getTechnologicalParameter()
+            wind.generateTable()
+        }
+    }
+
+    Connections {
         id: main_cons
         ignoreUnknownSignals: true
         function onBtnParamClicked() {
@@ -257,7 +273,13 @@ Rectangle {
                                                        "treeDepthBias": 1,
                                                        "title": qsTr("工艺参数")
                                                    })
+
+                cursor_changed_connection.wind = params_wnd
+                cursor_changed_connection.enabled = true
+
                 params_wnd.closing.connect(() => {
+                                               cursor_changed_connection.wind = null
+                                               cursor_changed_connection.enabled = false
                                                comp.destroy()
                                                params_wnd.destroy()
                                            })
