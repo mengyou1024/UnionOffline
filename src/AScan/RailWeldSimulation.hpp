@@ -36,7 +36,7 @@ namespace Union::AScan::RailWeld {
         QVariant ascanIntf() const;
         void     setAscanIntf(const QVariant& newAscanIntf);
 
-        Q_INVOKABLE void cursorChanged(int idx);
+        Q_INVOKABLE void cursorChanged(int idx, double soft_gain);
 
     signals:
 

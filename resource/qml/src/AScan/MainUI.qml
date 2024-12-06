@@ -289,8 +289,7 @@ Rectangle {
     }
 
     function openFileAction(filePath) {
-        controlTarget.reset_before_init()
-        controlTarget.mainIntr = interactor
+        controlTarget.aScanInteractor = interactor
         interactor.setDefaultValue()
         if (interactor.openFile(filePath)) {
             controlTarget.fileNameList = interactor.getFileNameList()

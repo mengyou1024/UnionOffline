@@ -169,6 +169,7 @@ void Morose::registerVariable(QQmlContext* context) {
     registeAllAScanFileSelector();
     registeAllTofdPeFileSelector();
     registNameFilter(context);
+    // qRegisterMetaType<std::shared_ptr<Union::AScan::AScanIntf>>("AScanIntf_SP");
 }
 
 void Morose::registeAllAScanFileSelector() {

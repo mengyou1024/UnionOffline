@@ -37,9 +37,9 @@ class AScanInteractor : public QQuickItem {
     bool        showCMP001Special         = false;
     _STD_TP     m_lastUpdateGateValueTime = std::chrono::system_clock::now();
 
-    using ASCAN_TYPE = std::unique_ptr<Union::AScan::AScanIntf>;
+    using ASCAN_TYPE = std::shared_ptr<Union::AScan::AScanIntf>;
 
-    ASCAN_TYPE ascan          = {}; ///< A扫数据
+    ASCAN_TYPE m_aScanIntf    = {}; ///< A扫数据
     int        aScanCursor    = 0;
     int        aScanCursorMax = 0;
 
@@ -129,24 +129,22 @@ public:
 
     Q_INVOKABLE QImage       getCameraImage(void) const;
     Q_INVOKABLE QVariantList getRailWeldDot(void) const;
+    Q_INVOKABLE bool         isGateEnable(int gate_idx) const;
 
-    Q_INVOKABLE bool isGateEnable(int gate_idx) const;
-
-    Q_INVOKABLE QVariant getAScanIntf() const;
-
-    bool getHasCameraImage() const;
-    void setHasCameraImage(bool newHasCameraImage);
-    bool getShowRailWeldDigramSpecial() const;
-    void setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
-    int  getReplayTimerInterval() const;
-    void setReplayTimerInterval(int newReplayTimerInterval);
-    bool getReportEnabled() const;
-    void setReportEnabled(bool newReportEnabled);
-    bool getDateEnabled() const;
-    void setDateEnabled(bool newDateEnabled);
-
-    bool getShowCMP001Special() const;
-    void setShowCMP001Special(bool newShowCMP001Special);
+    bool       getHasCameraImage() const;
+    void       setHasCameraImage(bool newHasCameraImage);
+    bool       getShowRailWeldDigramSpecial() const;
+    void       setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
+    int        getReplayTimerInterval() const;
+    void       setReplayTimerInterval(int newReplayTimerInterval);
+    bool       getReportEnabled() const;
+    void       setReportEnabled(bool newReportEnabled);
+    bool       getDateEnabled() const;
+    void       setDateEnabled(bool newDateEnabled);
+    bool       getShowCMP001Special() const;
+    void       setShowCMP001Special(bool newShowCMP001Special);
+    ASCAN_TYPE aScanIntf() const;
+    void       setAScanIntf(const ASCAN_TYPE& newAScanIntf);
 
 public slots:
     Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -178,8 +176,8 @@ signals:
     void replayTimerIntervalChanged();
     void reportEnabledChanged();
     void dateEnabledChanged();
-
     void showCMP001SpecialChanged();
+    void aScanIntfChanged();
 
 private:
     void changeDataCursor(void);
@@ -200,4 +198,5 @@ private:
     Q_PROPERTY(bool reportEnabled READ getReportEnabled WRITE setReportEnabled NOTIFY reportEnabledChanged FINAL)
     Q_PROPERTY(bool dateEnabled READ getDateEnabled WRITE setDateEnabled NOTIFY dateEnabledChanged FINAL)
     Q_PROPERTY(bool showCMP001Special READ getShowCMP001Special WRITE setShowCMP001Special NOTIFY showCMP001SpecialChanged FINAL)
+    Q_PROPERTY(std::shared_ptr<Union::AScan::AScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
 };

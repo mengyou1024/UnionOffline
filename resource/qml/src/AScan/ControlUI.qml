@@ -37,7 +37,7 @@ ScrollView {
     property alias railweldSpecial_ZeroPointInFoot: rail_weld_digram.zeroPointInFoot
     property alias showCMP001Special: area_t8_rail.visible
 
-    property var mainIntr
+    property var aScanInteractor
 
     signal showImage
 
@@ -397,19 +397,24 @@ ScrollView {
                 anchors.margins: 10
                 anchors.topMargin: 20
                 Connections {
-                    target: mainIntr || null
+                    target: aScanInteractor || null
                     ignoreUnknownSignals: true
-                    enabled: mainIntr !== undefined && area_t8_rail.visible
+                    enabled: aScanInteractor !== undefined && area_t8_rail.visible
                     function onAScanCursorChanged() {
-                        t8_rail_simulation.cursorChanged(mainIntr.aScanCursor)
+                        t8_rail_simulation.cursorChanged(aScanInteractor.aScanCursor, softGain)
+                    }
+                }
+
+                Connections {
+                    target: gainSpinBox
+                    ignoreUnknownSignals: true
+                    enabled: aScanInteractor !== undefined && area_t8_rail.visible
+                    function onValueChanged() {
+                        t8_rail_simulation.cursorChanged(aScanInteractor.aScanCursor, softGain)
                     }
                 }
             }
         }
-    }
-
-    function reset_before_init() {
-        t8_rail_simulation.ascanIntf = 0
     }
 
     function init() {
@@ -418,8 +423,10 @@ ScrollView {
         replaySpeed = 1
         sl_timerLine.value = 0
         softGain = 0
-        t8_rail_simulation.ascanIntf = mainIntr.getAScanIntf()
-        t8_rail_simulation.cursorChanged(0)
+        t8_rail_simulation.ascanIntf = Qt.binding(() => {
+                                                      return aScanInteractor.aScanIntf
+                                                  })
+        t8_rail_simulation.cursorChanged(0, softGain)
     }
 
     Timer {

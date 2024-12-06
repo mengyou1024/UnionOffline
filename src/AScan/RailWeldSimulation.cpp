@@ -9,8 +9,7 @@
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.RailWeldSimulation");
 
-[[maybe_unused]]
-constexpr auto LIST_SIMULATION_POSITON = {
+[[maybe_unused]] constexpr auto LIST_SIMULATION_POSITON = {
     "轨头踏面",
     "轨距角",
     "轨头侧面",
@@ -21,18 +20,15 @@ constexpr auto LIST_SIMULATION_POSITON = {
     "轨底下表面",
 };
 
-[[maybe_unused]]
-constexpr std::array LIST_RAIL_TYPES = {"43kg/m", "50kg/m", "60kg/m", "75kg/m"};
-[[maybe_unused]]
-constexpr std::array LIST_RAIL_PROBE_DIRECTION = {"左向", "右向", "平行向"};
-[[maybe_unused]]
-constexpr std::array LIST_CHANNEL          = {"K2.5轨头", "K2.5轨底", "K1", "K0", "双K1", "双K0.8"};
-constexpr auto       NUM_RAIL_PT           = 127;
-constexpr auto       SCALE_FACTOR          = 1.7f;
-constexpr auto       OFFSET_X              = 22.5f; // 调整到中心位置
-constexpr auto       OFFSET_Y              = 50.5f; // 调整到中心位置
-constexpr auto       MAX_SEGMENT_LENGTH    = 10.00F;
-constexpr auto       SIMULATION_LINE_COLOR = Qt::red;
+[[maybe_unused]] constexpr std::array LIST_RAIL_TYPES           = {"43kg/m", "50kg/m", "60kg/m", "75kg/m"};
+[[maybe_unused]] constexpr std::array LIST_RAIL_PROBE_DIRECTION = {"左向", "右向", "平行向"};
+[[maybe_unused]] constexpr std::array LIST_CHANNEL              = {"K2.5轨头", "K2.5轨底", "K1", "K0", "双K1", "双K0.8"};
+[[maybe_unused]] constexpr auto       NUM_RAIL_PT               = 127;
+[[maybe_unused]] constexpr auto       SCALE_FACTOR              = 1.7f;
+[[maybe_unused]] constexpr auto       OFFSET_X                  = 22.5f; // 调整到中心位置
+[[maybe_unused]] constexpr auto       OFFSET_Y                  = 50.5f; // 调整到中心位置
+[[maybe_unused]] constexpr auto       MAX_SEGMENT_LENGTH        = 10.00F;
+[[maybe_unused]] constexpr auto       SIMULATION_LINE_COLOR     = Qt::red;
 
 // clang-format off
 constexpr float RAIL_PT[NUM_RAIL_PT][2]  = {
@@ -144,10 +140,10 @@ namespace Union::AScan::RailWeld {
         emit ascanIntfChanged();
     }
 
-    void RailWeldSimulation::cursorChanged(int idx) {
+    void RailWeldSimulation::cursorChanged(int idx, double soft_gain) {
         using namespace Union::__390N_T8::MDATType;
-        auto    ascan_intf = ascanIntf().value<size_t>();
-        UnType* intf       = dynamic_cast<UnType*>(reinterpret_cast<Union::AScan::AScanIntf*>(ascan_intf));
+        auto ascan_intf = ascanIntf().value<std::shared_ptr<Union::AScan::AScanIntf>>();
+        auto intf       = std::dynamic_pointer_cast<UnType>(ascan_intf);
         if (intf == nullptr || !intf->isSpecial001Enabled(idx)) {
             qCWarning(TAG) << "intf is nullptr or feature CMP001 is not enable";
             return;
@@ -159,7 +155,13 @@ namespace Union::AScan::RailWeld {
             return;
         }
         m_thicknessData.resize(std::ssize(data));
-        std::ranges::transform(data.begin(), data.end(), m_thicknessData.begin(), [](auto it) -> double { return it; });
+        std::ranges::transform(data.begin(), data.end(), m_thicknessData.begin(), [soft_gain](auto it) -> double {
+            auto ret = Union::CalculateGainOutput(it, soft_gain);
+            if (ret > 255) {
+                ret = 255;
+            }
+            return ret;
+        });
         setSimulationProbePoint(cmp001->simulation_point);
         setSimulationProbePosition(cmp001->simulation_position);
         setSimulationProbeDirection(cmp001->simulation_direction);
