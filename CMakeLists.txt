@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(UnionOffline LANGUAGES CXX)
 
-set(PROJECT_NAME_ZH_CN "390N离线分析软件")
+set(PROJECT_NAME_ZH_CN "390N/T8离线分析软件")
 
 set(CMAKE_CXX_STANDARD 23)
 set(NUMCPP_NO_USE_BOOST ON)
