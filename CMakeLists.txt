@@ -73,7 +73,6 @@ foreach(HEAD_FILE ${${PROJECT_NAME}_INC})
     endif()
 endforeach(HEAD_FILE ${PROJECT_NAME})
 
-
 add_executable(
     ${PROJECT_NAME}
     ${${PROJECT_NAME}_SRC}
@@ -108,6 +107,8 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+set(UNIONLIB_DISABLE_AUTOMATE ON)
 
 find_package(Morose)
 

@@ -165,7 +165,7 @@ namespace Union::AScan::RailWeld {
         setSimulationProbePoint(cmp001->simulation_point);
         setSimulationProbePosition(cmp001->simulation_position);
         setSimulationProbeDirection(cmp001->simulation_direction);
-        setSimulationRailType(cmp001->railtypes % 4);
+        setSimulationRailType(cmp001->railtypes % std::ssize(LIST_RAIL_TYPES));
         setProbeAngle(cmp001->angle);
         setActualSoundDistance(cmp001->simulation_length);
         m_channelName = LIST_CHANNEL[cmp001->channel % std::ssize(LIST_CHANNEL)];
