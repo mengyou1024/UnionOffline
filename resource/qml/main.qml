@@ -471,6 +471,40 @@ ApplicationWindow {
         toast.showFailed(text)
     }
 
+    Connections {
+        id: update_connections
+        property var update_wnd
+        target: AppUpdater
+
+        function onNewVersionFound(ver, msg) {
+            var comp = Qt.createComponent("qrc:/qml/UpdateUI.qml")
+            if (comp.status === Component.Ready) {
+                update_connections.update_wnd = comp.createObject(wnd_main, {
+                                                                      "remoteVersion": ver
+                                                                  })
+
+                update_connections.update_wnd.closing.connect(() => {
+                                                                  comp.destroy()
+                                                                  update_connections.update_wnd.destroy()
+                                                                  update_connections.update_wnd = null
+                                                              })
+            } else if (comp.status === Component.Error) {
+                console.error(category, comp.errorString())
+            }
+        }
+
+        function onDownloadProgressChanged() {
+            console.log(AppUpdater.downloadProgress)
+        }
+
+        function onDownloadSuccess() {
+            if (update_connections.update_wnd === null) {
+                console.log("更新文件下载成功")
+                AppUpdater.doUpgrade()
+            }
+        }
+    }
+
     Component.onCompleted: {
         actionMainType("Unknow")
         showMaximized()

@@ -30,62 +30,29 @@ namespace Morose::Utils {
         virtual ~UpgradeInterface() noexcept = default;
         /**
          * @brief 获取远程安装包版本
-         * @return
+         * @return Version
          */
         virtual Version getRemoteInstallerVersion() const = 0;
 
         /**
          * @brief 获取远程安装包的升级信息
-         * @return
+         * @return QString
          */
         virtual QString getRemoteInstallerUpgradeInfo() const = 0;
 
         /**
          * @brief 获取远程安装包的下载地址
-         * @return
+         * @return QString
          */
         virtual QString getRemoteInstallerDownloadUrl() const = 0;
 
         /**
          * @brief 下载远程安装包
-         * @param file
-         * @return
+         * @param file 下载文件句柄
+         * @param progress 下载进度
+         * @return bool
          */
-        virtual bool downloadRemoteInstaller(QFile* file) const = 0;
-    };
-
-    class UpgradeInterfaceFactory : public QObject {
-        Q_OBJECT
-
-        using _SP_UI   = std::shared_ptr<UpgradeInterface>;
-        using _F_V     = std::optional<std::function<bool(Version)>>;
-        using _F_D     = std::optional<std::function<bool(QString)>>;
-        using _SP_FILE = std::shared_ptr<QFile>;
-
-        _SP_UI   m_interface                 = nullptr;
-        _F_V     m_actionFoundNewVersion     = std::nullopt;
-        _F_D     m_actionDownloadInstallerOk = std::nullopt;
-        _SP_FILE m_file                      = nullptr;
-        QThread* m_downloadThread            = nullptr;
-
-        UpgradeInterfaceFactory() = default;
-
-    public:
-        Q_DISABLE_COPY_MOVE(UpgradeInterfaceFactory);
-
-        enum class UpgradeInterfaceType {
-            Gitee,
-        };
-
-        static UpgradeInterfaceFactory* Instance();
-
-        void createInterface(UpgradeInterfaceType type);
-        void checkForUpgrade();
-    signals:
-        void instanceReady(void);
-
-    private:
-        void startDownload();
+        virtual bool downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const = 0;
     };
 
     QSystemTrayIcon& GetGlobakSystemTrayIcon();

@@ -33,9 +33,10 @@ namespace Morose::Utils::UpgradeImpl {
 
         /**
          * @brief 下载远程安装包
-         * @param file文件句柄
+         * @param file 文件句柄
+         * @param progress 下载进度
          * @return 下载成功返回true
          */
-        virtual bool downloadRemoteInstaller(QFile* file) const override;
+        virtual bool downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const override;
     };
 } // namespace Morose::Utils::UpgradeImpl

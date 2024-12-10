@@ -81,31 +81,6 @@ int main(int argc, char* argv[]) {
     qDebug() << "supprot ssl:" << QSslSocket::supportsSsl();
     qDebug() << "ssl lib version:" << QSslSocket::sslLibraryVersionString();
 
-    using Morose::Utils::UpgradeInterfaceFactory;
-#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE) | MOROSE_DEBUG_UPGRADE
-    QSettings upgradeSetting("setting.ini", QSettings::IniFormat);
-    upgradeSetting.beginGroup("Upgrade");
-    auto check_upgrade = upgradeSetting.value("checkUpgrade");
-    if (check_upgrade.isNull()) {
-        upgradeSetting.setValue("checkUpgrade", true);
-        upgradeSetting.endGroup();
-        upgradeSetting.sync();
-        upgradeSetting.beginGroup("Upgrade");
-        check_upgrade = upgradeSetting.value("checkUpgrade");
-    }
-    if (check_upgrade.toBool()) {
-        auto inst = UpgradeInterfaceFactory::Instance();
-        QObject::connect(inst, &UpgradeInterfaceFactory::instanceReady, inst, [=]() {
-            inst->checkForUpgrade();
-            QObject::disconnect(inst, &UpgradeInterfaceFactory::instanceReady, nullptr, nullptr);
-        });
-        std::thread upgrade_thread([=]() {
-            inst->createInterface(UpgradeInterfaceFactory::UpgradeInterfaceType::Gitee);
-        });
-        upgrade_thread.detach();
-    }
-#endif
-
     QTemporaryDir tempDir;
     QSettings     cacheSetting("setting.ini", QSettings::IniFormat);
     cacheSetting.beginGroup("Cache");

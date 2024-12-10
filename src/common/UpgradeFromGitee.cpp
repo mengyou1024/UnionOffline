@@ -1,5 +1,4 @@
 #include "UpgradeFromGitee.hpp"
-#include "GlobalCppProgress.hpp"
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -17,10 +16,12 @@ namespace Morose::Utils::UpgradeImpl {
         auto       reply = (*manager).get(req);
         QEventLoop eventLoop;
         QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
-        eventLoop.exec(QEventLoop::ExcludeUserInputEvents);
+        eventLoop.exec(QEventLoop::AllEvents);
         [[maybe_unused]]
         int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        qCDebug(TAG) << "statusCode:" << statusCode;
+        if (statusCode != 200) {
+            throw std::runtime_error("无法访问服务器");
+        }
         QString                   str = reply->readAll();
         static QRegularExpression reg_download_url(".+(/mengyou1024/UnionOfflineInstaller/.+?\\.exe)");
         auto                      match_download_url = reg_download_url.match(str);
@@ -48,7 +49,7 @@ namespace Morose::Utils::UpgradeImpl {
         return m_downloadUrl;
     }
 
-    bool UpgradeFromGitee::downloadRemoteInstaller(QFile* file) const {
+    bool UpgradeFromGitee::downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const {
         auto            manager = std::make_unique<QNetworkAccessManager>();
         QNetworkRequest req_download;
         req_download.setUrl(m_downloadUrl);
@@ -58,17 +59,16 @@ namespace Morose::Utils::UpgradeImpl {
         auto       ret  = std::make_shared<bool>(false);
         bool*      pRet = ret.get();
         QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
-        GlobalCppProgress::Instance()->setEnable(true);
-        QObject::connect(reply, &QNetworkReply::downloadProgress, &eventLoop, [reply, file, pRet](qint64 recvd, qint64 total) {
+        QObject::connect(reply, &QNetworkReply::downloadProgress, &eventLoop, [reply, file, pRet, progress](qint64 recvd, qint64 total) {
             if (total > 0) {
                 if (recvd == total) {
                     *pRet = true;
-                    GlobalCppProgress::Instance()->setEnable(false);
+                    progress(1);
                     qCDebug(TAG) << "download installer done";
                 }
                 if (file != nullptr) {
                     qCDebug(TAG) << "download:" << recvd << "/" << total;
-                    GlobalCppProgress::Instance()->setProgress((qreal)recvd / (qreal)total);
+                    progress((qreal)recvd / (qreal)total);
                     file->write(reply->readAll());
                     file->flush();
                 }

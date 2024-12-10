@@ -14,6 +14,7 @@
 #include "morose_config.h"
 #include "qmltranslator.h"
 #include <AScanView.hpp>
+#include <AppUpdater.hpp>
 #include <BScanView.hpp>
 #include <BasicView.hpp>
 #include <CScanView.hpp>
@@ -162,6 +163,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "MaskStatusEnum", TOFD_PE::MaskStatusEnum::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "GlobalCppProgress", Morose::Utils::GlobalCppProgress::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "FileExists", Morose::Utils::FileExists::Instance());
+    qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "AppUpdater", Morose::Utils::AppUpdater::Instance());
     QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
         qDebug() << "languageChanged";
         context->engine()->retranslate();
