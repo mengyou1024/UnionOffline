@@ -17,6 +17,8 @@ jobs:
             qt_ver: 5.15.2
             app_name: UnionOffline
     steps:
+    # 配置Git的username和email
+    - uses: tidylabs/action-git-config-user@v1
     # 拉取仓库
     - name: Git Checkout
       uses: actions/checkout@v4
@@ -24,8 +26,6 @@ jobs:
         fetch-depth: 0
         submodules: recursive
         token: ${{ secrets.PRIVATE_TOKEN }}
-    # 配置Git的username和email
-    - uses: tidylabs/action-git-config-user@v1
     # 创建changelog
     - name: Create changelog text
       id: changelog
@@ -95,7 +95,7 @@ jobs:
         asset_content_type: application/zip
     # 上传升级程序到Gitee
     - name: Upload To Gitee
-      uses: mengyou1024/gitee-action@v0.0.0
+      uses: mengyou1024/gitee-action@v0.1.0
       with: 
         accessToken: ${{ secrets.GITEE_ACCESS_TOKEN }}
         username: "mengyou1024"
