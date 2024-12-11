@@ -21,7 +21,7 @@ index 05e7767..ee4bd74 100644
 -project(UnionOffline LANGUAGES CXX)
 +project(RailWeldOffline LANGUAGES CXX)
  
--set(PROJECT_NAME_ZH_CN "390N/T8离线分析软件")
+-set(PROJECT_NAME_ZH_CN "390N、T8离线分析软件")
 +set(PROJECT_NAME_ZH_CN "390钢轨焊缝离线分析软件")
  
  set(CMAKE_CXX_STANDARD 23)
@@ -49,7 +49,7 @@ index a460a70..05b03aa 100644
  #define APP_NAME_ZH_CN_TR              QObject::tr("@PROJECT_NAME_ZH_CN@")
  
 -#define ENABLE_UNION_GENERIC           (1) ///< 使用通用仪器接口
--#define ENABLE_RAILWELE_SPECIALIZATION (0) ///< 使用钢轨焊缝特化接口
+-#define ENABLE_RAILWELE_SPECIALIZATION (1) ///< 使用钢轨焊缝特化接口
 +#define ENABLE_UNION_GENERIC           (0) ///< 使用通用仪器接口
 +#define ENABLE_RAILWELE_SPECIALIZATION (1) ///< 使用钢轨焊缝特化接口
  
