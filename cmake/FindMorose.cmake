@@ -70,19 +70,11 @@ function(morose_auto_release)
             set(MOROSE_UNINSTALL_DELETE_STRING "${MOROSE_UNINSTALL_DELETE_STRING}Type: filesandordirs; Name: \"{app}${ITEM}\"\n")
         endforeach(ITEM ${MOROSE_UNINSTALL_DELETE})
 
-        if(MSVC)
-            configure_file(
-                ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer-msvc.iss.in
-                ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss
-                @ONLY
-            )
-        elseif(MINGW)
-            configure_file(
-                ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer.iss.in
-                ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss
-                @ONLY
-            )
-        endif()
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer.iss.in
+            ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss
+            @ONLY
+        )
 
         foreach(ITEM ${MOROSE_PLUGINS_TYPE})
             string(TOLOWER ${ITEM} DIR_NAME)
