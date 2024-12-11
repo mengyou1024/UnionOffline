@@ -6,7 +6,7 @@ Subject: [PATCH] patchs: update railweld specialization patch
 ---
  CMakeLists.txt                    | 4 ++--
  cmake/FindMorose.cmake            | 3 ++-
- morose_config.h.in                | 6 +++---
+ config/morose_config.h.in                | 6 +++---
  script/pack-installer-msvc.iss.in | 2 +-
  script/pack-installer.iss.in      | 2 +-
  5 files changed, 9 insertions(+), 8 deletions(-)
@@ -40,10 +40,10 @@ index b64d407..1c04b41 100644
      COMMAND echo "{\
  \"APP_VERSION\":\"${APP_VERSION}\",\
  \"APP_URL\": \"${APP_URL}\",\
-diff --git a/morose_config.h.in b/morose_config.h.in
+diff --git a/config/morose_config.h.in b/config/morose_config.h.in
 index a460a70..05b03aa 100644
---- a/morose_config.h.in
-+++ b/morose_config.h.in
+--- a/config/morose_config.h.in
++++ b/config/morose_config.h.in
 @@ -4,8 +4,8 @@
  #define APP_NAME_ZH_CN                 "@PROJECT_NAME_ZH_CN@"
  #define APP_NAME_ZH_CN_TR              QObject::tr("@PROJECT_NAME_ZH_CN@")

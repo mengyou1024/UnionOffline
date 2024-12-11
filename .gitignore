@@ -108,11 +108,9 @@ CMakeLists.txt.user*
 # End of https://www.toptal.com/developers/gitignore/api/cmake,qtcreator,qt
 
 build/
-morose_config.h
 output/*
 .vscode/
 config/ProductConfig.json
-pack-installer.iss
 components/protobuf/
 components/ssl/
 components/ftd2xx_static/

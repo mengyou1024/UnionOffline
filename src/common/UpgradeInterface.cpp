@@ -1,5 +1,5 @@
 #include "UpgradeInterface.hpp"
-#include "../morose_config.h"
+#include "morose_config.h"
 #include <QLoggingCategory>
 #include <QStandardPaths>
 #include <QSystemTrayIcon>

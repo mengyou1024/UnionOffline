@@ -49,10 +49,11 @@ macro(morose_main_setup)
     endif(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
 
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/morose_config.h.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/morose_config.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/config/morose_config.h.in
+        ${CMAKE_CURRENT_BINARY_DIR}/private_include/morose_config.h
         @ONLY
     )
+    include_directories(${CMAKE_CURRENT_BINARY_DIR}/private_include)
 endmacro(morose_main_setup)
 
 #[[
@@ -72,13 +73,13 @@ function(morose_auto_release)
         if(MSVC)
             configure_file(
                 ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer-msvc.iss.in
-                ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss
+                ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss
                 @ONLY
             )
         elseif(MINGW)
             configure_file(
                 ${CMAKE_CURRENT_SOURCE_DIR}/script/pack-installer.iss.in
-                ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss
+                ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss
                 @ONLY
             )
         endif()
@@ -128,8 +129,8 @@ function(morose_auto_release)
                 ${QML_DIRS}
 
                 # 执行ISCC进行打包
-                COMMAND ${ISCC_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss" /Q
-                DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/pack-installer.iss ${PROJECT_NAME}
+                COMMAND ${ISCC_PATH} "${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss" /Q
+                DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss ${PROJECT_NAME}
                 COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}Installer-${APP_VERSION}"
             )
         else(ISCC_PATH)
