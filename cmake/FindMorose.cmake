@@ -123,7 +123,7 @@ function(morose_auto_release)
                 # 执行ISCC进行打包
                 COMMAND ${ISCC_PATH} "${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss" /Q
                 DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/pack-installer.iss ${PROJECT_NAME}
-                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}Installer-${APP_VERSION}"
+                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}-Setup-${APP_VERSION}"
             )
         else(ISCC_PATH)
             add_custom_target(
@@ -146,7 +146,7 @@ function(morose_auto_release)
                 ${PLUGIN_DIRS}
                 ${QML_DIRS}
 
-                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}Installer-${APP_VERSION}"
+                COMMENT "generated executable installer: ${MOROSE_INSTALL_DIR}/${PROJECT_NAME}-Setup-${APP_VERSION}"
             )
         endif(ISCC_PATH)
     endif(CMAKE_BUILD_TYPE STREQUAL "Release")

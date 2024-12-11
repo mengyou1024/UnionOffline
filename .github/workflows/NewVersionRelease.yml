@@ -53,7 +53,7 @@ jobs:
     - name: CMake Config
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release
-    - name: CMake Build Installer
+    - name: CMake Build Setup
       run: cmake --build build --target generate_exe_installer --config Release
     # 打包输出文件
     - name: Package 
@@ -74,14 +74,14 @@ jobs:
         draft: false
         prerelease: false
     # 上传exe安装程序
-    - name: Upload Release Installer
+    - name: Upload Release Setup
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
-        asset_name: ${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
+        asset_path: ./output/${{ matrix.app_name }}-Setup-${{steps.changelog.outputs.version}}.exe
+        asset_name: ${{ matrix.app_name }}-Setup-${{steps.changelog.outputs.version}}.exe
         asset_content_type: application/octet-stream
     # 上传压缩包
     - name: Upload Release Zip
@@ -103,7 +103,7 @@ jobs:
         release_tag: ${{steps.changelog.outputs.version}}
         release_name: Release ${{steps.changelog.outputs.version}}
         release_body: ${{ steps.changelog.outputs.changes }}
-        release_file: ./output/${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
+        release_file: ./output/${{ matrix.app_name }}-Setup-${{steps.changelog.outputs.version}}.exe
     # 提交changelog
     - name: Create Changes File
       env:
