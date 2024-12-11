@@ -38,6 +38,8 @@ WizardStyle=modern
 UninstallDisplayName={#MyAppNameZhCN} 卸载
 UninstallDisplayIcon={#MoroseIcon}
 ArchitecturesInstallIn64BitMode=x64
+; 禁用根据运行键决定是否需要重启
+RestartIfNeededByRun=no
 
 [Languages]
 Name: "ChineseSimplified"; MessagesFile: "@CMAKE_SOURCE_DIR@/Language/ChineseSimplified.isl"
