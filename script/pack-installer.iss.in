@@ -9,7 +9,7 @@
 #define MyAppExeName "@PROJECT_NAME@@CMAKE_EXECUTABLE_SUFFIX@"
 #define MoroseInstallDir "@MOROSE_INSTALL_DIR@"
 #define MoroseIcon  "@MOROSE_ICON@"
-#define MoroseInstallerName "@PROJECT_NAME@Installer-msvc-@APP_VERSION@"
+#define MoroseInstallerName "@PROJECT_NAME@Installer-@APP_VERSION@"
 
 [Setup]
 ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。

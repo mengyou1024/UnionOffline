@@ -453,12 +453,7 @@ set(Morose_FOUND TRUE)
 morose_main_setup()
 set(MOROSE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resource/img/morose.ico" CACHE STRING "Morose executable icon")
 set(MOROSE_OUT_DIR "${CMAKE_SOURCE_DIR}/output" CACHE STRING "Morose output directory")
-
-if(MSVC)
-    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-msvc-${APP_VERSION}" CACHE STRING "Morose dist directory" FORCE)
-elseif(MINGW)
-    set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-mingw-${APP_VERSION}" CACHE STRING "Morose dist directory" FORCE)
-endif()
+set(MOROSE_DIST_DIR "${MOROSE_OUT_DIR}/${PROJECT_NAME}-${APP_VERSION}" CACHE STRING "Morose dist directory" FORCE)
 
 message(STATUS MOROSE_DIST_DIR:${MOROSE_DIST_DIR})
 set(MOROSE_PLUGINS_DIR "${MOROSE_DIST_DIR}/plugins" CACHE INTERNAL "Morose plugins directory")

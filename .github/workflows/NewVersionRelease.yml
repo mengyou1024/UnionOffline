@@ -59,7 +59,7 @@ jobs:
     - name: Package 
       run: |
         pushd output
-        7z a -tZip ${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip ./${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}/*
+        7z a -tZip ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip ./${{ matrix.app_name }}-${{steps.changelog.outputs.version}}/*
         popd
     # 创建Release
     - name: Create Release
@@ -80,8 +80,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
-        asset_name: ${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
+        asset_path: ./output/${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
+        asset_name: ${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
         asset_content_type: application/octet-stream
     # 上传压缩包
     - name: Upload Release Zip
@@ -90,8 +90,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip
-        asset_name: ${{ matrix.app_name }}-msvc-${{steps.changelog.outputs.version}}.zip
+        asset_path: ./output/${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip
+        asset_name: ${{ matrix.app_name }}-${{steps.changelog.outputs.version}}.zip
         asset_content_type: application/zip
     # 上传升级程序到Gitee
     - name: Upload To Gitee
@@ -103,7 +103,7 @@ jobs:
         release_tag: ${{steps.changelog.outputs.version}}
         release_name: Release ${{steps.changelog.outputs.version}}
         release_body: ${{ steps.changelog.outputs.changes }}
-        release_file: ./output/${{ matrix.app_name }}Installer-msvc-${{steps.changelog.outputs.version}}.exe
+        release_file: ./output/${{ matrix.app_name }}Installer-${{steps.changelog.outputs.version}}.exe
     # 提交changelog
     - name: Create Changes File
       env:

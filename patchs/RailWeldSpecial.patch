@@ -7,7 +7,6 @@ Subject: [PATCH] patchs: update railweld specialization patch
  CMakeLists.txt                    | 4 ++--
  cmake/FindMorose.cmake            | 3 ++-
  config/morose_config.h.in                | 6 +++---
- script/pack-installer-msvc.iss.in | 2 +-
  script/pack-installer.iss.in      | 2 +-
  5 files changed, 9 insertions(+), 8 deletions(-)
 
@@ -56,19 +55,6 @@ index a460a70..05b03aa 100644
 -#define MOROSE_ENABLE_UPGRADE          (1) ///< 使用软件升级功能
 +#define MOROSE_ENABLE_UPGRADE          (0) ///< 使用软件升级功能
  #define MOROSE_DEBUG_UPGRADE           (0) ///< 调试软件升级功能
-diff --git a/script/pack-installer-msvc.iss.in b/script/pack-installer-msvc.iss.in
-index b489fa8..2bd0d58 100644
---- a/script/pack-installer-msvc.iss.in
-+++ b/script/pack-installer-msvc.iss.in
-@@ -14,7 +14,7 @@
- [Setup]
- ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
- ; (要生成新的GUID，请在IDE中单击Tools | generate GUID。)
--AppId={{65C66E39-C539-4D2D-9DEF-664965A9C599}
-+AppId={{E966BD6F-B7A2-41DD-A96F-FE4DAD7F994E}
- AppName={#MyAppNameZhCN}
- AppVersion={#MyAppVersion}
- ;AppVerName={#MyAppName} {#MyAppVersion}
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
 index 37b4030..55c7007 100644
 --- a/script/pack-installer.iss.in
