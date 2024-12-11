@@ -44,7 +44,7 @@ namespace Morose::Utils {
         Q_DISABLE_COPY_MOVE(AppUpdater);
 
         std::shared_ptr<UpgradeInterface> m_upgradeInterface = nullptr;
-        std::shared_mutex                 m_paramMutex       = {};
+        mutable std::shared_mutex         m_paramMutex       = {};
         QString                           m_downloadFilename = {};
 
         void checkVersion();

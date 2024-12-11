@@ -8,19 +8,17 @@
 namespace Morose::Utils {
 
     int AppUpdater::channel() const {
+        std::shared_lock lock(m_paramMutex);
         return m_channel;
     }
 
     void AppUpdater::setChannel(int newChannel) {
-        if (m_channel == newChannel)
+        if (m_channel == newChannel) {
             return;
-
-        (void)std::async([=, this]() {
-            std::unique_lock lock(m_paramMutex);
-            initInterface();
-            m_channel = newChannel;
-            emit channelChanged();
-        });
+        }
+        std::unique_lock lock(m_paramMutex);
+        m_channel = newChannel;
+        emit channelChanged();
     }
 
     AppUpdater::AppUpdater() {
