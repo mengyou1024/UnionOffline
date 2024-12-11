@@ -2,6 +2,7 @@
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <union_common.hpp>
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Upgrade.Gitee");
 
@@ -35,6 +36,23 @@ namespace Morose::Utils::UpgradeImpl {
             m_remoteVersion = Version(match_version.captured(1));
             qCDebug(TAG) << "remote version:" << m_remoteVersion.getVersonString();
         }
+
+        static QRegularExpression reg_update_info(".+(/mengyou1024/UnionOfflineInstaller/.+?update_info\\.md)");
+        auto                      match_update_info_url = reg_update_info.match(str);
+        if (match_update_info_url.hasMatch()) {
+            auto update_info_url = "https://gitee.com" + match_update_info_url.captured(1);
+            qCDebug(TAG) << "remote update info url:" << update_info_url;
+            QString filename = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/upgrade_info.md";
+            QFile   file(filename);
+            file.open(QIODevice::ReadWrite);
+            if (downloadRemoteFile(update_info_url, &file)) {
+                file.flush();
+                file.seek(0);
+                m_upgradeInfo = file.readAll();
+                qCDebug(TAG) << "update info:" << m_upgradeInfo;
+            }
+            file.close();
+        }
     }
 
     Version UpgradeFromGitee::getRemoteInstallerVersion() const {
@@ -50,9 +68,13 @@ namespace Morose::Utils::UpgradeImpl {
     }
 
     bool UpgradeFromGitee::downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const {
+        return downloadRemoteFile(m_downloadUrl, file, progress);
+    }
+
+    bool UpgradeFromGitee::downloadRemoteFile(const QString& url, QFile* file, std::optional<std::function<void(qreal)>> progress) const {
         auto            manager = std::make_unique<QNetworkAccessManager>();
         QNetworkRequest req_download;
-        req_download.setUrl(m_downloadUrl);
+        req_download.setUrl(url);
         req_download.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
         auto       reply = (*manager).get(req_download);
         QEventLoop eventLoop;
@@ -63,12 +85,14 @@ namespace Morose::Utils::UpgradeImpl {
             if (total > 0) {
                 if (recvd == total) {
                     *pRet = true;
-                    progress(1);
                     qCDebug(TAG) << "download installer done";
                 }
                 if (file != nullptr) {
-                    qCDebug(TAG) << "download:" << recvd << "/" << total;
-                    progress((qreal)recvd / (qreal)total);
+                    auto downloadDoneRate = Union::KeepDecimals<3>(static_cast<double>(recvd) / total);
+                    qCDebug(TAG).nospace() << "download: " << downloadDoneRate * 100.0 << "% " << recvd << "/" << total;
+                    if (progress.has_value()) {
+                        progress.value()(downloadDoneRate);
+                    }
                     file->write(reply->readAll());
                     file->flush();
                 }

@@ -109,6 +109,7 @@ namespace Morose::Utils {
                 m_downloadFilename = filename;
                 emit downloadSuccess();
             }
+            file.close();
         });
         thread.detach();
     }

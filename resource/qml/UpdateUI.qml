@@ -35,6 +35,7 @@ ApplicationWindow {
             property alias text: text.text
             property bool isValue: false
             property alias textFormat: text.textFormat
+            property alias textAlignment: text.horizontalAlignment
 
             function borderColor() {
                 return "#7c95c4"
@@ -86,27 +87,38 @@ ApplicationWindow {
         }
     }
 
-    ColumnLayout {
-        anchors.horizontalCenter: parent.horizontalCenter
-        GridLayout {
-            Layout.topMargin: 50
-            id: layout
-            clip: true
-            columnSpacing: -1
-            rowSpacing: -1
-            columns: 2
-        }
+    ScrollView {
+        id: scroll_view
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: footer_layout.top
+        anchors.margins: 10
+        anchors.rightMargin: 0
+        rightPadding: 10
+        clip: true
+        ColumnLayout {
+            width: scroll_view.width - scroll_view.rightPadding
+            GridLayout {
+                id: layout
+                clip: true
+                columnSpacing: -1
+                rowSpacing: -1
+                columns: 2
+            }
 
-        GridLayout {
-            id: layout_message
-            clip: true
-            columnSpacing: -1
-            rowSpacing: -1
-            columns: 1
+            GridLayout {
+                id: layout_message
+                clip: true
+                columnSpacing: -1
+                rowSpacing: -1
+                columns: 1
+            }
         }
     }
 
     ColumnLayout {
+        id: footer_layout
         anchors.bottom: parent.bottom
         width: parent.width
         RowLayout {
@@ -234,7 +246,9 @@ ApplicationWindow {
         layout_message.children.push(text_elm.createObject(layout, {
                                                                "text": updateMessage || qsTr("无"),
                                                                "treeDepth": 1,
-                                                               "isValue": true
+                                                               "isValue": true,
+                                                               "textFormat": Text.MarkdownText,
+                                                               "textAlignment": Qt.AlignLeft
                                                            }))
     }
 }

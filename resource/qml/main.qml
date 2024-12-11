@@ -480,7 +480,8 @@ ApplicationWindow {
             var comp = Qt.createComponent("qrc:/qml/UpdateUI.qml")
             if (comp.status === Component.Ready) {
                 update_connections.update_wnd = comp.createObject(wnd_main, {
-                                                                      "remoteVersion": ver
+                                                                      "remoteVersion": ver,
+                                                                      "updateMessage": msg
                                                                   })
 
                 update_connections.update_wnd.closing.connect(() => {
@@ -491,10 +492,6 @@ ApplicationWindow {
             } else if (comp.status === Component.Error) {
                 console.error(category, comp.errorString())
             }
-        }
-
-        function onDownloadProgressChanged() {
-            console.log(AppUpdater.downloadProgress)
         }
 
         function onDownloadSuccess() {

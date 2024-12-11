@@ -38,5 +38,8 @@ namespace Morose::Utils::UpgradeImpl {
          * @return 下载成功返回true
          */
         virtual bool downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const override;
+
+    private:
+        bool downloadRemoteFile(const QString& url, QFile* file, std::optional<std::function<void(qreal)>> progress = std::nullopt) const;
     };
 } // namespace Morose::Utils::UpgradeImpl
