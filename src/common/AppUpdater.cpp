@@ -100,7 +100,7 @@ namespace Morose::Utils {
             }
             setDownloadProgress(0);
             auto    remote_version = m_upgradeInterface->getRemoteInstallerVersion().getVersonString();
-            QString filename       = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/UnionOfflineInstaller-" + remote_version + ".exe";
+            QString filename       = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/UnionOffline-Setup-" + remote_version + ".exe";
             QFile   file(filename);
             file.open(QIODevice::WriteOnly);
             if (m_upgradeInterface->downloadRemoteInstaller(&file, [this](qreal val) { setDownloadProgress(val); })) {
