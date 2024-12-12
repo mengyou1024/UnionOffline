@@ -14,13 +14,15 @@ ApplicationWindow {
         name: "JsonTable"
     }
 
-    width: 640
-    height: 480
-    visible: true
-    id: control
     property var tableData
     property int treeDepth: 0
     property int treeDepthBias: 0
+
+    id: control
+    flags: Qt.Dialog
+    width: 640
+    height: 480
+    visible: true
 
     ScrollView {
         id: scroll_view
