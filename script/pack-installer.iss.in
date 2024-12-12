@@ -60,7 +60,8 @@ Type: files; Name: "{app}/setting.ini"
 @MOROSE_UNINSTALL_DELETE_STRING@
 
 [UninstallRun]
-Filename: "{app}\vc_redist.x64.exe"; Parameters: /uninstall /passive /norestart; Flags: skipifdoesntexist
+; 屏蔽卸载软件的同时卸载vc_redist.x64库, 防止卸载后系统的其他程序缺少DLL
+; Filename: "{app}\vc_redist.x64.exe"; Parameters: /uninstall /passive /norestart; Flags: skipifdoesntexist
 
 [Icons]
 Name: "{group}\{#MyAppNameZhCN}"; Filename: "{app}\{#MyAppExeName}"
