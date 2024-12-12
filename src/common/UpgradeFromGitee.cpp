@@ -45,7 +45,7 @@ namespace Morose::Utils::UpgradeImpl {
             QString filename = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/upgrade_info.md";
             QFile   file(filename);
             file.open(QIODevice::ReadWrite);
-            if (downloadRemoteFile(update_info_url, &file)) {
+            if (downloadRemoteFile(update_info_url, file)) {
                 file.flush();
                 file.seek(0);
                 m_upgradeInfo = file.readAll();
@@ -67,39 +67,36 @@ namespace Morose::Utils::UpgradeImpl {
         return m_downloadUrl;
     }
 
-    bool UpgradeFromGitee::downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const {
+    bool UpgradeFromGitee::downloadRemoteInstaller(QFile& file, std::function<void(qreal)> progress) const {
         return downloadRemoteFile(m_downloadUrl, file, progress);
     }
 
-    bool UpgradeFromGitee::downloadRemoteFile(const QString& url, QFile* file, std::optional<std::function<void(qreal)>> progress) const {
+    bool UpgradeFromGitee::downloadRemoteFile(const QString& url, QFile& file, std::optional<std::function<void(qreal)>> progress) const {
         auto            manager = std::make_unique<QNetworkAccessManager>();
         QNetworkRequest req_download;
         req_download.setUrl(url);
         req_download.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
         auto       reply = (*manager).get(req_download);
         QEventLoop eventLoop;
-        auto       ret  = std::make_shared<bool>(false);
-        bool*      pRet = ret.get();
+        bool       return_value = false;
         QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
-        QObject::connect(reply, &QNetworkReply::downloadProgress, &eventLoop, [reply, file, pRet, progress](qint64 recvd, qint64 total) {
-            if (total > 0) {
-                if (recvd == total) {
-                    *pRet = true;
-                    qCDebug(TAG) << "download installer done";
-                }
-                if (file != nullptr) {
-                    auto downloadDoneRate = Union::KeepDecimals<3>(static_cast<double>(recvd) / total);
-                    qCDebug(TAG).nospace() << "download: " << downloadDoneRate * 100.0 << "% " << recvd << "/" << total;
-                    if (progress.has_value()) {
-                        progress.value()(downloadDoneRate);
-                    }
-                    file->write(reply->readAll());
-                    file->flush();
-                }
+        QObject::connect(reply, &QNetworkReply::downloadProgress, &eventLoop, [reply, &file, &return_value, progress](qint64 recvd, qint64 total) {
+            auto download_done_rate = Union::KeepDecimals<3>(static_cast<double>(recvd) / total);
+            qCDebug(TAG).nospace() << "download: " << download_done_rate * 100.0 << "% " << recvd << "/" << total;
+
+            if (progress.has_value()) {
+                progress.value()(download_done_rate);
             }
+
+            if (recvd == total) {
+                return_value = true;
+            }
+
+            file.write(reply->readAll());
+            file.flush();
         });
         eventLoop.exec();
-        return *ret;
+        return return_value;
     }
 
 } // namespace Morose::Utils::UpgradeImpl

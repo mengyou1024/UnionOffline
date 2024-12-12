@@ -52,7 +52,7 @@ namespace Morose::Utils {
          * @param progress 下载进度
          * @return bool
          */
-        virtual bool downloadRemoteInstaller(QFile* file, std::function<void(qreal)> progress) const = 0;
+        virtual bool downloadRemoteInstaller(QFile& file, std::function<void(qreal)> progress) const = 0;
     };
 
     QSystemTrayIcon& GetGlobakSystemTrayIcon();

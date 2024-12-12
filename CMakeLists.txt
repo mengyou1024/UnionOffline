@@ -97,6 +97,7 @@ target_link_libraries(
     Qt5::SerialPort
     Qt5::Network
 )
+
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -139,6 +140,8 @@ if(Morose_FOUND)
         message(WARNING "no ProductConfig.json file please see ${CMAKE_SOURCE_DIR}/config/ProductConfigTemplate.json")
         set(PRODUCT_CONFIG_FILE "config/DeployConfig.json")
     endif()
+
+    target_sources(${PROJECT_NAME} PUBLIC ${PRODUCT_CONFIG_FILE} ${CMAKE_BINARY_DIR}/private_include/morose_config.h)
 
     morose_add_environment_config_file(
         TARGET ${PROJECT_NAME}
