@@ -26,6 +26,21 @@ namespace Morose::Utils {
     }
 
     void AppUpdater::initInterface() {
+#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE) || MOROSE_DEBUG_UPGRADE
+        QSettings upgradeSetting("setting.ini", QSettings::IniFormat);
+        upgradeSetting.beginGroup("Upgrade");
+        auto check_upgrade = upgradeSetting.value("checkUpgrade");
+        if (check_upgrade.isNull()) {
+            upgradeSetting.setValue("checkUpgrade", true);
+            upgradeSetting.endGroup();
+            upgradeSetting.sync();
+            upgradeSetting.beginGroup("Upgrade");
+            check_upgrade = upgradeSetting.value("checkUpgrade");
+        }
+        if (check_upgrade.toBool() == false) {
+            return;
+        }
+
         switch (channel()) {
             case Gitee: {
                 auto thread = std::thread([this]() {
@@ -46,23 +61,11 @@ namespace Morose::Utils {
                 m_upgradeInterface = nullptr;
                 break;
         }
+#endif
     }
 
     void AppUpdater::checkVersion() {
 #if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE) || MOROSE_DEBUG_UPGRADE
-        QSettings upgradeSetting("setting.ini", QSettings::IniFormat);
-        upgradeSetting.beginGroup("Upgrade");
-        auto check_upgrade = upgradeSetting.value("checkUpgrade");
-        if (check_upgrade.isNull()) {
-            upgradeSetting.setValue("checkUpgrade", true);
-            upgradeSetting.endGroup();
-            upgradeSetting.sync();
-            upgradeSetting.beginGroup("Upgrade");
-            check_upgrade = upgradeSetting.value("checkUpgrade");
-        }
-        if (check_upgrade.toBool() == false) {
-            return;
-        }
         std::shared_lock lock(m_paramMutex);
         if (m_upgradeInterface == nullptr) {
             emit versionCheckFailed(QObject::tr("无法检查更新:接口为空"));
