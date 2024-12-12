@@ -17,61 +17,111 @@ Rectangle {
     property alias controlTarget: cons.target
     property alias mainTarget: main_cons.target
 
-    readonly property var gateText: [{
-            "amp": "A%:",
-            "dist_a": "A→:",
-            "dist_b": "A↓:",
-            "dist_c": "A↘:",
-            "equi": qsTr("当量:")
+    readonly property var gateTextTable: [{
+            "amp": "A%",
+            "dist_a": "A→",
+            "dist_b": "A↓",
+            "dist_c": "A↘",
+            "equi": qsTr("当量")
         }, {
-            "amp": "B%:",
-            "dist_a": "B→:",
-            "dist_b": "B↓:",
-            "dist_c": "B↘:",
-            "equi": qsTr("当量:")
+            "amp": "B%",
+            "dist_a": "B→",
+            "dist_b": "B↓",
+            "dist_c": "B↘",
+            "equi": qsTr("当量")
         }]
+
+    readonly property var gateIndexTable: ["amp", "dist_c", "dist_a", "dist_b", "equi"]
+
     property var gateEnable: [false, false]
 
-    readonly property var gateTextColor: ["red", Qt.darker("#8470ff", 1.5)]
+    readonly property var gateTextColor: ["red", "#5b4bab"]
 
     ColumnLayout {
         anchors.fill: parent
         spacing: 10
-        Row {
+        RowLayout {
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
+            Layout.rightMargin: 20
             spacing: 15
-            Column {
-                anchors.verticalCenter: parent.verticalCenter
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 20
                 Text {
                     text: qsTr("声程") + `(${interactor.distanceMode})`
                     font.pixelSize: 20
                 }
             }
-            Column {
-                spacing: 5
-                Repeater {
-                    model: 2
-                    delegate: Row {
-                        property int gateIndex: index
-                        spacing: 15
-                        visible: gateEnable[gateIndex]
-                        Repeater {
-                            model: ["amp", "dist_c", "dist_a", "dist_b", "equi"]
-                            delegate: CKeyValue {
-                                Layout.alignment: Qt.AlignHCenter
-                                displayColon: false
-                                key: gateText[gateIndex][modelData]
-                                value: interactor.gateValue[gateIndex][modelData]
-                                textColor: gateTextColor[gateIndex]
-                            }
+
+            GridLayout {
+                id: grid_layout
+                Layout.fillWidth: true
+                columns: 10
+                columnSpacing: -1
+                rowSpacing: -1
+                Component {
+                    id: text_component
+                    Rectangle {
+                        property bool fillWidth: false
+                        property alias backgroundColor: root_box.color
+                        property alias text: text.text
+                        property color textColor: "black"
+
+                        id: root_box
+                        Layout.alignment: Qt.AlignCenter
+                        height: text.height
+                        border.color: "#7c95c4"
+                        Layout.fillWidth: fillWidth
+                        Layout.preferredWidth: 60
+                        Text {
+                            id: text
+
+                            anchors.centerIn: parent
+
+                            padding: 5
+                            font.pointSize: 12
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            color: textColor
                         }
+                    }
+                }
+
+                Component.onCompleted: {
+                    grid_layout.children = []
+                    for (var i = 0; i < 10; i++) {
+                        let gateIndex = parseInt(i / gateIndexTable.length)
+                        let paramIndex = i % gateIndexTable.length
+                        grid_layout.children.push(text_component.createObject(grid_layout, {
+                                                                                  "backgroundColor": "#afeeee",
+                                                                                  "text": Qt.binding(() => {
+                                                                                                         return gateTextTable[gateIndex][gateIndexTable[paramIndex]]
+                                                                                                     }),
+                                                                                  "textColor": gateTextColor[gateIndex],
+                                                                                  "visible": Qt.binding(() => {
+                                                                                                            return gateEnable[gateIndex]
+                                                                                                        })
+                                                                              }))
+                        grid_layout.children.push(text_component.createObject(grid_layout, {
+                                                                                  "backgroundColor": "white",
+                                                                                  "fillWidth": true,
+                                                                                  "text": Qt.binding(() => {
+                                                                                                         return interactor.gateValue[gateIndex][gateIndexTable[paramIndex]]
+                                                                                                     }),
+                                                                                  "textColor": gateTextColor[gateIndex],
+                                                                                  "visible": Qt.binding(() => {
+                                                                                                            return gateEnable[gateIndex]
+                                                                                                        })
+                                                                              }))
                     }
                 }
             }
 
-            Column {
-                anchors.verticalCenter: parent.verticalCenter
+            ColumnLayout {
+                Layout.alignment: Qt.AlignVCenter
                 visible: gateEnable[1]
                 CKeyValue {
                     property real value_A: parseFloat(interactor.gateValue[0]["dist_b"])

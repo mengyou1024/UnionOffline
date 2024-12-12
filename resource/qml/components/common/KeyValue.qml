@@ -3,52 +3,50 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 
-Rectangle {
-    id: root
-    property int maskRadius: 3
-    property string key: ""
+RowLayout {
+    property alias key: _key.text
     property alias value: _value.text
-    property bool displayColon: true
     property color textColor: "black"
-    width: _key.width + _value.width
-    height: Math.max(_key.height, _value.height)
     clip: true
-    border.width: 1
-    border.color: "black"
-    Row {
-        clip: true
-        spacing: 0
-        Label {
+    spacing: -1
+    Rectangle {
+        width: _key.width
+        height: _key.height
+        border.color: "#7c95c4"
+        Layout.alignment: Qt.AlignCenter
+        color: "#afeeee"
+        Text {
             id: _key
+
+            anchors.centerIn: parent
+
             padding: 5
-            leftPadding: 10
-            rightPadding: 10
-            text: key + (displayColon ? ":" : "")
+            leftPadding: 15
+            rightPadding: 15
             font.pointSize: 12
-            background: Rectangle {
-                color: Qt.darker("#00e3e6", 1.2)
-            }
-            color: textColor
-        }
-        Label {
-            id: _value
-            padding: 5
-            leftPadding: 20
-            rightPadding: 20
-            font.pointSize: 12
-            background: Rectangle {
-                color: Qt.lighter("#00e3e6", 1.0)
-            }
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
             color: textColor
         }
     }
-    layer.enabled: true
-    layer.effect: OpacityMask {
-        maskSource: Rectangle {
-            id: mask
-            width: root.width
-            height: root.height
-            radius: maskRadius
+    Rectangle {
+        Layout.alignment: Qt.AlignCenter
+        Layout.fillWidth: true
+
+        width: _value.width
+        height: _value.height
+        border.color: "#7c95c4"
+        color: "white"
+        Text {
+            id: _value
+
+            anchors.centerIn: parent
+
+            padding: 5
+            font.pointSize: 12
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            color: textColor
         }
     }
 }
