@@ -145,7 +145,7 @@ namespace Union::AScan::RailWeld {
         auto ascan_intf = ascanIntf().value<std::shared_ptr<Union::AScan::AScanIntf>>();
         auto intf       = std::dynamic_pointer_cast<UnType>(ascan_intf);
         if (intf == nullptr || !intf->isSpecial001Enabled(idx)) {
-            qCWarning(TAG) << "intf is nullptr or feature CMP001 is not enable";
+            qCDebug(TAG) << "intf is nullptr or feature CMP001 is not enable";
             return;
         }
         const auto& data   = std::get<UnType::ID_ASCAN_DATA>(intf->m_data.second.at(idx)).m_data;
