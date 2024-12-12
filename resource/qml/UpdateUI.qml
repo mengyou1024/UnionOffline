@@ -219,36 +219,42 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        layout.children.push(text_elm.createObject(layout, {
-                                                       "text": qsTr("当前版本"),
-                                                       "treeDepth": 0
-                                                   }))
-        layout.children.push(text_elm.createObject(layout, {
-                                                       "text": `${MOROSE_APP_VERSION}`,
-                                                       "treeDepth": 1,
-                                                       "isValue": true
-                                                   }))
-        layout.children.push(text_elm.createObject(layout, {
-                                                       "text": qsTr("新版本"),
-                                                       "treeDepth": 0
-                                                   }))
-        layout.children.push(text_elm.createObject(layout, {
-                                                       "text": `${remoteVersion}`,
-                                                       "treeDepth": 1,
-                                                       "isValue": true
-                                                   }))
 
-        layout_message.children.push(text_elm.createObject(layout, {
-                                                               "text": qsTr("更新信息"),
-                                                               "treeDepth": 0
-                                                           }))
+        let generators = [{
+                              "item": layout,
+                              "values": [{
+                                      "text": qsTr("当前版本"),
+                                      "treeDepth": 0
+                                  }, {
+                                      "text": `${MOROSE_APP_VERSION}`,
+                                      "treeDepth": 1,
+                                      "isValue": true
+                                  }, {
+                                      "text": qsTr("新版本"),
+                                      "treeDepth": 0
+                                  }, {
+                                      "text": `${remoteVersion}`,
+                                      "treeDepth": 1,
+                                      "isValue": true
+                                  }]
+                          }, {
+                              "item": layout_message,
+                              "values": [{
+                                      "text": qsTr("更新信息"),
+                                      "treeDepth": 0
+                                  }, {
+                                      "text": updateMessage || qsTr("无"),
+                                      "treeDepth": 1,
+                                      "isValue": true,
+                                      "textFormat": Text.MarkdownText,
+                                      "textAlignment": Qt.AlignLeft
+                                  }]
+                          }]
 
-        layout_message.children.push(text_elm.createObject(layout, {
-                                                               "text": updateMessage || qsTr("无"),
-                                                               "treeDepth": 1,
-                                                               "isValue": true,
-                                                               "textFormat": Text.MarkdownText,
-                                                               "textAlignment": Qt.AlignLeft
-                                                           }))
+        for (const idx in generators) {
+            for (const value_idx in generators[idx]["values"]) {
+                generators[idx]["item"].children.push(text_elm.createObject(generators[idx]["item"], generators[idx]["values"][value_idx]))
+            }
+        }
     }
 }
