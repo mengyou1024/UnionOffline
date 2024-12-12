@@ -275,7 +275,8 @@ Rectangle {
                                                            "TOFD参数": tofd_pe_intr.getTofdParam(),
                                                            "PE参数": tofd_pe_intr.getPeParam()
                                                        },
-                                                       "title": qsTr("工艺参数")
+                                                       "title": qsTr("工艺参数"),
+                                                       "modality": Qt.WindowModal
                                                    })
                 params_wnd.closing.connect(() => {
                                                comp.destroy()

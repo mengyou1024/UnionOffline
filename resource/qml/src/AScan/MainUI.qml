@@ -263,6 +263,11 @@ Rectangle {
         id: main_cons
         ignoreUnknownSignals: true
         function onBtnParamClicked() {
+            // 判断是否已经打开了一个工艺参数窗口
+            if (cursor_changed_connection.wind) {
+                return
+            }
+
             var comp = Qt.createComponent("qrc:/qml/components/common/JsonTable.qml")
             if (comp.status === Component.Ready) {
                 // DONE: 获取参数
@@ -291,7 +296,13 @@ Rectangle {
         function onListviewIndexChanged(index, list_view) {
             const filePath = list_view.get(index, "filePath")
             console.log(category, "listview index changed, index:", index, "filepath:", filePath)
+
             openFileAction(filePath)
+
+            if (cursor_changed_connection.wind) {
+                cursor_changed_connection.wind.tableData = interactor.getTechnologicalParameter()
+                cursor_changed_connection.wind.generateTable()
+            }
         }
 
         function onOpenFile(filePath) {
@@ -343,6 +354,12 @@ Rectangle {
         CImage {
             id: img_popup
             anchors.centerIn: parent
+        }
+    }
+
+    Component.onDestruction: {
+        if (cursor_changed_connection.wind) {
+            cursor_changed_connection.wind.close()
         }
     }
 }
