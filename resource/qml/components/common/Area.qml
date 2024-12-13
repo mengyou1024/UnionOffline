@@ -12,12 +12,11 @@ Control {
     topPadding: text.contentHeight
 
     background: Rectangle {
-
         color: bkColor
-        radius: 3
+        radius: 5
         border.width: 1
         border.color: "#7c95c4"
-
+        antialiasing: false
         Label {
             id: text
             anchors.left: parent.left
