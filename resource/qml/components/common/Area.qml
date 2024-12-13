@@ -1,31 +1,32 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.15
 
-Rectangle {
+Control {
     id: control
-    property string areaText: qsTr("未定义")
-    property color borderColor: "#d8d8d8"
-    property int borderWidth: 1
-    property int borderRadius: 5
+    property alias areaText: text.text
     property color bkColor: "#e0eeee"
-    color: bkColor
-    clip: true
-    Rectangle {
-        anchors.fill: parent
-        anchors.topMargin: 8
+
+    topInset: text.contentHeight / 2
+    topPadding: text.contentHeight
+
+    background: Rectangle {
+
+        color: bkColor
+        radius: 3
+        border.width: 1
+        border.color: "#7c95c4"
+
         Label {
-            anchors.verticalCenter: parent.top
+            id: text
             anchors.left: parent.left
-            anchors.leftMargin: 8
-            text: areaText
+            anchors.verticalCenter: parent.top
+            anchors.leftMargin: 10
+            leftPadding: 2
+            rightPadding: 2
             background: Rectangle {
-                color: control.color
+                color: bkColor
             }
         }
-
-        border.color: borderColor
-        border.width: borderWidth
-        radius: borderRadius
-        color: "transparent"
     }
 }
