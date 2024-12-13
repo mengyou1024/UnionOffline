@@ -13,7 +13,7 @@ ApplicationWindow {
 
     LoggingCategory {
         id: tag
-        name: "About"
+        name: "UI.Update"
     }
 
     title: qsTr("软件更新")

@@ -45,5 +45,7 @@
         <file>img/remove.png</file>
         <file>img/usb.png</file>
         <file>qml/UpdateUI.qml</file>
+        <file>img/setting.png</file>
+        <file>qml/SettingUI.qml</file>
     </qresource>
 </RCC>

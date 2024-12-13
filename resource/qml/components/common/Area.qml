@@ -6,6 +6,7 @@ Control {
     id: control
     property alias areaText: text.text
     property color bkColor: "#e0eeee"
+    property alias fontSize: text.font.pointSize
 
     topInset: text.contentHeight / 2
     topPadding: text.contentHeight

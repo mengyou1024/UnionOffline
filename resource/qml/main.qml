@@ -96,6 +96,24 @@ ApplicationWindow {
                 }
 
                 CIconButton {
+                    img_src: "qrc:/img/setting.png"
+                    btn_txt: qsTr("设置")
+                    height: parent.height
+                    onClicked: {
+                        let comp = Qt.createComponent("SettingUI.qml")
+                        if (comp.status === Component.Ready) {
+                            let setting_wind = comp.createObject(parent)
+                            setting_wind.closing.connect(() => {
+                                                             comp.destroy()
+                                                             setting_wind.destroy()
+                                                         })
+                        } else if (comp.status === Component.Error) {
+                            console.error(category, comp.errorString())
+                        }
+                    }
+                }
+
+                CIconButton {
                     img_src: "qrc:/img/help.png"
                     btn_txt: qsTr("帮助")
                     height: parent.height
