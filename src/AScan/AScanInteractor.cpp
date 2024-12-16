@@ -13,62 +13,62 @@ constexpr auto SCAN_LINE_WIDTH = 1.5;
 constexpr auto GATE_LINE_WIDTH = 2.5;
 
 bool AScanInteractor::getReplayVisible() const {
-    return replayVisible;
+    return m_replayVisible;
 }
 
 void AScanInteractor::setReplayVisible(bool newReplayVisible) {
-    if (replayVisible == newReplayVisible) {
+    if (m_replayVisible == newReplayVisible) {
         return;
     }
-    replayVisible = newReplayVisible;
+    m_replayVisible = newReplayVisible;
     emit replayVisibleChanged();
 }
 
 QString AScanInteractor::getDate() const {
-    return date;
+    return m_date;
 }
 
 void AScanInteractor::setDate(const QString& newDate) {
-    if (date == newDate) {
+    if (m_date == newDate) {
         return;
     }
-    date = newDate;
+    m_date = newDate;
     emit dateChanged();
 }
 
 int AScanInteractor::getSoftGain() const {
-    return softGain;
+    return m_softGain;
 }
 
 void AScanInteractor::setSoftGain(int newSoftGain) {
-    if (softGain == newSoftGain) {
+    if (m_softGain == newSoftGain) {
         return;
     }
-    softGain = newSoftGain;
+    m_softGain = newSoftGain;
     emit softGainChanged();
 }
 
 int AScanInteractor::getReplayValue() const {
-    return replayValue;
+    return m_replayValue;
 }
 
 void AScanInteractor::setReplayValue(int newReplayValue) {
-    if (replayValue == newReplayValue) {
+    if (m_replayValue == newReplayValue) {
         return;
     }
-    replayValue = newReplayValue;
+    m_replayValue = newReplayValue;
     emit replayValueChanged();
 }
 
 QQuickItem* AScanInteractor::getChartView() const {
-    return chartView;
+    return m_chartView;
 }
 
 void AScanInteractor::setChartView(QQuickItem* newChartView) {
-    if (chartView == newChartView) {
+    if (m_chartView == newChartView) {
         return;
     }
-    chartView = newChartView;
+    m_chartView = newChartView;
     emit chartViewChanged();
 }
 
@@ -76,21 +76,21 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     if (!checkAScanCursorValid()) {
         return false;
     }
-    auto vmp            = m_aScanIntf->createReportValueMap(getAScanCursor(), getSoftGain());
+    auto vmp            = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
     auto excel_template = "excel_templates/AScan/T_报表生成.xlsx";
     auto img_x          = 18;
     auto img_y          = 2;
     auto img_sw         = 667;
     auto img_sh         = 339;
 
-    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(m_aScanIntf.get())) {
+    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get())) {
         // 390钢轨特化版本
         excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
         img_x          = 20;
         img_y          = 1;
         img_sw         = 480;
         img_sh         = 300;
-    } else if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(m_aScanIntf.get())) {
+    } else if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get())) {
         // 390N/T8带摄像头
         excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
     }
@@ -102,9 +102,9 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     QXlsx::Document doc(_fileName);
     result = doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
     qCInfo(TAG) << "保存A扫图像:" << result;
-    auto img_m_aScanIntf = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(m_aScanIntf.get());
-    if (img_m_aScanIntf) {
-        auto cameraImage = img_m_aScanIntf->getCameraImage(getAScanCursor());
+    auto img_ascan_interface = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get());
+    if (img_ascan_interface) {
+        auto cameraImage = img_ascan_interface->getCameraImage(getAScanCursor());
         if (!cameraImage.isNull()) {
             cameraImage = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
             doc.insertImage(35, 2, cameraImage);
@@ -119,9 +119,9 @@ bool AScanInteractor::performanceClicked(QString _fileName) {
     if (!checkAScanCursorValid()) {
         return false;
     }
-    const auto& performance = m_aScanIntf->getPerformance(getAScanCursor());
+    const auto& performance = aScanIntf()->getPerformance(getAScanCursor());
     QVariantMap vmp         = {
-        {QObject::tr("仪器型号"), QString::fromStdString(m_aScanIntf->getInstrumentName())},
+        {QObject::tr("仪器型号"), QString::fromStdString(aScanIntf()->getInstrumentName())},
         {QObject::tr("水平线性"), QString::number(performance.horizontalLinearity, 'f', 2)},
         {QObject::tr("垂直线性"), QString::number(performance.verticalLinearity, 'f', 2)},
         {QObject::tr("分辨力"), QString::number(performance.resolution, 'f', 1)},
@@ -139,7 +139,7 @@ void AScanInteractor::replayStartClicked(bool isStart) {
 }
 
 void AScanInteractor::replaySpeedClicked(int val) {
-    replaySpeed = val;
+    m_replaySpeed = val;
 }
 
 void AScanInteractor::lastFrameClicked() {
@@ -168,14 +168,14 @@ QVariantMap AScanInteractor::getTechnologicalParameter() {
         return {};
     }
 
-    return m_aScanIntf->createTechnologicalParameter(getAScanCursor());
+    return aScanIntf()->createTechnologicalParameter(getAScanCursor());
 }
 
 QVariantList AScanInteractor::getFileNameList() {
-    if (m_aScanIntf == nullptr) {
+    if (aScanIntf() == nullptr) {
         return {};
     }
-    auto         fileName_list = m_aScanIntf->getFileNameList();
+    auto         fileName_list = aScanIntf()->getFileNameList();
     QVariantList ret;
     for (const auto& fileName : fileName_list) {
         ret.push_back(QVariant(QString::fromStdWString(fileName)));
@@ -184,22 +184,22 @@ QVariantList AScanInteractor::getFileNameList() {
 }
 
 void AScanInteractor::setFileNameIndex(int idx) {
-    if (m_aScanIntf != nullptr) {
-        auto _last_idx = m_aScanIntf->getFileNameIndex();
+    if (aScanIntf() != nullptr) {
+        auto _last_idx = aScanIntf()->getFileNameIndex();
         if (_last_idx == idx) {
             return;
         }
-        aScanCursor = 0;
-        m_aScanIntf->setFileNameIndex(idx);
-        setAScanCursorMax(m_aScanIntf->getDataSize() - 1);
-        setDate(QString::fromStdString(m_aScanIntf->getDate(getAScanCursor())));
+        m_aScanCursor = 0;
+        aScanIntf()->setFileNameIndex(idx);
+        setAScanCursorMax(aScanIntf()->getDataSize() - 1);
+        setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
         setReplayValue(0);
         changeDataCursor();
     }
 }
 
 bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
-    auto railweld_ptr = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(m_aScanIntf.get());
+    auto railweld_ptr = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get());
     if (railweld_ptr != nullptr) {
         return railweld_ptr->zeroPointInFoot();
     }
@@ -207,15 +207,15 @@ bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
 }
 
 void AScanInteractor::changeDataCursor() {
-    if (std::cmp_less(getAScanCursor(), m_aScanIntf ? m_aScanIntf->getDataSize() : 0)) {
+    if (std::cmp_less(getAScanCursor(), aScanIntf() ? aScanIntf()->getDataSize() : 0)) {
         // 1. 更新A扫曲线
         updateAScanSeries();
         // 2. 更新波门曲线
-        updateGateSeries<2>(m_aScanIntf->getGate(getAScanCursor()));
-        if (dynamic_cast<Union::__330::_330_DAC_C*>(m_aScanIntf.get()) != nullptr) {
+        updateGateSeries<2>(aScanIntf()->getGate(getAScanCursor()));
+        if (dynamic_cast<Union::__330::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
             update330N_DAC_AVG_Series();
         } else {
-            auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(m_aScanIntf.get());
+            auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(aScanIntf().get());
             if (cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor())) {
                 CMP000Special_UpdateDacSeries();
             } else {
@@ -229,7 +229,7 @@ void AScanInteractor::changeDataCursor() {
         // 5. 更新AScan图的波门信息显示
         setGateValue(CreateGateValue());
         // 6. 更新显示的声程模式
-        switch (m_aScanIntf->getDistanceMode(getAScanCursor())) {
+        switch (aScanIntf()->getDistanceMode(getAScanCursor())) {
             case DistanceMode_Y:
                 setDistanceMode("Y");
                 break;
@@ -243,7 +243,7 @@ void AScanInteractor::changeDataCursor() {
                 setDistanceMode("N");
         }
         // 7. 更新摄像头控件
-        auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(m_aScanIntf.get());
+        auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get());
         if (camera_special != nullptr) {
             setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
         }
@@ -251,12 +251,12 @@ void AScanInteractor::changeDataCursor() {
 }
 
 void AScanInteractor::updateCurrentFrame() {
-    if (m_aScanIntf != nullptr) {
-        updateAScanSeries(m_aScanIntf->getAScanSeriesData(getAScanCursor(), softGain), {m_aScanIntf->getAxisBias(getAScanCursor()), 0}, {m_aScanIntf->getAxisLen(getAScanCursor()), 100.0});
-        if (dynamic_cast<Union::__330::_330_DAC_C*>(m_aScanIntf.get()) != nullptr) {
+    if (aScanIntf() != nullptr) {
+        updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain), {aScanIntf()->getAxisBias(getAScanCursor()), 0}, {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
+        if (dynamic_cast<Union::__330::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
             update330N_DAC_AVG_Series();
         } else {
-            auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(m_aScanIntf.get());
+            auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(aScanIntf().get());
             if (cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor())) {
                 CMP000Special_UpdateDacSeries();
             } else {
@@ -269,139 +269,139 @@ void AScanInteractor::updateCurrentFrame() {
 }
 
 const QJsonArray AScanInteractor::getGateValue() const {
-    return gateValue;
+    return m_gateValue;
 }
 
 void AScanInteractor::setGateValue(const QJsonArray& newGateValue) {
-    if (gateValue == newGateValue) {
+    if (m_gateValue == newGateValue) {
         return;
     }
-    gateValue = newGateValue;
+    m_gateValue = newGateValue;
     emit gateValueChanged();
 }
 
 int AScanInteractor::getAScanCursor() const {
-    return aScanCursor;
+    return m_aScanCursor;
 }
 
 void AScanInteractor::setAScanCursor(int newAScanCursor) {
-    if (aScanCursor == newAScanCursor) {
+    if (m_aScanCursor == newAScanCursor) {
         return;
     }
-    aScanCursor = newAScanCursor;
+    m_aScanCursor = newAScanCursor;
     emit aScanCursorChanged();
 }
 
 int AScanInteractor::getAScanCursorMax() const {
-    return aScanCursorMax;
+    return m_aScanCursorMax;
 }
 
 void AScanInteractor::setAScanCursorMax(int newAScanCursorMax) {
-    if (aScanCursorMax == newAScanCursorMax) {
+    if (m_aScanCursorMax == newAScanCursorMax) {
         return;
     }
-    aScanCursorMax = newAScanCursorMax;
+    m_aScanCursorMax = newAScanCursorMax;
     emit aScanCursorMaxChanged();
 }
 
 QString AScanInteractor::getDistanceMode() const {
-    return distanceMode;
+    return m_distanceMode;
 }
 
 void AScanInteractor::setDistanceMode(const QString& newDistanceMode) {
-    if (distanceMode == newDistanceMode)
+    if (m_distanceMode == newDistanceMode)
         return;
-    distanceMode = newDistanceMode;
+    m_distanceMode = newDistanceMode;
     emit distanceModeChanged();
 }
 
 QImage AScanInteractor::getCameraImage() const {
-    auto img_m_aScanIntf = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(m_aScanIntf.get());
-    if (img_m_aScanIntf == nullptr) {
+    auto img_ascan_interface = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get());
+    if (img_ascan_interface == nullptr) {
         return QImage();
     }
-    return img_m_aScanIntf->getCameraImage(getAScanCursor());
+    return img_ascan_interface->getCameraImage(getAScanCursor());
 }
 
 QVariantList AScanInteractor::getRailWeldDot() const {
-    auto railweld_m_aScanIntf = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(m_aScanIntf.get());
-    if (railweld_m_aScanIntf) {
-        return QVariantList({railweld_m_aScanIntf->getDotX(), railweld_m_aScanIntf->getDotY(), railweld_m_aScanIntf->getDotZ()});
+    auto railweld_ascan_interface = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get());
+    if (railweld_ascan_interface) {
+        return QVariantList({railweld_ascan_interface->getDotX(), railweld_ascan_interface->getDotY(), railweld_ascan_interface->getDotZ()});
     }
     return {};
 }
 
 bool AScanInteractor::getHasCameraImage() const {
-    return hasCameraImage;
+    return m_hasCameraImage;
 }
 
 void AScanInteractor::setHasCameraImage(bool newHasCameraImage) {
-    if (hasCameraImage == newHasCameraImage)
+    if (m_hasCameraImage == newHasCameraImage)
         return;
-    hasCameraImage = newHasCameraImage;
+    m_hasCameraImage = newHasCameraImage;
     emit hasCameraImageChanged();
 }
 
 bool AScanInteractor::getShowRailWeldDigramSpecial() const {
-    return showRailWeldDigramSpecial;
+    return m_showRailWeldDigramSpecial;
 }
 
 void AScanInteractor::setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial) {
-    if (showRailWeldDigramSpecial == newShowRailWeldDigramSpecial)
+    if (m_showRailWeldDigramSpecial == newShowRailWeldDigramSpecial)
         return;
-    showRailWeldDigramSpecial = newShowRailWeldDigramSpecial;
+    m_showRailWeldDigramSpecial = newShowRailWeldDigramSpecial;
     emit showRailWeldDigramSpecialChanged();
 }
 
 int AScanInteractor::getReplayTimerInterval() const {
-    return replayTimerInterval;
+    return m_replayTimerInterval;
 }
 
 void AScanInteractor::setReplayTimerInterval(int newReplayTimerInterval) {
-    if (replayTimerInterval == newReplayTimerInterval)
+    if (m_replayTimerInterval == newReplayTimerInterval)
         return;
-    replayTimerInterval = newReplayTimerInterval;
+    m_replayTimerInterval = newReplayTimerInterval;
     emit replayTimerIntervalChanged();
 }
 
 bool AScanInteractor::getReportEnabled() const {
-    return reportEnabled;
+    return m_reportEnabled;
 }
 
 void AScanInteractor::setReportEnabled(bool newReportEnabled) {
-    if (reportEnabled == newReportEnabled)
+    if (m_reportEnabled == newReportEnabled)
         return;
-    reportEnabled = newReportEnabled;
+    m_reportEnabled = newReportEnabled;
     emit reportEnabledChanged();
 }
 
 bool AScanInteractor::isGateEnable(int gate_idx) const {
-    if (m_aScanIntf == nullptr) {
+    if (aScanIntf() == nullptr) {
         return false;
     }
-    auto gate = m_aScanIntf->getGate(getAScanCursor());
+    auto gate = aScanIntf()->getGate(getAScanCursor());
     return gate.at(gate_idx % 2).enable;
 }
 
 bool AScanInteractor::getDateEnabled() const {
-    return dateEnabled;
+    return m_dateEnabled;
 }
 
 void AScanInteractor::setDateEnabled(bool newDateEnabled) {
-    if (dateEnabled == newDateEnabled)
+    if (m_dateEnabled == newDateEnabled)
         return;
-    dateEnabled = newDateEnabled;
+    m_dateEnabled = newDateEnabled;
     emit dateEnabledChanged();
 }
 
 bool AScanInteractor::getShowCMP001Special() const {
-    return showCMP001Special;
+    return m_showCMP001Special;
 }
 
 void AScanInteractor::setShowCMP001Special(bool newShowCMP001Special) {
-    if (showCMP001Special == newShowCMP001Special)
+    if (m_showCMP001Special == newShowCMP001Special)
         return;
-    showCMP001Special = newShowCMP001Special;
+    m_showCMP001Special = newShowCMP001Special;
     emit showCMP001SpecialChanged();
 }
 
@@ -417,7 +417,7 @@ void AScanInteractor::setAScanIntf(const ASCAN_TYPE& newAScanIntf) {
 }
 
 bool AScanInteractor::checkAScanCursorValid() {
-    if (!std::cmp_greater(m_aScanIntf ? m_aScanIntf->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
+    if (!std::cmp_greater(aScanIntf() ? aScanIntf()->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
     }
     return true;
@@ -432,7 +432,7 @@ void AScanInteractor::update330N_DAC_AVG_Series() {
     std::vector<QList<QPointF>> pts    = {};
     std::vector<int>            indexs = {};
 
-    auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(m_aScanIntf.get());
+    auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(aScanIntf().get());
     if (_convert != nullptr) {
         lines.resize(3);
         pts.resize(3);
@@ -455,8 +455,8 @@ void AScanInteractor::update330N_DAC_AVG_Series() {
                 lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
             }
             // 重新设置DAC曲线的坐标轴范围
-            lines[i]->attachedAxes().at(0)->setMin(m_aScanIntf->getAxisBias(getAScanCursor()));
-            lines[i]->attachedAxes().at(0)->setMax(m_aScanIntf->getAxisLen(getAScanCursor()));
+            lines[i]->attachedAxes().at(0)->setMin(aScanIntf()->getAxisBias(getAScanCursor()));
+            lines[i]->attachedAxes().at(0)->setMax(aScanIntf()->getAxisLen(getAScanCursor()));
             lines[i]->attachedAxes().at(1)->setMin(0.0);
             lines[i]->attachedAxes().at(1)->setMax(100.0);
             lines[i]->setVisible();
@@ -478,7 +478,7 @@ void AScanInteractor::update330N_DAC_AVG_Series() {
 
 void AScanInteractor::CMP000Special_UpdateDacSeries() {
     // begin define lambda ->{
-    auto cmp000_data = dynamic_cast<Union::AScan::Special::CMP000Special*>(m_aScanIntf.get());
+    auto cmp000_data = dynamic_cast<Union::AScan::Special::CMP000Special*>(aScanIntf().get());
 
     auto CheckValid = [&]() {
         // 检查数据指针是否有效
@@ -491,7 +491,7 @@ void AScanInteractor::CMP000Special_UpdateDacSeries() {
         }
 
         // 检查曲线是否有值
-        auto has_value = m_aScanIntf->getDAC(getAScanCursor()).has_value();
+        auto has_value = aScanIntf()->getDAC(getAScanCursor()).has_value();
         if (!has_value) {
             for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
                 auto temp = (QLineSeries*)series(QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(i)));
@@ -514,7 +514,7 @@ void AScanInteractor::CMP000Special_UpdateDacSeries() {
 
     // 获取曲线表达式
     const auto LineExpr = [&]() {
-        return m_aScanIntf->getDACLineExpr(getAScanCursor());
+        return aScanIntf()->getDACLineExpr(getAScanCursor());
     }();
     // 获取增益修改
     const auto ModifyGain = [&](int idx) {
@@ -553,14 +553,14 @@ void AScanInteractor::CMP000Special_UpdateDacSeries() {
         }
         // 重新设置DAC曲线的坐标轴范围
         lines[i]->attachedAxes().at(0)->setMin(0.0);
-        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(m_aScanIntf->getScanData(getAScanCursor()).size()));
+        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(aScanIntf()->getScanData(getAScanCursor()).size()));
         lines[i]->attachedAxes().at(1)->setMin(0.0);
         lines[i]->attachedAxes().at(1)->setMax(200.0);
         lines[i]->setVisible();
     }
 
     // 填充数据
-    for (int i = 0; std::cmp_less(i, m_aScanIntf->getScanData(getAScanCursor()).size()); i++) {
+    for (int i = 0; std::cmp_less(i, aScanIntf()->getScanData(getAScanCursor()).size()); i++) {
         for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
             auto val = LineExpr(i);
             if (val.has_value()) {
@@ -591,7 +591,7 @@ AScanInteractor::AScanInteractor() {
     QJsonArray arr;
     arr.append(gate1);
     arr.append(gate2);
-    gateValue = arr;
+    m_gateValue = arr;
 
     connect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
     connect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
@@ -603,11 +603,11 @@ AScanInteractor::~AScanInteractor() {
 }
 
 void AScanInteractor::setDefaultValue() {
-    m_aScanIntf = {};
+    setAScanIntf(nullptr);
     setDate("");
     setAScanCursorMax(0);
     setAScanCursor(0);
-    replaySpeed = 0;
+    m_replaySpeed = 0;
     removeAllSeries();
     setDistanceMode("N");
 }
@@ -624,33 +624,33 @@ bool AScanInteractor::openFile(QString _fileName) {
         return false;
     }
     try {
-        m_aScanIntf = (READ_FUNC.value())(_fileName.toStdWString());
+        setAScanIntf((READ_FUNC.value())(_fileName.toStdWString()));
         emit aScanIntfChanged();
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
-        m_aScanIntf = nullptr;
+        setAScanIntf(nullptr);
         emit aScanIntfChanged();
     }
 
-    if (!m_aScanIntf) {
+    if (!aScanIntf()) {
         qCCritical(TAG) << "read file error, fileName:" << _fileName;
         return false;
     }
-    if (m_aScanIntf->getDataSize() > 1) {
+    if (aScanIntf()->getDataSize() > 1) {
         setReplayVisible(true);
-        setReplayTimerInterval(m_aScanIntf->getReplayTimerInterval());
-    } else if (m_aScanIntf->getDataSize() == 1) {
+        setReplayTimerInterval(aScanIntf()->getReplayTimerInterval());
+    } else if (aScanIntf()->getDataSize() == 1) {
         setReplayVisible(false);
     } else {
         qCWarning(TAG) << "no data on file:" << _fileName;
         return false;
     }
-    setReportEnabled(m_aScanIntf->getReportEnable());
-    setDateEnabled(m_aScanIntf->getDateEnable());
-    qCDebug(TAG) << "time:" << QString::fromStdString(m_aScanIntf->getDate(getAScanCursor()));
-    setDate(QString::fromStdString(m_aScanIntf->getDate(getAScanCursor())));
-    setAScanCursorMax(m_aScanIntf->getDataSize() - 1);
-    auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(m_aScanIntf.get());
+    setReportEnabled(aScanIntf()->getReportEnable());
+    setDateEnabled(aScanIntf()->getDateEnable());
+    qCDebug(TAG) << "time:" << QString::fromStdString(aScanIntf()->getDate(getAScanCursor()));
+    setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
+    setAScanCursorMax(aScanIntf()->getDataSize() - 1);
+    auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get());
     if (camera_special != nullptr) {
         setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
     }
@@ -658,10 +658,10 @@ bool AScanInteractor::openFile(QString _fileName) {
         changeDataCursor();
     }
     setAScanCursor(0);
-    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(m_aScanIntf.get())) {
+    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get())) {
         setShowRailWeldDigramSpecial(true);
     }
-    auto cmp001 = dynamic_cast<Union::AScan::Special::CMP001Special*>(m_aScanIntf.get());
+    auto cmp001 = dynamic_cast<Union::AScan::Special::CMP001Special*>(aScanIntf().get());
     if (cmp001 && cmp001->isSpecial001Enabled(0)) {
         setShowCMP001Special(true);
     }
@@ -671,7 +671,7 @@ bool AScanInteractor::openFile(QString _fileName) {
 QAbstractSeries* AScanInteractor::createSeries(QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY) {
     QAbstractSeries* ret = nullptr;
 
-    bool res = QMetaObject::invokeMethod(chartView, "createSeries", Q_RETURN_ARG(QAbstractSeries*, ret),
+    bool res = QMetaObject::invokeMethod(m_chartView, "createSeries", Q_RETURN_ARG(QAbstractSeries*, ret),
                                          Q_ARG(int, type),
                                          Q_ARG(QString, name),
                                          Q_ARG(QAbstractAxis*, axisX), Q_ARG(QAbstractAxis*, axisY));
@@ -692,7 +692,7 @@ void AScanInteractor::removeAllSeries() {
             axis->deleteLater();
         }
     }
-    QMetaObject::invokeMethod(chartView, "removeAllSeries");
+    QMetaObject::invokeMethod(m_chartView, "removeAllSeries");
 }
 
 QLineSeries* AScanInteractor::createAScanSeries(QPointF pt, QSizeF sz) {
@@ -734,7 +734,7 @@ void AScanInteractor::updateAScanSeries(const QList<QPointF>& data, QPointF pt, 
 }
 
 void AScanInteractor::updateAScanSeries(void) {
-    updateAScanSeries(m_aScanIntf->getAScanSeriesData(getAScanCursor(), softGain), {m_aScanIntf->getAxisBias(getAScanCursor()), 0}, {m_aScanIntf->getAxisLen(getAScanCursor()), 100.0});
+    updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain), {aScanIntf()->getAxisBias(getAScanCursor()), 0}, {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
 }
 
 QLineSeries* AScanInteractor::createQuadraticCurveSeries(const QString& name, QPointF pt, QSizeF sz) {
@@ -765,7 +765,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         // 检查曲线是否有值
         switch (type) {
             case QuadraticCurveSeriesType::DAC: {
-                auto has_value = m_aScanIntf->getDAC(getAScanCursor()).has_value();
+                auto has_value = aScanIntf()->getDAC(getAScanCursor()).has_value();
                 if (!has_value) {
                     for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
                         auto temp = (QLineSeries*)series(QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(i)));
@@ -777,7 +777,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
                 return has_value;
             }
             case QuadraticCurveSeriesType::AVG: {
-                auto has_value = m_aScanIntf->getAVG(getAScanCursor()).has_value();
+                auto has_value = aScanIntf()->getAVG(getAScanCursor()).has_value();
                 if (!has_value) {
                     for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
                         auto temp = (QLineSeries*)series(QString(AVG_SERIES_NAME).arg(getAVGSeriesSubName(i)));
@@ -811,9 +811,9 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     const auto IsSubline = [&]() {
         switch (type) {
             case QuadraticCurveSeriesType::DAC:
-                return m_aScanIntf->getDAC(getAScanCursor())->isSubline;
+                return aScanIntf()->getDAC(getAScanCursor())->isSubline;
             case QuadraticCurveSeriesType::AVG:
-                return m_aScanIntf->getAVG(getAScanCursor())->isSubline;
+                return aScanIntf()->getAVG(getAScanCursor())->isSubline;
             default:
                 throw std::runtime_error("QuadraticCurveSeriesType error");
         }
@@ -822,9 +822,9 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
     const auto LineExpr = [&]() {
         switch (type) {
             case QuadraticCurveSeriesType::DAC:
-                return m_aScanIntf->getDACLineExpr(getAScanCursor());
+                return aScanIntf()->getDACLineExpr(getAScanCursor());
             case QuadraticCurveSeriesType::AVG:
-                return m_aScanIntf->getAVGLineExpr(getAScanCursor());
+                return aScanIntf()->getAVGLineExpr(getAScanCursor());
             default:
                 throw std::runtime_error("QuadraticCurveSeriesType error");
         }
@@ -834,13 +834,13 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         double ret = 0.0;
         switch (idx) {
             case 1:
-                ret = m_aScanIntf->getDACStandard(getAScanCursor()).rlBias;
+                ret = aScanIntf()->getDACStandard(getAScanCursor()).rlBias;
                 break;
             case 2:
-                ret = m_aScanIntf->getDACStandard(getAScanCursor()).slBias;
+                ret = aScanIntf()->getDACStandard(getAScanCursor()).slBias;
                 break;
             case 3:
-                ret = m_aScanIntf->getDACStandard(getAScanCursor()).elBias;
+                ret = aScanIntf()->getDACStandard(getAScanCursor()).elBias;
         }
         return ret + getSoftGain();
     };
@@ -879,14 +879,14 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
         // 重新设置DAC曲线的坐标轴范围
         lines[i]->attachedAxes().at(0)->setMin(0.0);
-        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(m_aScanIntf->getScanData(getAScanCursor()).size()));
+        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(aScanIntf()->getScanData(getAScanCursor()).size()));
         lines[i]->attachedAxes().at(1)->setMin(0.0);
         lines[i]->attachedAxes().at(1)->setMax(200.0);
         lines[i]->setVisible();
     }
 
     // 填充数据
-    for (int i = 0; std::cmp_less(i, m_aScanIntf->getScanData(getAScanCursor()).size()); i++) {
+    for (int i = 0; std::cmp_less(i, aScanIntf()->getScanData(getAScanCursor()).size()); i++) {
         for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
             auto val = LineExpr(i);
             if (val.has_value()) {
@@ -932,7 +932,7 @@ void AScanInteractor::updateGateSeries(Union::Base::Gate gate, int index) {
     QList<QPointF> gateList = {};
     if (gate.enable) {
         constexpr auto midify_bias = 0.005;
-        auto           cmp000      = dynamic_cast<Union::AScan::Special::CMP000Special*>(m_aScanIntf.get());
+        auto           cmp000      = dynamic_cast<Union::AScan::Special::CMP000Special*>(aScanIntf().get());
         if (index == 1 && cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor()) && cmp000->gateBIsLostType(getAScanCursor())) {
             gateList.append({gate.pos, gate.height - midify_bias});
             gateList.append({gate.pos + midify_bias, gate.height});
@@ -960,9 +960,9 @@ QJsonArray AScanInteractor::CreateGateValue() {
 
     m_lastUpdateGateValueTime = _cur_t;
     if (!checkAScanCursorValid()) {
-        std::array<QVariantMap, 2> _gateValue = {};
-        for (auto i = 0; std::cmp_less(i, _gateValue.size()); i++) {
-            _gateValue[i] = {
+        std::array<QVariantMap, 2> _m_gateValue = {};
+        for (auto i = 0; std::cmp_less(i, _m_gateValue.size()); i++) {
+            _m_gateValue[i] = {
                 {"amp",    "-"},
                 {"dist_a", "-"},
                 {"dist_b", "-"},
@@ -970,10 +970,10 @@ QJsonArray AScanInteractor::CreateGateValue() {
                 {"equi",   "-"},
             };
         }
-        return QJsonArray::fromVariantList({_gateValue[0], _gateValue[1]});
+        return QJsonArray::fromVariantList({_m_gateValue[0], _m_gateValue[1]});
     }
 
-    return m_aScanIntf->createGateValue(getAScanCursor(), getSoftGain());
+    return aScanIntf()->createGateValue(getAScanCursor(), getSoftGain());
 }
 
 template <int N>
@@ -985,16 +985,16 @@ void AScanInteractor::updateGateSeries(std::array<Union::Base::Gate, N> gate) {
 
 QAbstractSeries* AScanInteractor::series(const QString& name) {
     QAbstractSeries* ret = nullptr;
-    QMetaObject::invokeMethod(chartView, "series", Q_RETURN_ARG(QAbstractSeries*, ret), Q_ARG(QString, name));
+    QMetaObject::invokeMethod(m_chartView, "series", Q_RETURN_ARG(QAbstractSeries*, ret), Q_ARG(QString, name));
     return ret;
 }
 
 QAbstractSeries* AScanInteractor::series(int index) {
     QAbstractSeries* ret = nullptr;
-    QMetaObject::invokeMethod(chartView, "series", Q_RETURN_ARG(QAbstractSeries*, ret), Q_ARG(int, index));
+    QMetaObject::invokeMethod(m_chartView, "series", Q_RETURN_ARG(QAbstractSeries*, ret), Q_ARG(int, index));
     return ret;
 }
 
 int AScanInteractor::seriesCount() const {
-    return chartView->property("count").toInt();
+    return m_chartView->property("count").toInt();
 }

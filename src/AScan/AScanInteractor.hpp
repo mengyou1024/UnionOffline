@@ -18,30 +18,29 @@ class AScanInteractor : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
 
-    using _STD_TP = std::chrono::system_clock::time_point;
-
-    bool        replayVisible             = false;
-    QString     date                      = {};
-    int         softGain                  = {};
-    int         replayValue               = {};
-    QQuickItem* chartView                 = nullptr;
-    QJsonArray  gateValue                 = {};
-    int         replaySpeed               = 0;
-    QString     distanceMode              = "N";
-    bool        hasCameraImage            = false;
-    bool        showRailWeldDigramSpecial = false;
-    int         replayTimerInterval       = 0;
-    bool        reportEnabled             = true;
-    bool        dateEnabled               = true;
-    bool        m_isPlaying               = false;
-    bool        showCMP001Special         = false;
-    _STD_TP     m_lastUpdateGateValueTime = std::chrono::system_clock::now();
-
+    using _STD_TP    = std::chrono::system_clock::time_point;
     using ASCAN_TYPE = std::shared_ptr<Union::AScan::AScanIntf>;
 
-    ASCAN_TYPE m_aScanIntf    = {}; ///< A扫数据
-    int        aScanCursor    = 0;
-    int        aScanCursorMax = 0;
+    bool        m_replayVisible             = false;
+    QString     m_date                      = {};
+    int         m_softGain                  = {};
+    int         m_replayValue               = {};
+    QQuickItem* m_chartView                 = nullptr;
+    QJsonArray  m_gateValue                 = {};
+    int         m_aScanCursor               = 0;
+    int         m_aScanCursorMax            = 0;
+    QString     m_distanceMode              = "N";
+    bool        m_hasCameraImage            = false;
+    bool        m_showRailWeldDigramSpecial = false;
+    int         m_replayTimerInterval       = 0;
+    bool        m_reportEnabled             = true;
+    bool        m_dateEnabled               = true;
+    bool        m_showCMP001Special         = false;
+    ASCAN_TYPE  m_aScanIntf                 = {}; ///< A扫接口
+
+    int     m_replaySpeed             = 0;
+    bool    m_isPlaying               = false;
+    _STD_TP m_lastUpdateGateValueTime = std::chrono::system_clock::now();
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";
@@ -147,19 +146,19 @@ public:
     void       setAScanIntf(const ASCAN_TYPE& newAScanIntf);
 
 public slots:
-    Q_INVOKABLE bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
-    Q_INVOKABLE bool         performanceClicked(QString fileName);
-    Q_INVOKABLE void         gainValueModified(qreal val);
-    Q_INVOKABLE void         replayStartClicked(bool isStart);
-    Q_INVOKABLE void         replaySpeedClicked(int val);
-    Q_INVOKABLE void         lastFrameClicked(void);
-    Q_INVOKABLE void         nextFrameClicked(void);
-    Q_INVOKABLE void         timeSliderMoved(qreal val);
-    Q_INVOKABLE void         seriesRemoved(QAbstractSeries* series);
-    Q_INVOKABLE QVariantMap  getTechnologicalParameter();
-    Q_INVOKABLE QVariantList getFileNameList(void);
-    Q_INVOKABLE void         setFileNameIndex(int idx);
-    Q_INVOKABLE bool         railWeldSpecial_ZeroPointInFoot();
+    bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
+    bool         performanceClicked(QString fileName);
+    void         gainValueModified(qreal val);
+    void         replayStartClicked(bool isStart);
+    void         replaySpeedClicked(int val);
+    void         lastFrameClicked(void);
+    void         nextFrameClicked(void);
+    void         timeSliderMoved(qreal val);
+    void         seriesRemoved(QAbstractSeries* series);
+    QVariantMap  getTechnologicalParameter();
+    QVariantList getFileNameList(void);
+    void         setFileNameIndex(int idx);
+    bool         railWeldSpecial_ZeroPointInFoot();
 
 signals:
     void replayVisibleChanged();
