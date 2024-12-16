@@ -94,6 +94,7 @@ ScrollView {
                         Layout.preferredWidth: 160
                         Layout.preferredHeight: 28
                         popupImplicitHeight: 500
+                        enabled: fileNameList ? fileNameList.length > 1 : false
                         onCurrentIndexChanged: {
                             console.log(category, "id: com_fileName_list ComboBox onCurrentIndexChanged")
                             setFileNameIndex(currentIndex)
