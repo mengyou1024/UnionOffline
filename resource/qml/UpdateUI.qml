@@ -133,7 +133,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
                 from: 0
-                value: 0
+                value: AppUpdater.downloadProgress
                 to: 1
 
                 background: Rectangle {
@@ -153,12 +153,6 @@ ApplicationWindow {
                         border.color: "transparent"
                         border.width: 1
                     }
-                }
-
-                Binding {
-                    target: progressBar
-                    property: "value"
-                    value: AppUpdater.downloadProgress
                 }
             }
 

@@ -134,7 +134,7 @@ Rectangle {
 
         ChartView {
             id: chart_view
-            readonly property bool hiddenOnResing: false
+            readonly property bool hiddenOnResizing: false
             Layout.fillWidth: true
             Layout.fillHeight: true
             antialiasing: false
@@ -157,76 +157,6 @@ Rectangle {
             }
             let _gateEnable = [interactor.isGateEnable(0), interactor.isGateEnable(1)]
             gateEnable = _gateEnable
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "replayVisible"
-            value: interactor.replayVisible
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "date"
-            value: interactor.date
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "cursorMax"
-            value: interactor.aScanCursorMax
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "imageVisible"
-            value: interactor.hasCameraImage
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "showRailWeldDigram"
-            value: interactor.showRailWeldDigramSpecial
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "showCMP001Special"
-            value: interactor.showCMP001Special
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "replayTimerBaseInterval"
-            value: interactor.replayTimerInterval
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "reportEnable"
-            value: interactor.reportEnabled
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "dateEnable"
-            value: interactor.dateEnabled
-        }
-
-        Binding {
-            when: controlTarget !== null
-            target: controlTarget
-            property: "railweldSpecial_ZeroPointInFoot"
-            value: interactor.railWeldSpecial_ZeroPointInFoot()
         }
 
         onReplayValueChanged: {
@@ -361,7 +291,7 @@ Rectangle {
 
         function onSplitViewResizingChanged(resizing) {
             console.log(category, "onSplitViewResizingChanged:", resizing)
-            if (chart_view.hiddenOnResing) {
+            if (chart_view.hiddenOnResizing) {
                 if (resizing) {
                     chart_view.visible = false
                 } else {

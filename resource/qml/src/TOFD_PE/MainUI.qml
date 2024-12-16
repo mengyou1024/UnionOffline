@@ -145,97 +145,6 @@ Rectangle {
         }
     }
 
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line1XLeft"
-        value: sv_tofd.hText1
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line1XRight"
-        value: sv_tofd.hText2
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line1ZLeft"
-        value: (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue1 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText1
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line1ZRight"
-        value: (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue2 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText2
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line1XSpace"
-        value: sv_tofd.hSpace + " mm"
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line1ZSpace"
-        value: (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.vSpace * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vSpace + " mm"
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "depth"
-        value: (controlTarget === null ? false : controlTarget.showTime) ? sv_tofd.vSpace + " mm" : ""
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line2XLeft"
-        value: sv_pe.hText1
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line2XRight"
-        value: sv_pe.hText2
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line2ZLeft"
-        value: `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue1).toFixed(1)} mm`
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line2ZRight"
-        value: `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue2).toFixed(1)} mm`
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line2XSpace"
-        value: sv_pe.hSpace + " mm"
-    }
-
-    Binding {
-        when: controlTarget !== null
-        target: controlTarget
-        property: "line2ZSpace"
-        value: `${((Math.sin(sv_pe._angle) * (sv_pe._vTextShowValue2 - sv_pe._vTextShowValue1))).toFixed(1)} mm`
-    }
-
     Connections {
         id: cons
         ignoreUnknownSignals: true
@@ -314,6 +223,59 @@ Rectangle {
     }
 
     function initAfterOpenFile() {
+
+        controlTarget.line1XLeft = Qt.binding(()=>{
+            return sv_tofd.hText1
+        })
+
+        controlTarget.line1XRight = Qt.binding(()=>{
+            return sv_tofd.hText2
+        })
+
+        controlTarget.line1ZLeft = Qt.binding(()=>{
+            return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue1 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText1
+        })
+
+        controlTarget.line1ZRight = Qt.binding(()=>{
+            return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue2 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText2
+        })
+
+        controlTarget.line1XSpace = Qt.binding(()=>{
+            return sv_tofd.hSpace + " mm"
+        })
+
+        controlTarget.line1ZSpace = Qt.binding(()=>{
+            return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.vSpace * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vSpace + " mm"
+        })
+
+        controlTarget.depth = Qt.binding(()=>{
+            return (controlTarget === null ? false : controlTarget.showTime) ? sv_tofd.vSpace + " mm" : ""
+        })
+
+        controlTarget.line2XLeft = Qt.binding(()=>{
+            return sv_pe.hText1
+        })
+
+        controlTarget.line2XRight = Qt.binding(()=>{
+            return sv_pe.hText2
+        })
+
+        controlTarget.line2ZLeft = Qt.binding(()=>{
+            return `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue1).toFixed(1)} mm`
+        })
+
+        controlTarget.line2ZRight = Qt.binding(()=>{
+            return `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue2).toFixed(1)} mm`
+        })
+
+        controlTarget.line2XSpace = Qt.binding(()=>{
+            return sv_pe.hSpace + " mm"
+        })
+
+        controlTarget.line2ZSpace = Qt.binding(()=>{
+            return `${((Math.sin(sv_pe._angle) * (sv_pe._vTextShowValue2 - sv_pe._vTextShowValue1))).toFixed(1)} mm`
+        })
+
         tofd_pe_intr.peSpace = 0
         tofd_pe_intr.tofdSpace = 0
         controlTarget.reInit()
