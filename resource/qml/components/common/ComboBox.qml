@@ -122,7 +122,7 @@ T.ComboBox {
         implicitHeight: 24
 
         radius: 3
-        color: control.enabled ? "#FFFFFF" : control.backgroundColor
+        color: control.enabled ? "#FFFFFF" : "#ccd8d8"
         border.color: control.backgroundColor
         border.width: !control.editable && control.visualFocus ? 2 : 1
         visible: !control.flat || control.down
