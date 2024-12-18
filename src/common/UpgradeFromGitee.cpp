@@ -42,9 +42,12 @@ namespace Morose::Utils::UpgradeImpl {
         if (match_update_info_url.hasMatch()) {
             auto update_info_url = "https://gitee.com" + match_update_info_url.captured(1);
             qCDebug(TAG) << "remote update info url:" << update_info_url;
-            QString filename = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/upgrade_info.md";
-            QFile   file(filename);
-            file.open(QIODevice::ReadWrite);
+            QTemporaryFile file;
+            if (file.open()) {
+                qDebug(TAG).noquote() << "download update info file:" << file.fileName();
+            } else {
+                throw std::runtime_error("创建临时文件, 用于保存update info");
+            }
             if (downloadRemoteFile(update_info_url, file)) {
                 file.flush();
                 file.seek(0);
