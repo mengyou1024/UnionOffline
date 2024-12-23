@@ -22,7 +22,10 @@ namespace Morose::Utils {
     }
 
     AppUpdater::AppUpdater() {
-        initInterface();
+        std::thread([this]() {
+            initInterface();
+            checkVersion();
+        }).detach();
     }
 
     void AppUpdater::initInterface() {
@@ -43,18 +46,14 @@ namespace Morose::Utils {
 
         switch (channel()) {
             case Gitee: {
-                auto thread = std::thread([this]() {
-                    constexpr auto URL = "https://gitee.com/mengyou1024/UnionOfflineInstaller/releases/latest";
-                    try {
-                        std::unique_lock lock(m_paramMutex);
-                        m_upgradeInterface = std::make_unique<Morose::Utils::UpgradeImpl::UpgradeFromGitee>(URL);
-                        lock.unlock();
-                        checkVersion();
-                    } catch (const std::exception& e) {
-                        qCWarning(TAG) << e.what();
-                    }
-                });
-                thread.detach();
+                constexpr auto URL = "https://gitee.com/mengyou1024/UnionOfflineInstaller/releases/latest";
+                try {
+                    std::unique_lock lock(m_paramMutex);
+                    m_upgradeInterface = std::make_unique<Morose::Utils::UpgradeImpl::UpgradeFromGitee>(URL);
+                    lock.unlock();
+                } catch (const std::exception& e) {
+                    qCWarning(TAG) << e.what();
+                }
                 break;
             }
             default:
@@ -94,6 +93,17 @@ namespace Morose::Utils {
         emit downloadProgressChanged();
     }
 
+    bool AppUpdater::manualChecking() const {
+        return m_manualChecking;
+    }
+
+    void AppUpdater::setManualChecking(bool newManualChecking) {
+        if (m_manualChecking == newManualChecking)
+            return;
+        m_manualChecking = newManualChecking;
+        emit manualCheckingChanged();
+    }
+
     void AppUpdater::doDownloadFile() {
         std::thread thread([this] {
             std::shared_lock lock(m_paramMutex);
@@ -118,6 +128,35 @@ namespace Morose::Utils {
     void AppUpdater::doUpgrade() {
         QProcess::startDetached(m_downloadFilename, {});
         qApp->postEvent(qApp, new QEvent(QEvent::Quit), Qt::LowEventPriority);
+    }
+
+    void AppUpdater::doManualCheckVersion() {
+        if (!manualChecking()) {
+            qCInfo(TAG) << "do manual check version";
+            std::thread([this]() {
+                setManualChecking(true);
+                // 重新初始化接口
+                initInterface();
+                std::shared_lock lock(m_paramMutex);
+                if (m_upgradeInterface == nullptr) {
+                    emit versionCheckFailed(QObject::tr("无法检查更新:接口为空"));
+                    emit manualCheckVersionResult({}, {}, {}, false);
+                    setManualChecking(false);
+                    return;
+                }
+
+                auto remove_version = m_upgradeInterface->getRemoteInstallerVersion();
+                auto message        = m_upgradeInterface->getRemoteInstallerUpgradeInfo();
+                auto app_version    = Version::AppVersion();
+                bool need_update    = remove_version > app_version;
+
+                setManualChecking(false);
+                emit manualCheckVersionResult(app_version, remove_version, message, need_update);
+            }).detach();
+
+        } else {
+            qCWarning(TAG) << "already in checking version";
+        }
     }
 
     AppUpdater* AppUpdater::Instance() noexcept {
