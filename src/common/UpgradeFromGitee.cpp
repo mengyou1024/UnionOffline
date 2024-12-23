@@ -46,7 +46,7 @@ namespace Morose::Utils::UpgradeImpl {
             qCDebug(TAG) << "remote update info url:" << update_info_url;
             QTemporaryFile file;
             if (file.open()) {
-                qDebug(TAG).noquote() << "download update info file:" << file.fileName();
+                qCDebug(TAG).noquote() << "download update info file:" << file.fileName();
             } else {
                 throw std::runtime_error("创建临时文件, 用于保存update info");
             }

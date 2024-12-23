@@ -33,14 +33,8 @@ namespace Morose::Utils {
         QSettings upgradeSetting("setting.ini", QSettings::IniFormat);
         upgradeSetting.beginGroup("Upgrade");
         auto check_upgrade = upgradeSetting.value("checkUpgrade");
-        if (check_upgrade.isNull()) {
-            upgradeSetting.setValue("checkUpgrade", true);
-            upgradeSetting.endGroup();
-            upgradeSetting.sync();
-            upgradeSetting.beginGroup("Upgrade");
-            check_upgrade = upgradeSetting.value("checkUpgrade");
-        }
-        if (check_upgrade.toBool() == false) {
+        upgradeSetting.endGroup();
+        if (check_upgrade.isNull() || check_upgrade.toBool() == false) {
             return;
         }
 

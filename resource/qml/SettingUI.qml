@@ -54,15 +54,16 @@ ApplicationWindow {
 
                         onClicked: {
                             if (checkState === Qt.Checked) {
-                                update_setting.setValue("checkUpgrade", true)
+                                update_setting.setValue("checkUpgrade", "true")
                             } else if (checkState === Qt.Unchecked) {
-                                update_setting.setValue("checkUpgrade", false)
+                                update_setting.setValue("checkUpgrade", "false")
                             }
                             update_setting.sync()
                         }
 
                         Component.onCompleted: {
-                            if (update_setting.value("checkUpgrade", true) === true) {
+                            let check_upgrade = update_setting.value("checkUpgrade", "true")
+                            if (check_upgrade === "true") {
                                 checkState = Qt.Checked
                             } else {
                                 checkState = Qt.Unchecked
