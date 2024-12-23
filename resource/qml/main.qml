@@ -523,5 +523,6 @@ ApplicationWindow {
     Component.onCompleted: {
         actionMainType("Unknow")
         showMaximized()
+        AppUpdater.uiInitOK = true
     }
 }

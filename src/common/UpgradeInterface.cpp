@@ -29,6 +29,12 @@ namespace Morose::Utils {
         return QString("v%1.%2.%3").arg(getMajor()).arg(getMinor()).arg(getPatch());
     }
 
+    Version& Version::operator=(QString version) {
+        Version rsh(version);
+        std::swap(*this, rsh);
+        return *this;
+    }
+
     const Version& Version::AppVersion() {
         static auto inst = Version(APP_VERSION);
         return inst;

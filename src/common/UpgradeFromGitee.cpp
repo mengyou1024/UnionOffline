@@ -9,7 +9,8 @@
 namespace Morose::Utils::UpgradeImpl {
 
     UpgradeFromGitee::UpgradeFromGitee(QString url) {
-        auto            manager = std::make_unique<QNetworkAccessManager>();
+        constexpr auto  GITEE_BASE_URL = "https://gitee.com";
+        auto            manager        = std::make_unique<QNetworkAccessManager>();
         QNetworkRequest req;
         req.setUrl(QUrl(url));
         req.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json;charset=UTF-8"));
@@ -23,11 +24,12 @@ namespace Morose::Utils::UpgradeImpl {
         if (statusCode != 200) {
             throw std::runtime_error("无法访问服务器");
         }
-        QString                   str = reply->readAll();
+        QString str = reply->readAll();
+        reply->deleteLater();
         static QRegularExpression reg_download_url(".+(/mengyou1024/UnionOfflineInstaller/.+?\\.exe)");
         auto                      match_download_url = reg_download_url.match(str);
         if (match_download_url.hasMatch()) {
-            m_downloadUrl = "https://gitee.com" + match_download_url.captured(1);
+            m_downloadUrl = GITEE_BASE_URL + match_download_url.captured(1);
             qCDebug(TAG) << "remote download url:" << m_downloadUrl;
         }
         static QRegularExpression reg_version(".+(v\\d+\\.\\d+\\.\\d+)");
@@ -40,7 +42,7 @@ namespace Morose::Utils::UpgradeImpl {
         static QRegularExpression reg_update_info(".+(/mengyou1024/UnionOfflineInstaller/.+?update_info\\.md)");
         auto                      match_update_info_url = reg_update_info.match(str);
         if (match_update_info_url.hasMatch()) {
-            auto update_info_url = "https://gitee.com" + match_update_info_url.captured(1);
+            auto update_info_url = GITEE_BASE_URL + match_update_info_url.captured(1);
             qCDebug(TAG) << "remote update info url:" << update_info_url;
             QTemporaryFile file;
             if (file.open()) {
@@ -99,6 +101,7 @@ namespace Morose::Utils::UpgradeImpl {
             file.flush();
         });
         eventLoop.exec();
+        reply->deleteLater();
         return return_value;
     }
 

@@ -44,6 +44,11 @@ namespace Morose::Utils {
             return;
         }
 
+        while (!uiInitOK()) {
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(1000ms);
+        }
+
         switch (channel()) {
             case Gitee: {
                 constexpr auto URL = "https://gitee.com/mengyou1024/UnionOfflineInstaller/releases/latest";
@@ -68,6 +73,7 @@ namespace Morose::Utils {
         std::shared_lock lock(m_paramMutex);
         if (m_upgradeInterface == nullptr) {
             emit versionCheckFailed(QObject::tr("无法检查更新:接口为空"));
+            return;
         }
 
         auto remove_version = m_upgradeInterface->getRemoteInstallerVersion();
@@ -102,6 +108,17 @@ namespace Morose::Utils {
             return;
         m_manualChecking = newManualChecking;
         emit manualCheckingChanged();
+    }
+
+    bool AppUpdater::uiInitOK() const {
+        return m_uiInitOK;
+    }
+
+    void AppUpdater::setUiInitOK(bool newUiInitOK) {
+        if (m_uiInitOK == newUiInitOK)
+            return;
+        m_uiInitOK = newUiInitOK;
+        emit uiInitOKChanged();
     }
 
     void AppUpdater::doDownloadFile() {

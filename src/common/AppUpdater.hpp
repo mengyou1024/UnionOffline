@@ -13,11 +13,11 @@ namespace Morose::Utils {
         int                m_channel          = Gitee;
         std::atomic<qreal> m_downloadProgress = 0;
         bool               m_manualChecking   = false;
+        std::atomic_bool   m_uiInitOK         = false;
 
     public:
         enum UpdateChannel {
             Gitee = 0,
-            PrivateServer,
         };
         Q_ENUM(UpdateChannel)
 
@@ -33,6 +33,8 @@ namespace Morose::Utils {
         void  setDownloadProgress(qreal newDownloadProgress);
         bool  manualChecking() const;
         void  setManualChecking(bool newManualChecking);
+        bool  uiInitOK() const;
+        void  setUiInitOK(bool newUiInitOK);
 
     signals:
 
@@ -44,6 +46,7 @@ namespace Morose::Utils {
         void downloadSuccess();
         void manualCheckVersionResult(QString local_version, QString remove_version, QString release_note, bool need_update);
         void manualCheckingChanged();
+        void uiInitOKChanged();
 
     private:
         AppUpdater();
@@ -59,5 +62,6 @@ namespace Morose::Utils {
         Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged FINAL)
         Q_PROPERTY(qreal downloadProgress READ downloadProgress WRITE setDownloadProgress NOTIFY downloadProgressChanged FINAL)
         Q_PROPERTY(bool manualChecking READ manualChecking WRITE setManualChecking NOTIFY manualCheckingChanged FINAL)
+        Q_PROPERTY(bool uiInitOK READ uiInitOK WRITE setUiInitOK NOTIFY uiInitOKChanged FINAL)
     };
 } // namespace Morose::Utils

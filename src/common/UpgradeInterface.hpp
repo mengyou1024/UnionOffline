@@ -17,6 +17,8 @@ namespace Morose::Utils {
 
         auto operator<=>(const Version&) const = default;
 
+        Version& operator=(QString version);
+
         operator QString() const {
             return this->getVersonString();
         }
