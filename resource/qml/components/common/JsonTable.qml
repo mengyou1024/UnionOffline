@@ -127,6 +127,7 @@ ApplicationWindow {
         let list = []
         let keys = Object.keys(data)
 
+        let key_value_count = 0
         for (var i = 0; i < keys.length; i++) {
             let item = data[keys[i]]
             if (item instanceof Object) {
@@ -135,9 +136,15 @@ ApplicationWindow {
                 list = list.concat(createList(item))
                 treeDepth--
             } else {
+                key_value_count++
                 list = list.concat(createModel(keys[i], String(item)))
             }
         }
+
+        if (key_value_count % 2) {
+            list = list.concat(createModel("", ""))
+        }
+
         return list
     }
 
