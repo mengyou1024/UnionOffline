@@ -315,6 +315,37 @@ Rectangle {
             let _gateEnable = [interactor.isGateEnable(0), interactor.isGateEnable(1)]
             gateEnable = _gateEnable
             showSuccessful(qsTr("打开成功"))
+
+            controlTarget.replayVisible = Qt.binding(() => {
+                                                         return interactor.replayVisible
+                                                     })
+            controlTarget.date = Qt.binding(() => {
+                                                return interactor.date
+                                            })
+            controlTarget.cursorMax = Qt.binding(() => {
+                                                     return interactor.aScanCursorMax
+                                                 })
+            controlTarget.imageVisible = Qt.binding(() => {
+                                                        return interactor.hasCameraImage
+                                                    })
+            controlTarget.showRailWeldDigram = Qt.binding(() => {
+                                                              return interactor.showRailWeldDigramSpecial
+                                                          })
+            controlTarget.showCMP001Special = Qt.binding(() => {
+                                                             return interactor.showCMP001Special
+                                                         })
+            controlTarget.replayTimerBaseInterval = Qt.binding(() => {
+                                                                   return interactor.replayTimerInterval
+                                                               })
+            controlTarget.reportEnable = Qt.binding(() => {
+                                                        return interactor.reportEnabled
+                                                    })
+            controlTarget.dateEnable = Qt.binding(() => {
+                                                      return interactor.dateEnabled
+                                                  })
+            controlTarget.railweldSpecial_ZeroPointInFoot = Qt.binding(() => {
+                                                                           return interactor.railWeldSpecial_ZeroPointInFoot()
+                                                                       })
         } else {
             showFailed(qsTr("打开失败"))
         }
