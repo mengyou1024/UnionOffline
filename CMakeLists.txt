@@ -165,3 +165,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
         COMMAND ${CMAKE_COMMAND} -E touch_nocreate  "${CMAKE_SOURCE_DIR}/src/main.cpp"
     )
 endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
+if (BUILD_BY_WORKFLOW)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC BUILD_BY_WORKFLOW)
+endif(BUILD_BY_WORKFLOW)

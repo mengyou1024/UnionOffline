@@ -100,6 +100,11 @@ int main(int argc, char* argv[]) {
     // 注册编译日期和编译时间
     engine.rootContext()->setContextProperty("MOROSE_APP_BUILD_DATE", QString::fromStdString(Morose::FormatCompilerDATEString(__DATE__)));
     engine.rootContext()->setContextProperty("MOROSE_APP_BUILD_TIME", QString::fromStdString(__TIME__));
+#ifdef BUILD_BY_WORKFLOW
+    engine.rootContext()->setContextProperty("MOROSE_APP_BUILD_BY_WORKFLOW", QObject::tr("是"));
+#else
+    engine.rootContext()->setContextProperty("MOROSE_APP_BUILD_BY_WORKFLOW", QObject::tr("否"));
+#endif
     Morose::registerVariable(engine.rootContext());
     Morose::loadGlobalEnvironment();
 

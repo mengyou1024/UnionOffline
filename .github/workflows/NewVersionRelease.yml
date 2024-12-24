@@ -52,7 +52,7 @@ jobs:
     # 配置、编译程序
     - name: CMake Config
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release
+        cmake -B build -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}" -G Ninja  -DCMAKE_BUILD_TYPE=Release -DBUILD_BY_WORKFLOW=ON
     - name: CMake Build Setup
       run: cmake --build build --target generate_exe_installer --config Release
     # 打包输出文件

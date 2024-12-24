@@ -132,6 +132,13 @@ ApplicationWindow {
                                       "treeDepth": 1,
                                       "isValue": true
                                   }, {
+                                      "text": qsTr("流水线编译"),
+                                      "treeDepth": 0
+                                  }, {
+                                      "text": `${MOROSE_APP_BUILD_BY_WORKFLOW}`,
+                                      "treeDepth": 1,
+                                      "isValue": true
+                                  }, {
                                       "text": qsTr("HASH"),
                                       "treeDepth": 0
                                   }, {
