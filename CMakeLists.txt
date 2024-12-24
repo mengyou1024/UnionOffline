@@ -156,3 +156,12 @@ if(Morose_FOUND)
     morose_add_qml_dirs("resource/qml")
     morose_auto_release()
 endif(Morose_FOUND)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    # Release 模式下总是更新main.cpp的时间戳, 以保证软件中的编译时间总是正确的
+    # Debug 模式下不更新是为了缩短编译时间
+    add_custom_command(
+        TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E touch_nocreate  "${CMAKE_SOURCE_DIR}/src/main.cpp"
+    )
+endif(CMAKE_BUILD_TYPE STREQUAL "Release")

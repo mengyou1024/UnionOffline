@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
     qInfo() << "register cache dir:" << tempDir.path();
 
     // 加载QML、注册环境变量
-    const QUrl            url("qrc:/qml/main.qml");
+    const QUrl            url("qrc:/qml/MainWnd.qml");
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
@@ -97,6 +97,9 @@ int main(int argc, char* argv[]) {
                 QCoreApplication::exit(-1);
         },
         Qt::QueuedConnection);
+    // 注册编译日期和编译时间
+    engine.rootContext()->setContextProperty("MOROSE_APP_BUILD_DATE", QString::fromStdString(Morose::FormatCompilerDATEString(__DATE__)));
+    engine.rootContext()->setContextProperty("MOROSE_APP_BUILD_TIME", QString::fromStdString(__TIME__));
     Morose::registerVariable(engine.rootContext());
     Morose::loadGlobalEnvironment();
 

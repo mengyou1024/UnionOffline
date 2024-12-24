@@ -143,6 +143,7 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
 void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_APP_VERSION", APP_VERSION);
     context->setContextProperty("MOROSE_APP_NAME_ZH_CN", APP_NAME_ZH_CN_TR);
+    context->setContextProperty("MOROSE_APP_COMMIT_HASH", APP_COMMIT_HASH);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
     qmlRegisterType<TOFD_PE::TofdPeDScanView>("Union.TOFD_PE", 1, 0, "TofdPeDScanView");
     qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");
@@ -249,4 +250,27 @@ void Morose::registNameFilter(QQmlContext* context) {
     qDebug() << "FOLDERLISTMODEL_NAMEFILTER:" << folderListModel_nameFilter;
     qDebug() << "FILEDIALOG_NAMEFILTER:" << filedialog_nameFilter;
     qDebug() << "MAINUI_MAP:" << mainUi_map;
+}
+
+std::string Morose::FormatCompilerDATEString(const char* str) {
+    std::string dateString(str);
+
+    // 分割日期字符串
+    std::string month = dateString.substr(0, 3);
+    std::string day   = dateString.substr(4, 2);
+    std::string year  = dateString.substr(7, 4);
+
+    // clang-format off
+           // 将月份转换为数字
+    std::map<std::string, int> monthMap = {
+        {"Jan", 1 }, {"Feb", 2 }, {"Mar", 3 }, {"Apr", 4 },
+        {"May", 5 }, {"Jun", 6 }, {"Jul", 7 }, {"Aug", 8 },
+        {"Sep", 9 }, {"Oct", 10}, {"Nov", 11}, {"Dec", 12},
+    };
+    // clang-format on
+
+    int monthNumber = monthMap[month];
+
+    // 格式化日期
+    return std::format("{}-{:02d}-{:02d}", year, monthNumber, std::stoi(day));
 }

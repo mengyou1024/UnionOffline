@@ -52,32 +52,37 @@ ApplicationWindow {
                 CIconButton {
                     img_src: "qrc:/img/folder.png"
                     btn_txt: qsTr("打开")
-                    height: parent.height
                     onClicked: file_dialog.open()
                 }
 
                 CIconButton {
                     img_src: "qrc:/img/remove.png"
                     btn_txt: qsTr("清除")
-                    height: parent.height
-                    onClicked: actionMainType("Unknow")
+                    onClicked: {
+                        if (mainUIType === "Unknow") {
+                            showToast(qsTr("当前未打开文件"))
+                        }
+                        actionMainType("Unknow")
+                    }
                 }
 
                 CIconButton {
                     img_src: "qrc:/img/param.png"
                     btn_txt: qsTr("工艺参数")
-                    height: parent.height
-                    onClicked: btnParamClicked()
+                    onClicked: {
+                        if (mainUIType === "Unknow") {
+                            showToast(qsTr("当前未打开文件"))
+                        }
+                        btnParamClicked()
+                    }
                 }
 
                 CIconButton {
-                    implicitWidth: 80
                     visible: false
                     img_src: "qrc:/img/usb.png"
                     btn_txt: qsTr("通讯")
-                    height: parent.height
                     onClicked: {
-                        let comp = Qt.createComponent("Communicate.qml")
+                        let comp = Qt.createComponent("CommunicateWnd.qml")
                         if (comp.status === Component.Ready) {
                             let com_wnd = comp.createObject(parent)
                             com_wnd.closing.connect(() => {
@@ -98,9 +103,8 @@ ApplicationWindow {
                 CIconButton {
                     img_src: "qrc:/img/setting.png"
                     btn_txt: qsTr("设置")
-                    height: parent.height
                     onClicked: {
-                        let comp = Qt.createComponent("SettingUI.qml")
+                        let comp = Qt.createComponent("SettingWnd.qml")
                         if (comp.status === Component.Ready) {
                             let setting_wind = comp.createObject(parent)
                             setting_wind.closing.connect(() => {
@@ -115,13 +119,12 @@ ApplicationWindow {
 
                 CIconButton {
                     img_src: "qrc:/img/help.png"
-                    btn_txt: qsTr("帮助")
-                    height: parent.height
+                    btn_txt: qsTr("帮助/关于软件")
                     onClicked: {
-                        let helpFile = "qrc:/qml/src/" + mainUIType + "/Help.qml"
+                        let helpFile = "qrc:/qml/src/" + mainUIType + "/HelpWnd.qml"
                         console.log("helpFile:", helpFile)
                         if (!FileExists.isFileExists(helpFile.substring(3))) {
-                            helpFile = "About.qml"
+                            helpFile = "AboutWnd.qml"
                         }
 
                         let comp = Qt.createComponent(helpFile)
@@ -387,11 +390,20 @@ ApplicationWindow {
             Layout.preferredHeight: 20
             Layout.fillWidth: true
             color: "#ccd8d8"
-            Text {
-                x: 5
-                height: parent.height
-                text: qsTr("友联科技, 欢迎使用")
-                verticalAlignment: Text.AlignVCenter
+            RowLayout {
+                spacing: 50
+                Text {
+                    Layout.fillHeight: true
+                    Layout.leftMargin: 10
+                    text: qsTr("友联科技, 欢迎使用")
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Text {
+                    Layout.fillHeight: true
+                    text: qsTr(`版权所有(C) 南通友联数码技术开发有限公司`)
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
 
             ProgressBar {
@@ -489,13 +501,17 @@ ApplicationWindow {
         toast.showFailed(text)
     }
 
+    function showToast(text) {
+        toast.show(text)
+    }
+
     Connections {
         id: update_connections
         property var update_wnd
         target: AppUpdater
 
         function onNewVersionFound(ver, msg) {
-            var comp = Qt.createComponent("qrc:/qml/UpdateUI.qml")
+            var comp = Qt.createComponent("qrc:/qml/UpdateWnd.qml")
             if (comp.status === Component.Ready) {
                 update_connections.update_wnd = comp.createObject(wnd_main, {
                                                                       "remoteVersion": ver,

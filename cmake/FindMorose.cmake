@@ -16,6 +16,13 @@ macro(morose_main_setup)
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             )
 
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+                OUTPUT_VARIABLE APP_COMMIT_HASH
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            )
+
             if(NOT APP_VERSION)
                 message(FATAL_ERROR "Git repository must have a tag , use `git tag <tag_name> -m <tag_message>` to create a tag.\n"
                     "\te.g.: `git tag v0.0.1 -m \"init\"`\n"
@@ -29,6 +36,7 @@ macro(morose_main_setup)
             set(APP_PUBLISHER "Nantong Union Digital Technology Development Co., Ltd")
             message(STATUS "APP PUBLISHER:" ${APP_PUBLISHER})
             message(STATUS "APP URL:" ${APP_URL})
+            message(STATUS "APP APP_COMMIT_HASH:" ${APP_COMMIT_HASH})
         else()
             message(WARNING "no git found, please install git: https://git-scm.com/")
         endif()
@@ -46,6 +54,7 @@ macro(morose_main_setup)
         string(JSON APP_VERSION GET "${ARCHIVE_JSON_STRING}" APP_VERSION)
         string(JSON APP_PUBLISHER GET "${ARCHIVE_JSON_STRING}" APP_PUBLISHER)
         string(JSON APP_URL GET "${ARCHIVE_JSON_STRING}" APP_URL)
+        string(JSON APP_COMMIT_HASH GET "${ARCHIVE_JSON_STRING}" APP_COMMIT_HASH)
     endif(NOT EXISTS "${CMAKE_SOURCE_DIR}/archive.json")
 
     configure_file(
@@ -481,7 +490,8 @@ add_custom_target(
     COMMAND echo "{\
 \"APP_VERSION\":\"${APP_VERSION}\",\
 \"APP_URL\": \"${APP_URL}\",\
-\"APP_PUBLISHER\": \"${APP_PUBLISHER}\"\
+\"APP_PUBLISHER\": \"${APP_PUBLISHER}\",\
+\"APP_COMMIT_HASH\": \"${APP_COMMIT_HASH}\"\
 }" > ${CMAKE_SOURCE_DIR}/output/archive/archive.json
     COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/output/archive/.git ${CMAKE_SOURCE_DIR}/output/archive/.github
     COMMAND 7z a -tZip ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}-archive.zip ${CMAKE_SOURCE_DIR}/output/archive/* -bso0

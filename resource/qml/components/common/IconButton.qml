@@ -5,7 +5,7 @@ Rectangle {
     id: rec
 
     property alias img_src: icon.source
-    property alias btn_txt: button.text
+    property alias btn_txt: text.text
 
     property color clr_enter: Qt.lighter("#e1e1e1", 1.1)
     property color clr_exit: "transparent"
@@ -15,8 +15,8 @@ Rectangle {
     //自定义点击信号
     signal clicked
 
-    implicitWidth: 48
-    implicitHeight: 60
+    implicitWidth: Math.max(text.implicitWidth, icon.width, 48)
+    implicitHeight: text.implicitHeight + icon.height
     radius: 3
     color: "transparent"
 
@@ -30,9 +30,13 @@ Rectangle {
             clip: true
         }
         Text {
-            id: button
-            text: qsTr("button")
+            id: text
+            text: qsTr("text")
             Layout.alignment: Qt.AlignHCenter
+            leftPadding: 5
+            rightPadding: 5
+            bottomPadding: 2
+            topPadding: 1
         }
     }
 

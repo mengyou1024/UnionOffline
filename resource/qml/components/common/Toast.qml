@@ -1,21 +1,24 @@
 import QtQuick 2.15
+import QtQuick.Layouts 1.15
 
 Rectangle {
     id: toast
 
     property real time: defaultTime
-    readonly property real defaultTime: 1500
-    readonly property real fadeTime: 400
+    readonly property real defaultTime: 3000
+    readonly property real fadeTime: 300
     property string msgType: "succed"
-
+    property alias showImage: imgHeader.visible
     property real margin: 10
-    property bool selfDestroying: false
+    property bool selfDestroying: true
 
-    implicitWidth: 98
-    implicitHeight: 98
+    implicitWidth: layout.implicitWidth
+    implicitHeight: layout.implicitHeight
     radius: 4
     opacity: 0
-    color: "#7F0066CC"
+    color: "#ccd8d8"
+    border.color: "#7c95c4"
+    border.width: 1
 
     anchors.horizontalCenter: parent.horizontalCenter
 
@@ -31,25 +34,29 @@ Rectangle {
         anim.start()
     }
 
-    Image {
-        id: imgHeader
-        anchors.top: parent.top
-        anchors.topMargin: 13
-        anchors.horizontalCenter: parent.horizontalCenter
-        sourceSize.width: 50
-        sourceSize.height: 50
-        source: "qrc:/img/" + msgType + ".png"
-    }
+    ColumnLayout {
+        id: layout
+        spacing: 0
+        Image {
+            id: imgHeader
+            Layout.topMargin: 10
+            Layout.alignment: Qt.AlignHCenter
+            sourceSize.width: 50
+            sourceSize.height: 50
+            source: "qrc:/img/" + msgType + ".png"
+        }
 
-    Text {
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        width: parent.width
-        id: theText
-        text: ""
-        horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 14
-        color: "#000000"
+        Text {
+            topPadding: 5
+            bottomPadding: 5
+            leftPadding: 10
+            rightPadding: 10
+            id: theText
+            text: ""
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 14
+            color: "#000000"
+        }
     }
 
     SequentialAnimation on opacity {
@@ -61,9 +68,11 @@ Rectangle {
             to: 0.9
             duration: fadeTime
         }
+
         PauseAnimation {
             duration: time - 2 * fadeTime
         }
+
         NumberAnimation {
             to: 0
             duration: fadeTime
