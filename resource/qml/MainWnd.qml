@@ -78,6 +78,7 @@ ApplicationWindow {
                 }
 
                 CIconButton {
+                    // tag: disable communication
                     visible: false
                     img_src: "qrc:/img/usb.png"
                     btn_txt: qsTr("通讯")
@@ -358,7 +359,7 @@ ApplicationWindow {
 
             Rectangle {
                 visible: controlui_unflod
-                Layout.preferredWidth: 300
+                Layout.preferredWidth: loader_ctrl.implicitWidth
                 Layout.fillHeight: true
                 color: "transparent"
                 radius: 5
@@ -374,8 +375,9 @@ ApplicationWindow {
                     id: loader_ctrl
                     clip: true
                     anchors.fill: parent
-                    anchors.margins: 10
                     anchors.centerIn: parent
+                    anchors.topMargin: 10
+                    anchors.bottomMargin: 10
                     asynchronous: true
 
                     source: ""
@@ -391,17 +393,17 @@ ApplicationWindow {
             Layout.fillWidth: true
             color: "#ccd8d8"
             RowLayout {
-                spacing: 50
+                spacing: 20
                 Text {
                     Layout.fillHeight: true
-                    Layout.leftMargin: 10
+                    Layout.leftMargin: 5
                     text: qsTr("友联科技, 欢迎使用")
                     verticalAlignment: Text.AlignVCenter
                 }
 
                 Text {
                     Layout.fillHeight: true
-                    text: qsTr(`版权所有(C) 南通友联数码技术开发有限公司`)
+                    text: qsTr("版权所有© 南通友联数码技术开发有限公司")
                     verticalAlignment: Text.AlignVCenter
                 }
             }

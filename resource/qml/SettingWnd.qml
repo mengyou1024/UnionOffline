@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import Qt.labs.settings 1.0
 import "./components"
+import Union.Utils 1.0
 
 ApplicationWindow {
 
@@ -30,14 +31,13 @@ ApplicationWindow {
         padding: 10
 
         ColumnLayout {
-            id: layout
             clip: true
             width: scroll_view.width - scroll_view.padding * 2
             CArea {
                 areaText: qsTr("软件更新")
                 fontSize: 12
                 Layout.fillWidth: true
-                Layout.preferredHeight: 80
+                Layout.preferredHeight: layout_upgrade.height + heightFix
                 Settings {
                     id: update_setting
                     category: "Upgrade"
@@ -45,13 +45,12 @@ ApplicationWindow {
                 }
 
                 ColumnLayout {
-                    anchors.fill: parent
+                    id: layout_upgrade
                     CheckBox {
-                        Layout.leftMargin: 20
-                        Layout.topMargin: 15
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
                         text: qsTr("软件启动时检查更新")
                         font.pointSize: 12
-
                         onClicked: {
                             if (checkState === Qt.Checked) {
                                 update_setting.setValue("checkUpgrade", "true")
@@ -68,6 +67,31 @@ ApplicationWindow {
                             } else {
                                 checkState = Qt.Unchecked
                             }
+                        }
+                    }
+                }
+            }
+            CArea {
+                // tag: disable multi-language
+                visible: false
+                areaText: qsTr("语言")
+                fontSize: 12
+                Layout.fillWidth: true
+                Layout.preferredHeight: layout_language.height + heightFix
+                ColumnLayout {
+                    id: layout_language
+                    CComboBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        implicitWidth: 140
+                        implicitHeight: 32
+                        model: Translator.languageNameList()
+                        onActivated: index => {
+                                         Translator.languageSelected = index
+                                     }
+
+                        Component.onCompleted: {
+                            currentIndex = Translator.languageSelected
                         }
                     }
                 }

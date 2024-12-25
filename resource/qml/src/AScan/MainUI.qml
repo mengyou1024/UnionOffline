@@ -75,7 +75,7 @@ Rectangle {
                         height: text.height
                         border.color: "#7c95c4"
                         Layout.fillWidth: fillWidth
-                        Layout.preferredWidth: 60
+                        Layout.preferredWidth: Math.max(60, text.contentWidth + 10)
                         Text {
                             id: text
 

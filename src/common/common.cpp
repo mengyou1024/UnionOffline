@@ -7,12 +7,12 @@
 #include "LinesMaskEnum.hpp"
 #include "MaskStatusEnum.hpp"
 #include "QmlConditionalVariable.hpp"
+#include "QmlTranslator.hpp"
 #include "RailWeldDigram.hpp"
 #include "SerialRunner.hpp"
 #include "TofdPeAScanView.hpp"
 #include "TofdPeDScanView.hpp"
 #include "morose_config.h"
-#include "qmltranslator.h"
 #include <AScanView.hpp>
 #include <AppUpdater.hpp>
 #include <BScanView.hpp>
@@ -158,21 +158,21 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<Union::View::BScanView>("Union.View", 1, 0, "BScanView");
     qmlRegisterType<Union::View::CScanView>("Union.View", 1, 0, "CScanView");
     qmlRegisterType<Union::AScan::RailWeld::RailWeldSimulation>("Union.AScan", 1, 0, "RailWeldSimulation");
-    auto translatorInstance = QmlTranslator::Instance();
-    qmlRegisterSingletonInstance("Morose.translator", 1, 0, "MTranslator", translatorInstance);
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::Instance());
     qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "MaskStatusEnum", TOFD_PE::MaskStatusEnum::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "GlobalCppProgress", Morose::Utils::GlobalCppProgress::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "FileExists", Morose::Utils::FileExists::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "AppUpdater", Morose::Utils::AppUpdater::Instance());
-    QObject::connect(translatorInstance, &QmlTranslator::languageChanged, context->engine(), [=]() {
-        qDebug() << "languageChanged";
-        context->engine()->retranslate();
-    });
     registeAllAScanFileSelector();
     registeAllTofdPeFileSelector();
     registNameFilter(context);
-    // qRegisterMetaType<std::shared_ptr<Union::AScan::AScanIntf>>("AScanIntf_SP");
+    // 翻译
+    auto translatorInstance = QmlTranslator::Instance();
+    qmlRegisterSingletonInstance("Union.Utils", 1, 0, "Translator", translatorInstance);
+    QObject::connect(translatorInstance, &QmlTranslator::languageSelectedChanged, context->engine(), [=]() {
+        qDebug() << "languageChanged";
+        context->engine()->retranslate();
+    });
 }
 
 void Morose::registeAllAScanFileSelector() {

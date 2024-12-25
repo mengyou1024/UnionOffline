@@ -7,22 +7,21 @@ import Qt.labs.platform 1.1
 import "../../components"
 
 ScrollView {
-    implicitWidth: 280
-    contentWidth: 260
 
-    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+    id: control
+
+    implicitWidth: layout_root.width + 20
+    horizontalPadding: 10
 
     LoggingCategory {
         id: category
         name: "TOFD_PE.ctrl"
     }
+
     background: Rectangle {
         color: "transparent"
     }
 
-    Component.onCompleted: {
-        console.log(ScrollBar.vertical, ScrollBar.vertical.active)
-    }
     property alias tofdShow: cb_tofd_show.checked // TOFD显示
     property alias peShow: cb_pe_show.checked //PE显示
     property alias verticalLineFollowing: cb_vertical_line_following.checked // 垂直坐标跟随
@@ -64,16 +63,19 @@ ScrollView {
     // PE间距更改
     signal peSpaceValueModified(real val)
 
+    readonly property int maxLayoutWidth: Math.max(layout_show.width, layout_report.width, layout_tofd_gain.width, layout_pe_gain.width, layout_tofd_line.width, layout_pe_line.width,
+                                                   layout_tofd_space.width, layout_pe_space.width, 280)
+
     ColumnLayout {
-        anchors.fill: parent
+        id: layout_root
         CArea {
             areaText: qsTr("显示")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 80
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_show.height + heightFix
             GridLayout {
-                anchors.fill: parent
-                anchors.margins: 20
+                id: layout_show
+                anchors.centerIn: parent
                 rows: 2
                 columns: 2
                 columnSpacing: 10
@@ -136,14 +138,13 @@ ScrollView {
         CArea {
             areaText: qsTr("报表")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 60
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_report.height + heightFix
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_report
+                anchors.centerIn: parent
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 15
-                    Layout.bottomMargin: 5
                     spacing: 5
                     CButton {
                         text: qsTr("报表生成")
@@ -169,12 +170,12 @@ ScrollView {
         CArea {
             areaText: qsTr("TOFD软件增益")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 80
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_tofd_gain.height + heightFix
             visible: tofdShow
             ColumnLayout {
-                anchors.fill: parent
-                anchors.topMargin: 15
+                id: layout_tofd_gain
+                anchors.centerIn: parent
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
@@ -201,15 +202,16 @@ ScrollView {
                 }
             }
         }
+
         CArea {
             areaText: qsTr("PE软件增益:")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 80
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_pe_gain.height + heightFix
             visible: peShow
             ColumnLayout {
-                anchors.topMargin: 15
-                anchors.fill: parent
+                id: layout_pe_gain
+                anchors.centerIn: parent
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
@@ -240,14 +242,14 @@ ScrollView {
         CArea {
             areaText: qsTr("TOFD测量线")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 180
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_tofd_line.height + heightFix
             visible: tofdShow
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_tofd_line
+                anchors.centerIn: parent
                 GridLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 20
                     rows: 2
                     columns: 4
                     Label {
@@ -389,14 +391,14 @@ ScrollView {
         CArea {
             areaText: qsTr("PE测量线")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 150
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_pe_line.height + heightFix
             visible: peShow
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_pe_line
+                anchors.centerIn: parent
                 GridLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 20
                     rows: 2
                     columns: 4
                     Label {
@@ -510,19 +512,19 @@ ScrollView {
         CArea {
             areaText: qsTr("TOFD间距")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 65
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_tofd_space.height + heightFix
             visible: tofdShow
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_tofd_space
+                anchors.centerIn: parent
                 GridLayout {
-                    Layout.margins: 10
                     Layout.alignment: Qt.AlignHCenter
                     rows: 1
                     columns: 3
                     TextField {
                         id: tf_tofd_space
-                        Layout.fillWidth: true
+                        Layout.preferredWidth: 120
                         Layout.preferredHeight: 28
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -542,6 +544,7 @@ ScrollView {
                     }
                     CButton {
                         text: qsTr("TOFD更改")
+                        implicitWidth: Math.max(labelImplWidth, 80)
                         onClicked: {
                             let val = parseFloat(tf_tofd_space.text)
                             if (isNaN(val)) {
@@ -559,19 +562,19 @@ ScrollView {
         CArea {
             areaText: qsTr("PE间距")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 65
+            Layout.preferredWidth: maxLayoutWidth
+            Layout.preferredHeight: layout_pe_space.height + heightFix
             visible: peShow
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_pe_space
+                anchors.centerIn: parent
                 GridLayout {
-                    Layout.margins: 10
                     Layout.alignment: Qt.AlignHCenter
                     rows: 1
                     columns: 3
                     TextField {
                         id: tf_pe_space
-                        Layout.fillWidth: true
+                        Layout.preferredWidth: 120
                         Layout.preferredHeight: 28
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -591,6 +594,7 @@ ScrollView {
                     }
                     CButton {
                         text: qsTr("PE更改")
+                        implicitWidth: Math.max(labelImplWidth, 80)
                         onClicked: {
                             let val = parseFloat(tf_pe_space.text)
                             if (isNaN(val)) {

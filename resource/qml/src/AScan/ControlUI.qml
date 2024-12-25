@@ -16,8 +16,11 @@ ScrollView {
         color: "transparent"
     }
 
-    contentWidth: 260
-    implicitWidth: 280
+    implicitWidth: layout_root.width + 20
+    horizontalPadding: 10
+
+    id: control
+    clip: true
 
     property int replaySpeed: 1
     property bool isReplayStart: true
@@ -38,6 +41,8 @@ ScrollView {
     property alias showCMP001Special: area_t8_rail.visible
 
     property var aScanInteractor
+
+    readonly property int maxLayoutWidth: Math.max(layout_file.width, layout_gain.width, 260)
 
     signal showImage
 
@@ -62,26 +67,26 @@ ScrollView {
     // 设置文件名索引
     signal setFileNameIndex(int idx)
 
-    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-
+    // ScrollBar.vertical.policy: ScrollBar.AlwaysOn
     ColumnLayout {
-        width: 260
+        id: layout_root
+
         CArea {
             areaText: qsTr("文件")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 160
+            Layout.preferredWidth: control.maxLayoutWidth + widthFix
+            Layout.preferredHeight: layout_file.height + heightFix
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_file
+                anchors.centerIn: parent
                 GridLayout {
                     id: file_info
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 20
                     Layout.fillWidth: true
                     columns: 2
                     rows: 2
                     columnSpacing: 5
-                    rowSpacing: 20
+                    rowSpacing: 5
                     Label {
                         text: qsTr("子文件名:")
                         Layout.alignment: Qt.AlignHCenter
@@ -127,9 +132,10 @@ ScrollView {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 15
                     CButton {
+                        id: btn_performance
                         text: qsTr("仪器性能")
+                        implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth)
                         FileDialog {
                             id: f_perf_dialog
                             fileMode: FileDialog.SaveFile
@@ -145,10 +151,12 @@ ScrollView {
                             f_perf_dialog.open()
                         }
                     }
-                    spacing: 5
+                    spacing: 10
                     CButton {
-                        text: qsTr("报表生成")
                         id: btn_report
+                        implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth)
+                        text: qsTr("报表生成")
+
                         FileDialog {
                             id: f_report_dialog
                             fileMode: FileDialog.SaveFile
@@ -171,12 +179,12 @@ ScrollView {
         CArea {
             areaText: qsTr("增益")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 120
+            Layout.preferredWidth: control.maxLayoutWidth + widthFix
+            Layout.preferredHeight: layout_gain.height + heightFix
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_gain
+                anchors.centerIn: parent
                 RowLayout {
-                    Layout.topMargin: 20
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
                     spacing: 20
@@ -193,7 +201,6 @@ ScrollView {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 20
                     CSlider {
                         from: -50
                         to: 50
@@ -211,17 +218,21 @@ ScrollView {
             id: replay_area
             areaText: qsTr("操作")
             Layout.margins: 2
-            Layout.fillWidth: true
-            Layout.preferredHeight: 220
+            Layout.preferredWidth: control.maxLayoutWidth + widthFix
+            Layout.preferredHeight: layout_operation.height + heightFix
             ColumnLayout {
-                anchors.fill: parent
+                id: layout_operation
+                width: control.maxLayoutWidth
+                anchors.centerIn: parent
                 GridLayout {
+                    Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 20
                     rows: 2
                     columns: 2
                     CButton {
                         text: isReplayStart ? qsTr("播放") : qsTr("停止")
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
                         onReleased: {
                             replayStartClicked(isReplayStart)
                             console.log(category, "isReplayStart:", isReplayStart)
@@ -243,6 +254,8 @@ ScrollView {
 
                     CButton {
                         text: qsTr("×" + replaySpeed + ">>")
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
                         onReleased: {
                             replaySpeed *= 2
                             if (replaySpeed > 8) {
@@ -252,6 +265,8 @@ ScrollView {
                         }
                     }
                     CButton {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
                         autoRepeat: true
                         text: qsTr("上一帧")
                         function valueMinus(val) {
@@ -272,6 +287,8 @@ ScrollView {
                         }
                     }
                     CButton {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
                         autoRepeat: true
                         text: qsTr("下一帧")
                         function valuePlus(val) {
@@ -293,26 +310,21 @@ ScrollView {
                     }
                 }
 
-                RowLayout {
+                CSlider {
+                    id: sl_timerLine
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 10
-                    CSlider {
-                        id: sl_timerLine
-                        from: 0
-                        to: 0
-                        stepSize: 1
-                        onMoved: {
-                            timeSliderMoved(value)
-                        }
+                    from: 0
+                    to: 0
+                    stepSize: 1
+                    onMoved: {
+                        timeSliderMoved(value)
                     }
                 }
-                RowLayout {
+
+                Label {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 10
-                    Label {
-                        text: qsTr("第 ") + (sl_timerLine.value + 1) + qsTr(" 帧 / 共 ") + (sl_timerLine.to + 1) + qsTr(" 帧")
-                        font.pixelSize: 16
-                    }
+                    text: qsTr("第 ") + (sl_timerLine.value + 1) + qsTr(" 帧 / 共 ") + (sl_timerLine.to + 1) + qsTr(" 帧")
+                    font.pixelSize: 16
                 }
 
                 LQC.CheckBox {
@@ -321,7 +333,6 @@ ScrollView {
                     enabled: fileNameList ? fileNameList.length > 1 : false
                     checked: true
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.bottomMargin: 10
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
                     }
@@ -373,13 +384,11 @@ ScrollView {
             areaText: qsTr("钢轨焊缝示意图")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 518
+            Layout.preferredHeight: control.maxLayoutWidth / 260 * 560
             RailWeldDigram {
                 id: rail_weld_digram
+                anchors.centerIn: parent
                 anchors.fill: parent
-                anchors.margins: 10
-                anchors.topMargin: 20
-
                 onZeroPointInFootChanged: {
                     update()
                 }
@@ -391,12 +400,12 @@ ScrollView {
             areaText: qsTr("钢轨仿真")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: 320
+            Layout.preferredHeight: control.maxLayoutWidth / 260 * 360
             RailWeldSimulation {
                 id: t8_rail_simulation
                 anchors.fill: parent
-                anchors.margins: 10
-                anchors.topMargin: 20
+                anchors.centerIn: parent
+
                 Connections {
                     target: aScanInteractor || null
                     ignoreUnknownSignals: true

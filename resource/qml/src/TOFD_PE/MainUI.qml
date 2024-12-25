@@ -31,17 +31,17 @@ Rectangle {
             intr: tofd_pe_intr
             softGain: controlTarget === null ? 0 : controlTarget.tofdSoftGain
 
-            vText1: `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
-            vText2: `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+            vText1: `${tofd_pe_intr.getTofdDepth(vValue1)} mm`
+            vText2: `${tofd_pe_intr.getTofdDepth(vValue2)} mm`
             vSpace: Math.round((tofd_pe_intr.getTofdDepth(vValue2) - tofd_pe_intr.getTofdDepth(vValue1)) * 10) / 10
 
             onAdjustDepth: depth => {
                                tofd_pe_intr.adjustDepth(depth)
                                vText1 = Qt.binding(() => {
-                                                       return `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
+                                                       return `${tofd_pe_intr.getTofdDepth(vValue1)} mm`
                                                    })
                                vText2 = Qt.binding(() => {
-                                                       return `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+                                                       return `${tofd_pe_intr.getTofdDepth(vValue2)} mm`
                                                    })
                                vSpace = Qt.binding(() => {
                                                        return Math.round((tofd_pe_intr.getTofdDepth(vValue2) - tofd_pe_intr.getTofdDepth(vValue1)) * 10) / 10
@@ -54,10 +54,10 @@ Rectangle {
             onRollBack: {
                 tofd_pe_intr.rollBack()
                 vText1 = Qt.binding(() => {
-                                        return `${tofd_pe_intr.getTofdDepth(vValue1)}mm`
+                                        return `${tofd_pe_intr.getTofdDepth(vValue1)} mm`
                                     })
                 vText2 = Qt.binding(() => {
-                                        return `${tofd_pe_intr.getTofdDepth(vValue2)}mm`
+                                        return `${tofd_pe_intr.getTofdDepth(vValue2)} mm`
                                     })
                 vSpace = Qt.binding(() => {
                                         return Math.round((tofd_pe_intr.getTofdDepth(vValue2) - tofd_pe_intr.getTofdDepth(vValue1)) * 10) / 10
@@ -224,57 +224,57 @@ Rectangle {
 
     function initAfterOpenFile() {
 
-        controlTarget.line1XLeft = Qt.binding(()=>{
-            return sv_tofd.hText1
-        })
+        controlTarget.line1XLeft = Qt.binding(() => {
+                                                  return sv_tofd.hText1
+                                              })
 
-        controlTarget.line1XRight = Qt.binding(()=>{
-            return sv_tofd.hText2
-        })
+        controlTarget.line1XRight = Qt.binding(() => {
+                                                   return sv_tofd.hText2
+                                               })
 
-        controlTarget.line1ZLeft = Qt.binding(()=>{
-            return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue1 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText1
-        })
+        controlTarget.line1ZLeft = Qt.binding(() => {
+                                                  return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue1 * 2 / 5.9).toFixed(1) + " μs" : sv_tofd.vText1
+                                              })
 
-        controlTarget.line1ZRight = Qt.binding(()=>{
-            return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue2 * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vText2
-        })
+        controlTarget.line1ZRight = Qt.binding(() => {
+                                                   return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.rVValue2 * 2 / 5.9).toFixed(1) + " μs" : sv_tofd.vText2
+                                               })
 
-        controlTarget.line1XSpace = Qt.binding(()=>{
-            return sv_tofd.hSpace + " mm"
-        })
+        controlTarget.line1XSpace = Qt.binding(() => {
+                                                   return sv_tofd.hSpace + " mm"
+                                               })
 
-        controlTarget.line1ZSpace = Qt.binding(()=>{
-            return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.vSpace * 2 / 5.9).toFixed(1) + "μs" : sv_tofd.vSpace + " mm"
-        })
+        controlTarget.line1ZSpace = Qt.binding(() => {
+                                                   return (controlTarget === null ? false : controlTarget.showTime) ? (sv_tofd.vSpace * 2 / 5.9).toFixed(1) + " μs" : sv_tofd.vSpace + " mm"
+                                               })
 
-        controlTarget.depth = Qt.binding(()=>{
-            return (controlTarget === null ? false : controlTarget.showTime) ? sv_tofd.vSpace + " mm" : ""
-        })
+        controlTarget.depth = Qt.binding(() => {
+                                             return (controlTarget === null ? false : controlTarget.showTime) ? sv_tofd.vSpace + " mm" : ""
+                                         })
 
-        controlTarget.line2XLeft = Qt.binding(()=>{
-            return sv_pe.hText1
-        })
+        controlTarget.line2XLeft = Qt.binding(() => {
+                                                  return sv_pe.hText1
+                                              })
 
-        controlTarget.line2XRight = Qt.binding(()=>{
-            return sv_pe.hText2
-        })
+        controlTarget.line2XRight = Qt.binding(() => {
+                                                   return sv_pe.hText2
+                                               })
 
-        controlTarget.line2ZLeft = Qt.binding(()=>{
-            return `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue1).toFixed(1)} mm`
-        })
+        controlTarget.line2ZLeft = Qt.binding(() => {
+                                                  return `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue1).toFixed(1)} mm`
+                                              })
 
-        controlTarget.line2ZRight = Qt.binding(()=>{
-            return `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue2).toFixed(1)} mm`
-        })
+        controlTarget.line2ZRight = Qt.binding(() => {
+                                                   return `${(Math.sin(sv_pe._angle) * sv_pe._vTextShowValue2).toFixed(1)} mm`
+                                               })
 
-        controlTarget.line2XSpace = Qt.binding(()=>{
-            return sv_pe.hSpace + " mm"
-        })
+        controlTarget.line2XSpace = Qt.binding(() => {
+                                                   return sv_pe.hSpace + " mm"
+                                               })
 
-        controlTarget.line2ZSpace = Qt.binding(()=>{
-            return `${((Math.sin(sv_pe._angle) * (sv_pe._vTextShowValue2 - sv_pe._vTextShowValue1))).toFixed(1)} mm`
-        })
+        controlTarget.line2ZSpace = Qt.binding(() => {
+                                                   return `${((Math.sin(sv_pe._angle) * (sv_pe._vTextShowValue2 - sv_pe._vTextShowValue1))).toFixed(1)} mm`
+                                               })
 
         tofd_pe_intr.peSpace = 0
         tofd_pe_intr.tofdSpace = 0

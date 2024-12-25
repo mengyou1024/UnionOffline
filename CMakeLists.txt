@@ -29,36 +29,6 @@ set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleAp
 
 add_subdirectory("components/QXlsx/QXlsx")
 
-file(GLOB_RECURSE LUPDATE_SOURCES
-    "src/*.h"
-    "src/*.c"
-    "src/*.hpp"
-    "src/*.cpp"
-    "src/*.cxx"
-    "src/*.cc"
-    "resource/*.qml"
-    "components/union/include_private/*.h"
-    "components/union/include_private/*.hpp"
-    "components/union/src/*.h"
-    "components/union/src/*.c"
-    "components/union/src/*.hpp"
-    "components/union/src/*.cpp"
-    "components/union/src/*.cc"
-    "components/union/src/*.cxx"
-)
-
-add_custom_target(
-    lupdate
-    COMMAND ${LUPDATE_EXECUTABLE} ${LUPDATE_SOURCES} -ts translations/UnionOffline_en.ts
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-add_custom_target(
-    lrelease
-    COMMAND ${LRELEASE_EXECUTABLE} translations/UnionOffline_en.ts
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 file(GLOB_RECURSE ${PROJECT_NAME}_SRC "src/*.cpp" "src/*.c" "src/*.cc" "src/*.cxx")
 file(GLOB_RECURSE ${PROJECT_NAME}_INC "src/*.h" "src/*.hpp")
 
@@ -111,6 +81,41 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 set(UNIONLIB_DISABLE_AUTOMATE ON)
 
+file(GLOB_RECURSE LUPDATE_SOURCES
+    "src/*.h"
+    "src/*.c"
+    "src/*.hpp"
+    "src/*.cpp"
+    "resource/*.qml"
+    "components/union/include_private/*.h"
+    "components/union/include_private/*.hpp"
+    "components/union/src/*.h"
+    "components/union/src/*.c"
+    "components/union/src/*.hpp"
+    "components/union/src/*.cpp"
+    "components/union/src/*.cxx"
+)
+
+add_custom_target(
+    lupdate
+    COMMAND ${LUPDATE_EXECUTABLE} ${LUPDATE_SOURCES} -ts translations/${PROJECT_NAME}_en.ts -silent -noobsolete
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "lupdate generate translations/*.ts"
+    DEPENDS ${LUPDATE_SOURCES}
+    BYPRODUCTS "translations/${PROJECT_NAME}_en.ts"
+)
+
+add_custom_target(
+    lrelease
+    COMMAND ${LRELEASE_EXECUTABLE} translations/${PROJECT_NAME}_en.ts -silent
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "lrelease generate translations/*.qm"
+    DEPENDS "translations/${PROJECT_NAME}_en.ts"
+)
+
+add_dependencies(lrelease lupdate)
+add_dependencies(${PROJECT_NAME} lrelease)
+
 find_package(Morose)
 
 target_link_libraries(
@@ -153,6 +158,14 @@ if(Morose_FOUND)
     morose_copy(TARGET ${PROJECT_NAME} DIRS "excel_templates")
     morose_copy(TARGET ${PROJECT_NAME} FILES "components/ssl/libssl-1_1-x64.dll")
     morose_copy(TARGET ${PROJECT_NAME} FILES "components/ssl/libcrypto-1_1-x64.dll")
+    morose_copy(
+        TARGET
+        ${PROJECT_NAME}
+        FILES
+        translations/${PROJECT_NAME}_en.qm
+        DIST_DIR
+        translations
+    )
     morose_add_qml_dirs("resource/qml")
     morose_auto_release()
 endif(Morose_FOUND)

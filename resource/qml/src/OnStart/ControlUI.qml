@@ -6,12 +6,16 @@ import "../../components"
 import "./components"
 import Morose.Utils 1.0
 
-Rectangle {
+Control {
     LoggingCategory {
         id: category
         name: "OnStart.ctrl"
     }
-    color: "transparent"
+
+    background: Rectangle {
+        color: "transparent"
+    }
+
     property alias description: fileReader.string
     property string imageSource: ""
 
@@ -20,6 +24,8 @@ Rectangle {
         fileName: ""
     }
 
+    implicitWidth: 300
+
     ListView {
         id: _listView
         anchors.fill: parent
@@ -27,12 +33,18 @@ Rectangle {
         model: FileExists.listDir(":/img/instruments")
         property color highlightColor: "#00e3e6"
 
-        highlight: Rectangle {
-            border.color: _listView.highlightColor
-            border.width: 2
-            radius: 5
-            color: "transparent"
-            anchors.horizontalCenter: parent.horizontalCenter
+        highlight: Item {
+
+            Rectangle {
+                anchors.fill: parent
+                border.color: _listView.highlightColor
+                border.width: 2
+                radius: 5
+                color: "transparent"
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.leftMargin: 10
+                anchors.rightMargin: 10
+            }
         }
 
         ScrollBar.vertical: ScrollBar {}

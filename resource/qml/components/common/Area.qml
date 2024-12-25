@@ -1,15 +1,20 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import QtQuick.Templates 2.15 as T
 
-Control {
+T.Frame {
     id: control
     property alias areaText: text.text
     property color bkColor: "#e0eeee"
     property alias fontSize: text.font.pointSize
 
+    readonly property int heightFix: Math.max(text.contentHeight, 5) + 5
+    readonly property int widthFix: 10
     topInset: text.contentHeight / 2
-    topPadding: text.contentHeight
+    topPadding: Math.max(text.contentHeight, 5)
+    horizontalPadding: 5
+    bottomPadding: 5
 
     background: Rectangle {
         color: bkColor

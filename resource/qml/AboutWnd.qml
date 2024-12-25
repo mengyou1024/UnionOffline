@@ -114,32 +114,32 @@ ApplicationWindow {
                                       "text": qsTr("软件版本"),
                                       "treeDepth": 0
                                   }, {
-                                      "text": `${MOROSE_APP_VERSION}`,
+                                      "text": MOROSE_APP_VERSION,
                                       "treeDepth": 1,
                                       "isValue": true
                                   }, {
                                       "text": qsTr("编译日期"),
                                       "treeDepth": 0
                                   }, {
-                                      "text": `${MOROSE_APP_BUILD_DATE}`,
+                                      "text": MOROSE_APP_BUILD_DATE,
                                       "treeDepth": 1,
                                       "isValue": true
                                   }, {
                                       "text": qsTr("编译时间"),
                                       "treeDepth": 0
                                   }, {
-                                      "text": `${MOROSE_APP_BUILD_TIME}`,
+                                      "text": MOROSE_APP_BUILD_TIME,
                                       "treeDepth": 1,
                                       "isValue": true
                                   }, {
                                       "text": qsTr("流水线编译"),
                                       "treeDepth": 0
                                   }, {
-                                      "text": `${MOROSE_APP_BUILD_BY_WORKFLOW}`,
+                                      "text": MOROSE_APP_BUILD_BY_WORKFLOW === 1 ? qsTr("是") : qsTr("否"),
                                       "treeDepth": 1,
                                       "isValue": true
                                   }, {
-                                      "text": qsTr("HASH"),
+                                      "text": "HASH",
                                       "treeDepth": 0
                                   }, {
                                       "text": `${MOROSE_APP_COMMIT_HASH}`,
