@@ -42,22 +42,22 @@
 <context>
     <name>CommunicateWnd</name>
     <message>
-        <location filename="../resource/qml/CommunicateWnd.qml" line="25"/>
+        <location filename="../resource/qml/CommunicateWnd.qml" line="24"/>
         <source>通讯</source>
         <translation>Communication</translation>
     </message>
     <message>
-        <location filename="../resource/qml/CommunicateWnd.qml" line="55"/>
+        <location filename="../resource/qml/CommunicateWnd.qml" line="54"/>
         <source>确定</source>
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../resource/qml/CommunicateWnd.qml" line="64"/>
+        <location filename="../resource/qml/CommunicateWnd.qml" line="63"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../resource/qml/CommunicateWnd.qml" line="90"/>
+        <location filename="../resource/qml/CommunicateWnd.qml" line="89"/>
         <source>未收到数据</source>
         <translation>Data not received</translation>
     </message>

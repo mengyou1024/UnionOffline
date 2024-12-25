@@ -3,7 +3,6 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import "./components"
-import Morose.translator 1.0
 import Union.Extra 1.0
 
 ApplicationWindow {

@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Column {
-    property var toastComponent: toastComponent = Qt.createComponent("Toast.qml")
+    property var toastComponent: Qt.createComponent("Toast.qml")
 
     function show(text, duration) {
         var toast = toastComponent.createObject(toastManager)
@@ -25,4 +25,8 @@ Column {
     z: Infinity
     spacing: 5
     anchors.centerIn: parent
+
+    Component.onDestruction: {
+        toastComponent.destroy()
+    }
 }
