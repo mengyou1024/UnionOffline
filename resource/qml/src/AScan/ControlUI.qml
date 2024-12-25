@@ -135,7 +135,7 @@ ScrollView {
                     CButton {
                         id: btn_performance
                         text: qsTr("仪器性能")
-                        implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth)
+                        implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth, 80)
                         FileDialog {
                             id: f_perf_dialog
                             fileMode: FileDialog.SaveFile
@@ -154,7 +154,7 @@ ScrollView {
                     spacing: 10
                     CButton {
                         id: btn_report
-                        implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth)
+                        implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth, 80)
                         text: qsTr("报表生成")
 
                         FileDialog {
@@ -224,15 +224,19 @@ ScrollView {
                 id: layout_operation
                 width: control.maxLayoutWidth
                 anchors.centerIn: parent
+
+                readonly property int maxBtnWidth: Math.max(btn_play.labelImplWidth, btn_play_speed.labelImplWidth, btn_previous_frame.labelImplWidth, btn_next_frame.labelImplWidth, 80)
+
                 GridLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
                     rows: 2
                     columns: 2
                     CButton {
+                        id: btn_play
                         text: isReplayStart ? qsTr("播放") : qsTr("停止")
                         Layout.fillHeight: true
-                        Layout.fillWidth: true
+                        Layout.preferredWidth: layout_operation.maxBtnWidth
                         onReleased: {
                             replayStartClicked(isReplayStart)
                             console.log(category, "isReplayStart:", isReplayStart)
@@ -251,11 +255,11 @@ ScrollView {
                             isReplayStart = !isReplayStart
                         }
                     }
-
                     CButton {
+                        id: btn_play_speed
                         text: qsTr("×" + replaySpeed + ">>")
                         Layout.fillHeight: true
-                        Layout.fillWidth: true
+                        Layout.preferredWidth: layout_operation.maxBtnWidth
                         onReleased: {
                             replaySpeed *= 2
                             if (replaySpeed > 8) {
@@ -265,9 +269,9 @@ ScrollView {
                         }
                     }
                     CButton {
+                        id: btn_previous_frame
                         Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        autoRepeat: true
+                        Layout.preferredWidth: layout_operation.maxBtnWidth
                         text: qsTr("上一帧")
                         function valueMinus(val) {
                             sl_timerLine.value -= val
@@ -287,8 +291,9 @@ ScrollView {
                         }
                     }
                     CButton {
+                        id: btn_next_frame
                         Layout.fillHeight: true
-                        Layout.fillWidth: true
+                        Layout.preferredWidth: layout_operation.maxBtnWidth
                         autoRepeat: true
                         text: qsTr("下一帧")
                         function valuePlus(val) {

@@ -112,52 +112,52 @@
         <translation>Operation</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="233"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="237"/>
         <source>播放</source>
         <translation>Play</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="233"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="237"/>
         <source>停止</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="271"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="275"/>
         <source>上一帧</source>
         <translation>Previous</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="293"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="298"/>
         <source>下一帧</source>
         <translation>Next</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="326"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="331"/>
         <source>第 </source>
         <translation>The </translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="326"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="331"/>
         <source> 帧 / 共 </source>
         <translation> Frame / All </translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="326"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="331"/>
         <source> 帧</source>
         <translation> Frame</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="332"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="337"/>
         <source>连续播放所有子文件</source>
         <translation>Play all subfiles consecutively</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="384"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="389"/>
         <source>钢轨焊缝示意图</source>
         <translation>Rail weld diagram</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="400"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="405"/>
         <source>钢轨仿真</source>
         <translation>Rail simulation</translation>
     </message>
