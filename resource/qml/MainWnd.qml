@@ -453,14 +453,16 @@ ApplicationWindow {
         console.log(category, `open file suffix:${suffix}, get ui type: ${MAINUI_MAP[suffix]}`)
         let ret = MAINUI_MAP[suffix]
         if (ret === undefined) {
-            ret = "Unknow"
-            showFailed("打开出错")
+            showFailed("错误的文件后缀")
             console.warn(category, `open file:${fileName} error, unknow suffix:${suffix}`)
         }
         return ret
     }
 
     function actionMainType(type, filePath) {
+        if (type === undefined) {
+            return
+        }
         console.log(category, "load ui type:", type)
         let lastMainUIType = mainUIType
         mainUIType = type
