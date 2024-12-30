@@ -78,8 +78,7 @@ ApplicationWindow {
                 }
 
                 CIconButton {
-                    // tag: disable communication
-                    visible: false
+                    visible: MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE === 1
                     img_src: "qrc:/img/usb.png"
                     btn_txt: qsTr("通讯")
                     onClicked: {
@@ -102,6 +101,7 @@ ApplicationWindow {
                 }
 
                 CIconButton {
+                    visible: MOROSE_ENABLE_SETTING_FEATURE === 1
                     img_src: "qrc:/img/setting.png"
                     btn_txt: qsTr("设置")
                     onClicked: {
@@ -511,6 +511,7 @@ ApplicationWindow {
 
     Connections {
         id: update_connections
+        enabled: MOROSE_APP_ENABLE_UPGRADE === 1
         property var update_wnd
         target: AppUpdater
 
@@ -543,6 +544,8 @@ ApplicationWindow {
     Component.onCompleted: {
         actionMainType("Unknow")
         showMaximized()
-        AppUpdater.uiInitOK = true
+        if (MOROSE_APP_ENABLE_UPGRADE === 1) {
+            AppUpdater.uiInitOK = true
+        }
     }
 }

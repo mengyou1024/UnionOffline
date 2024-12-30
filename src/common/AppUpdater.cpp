@@ -29,7 +29,7 @@ namespace Morose::Utils {
     }
 
     void AppUpdater::initInterface() {
-#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE) || MOROSE_DEBUG_UPGRADE
+#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE_FEATURE) || MOROSE_DEBUG_UPGRADE_OPTION
         QSettings upgradeSetting("setting.ini", QSettings::IniFormat);
         upgradeSetting.beginGroup("Upgrade");
         auto check_upgrade = upgradeSetting.value("checkUpgrade");
@@ -63,7 +63,7 @@ namespace Morose::Utils {
     }
 
     void AppUpdater::checkVersion() {
-#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE) || MOROSE_DEBUG_UPGRADE
+#if (!defined(QT_DEBUG) && MOROSE_ENABLE_UPGRADE_FEATURE) || MOROSE_DEBUG_UPGRADE_OPTION
         std::shared_lock lock(m_paramMutex);
         if (m_upgradeInterface == nullptr) {
             emit versionCheckFailed(QObject::tr("无法检查更新:接口为空"));
@@ -72,7 +72,7 @@ namespace Morose::Utils {
 
         auto remove_version = m_upgradeInterface->getRemoteInstallerVersion();
         auto message        = m_upgradeInterface->getRemoteInstallerUpgradeInfo();
-    #if MOROSE_DEBUG_UPGRADE
+    #if MOROSE_DEBUG_UPGRADE_OPTION
         emit newVersionFound(remove_version.getVersonString(), message);
     #else
         if (remove_version > Version::AppVersion()) {

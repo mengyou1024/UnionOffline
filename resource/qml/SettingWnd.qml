@@ -34,6 +34,7 @@ ApplicationWindow {
             clip: true
             width: scroll_view.width - scroll_view.padding * 2
             CArea {
+                visible: MOROSE_APP_ENABLE_UPGRADE === 1
                 areaText: qsTr("软件更新")
                 fontSize: 12
                 Layout.fillWidth: true
@@ -72,8 +73,7 @@ ApplicationWindow {
                 }
             }
             CArea {
-                // tag: disable multi-language
-                visible: false
+                visible: MOROSE_ENABLE_MULTI_LANGUATE_FEATURE === 1
                 areaText: qsTr("语言")
                 fontSize: 12
                 Layout.fillWidth: true

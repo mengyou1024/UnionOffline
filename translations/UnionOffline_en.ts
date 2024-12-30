@@ -420,7 +420,7 @@
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="84"/>
+        <location filename="../resource/qml/MainWnd.qml" line="83"/>
         <source>通讯</source>
         <translation>Communication</translation>
     </message>
@@ -1138,32 +1138,32 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Workpiect Sequence</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="630"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="634"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="631"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="635"/>
         <source>仿真探头位置</source>
         <translation>Simulated probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="632"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="636"/>
         <source>仿真探头方向</source>
         <translation>Simulated probe direction</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="633"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="637"/>
         <source>钢轨型号</source>
         <translation>Rail type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="634"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="638"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="638"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="642"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
@@ -1212,12 +1212,12 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="37"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="38"/>
         <source>软件更新</source>
         <translation>Software Update</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="52"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="53"/>
         <source>软件启动时检查更新</source>
         <translation>Check for updates at software startup</translation>
     </message>

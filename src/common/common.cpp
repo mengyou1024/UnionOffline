@@ -144,6 +144,10 @@ void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_APP_VERSION", APP_VERSION);
     context->setContextProperty("MOROSE_APP_NAME_ZH_CN", APP_NAME_ZH_CN_TR);
     context->setContextProperty("MOROSE_APP_COMMIT_HASH", APP_COMMIT_HASH);
+    context->setContextProperty("MOROSE_APP_ENABLE_UPGRADE", MOROSE_ENABLE_UPGRADE_FEATURE);
+    context->setContextProperty("MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE", MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE);
+    context->setContextProperty("MOROSE_ENABLE_MULTI_LANGUATE_FEATURE", MOROSE_ENABLE_MULTI_LANGUATE_FEATURE);
+    context->setContextProperty("MOROSE_ENABLE_SETTING_FEATURE", MOROSE_ENABLE_SETTING_FEATURE);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
     qmlRegisterType<TOFD_PE::TofdPeDScanView>("Union.TOFD_PE", 1, 0, "TofdPeDScanView");
     qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");
@@ -176,29 +180,32 @@ void Morose::registerVariable(QQmlContext* context) {
 }
 
 void Morose::registeAllAScanFileSelector() {
-#if defined(QT_DEBUG) || ENABLE_UNION_GENERIC || ENABLE_RAILWELE_SPECIALIZATION
+    [[maybe_unused]]
     auto _ascan_register = Union::AScan::AScanFileSelector::Instance();
+#if MOROSE_ENABLE_DAS_DAT || defined(QT_DEBUG)
+    _ascan_register->RegistReader("*.das", "330N单幅图像", Union::__330::DASType::FromFile);
+    _ascan_register->RegistReader("*.DAT", "330N连续图像", Union::__330::DATType::FromFile);
 #endif
 
-#if ENABLE_UNION_GENERIC || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.das", "330单幅图像", Union::__330::DASType::FromFile);
-    _ascan_register->RegistReader("*.DAT", "330连续图像", Union::__330::DATType::FromFile);
-    _ascan_register->RegistReader("*.cod", "330串口数据", Union::__330::Serial_330::FromFile);
+#if MOROSE_ENABLE_COD || defined(QT_DEBUG)
+    _ascan_register->RegistReader("*.cod", "330N串口数据", Union::__330::Serial_330::FromFile);
+#endif
+
+#if MOROSE_ENABLE_MDAT || defined(QT_DEBUG)
     _ascan_register->RegistReader("*.mdat", "390N、T8图像", Union::__390N_T8::MDATType::UnType::FromFile);
 #endif
 
-#if ENABLE_RAILWELE_SPECIALIZATION || defined(QT_DEBUG)
+#if MOROSE_ENABLE_DAA_HFD || defined(QT_DEBUG)
     _ascan_register->RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
     _ascan_register->RegistReader("*.HFD", "390钢轨焊缝连续图像", Union::__390::HFDATType::FromFile);
 #endif
 }
 
 void Morose::registeAllTofdPeFileSelector() {
-#if defined(QT_DEBUG) || ENABLE_UNION_GENERIC
+    [[maybe_unused]]
     auto _tofd_pe_register = Union::TOFD_PE::TofdPeFileSelector::Instance();
-#endif
 
-#if ENABLE_UNION_GENERIC || defined(QT_DEBUG)
+#if MOROSE_ENABLE_TOF_TPE || defined(QT_DEBUG)
     _tofd_pe_register->RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
     _tofd_pe_register->RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TOF::TofType::FromFile);
 #endif
