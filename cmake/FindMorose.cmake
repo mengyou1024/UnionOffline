@@ -177,7 +177,7 @@ endfunction(morose_add_qml_dirs)
 
 #[[
     设置当前项目为插件项目
-    `morose_plugin_setup([TYPE] type [TARGET] target)`
+    `morose_plugin_setup([TARGET] target [TYPE] type)`
     `TYPE` 插件类型，默认为GENERIC 类型必须是`MOROSE_PLUGINS_TYPE`中的一个
     `TARGET` 插件的生成目标，默认为${CMAKE_PROJECT_NAME} 
 ]]
@@ -249,6 +249,7 @@ function(morose_copy)
         # 拷贝文件[列表]
         set(COPY_FILE_STRING "")
         set(DEP_FILE_STRING "")
+        set(BYPRODUCTS_STRING "")
 
         foreach(ITEM ${COPY_FILES})
             get_filename_component(COPY_FILENAME ${ITEM} NAME)
@@ -263,10 +264,12 @@ function(morose_copy)
 
             list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
             list(APPEND COPY_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
+            list(APPEND BYPRODUCTS_STRING "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
 
             if(CMAKE_BUILD_TYPE STREQUAL "Release")
                 list(APPEND DEP_FILE_STRING "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}")
                 list(APPEND COPY_FILE_STRING COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/${ITEM}" "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
+                list(APPEND BYPRODUCTS_STRING "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_FILENAME}")
             endif(CMAKE_BUILD_TYPE STREQUAL "Release")
         endforeach(ITEM ${COPY_FILES})
 
@@ -279,8 +282,7 @@ function(morose_copy)
             DEPENDS
             "${DEP_FILE_STRING}"
             BYPRODUCTS
-            "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_FILENAME}"
-            "${MOROSE_DIST_DIR}${COPY_DIST_DIR}${COPY_FILENAME}"
+            "${BYPRODUCTS_STRING}"
         )
 
         if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -335,15 +337,13 @@ function(morose_copy)
 
             # 拷贝的是目录
             ${COPY_DIR_STRING}
-            DEPENDS
-            "${DEP_FILE_STRING}"
+            DEPENDS "${DEP_FILE_STRING}"
         )
 
         add_custom_command(
             TARGET clean-all POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
-            DEPENDS
-            "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
+            DEPENDS "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
             COMMENT "remove directory: ${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
         )
 

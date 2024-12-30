@@ -93,7 +93,7 @@ function(morose_copy)
 
 部署环境下，构建系统会生成`generate_exe_installer`目标，用于打包发布。
 
-1. 该目标会将生成的.exe文件拷贝至`${MOROSE_DIST_DIR}`(默认为:`${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-${APP_VERSION}`)对应的目录下，
+1. 该目标会将生成的.exe文件拷贝至`${MOROSE_DIST_DIR}`(默认为:`${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}-Setup-${APP_VERSION}`)对应的目录下，
 
 ​	同时也会将`morose_copy`拷贝的文件，以开发环境的树结构(相对于开发环境生成的可执行文件)拷贝至`${MOROSE_DIST_DIR}`目录。
 
