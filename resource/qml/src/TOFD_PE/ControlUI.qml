@@ -155,7 +155,6 @@ ScrollView {
                             currentFile: "file:///" + qsTr("报表生成")
                             title: qsTr("报表生成")
                             onAccepted: {
-                                console.log(category, "emit --> reportExportClicked:", currentFile)
                                 reportExportClicked(String(currentFile).substring(8))
                             }
                         }
@@ -526,6 +525,9 @@ ScrollView {
                         id: tf_tofd_space
                         Layout.preferredWidth: 120
                         Layout.preferredHeight: 28
+                        selectByMouse: true
+                        selectionColor: "black"
+                        selectedTextColor: "white"
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         background: Rectangle {
@@ -538,11 +540,15 @@ ScrollView {
                             bottom: -1000
                         }
                         text: "0"
+                        onAccepted: {
+                            btn_tofd_changed.clicked()
+                        }
                     }
                     Text {
                         text: qsTr("mm")
                     }
                     CButton {
+                        id: btn_tofd_changed
                         text: qsTr("TOFD更改")
                         implicitWidth: Math.max(labelImplWidth, 80)
                         onClicked: {
@@ -551,7 +557,6 @@ ScrollView {
                                 tf_tofd_space.text = "0"
                                 val = 0
                             }
-                            console.log(category, "emit --> tofdSpaceValueModified:", parseFloat(val))
                             tofdSpaceValueModified(val)
                         }
                     }
@@ -576,6 +581,9 @@ ScrollView {
                         id: tf_pe_space
                         Layout.preferredWidth: 120
                         Layout.preferredHeight: 28
+                        selectByMouse: true
+                        selectionColor: "black"
+                        selectedTextColor: "white"
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         background: Rectangle {
@@ -588,11 +596,15 @@ ScrollView {
                             bottom: -1000
                         }
                         text: "0"
+                        onAccepted: {
+                            btn_pe_changed.clicked()
+                        }
                     }
                     Text {
                         text: qsTr("mm")
                     }
                     CButton {
+                        id: btn_pe_changed
                         text: qsTr("PE更改")
                         implicitWidth: Math.max(labelImplWidth, 80)
                         onClicked: {
@@ -601,7 +613,6 @@ ScrollView {
                                 tf_pe_space.text = "0"
                                 val = 0
                             }
-                            console.log(category, "emit --> peSpaceValueModified:", val)
                             peSpaceValueModified(val)
                         }
                     }
