@@ -577,15 +577,15 @@ void AScanInteractor::CMP000Special_UpdateDacSeries() {
 AScanInteractor::AScanInteractor() {
     QJsonObject gate1;
     gate1.insert("amp", "-");
-    gate1.insert("dist_a", "-");
-    gate1.insert("dist_b", "-");
-    gate1.insert("dist_c", "-");
+    gate1.insert("→", "-");
+    gate1.insert("↓", "-");
+    gate1.insert("↘", "-");
     gate1.insert("equi", "-");
     QJsonObject gate2;
     gate2.insert("amp", "-");
-    gate2.insert("dist_a", "-");
-    gate2.insert("dist_b", "-");
-    gate2.insert("dist_c", "-");
+    gate2.insert("→", "-");
+    gate2.insert("↓", "-");
+    gate2.insert("↘", "-");
     gate2.insert("equi", "-");
 
     QJsonArray arr;
@@ -624,7 +624,14 @@ bool AScanInteractor::openFile(QString _fileName) {
         return false;
     }
     try {
-        setAScanIntf((READ_FUNC.value())(_fileName.toStdWString()));
+        ASCAN_TYPE _tyy_ascan_type = nullptr;
+        for (const auto& func : READ_FUNC.value()) {
+            _tyy_ascan_type = func(_fileName.toStdWString());
+            if (_tyy_ascan_type != nullptr) {
+                break;
+            }
+        }
+        setAScanIntf(_tyy_ascan_type);
         emit aScanIntfChanged();
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
@@ -964,9 +971,9 @@ QJsonArray AScanInteractor::CreateGateValue() {
         for (auto i = 0; std::cmp_less(i, _m_gateValue.size()); i++) {
             _m_gateValue[i] = {
                 {"amp",    "-"},
-                {"dist_a", "-"},
-                {"dist_b", "-"},
-                {"dist_c", "-"},
+                {"→", "-"},
+                {"↓", "-"},
+                {"↘", "-"},
                 {"equi",   "-"},
             };
         }

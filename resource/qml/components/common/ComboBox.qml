@@ -34,14 +34,12 @@ T.ComboBox {
             color: highlighted ? backgroundColor : "#FFFFFF"
             clip: true
             Text {
-                anchors.fill: parent
+                anchors.centerIn: parent
                 text: modelData
                 font: control.font
                 color: control.fontColor
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
-                horizontalAlignment: Text.AlignHCenter
+                elide: Text.ElideMiddle
+                wrapMode: Text.NoWrap
             }
         }
 

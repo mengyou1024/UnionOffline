@@ -113,7 +113,12 @@ namespace TOFD_PE {
             return false;
         }
         try {
-            m_data = (READ_FUNC.value())(fileName.toStdWString());
+            for (const auto& func : READ_FUNC.value()) {
+                m_data = func(fileName.toStdWString());
+                if (m_data != nullptr) {
+                    break;
+                }
+            }
         } catch (std::exception& e) {
             qCCritical(TAG) << e.what();
             m_data = nullptr;

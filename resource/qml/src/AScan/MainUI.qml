@@ -19,19 +19,19 @@ Rectangle {
 
     readonly property var gateTextTable: [{
             "amp": "A%",
-            "dist_a": "A→",
-            "dist_b": "A↓",
-            "dist_c": "A↘",
+            "→": "A→",
+            "↓": "A↓",
+            "↘": "A↘",
             "equi": qsTr("当量")
         }, {
             "amp": "B%",
-            "dist_a": "B→",
-            "dist_b": "B↓",
-            "dist_c": "B↘",
+            "→": "B→",
+            "↓": "B↓",
+            "↘": "B↘",
             "equi": qsTr("当量")
         }]
 
-    readonly property var gateIndexTable: ["amp", "dist_c", "dist_a", "dist_b", "equi"]
+    readonly property var gateIndexTable: ["amp", "↘", "→", "↓", "equi"]
 
     property var gateEnable: [false, false]
 
@@ -124,8 +124,8 @@ Rectangle {
                 Layout.alignment: Qt.AlignVCenter
                 visible: gateEnable[1]
                 CKeyValue {
-                    property real value_A: parseFloat(interactor.gateValue[0]["dist_b"])
-                    property real value_B: parseFloat(interactor.gateValue[1]["dist_b"])
+                    property real value_A: parseFloat(interactor.gateValue[0]["↓"])
+                    property real value_B: parseFloat(interactor.gateValue[1]["↓"])
                     key: qsTr("B-A(↓)")
                     value: Math.round((value_B - value_A) * 10.0) / 10.0
                 }
