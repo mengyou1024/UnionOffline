@@ -192,86 +192,86 @@
         <translation>Report Forms</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="171"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="170"/>
         <source>TOFD软件增益</source>
         <translation>TOFD Gain</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="207"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="206"/>
         <source>PE软件增益:</source>
         <translation>PE Gain:</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="243"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="242"/>
         <source>TOFD测量线</source>
         <translation>TOFD Line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="256"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="272"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="405"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="421"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="255"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="271"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="404"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="420"/>
         <source>X轴</source>
         <translation>X Axial</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="288"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="304"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="437"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="453"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="287"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="303"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="436"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="452"/>
         <source>Z轴</source>
         <translation>Z Axial</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="325"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="474"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="324"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="473"/>
         <source>X轴间距</source>
         <translation>X Axial Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="345"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="494"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="344"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="493"/>
         <source>Z轴间距</source>
         <translation>Z Axial Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="366"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="365"/>
         <source>显示时间</source>
         <translation>Display Time</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="373"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="372"/>
         <source>深度</source>
         <translation>Depth</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="392"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="391"/>
         <source>PE测量线</source>
         <translation>PE Line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="513"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="512"/>
         <source>TOFD间距</source>
         <translation>TOFD Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="543"/>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="593"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="548"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="604"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="546"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="552"/>
         <source>TOFD更改</source>
         <translation>Set</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="563"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="568"/>
         <source>PE间距</source>
         <translation>PE Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="596"/>
+        <location filename="../resource/qml/src/TOFD_PE/ControlUI.qml" line="608"/>
         <source>PE更改</source>
         <translation>Set</translation>
     </message>
@@ -455,13 +455,13 @@
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390/hfdat.cpp" line="108"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390/hfdat.cpp" line="110"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="240"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="237"/>
         <source>基本信息</source>
         <translation>Basic Information</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390/hfdat.cpp" line="109"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="226"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="223"/>
         <source>通道</source>
         <translation>Channel</translation>
     </message>
@@ -518,20 +518,20 @@
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="59"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="217"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="214"/>
         <source>晶片尺寸</source>
         <translation>Chip Size</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="60"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="215"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="212"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="232"/>
         <source>探头类型</source>
         <translation>Probe type</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="61"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="222"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="219"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="245"/>
         <source>前沿</source>
         <translation>Front Edge</translation>
@@ -555,7 +555,7 @@
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="162"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="65"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="223"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="220"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="237"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="246"/>
         <source>零点</source>
@@ -590,7 +590,7 @@
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="146"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="71"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="225"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="222"/>
         <source>声速</source>
         <translation>Sound Velocity</translation>
     </message>
@@ -671,29 +671,29 @@
         <translation>When the probe is inclined, the probe Angle is almost 0</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="209"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="206"/>
         <source>基本增益</source>
         <translation>Basic Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="210"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="207"/>
         <source>扫查增益</source>
         <translation>Scan Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="211"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="208"/>
         <source>表面补偿</source>
         <translation>Surface Compensation Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="216"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="213"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="234"/>
         <source>探头频率</source>
         <translation>Probe Frequency</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="207"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="221"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="218"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="228"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="244"/>
         <source>声程</source>
@@ -701,28 +701,28 @@
     </message>
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="193"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="224"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="221"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="229"/>
         <source>延时</source>
         <translation>Delay</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="227"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="224"/>
         <source>K值/角度</source>
         <translation>K/Angle</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="229"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="226"/>
         <source>抑制</source>
         <translation>Supression</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="238"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="235"/>
         <source>增益参数</source>
         <translation>Gain Parameters</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="239"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="236"/>
         <source>探头信息</source>
         <translation>Probe Informations</translation>
     </message>
@@ -1123,19 +1123,39 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Circumferential step</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="60"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="61"/>
         <source>工件型号</source>
         <translation>Workpiece Type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="72"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="73"/>
         <source>工件批次</source>
         <translation>Workpiect batch</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="84"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="85"/>
         <source>工件序号</source>
         <translation>Workpiect Sequence</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="97"/>
+        <source>评定</source>
+        <translation>Evaluate</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="106"/>
+        <source>待定</source>
+        <translation>Pending</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="106"/>
+        <source>合格</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="106"/>
+        <source>不合格</source>
+        <translation>NG</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="634"/>
