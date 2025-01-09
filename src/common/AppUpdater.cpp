@@ -34,7 +34,7 @@ namespace Morose::Utils {
         upgradeSetting.beginGroup("Upgrade");
         auto check_upgrade = upgradeSetting.value("checkUpgrade");
         upgradeSetting.endGroup();
-        if (check_upgrade.isNull() || check_upgrade.toBool() == false) {
+        if (!check_upgrade.isNull() && check_upgrade.toBool() == false) {
             return;
         }
 

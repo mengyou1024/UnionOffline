@@ -65,6 +65,7 @@ Rectangle {
                 Component {
                     id: text_component
                     Rectangle {
+                        property int minPreferredWidth: 60
                         property bool fillWidth: false
                         property alias backgroundColor: root_box.color
                         property alias text: text.text
@@ -75,7 +76,7 @@ Rectangle {
                         height: text.height
                         border.color: "#7c95c4"
                         Layout.fillWidth: fillWidth
-                        Layout.preferredWidth: Math.max(60, text.contentWidth + 10)
+                        Layout.preferredWidth: Math.max(minPreferredWidth, text.contentWidth + 10)
                         Text {
                             id: text
 
@@ -105,30 +106,33 @@ Rectangle {
                                                                                                             return gateEnable[gateIndex]
                                                                                                         })
                                                                               }))
-                        grid_layout.children.push(text_component.createObject(grid_layout, {
-                                                                                  "backgroundColor": "white",
-                                                                                  "fillWidth": true,
-                                                                                  "text": Qt.binding(() => {
-                                                                                                         return interactor.gateValue[gateIndex][gateIndexTable[paramIndex]]
-                                                                                                     }),
-                                                                                  "textColor": gateTextColor[gateIndex],
-                                                                                  "visible": Qt.binding(() => {
-                                                                                                            return gateEnable[gateIndex]
-                                                                                                        })
-                                                                              }))
+                        let object_param = {
+                            "backgroundColor": "white",
+                            "minPreferredWidth": 96,
+                            "text": Qt.binding(() => {
+                                                   return interactor.gateValue[gateIndex][gateIndexTable[paramIndex]]
+                                               }),
+                            "textColor": gateTextColor[gateIndex],
+                            "visible": Qt.binding(() => {
+                                                      return gateEnable[gateIndex]
+                                                  })
+                        }
+                        if (paramIndex === 4) {
+                            object_param["minPreferredWidth"] = 200
+                        }
+
+                        grid_layout.children.push(text_component.createObject(grid_layout, object_param))
                     }
                 }
             }
 
-            ColumnLayout {
+            CKeyValue {
                 Layout.alignment: Qt.AlignVCenter
                 visible: gateEnable[1]
-                CKeyValue {
-                    property real value_A: parseFloat(interactor.gateValue[0]["↓"])
-                    property real value_B: parseFloat(interactor.gateValue[1]["↓"])
-                    key: qsTr("B-A(↓)")
-                    value: Math.round((value_B - value_A) * 10.0) / 10.0
-                }
+                property real value_A: parseFloat(interactor.gateValue[0]["↓"])
+                property real value_B: parseFloat(interactor.gateValue[1]["↓"])
+                key: qsTr("B-A(↓)")
+                value: Math.round((value_B - value_A) * 10.0) / 10.0
             }
         }
 

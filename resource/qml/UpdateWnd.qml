@@ -159,6 +159,7 @@ ApplicationWindow {
             CButton {
                 id: btn
                 state: "newVersionFound"
+                implicitWidth: 80
                 states: [
                     State {
                         name: "newVersionFound"
@@ -204,6 +205,7 @@ ApplicationWindow {
             }
 
             CButton {
+                implicitWidth: 80
                 text: qsTr("取消")
                 onClicked: {
                     close()
