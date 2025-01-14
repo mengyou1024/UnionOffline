@@ -91,7 +91,7 @@ ApplicationWindow {
                                                     })
                             com_wnd.saveTemporaryFile.connect(filePath => {
                                                                   console.log(category, "on saveTemporaryFile trigger file:", filePath)
-                                                                  actionMainType(getMainUITypeIndex(filePath), filePath)
+                                                                  actionMainType(getMainUITypeIndex(filePath), filePath, true)
                                                                   listView.currentIndex = -1
                                                               })
                         } else if (comp.status === Component.Error) {
@@ -453,13 +453,13 @@ ApplicationWindow {
         console.log(category, `open file suffix:${suffix}, get ui type: ${MAINUI_MAP[suffix]}`)
         let ret = MAINUI_MAP[suffix]
         if (ret === undefined) {
-            showFailed("错误的文件后缀")
+            showFailed(qsTr("错误的文件后缀"))
             console.warn(category, `open file:${fileName} error, unknow suffix:${suffix}`)
         }
         return ret
     }
 
-    function actionMainType(type, filePath) {
+    function actionMainType(type, filePath, is_communicate) {
         if (type === undefined) {
             return
         }
@@ -486,6 +486,12 @@ ApplicationWindow {
                     listview_updated.waitCondition()
                     index = folder_list.indexOf("file:///" + filePath)
                     listView.currentIndex = index
+                }
+
+                if (is_communicate === true) {
+                    listview_unfold_ctrl.visible = false
+                    openFile(filePath)
+                    return
                 }
 
                 listviewIndexChanged(index, folder_list)
