@@ -363,35 +363,35 @@
         <translation>Sonic Path Distance</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="129"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="134"/>
         <source>B-A(↓)</source>
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="176"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="185"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="180"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="189"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="178"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="187"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="182"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="191"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="259"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="263"/>
         <location filename="../resource/qml/src/TOFD_PE/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="317"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="321"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="350"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="354"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -449,19 +449,24 @@
         <source>选择一个文件</source>
         <translation>Select a file</translation>
     </message>
+    <message>
+        <location filename="../resource/qml/MainWnd.qml" line="456"/>
+        <source>错误的文件后缀</source>
+        <translation>Incorrect file suffix</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390/hfdat.cpp" line="108"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390/hfdat.cpp" line="110"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="237"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="231"/>
         <source>基本信息</source>
         <translation>Basic Information</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390/hfdat.cpp" line="109"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="223"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="217"/>
         <source>通道</source>
         <translation>Channel</translation>
     </message>
@@ -518,20 +523,20 @@
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="59"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="214"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="208"/>
         <source>晶片尺寸</source>
         <translation>Chip Size</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="60"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="212"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="206"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="232"/>
         <source>探头类型</source>
         <translation>Probe type</translation>
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="61"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="219"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="213"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="245"/>
         <source>前沿</source>
         <translation>Front Edge</translation>
@@ -555,7 +560,7 @@
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="162"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="65"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="220"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="214"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="237"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="246"/>
         <source>零点</source>
@@ -590,7 +595,7 @@
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="146"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="71"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="222"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="216"/>
         <source>声速</source>
         <translation>Sound Velocity</translation>
     </message>
@@ -660,40 +665,34 @@
         <translation>When the probe is straight, the path mode X is used</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="125"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="133"/>
-        <source>警告</source>
-        <translation>Warning</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="130"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="127"/>
         <source>当探头为斜探头时, 探头角度近乎为0</source>
         <translation>When the probe is inclined, the probe Angle is almost 0</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="206"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="200"/>
         <source>基本增益</source>
         <translation>Basic Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="207"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="201"/>
         <source>扫查增益</source>
         <translation>Scan Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="208"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="202"/>
         <source>表面补偿</source>
         <translation>Surface Compensation Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="213"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="207"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="234"/>
         <source>探头频率</source>
         <translation>Probe Frequency</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="207"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="218"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="212"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="228"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="244"/>
         <source>声程</source>
@@ -701,28 +700,28 @@
     </message>
     <message>
         <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="193"/>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="221"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="215"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="229"/>
         <source>延时</source>
         <translation>Delay</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="224"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="218"/>
         <source>K值/角度</source>
         <translation>K/Angle</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="226"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="220"/>
         <source>抑制</source>
         <translation>Supression</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="235"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="229"/>
         <source>增益参数</source>
         <translation>Gain Parameters</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="236"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="230"/>
         <source>探头信息</source>
         <translation>Probe Informations</translation>
     </message>
@@ -861,28 +860,28 @@ Click &lt; Cancel &gt; to exit</translation>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="207"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="233"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="219"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="217"/>
         <source>射频检波</source>
         <translation>RF</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="234"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="220"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="218"/>
         <source>全检波</source>
         <translation>Full</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="235"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="221"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="219"/>
         <source>正检波</source>
         <translation>Positive</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="210"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="236"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="222"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="220"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
@@ -1158,32 +1157,32 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>NG</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="634"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="637"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="635"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="638"/>
         <source>仿真探头位置</source>
         <translation>Simulated probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="636"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="639"/>
         <source>仿真探头方向</source>
         <translation>Simulated probe direction</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="637"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="640"/>
         <source>钢轨型号</source>
         <translation>Rail type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="638"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="641"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="642"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="645"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
@@ -1255,42 +1254,42 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Software Update</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="167"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="168"/>
         <source>下载</source>
         <translation>Download</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="176"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="177"/>
         <source>下载中</source>
         <translation>Downloading</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="183"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="184"/>
         <source>升级</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="207"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="209"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="220"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="222"/>
         <source>当前版本</source>
         <translation>Current Version</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="227"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="229"/>
         <source>新版本</source>
         <translation>New Version</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="237"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="239"/>
         <source>更新信息</source>
         <translation>Update Information</translation>
     </message>
     <message>
-        <location filename="../resource/qml/UpdateWnd.qml" line="240"/>
+        <location filename="../resource/qml/UpdateWnd.qml" line="242"/>
         <source>无</source>
         <translation>None</translation>
     </message>
