@@ -83,8 +83,9 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     auto img_sw         = 667;
     auto img_sh         = 339;
 
-    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get())) {
-        // 390钢轨特化版本
+    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get()) ||
+        dynamic_cast<Union::AScan::Special::CMP001Special*>(aScanIntf().get())) {
+        // 390钢轨特化版本、T8钢轨特化版本
         excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
         img_x          = 20;
         img_y          = 1;
@@ -970,11 +971,11 @@ QJsonArray AScanInteractor::CreateGateValue() {
         std::array<QVariantMap, 2> _m_gateValue = {};
         for (auto i = 0; std::cmp_less(i, _m_gateValue.size()); i++) {
             _m_gateValue[i] = {
-                {"amp",    "-"},
-                {"→", "-"},
-                {"↓", "-"},
-                {"↘", "-"},
-                {"equi",   "-"},
+                {"amp",  "-"},
+                {"→",  "-"},
+                {"↓",  "-"},
+                {"↘",  "-"},
+                {"equi", "-"},
             };
         }
         return QJsonArray::fromVariantList({_m_gateValue[0], _m_gateValue[1]});

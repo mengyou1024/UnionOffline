@@ -472,7 +472,7 @@
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="49"/>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="130"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="131"/>
         <source>检测单位</source>
         <translation>Company of detection</translation>
     </message>
@@ -507,6 +507,7 @@
         <translation>Surface Heat Treatment</translation>
     </message>
     <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="166"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="56"/>
         <source>材质</source>
         <translation>Material</translation>
@@ -558,7 +559,7 @@
         <translation>Angle of refraction</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="162"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="165"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="65"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="214"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="237"/>
@@ -568,7 +569,7 @@
     </message>
     <message>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="66"/>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="124"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="125"/>
         <source>仪器型号</source>
         <translation>Instrument Model</translation>
     </message>
@@ -593,7 +594,7 @@
         <translation>Range of acoustic path</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="146"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="149"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="71"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="216"/>
         <source>声速</source>
@@ -691,7 +692,7 @@
         <translation>Probe Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="207"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="210"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="212"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="228"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="244"/>
@@ -699,7 +700,7 @@
         <translation>Sonic Path Distance</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="193"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="196"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/AScanType.cpp" line="215"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="229"/>
         <source>延时</source>
@@ -769,119 +770,124 @@ Click &lt; OK &gt; to exit and save the DAC
 Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="50"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="53"/>
         <source>通道数量</source>
         <translation>Channel Numbers</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="59"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="62"/>
         <source>波门数量</source>
         <translation>Gate Numbers</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="68"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="71"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="210"/>
         <source>重复频率</source>
         <translation>Repeat Freqency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="84"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="87"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="209"/>
         <source>发射电压</source>
         <translation>Transmitting Voltage</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="102"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="105"/>
         <source>通道标志</source>
         <translation>Channel Flag</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="116"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="119"/>
         <source>探头阻尼</source>
         <translation>Probe Damping</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="130"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="133"/>
         <source>降噪次数</source>
         <translation>Noise Reduction</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="178"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="181"/>
         <source>脉冲宽度</source>
         <translation>Pulse Width</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="221"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="224"/>
         <source>采样因子</source>
         <translation>Sampling Factor</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="252"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="255"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="230"/>
         <source>滤波频带</source>
         <translation>Filter Band</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="270"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="273"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="231"/>
         <source>检波方式</source>
         <translation>Demodu Mode</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="295"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="298"/>
         <source>相位翻转</source>
         <translation>Phase Reverse</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="347"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="350"/>
         <source>声程模式</source>
         <translation>Sonic Path Distance Mode</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="190"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="369"/>
+        <source>补偿增益</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="191"/>
         <source>宽频</source>
         <translation>Broadband</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="191"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="192"/>
         <source>低频</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="192"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="193"/>
         <source>中频</source>
         <translation>Medium</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="193"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="194"/>
         <source>高频</source>
         <translation>High</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="207"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="233"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="217"/>
-        <source>射频检波</source>
-        <translation>RF</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="234"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="218"/>
-        <source>全检波</source>
-        <translation>Full</translation>
+        <source>射频检波</source>
+        <translation>RF</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="235"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="219"/>
-        <source>正检波</source>
-        <translation>Positive</translation>
+        <source>全检波</source>
+        <translation>Full</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="210"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="236"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="220"/>
+        <source>正检波</source>
+        <translation>Positive</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="211"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="237"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="221"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
@@ -958,7 +964,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Groove Type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="237"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="240"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="227"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="243"/>
         <source>增益</source>
@@ -970,7 +976,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Probe Size</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="309"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="312"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="235"/>
         <source>探头角度</source>
         <translation>Probe Angle</translation>
@@ -982,7 +988,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Degree</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="331"/>
+        <location filename="../components/union/src/Bridge/HDBridgePropertiesDefine.cpp" line="334"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="236"/>
         <source>探头前沿</source>
         <translation>Probe Front</translation>
@@ -998,14 +1004,14 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Chip</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="104"/>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="105"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="106"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="256"/>
         <source>低压</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="106"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="107"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="258"/>
         <source>中压</source>
         <translation>Medium</translation>
@@ -1016,7 +1022,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="107"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="108"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="262"/>
         <source>高压</source>
         <translation>High</translation>
@@ -1097,117 +1103,187 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Twin-Crystal P-Wave Oblique Probe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="79"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="193"/>
         <source>管材长度</source>
         <translation>Pipe Length</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="93"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="207"/>
         <source>管材内径</source>
         <translation>Inside diameter of pipe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="107"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="221"/>
         <source>管材壁厚</source>
         <translation>Wall thickness of pipe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="121"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="235"/>
         <source>轴向步进</source>
         <translation>Axial step</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="135"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="249"/>
         <source>周向步进</source>
         <translation>Circumferential step</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="61"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="263"/>
+        <source>扫查速度</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="277"/>
+        <source>旋转速度</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="291"/>
+        <source>整体偏移量(左侧)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="305"/>
+        <source>整体偏移量(右侧)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="319"/>
+        <source>通道偏移量(左侧)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="333"/>
+        <source>通道偏移量(右侧)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="103"/>
         <source>工件型号</source>
         <translation>Workpiece Type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="73"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="115"/>
         <source>工件批次</source>
         <translation>Workpiect batch</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="85"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="127"/>
         <source>工件序号</source>
         <translation>Workpiect Sequence</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="97"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="139"/>
         <source>评定</source>
         <translation>Evaluate</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="106"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="148"/>
         <source>待定</source>
         <translation>Pending</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="106"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="148"/>
         <source>合格</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="106"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="148"/>
         <source>不合格</source>
         <translation>NG</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="637"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="154"/>
+        <source>仪器</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="178"/>
+        <source>表面状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="190"/>
+        <source>探伤要求</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="202"/>
+        <source>探伤比例</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="214"/>
+        <source>探头</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="226"/>
+        <source>试块</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="238"/>
+        <source>耦合剂</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="250"/>
+        <source>标准</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="660"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="638"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="661"/>
         <source>仿真探头位置</source>
         <translation>Simulated probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="639"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="662"/>
         <source>仿真探头方向</source>
         <translation>Simulated probe direction</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="640"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="663"/>
         <source>钢轨型号</source>
         <translation>Rail type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="641"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="664"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="645"/>
+        <location filename="../components/union/src/GeneralOfflineAnalysis/ASCAN/390N_T8/MDATType.cpp" line="671"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="125"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="126"/>
         <source>水平线性</source>
         <translation>Horizontal Linearity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="126"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="127"/>
         <source>垂直线性</source>
         <translation>Vertical Linearity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="127"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="128"/>
         <source>分辨力</source>
         <translation>Resolution</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="128"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="129"/>
         <source>动态范围</source>
         <translation>Dynamic Range</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="129"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="130"/>
         <source>灵敏度余量</source>
         <translation>Surplus Sensitivity</translation>
     </message>
@@ -1221,6 +1297,36 @@ Click &lt; Cancel &gt; to exit</translation>
         <location filename="../src/common/AppUpdater.cpp" line="123"/>
         <source>无法下载更新:接口为空</source>
         <translation>Unable to download update: interface is empty</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="14"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="15"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="16"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="19"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="21"/>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="27"/>
+        <source>默认</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="22"/>
+        <source>内部质量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="24"/>
+        <source>组合探头</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="25"/>
+        <source>气瓶样件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="26"/>
+        <source>水</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
