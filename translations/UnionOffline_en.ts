@@ -844,50 +844,50 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="191"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="192"/>
         <source>宽频</source>
         <translation>Broadband</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="192"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="193"/>
         <source>低频</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="193"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="194"/>
         <source>中频</source>
         <translation>Medium</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="194"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="195"/>
         <source>高频</source>
         <translation>High</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="234"/>
-        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="218"/>
-        <source>射频检波</source>
-        <translation>RF</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="235"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="219"/>
-        <source>全检波</source>
-        <translation>Full</translation>
+        <source>射频检波</source>
+        <translation>RF</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="210"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="236"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="220"/>
-        <source>正检波</source>
-        <translation>Positive</translation>
+        <source>全检波</source>
+        <translation>Full</translation>
     </message>
     <message>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="211"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="237"/>
         <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="221"/>
+        <source>正检波</source>
+        <translation>Positive</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="212"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B.cpp" line="238"/>
+        <location filename="../components/union/src/Bridge/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="222"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
@@ -1004,14 +1004,14 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Chip</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="105"/>
         <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="106"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="107"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="256"/>
         <source>低压</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="107"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="108"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="258"/>
         <source>中压</source>
         <translation>Medium</translation>
@@ -1022,7 +1022,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="108"/>
+        <location filename="../components/union/src/Bridge/boards/8CH_USB/_8CH_USB.cpp" line="109"/>
         <location filename="../components/union/src/GeneralOfflineAnalysis/TOFD_PE/TPE/tpe.cpp" line="262"/>
         <source>高压</source>
         <translation>High</translation>
