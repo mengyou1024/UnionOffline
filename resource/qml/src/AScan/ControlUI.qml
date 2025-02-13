@@ -164,7 +164,7 @@ ScrollView {
                             folder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
-                            currentFile: "file:///" + fileNameList[com_fileName_list.currentIndex] + "-" + qsTr("探伤报告")
+                            currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr("探伤报告")
                             title: qsTr("报表生成")
                             onAccepted: {
                                 console.log(category, currentFile)
