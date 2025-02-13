@@ -104,6 +104,17 @@ namespace TOFD_PE {
         }
     }
 
+    QString TofdPeInteractor::fileName() const {
+        return m_fileName;
+    }
+
+    void TofdPeInteractor::setFileName(const QString& newFileName) {
+        if (m_fileName == newFileName)
+            return;
+        m_fileName = newFileName;
+        emit fileNameChanged();
+    }
+
     bool TofdPeInteractor::openFile(const QString& fileName) {
         m_file.clear();
         MOROSE_TEST_TIME_QUICK("open file:" + fileName);
@@ -127,8 +138,10 @@ namespace TOFD_PE {
         m_adjsutDepthFunc     = std::nullopt;
         if (m_data != nullptr) {
             m_file = fileName;
+            setFileName(QFileInfo(fileName).baseName());
             return true;
         }
+        setFileName("");
         qCCritical(TAG) << "read file error, fileName:" << fileName;
         return false;
     }

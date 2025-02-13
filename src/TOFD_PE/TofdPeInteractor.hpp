@@ -29,6 +29,7 @@ namespace TOFD_PE {
         QString         m_file                = "";
         ADJUST_FUNC     m_adjsutDepthFunc     = std::nullopt;
         VAXIS_ZERO_FUNC m_getVerticalAixsZero = std::nullopt;
+        QString         m_fileName            = "";
 
     public:
         TofdPeInteractor()  = default;
@@ -58,15 +59,21 @@ namespace TOFD_PE {
         Q_INVOKABLE double            getTofdDepth(double val) const;
         double                        getVerticalAxisZeroPoint() const;
 
+        QString fileName() const;
+        void    setFileName(const QString& newFileName);
+
     signals:
         void tofdSpaceChanged();
         void peSpaceChanged();
         void updatePrivateData();
+
+        void fileNameChanged();
 
     private:
         void removeThroughWaveEvent(qreal x, qreal y, qreal w, qreal h);
         void pullThroughWaveEvent(qreal x, qreal y, qreal w, qreal h);
         Q_PROPERTY(qreal tofdSpace READ tofdSpace WRITE setTofdSpace NOTIFY tofdSpaceChanged FINAL)
         Q_PROPERTY(qreal peSpace READ peSpace WRITE setPeSpace NOTIFY peSpaceChanged FINAL)
+        Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged FINAL)
     };
 } // namespace TOFD_PE

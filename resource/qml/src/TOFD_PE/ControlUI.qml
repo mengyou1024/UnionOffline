@@ -5,6 +5,7 @@ import QtQuick.Controls 1.4 as LQC
 import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import "../../components"
+import Union.Utils 1.0
 
 ScrollView {
 
@@ -12,6 +13,8 @@ ScrollView {
 
     implicitWidth: layout_root.width + 20
     horizontalPadding: 10
+
+    property string reportFilename
 
     LoggingCategory {
         id: category
@@ -150,11 +153,15 @@ ScrollView {
                         text: qsTr("报表生成")
                         FileDialog {
                             id: f_report_dialog
+                            folder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
-                            currentFile: "file:///" + qsTr("报表生成")
+                            currentFile: "file:///" + reportFilename + "-" + qsTr("探伤报告")
                             title: qsTr("报表生成")
                             onAccepted: {
+                                if (!FileManagement.isFileExists(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))) {
+                                    FileManagement.createDir(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))
+                                }
                                 reportExportClicked(String(currentFile).substring(8))
                             }
                         }

@@ -281,6 +281,8 @@ Rectangle {
         controlTarget.reInit()
         controlTarget.hasPe = tofd_pe_intr.hasPe()
 
+        controlTarget.reportFilename = tofd_pe_intr.fileName
+
         console.log(category, "tofd_pe_intr.getSubAngle():", tofd_pe_intr.getSubAngle())
         console.log(category, "reInitMask")
         console.log(category, `delay:${tofd_pe_intr.getDelay()}, range:${tofd_pe_intr.getRange()}`)

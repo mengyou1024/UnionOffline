@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import "../../components"
 import Union.AScan 1.0
+import Union.Utils 1.0
 
 ScrollView {
     LoggingCategory {
@@ -159,9 +160,10 @@ ScrollView {
 
                         FileDialog {
                             id: f_report_dialog
+                            folder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
-                            currentFile: "file:///" + qsTr("报表生成")
+                            currentFile: "file:///" + fileNameList[com_fileName_list.currentIndex] + "-" + qsTr("探伤报告")
                             title: qsTr("报表生成")
                             onAccepted: {
                                 console.log(category, currentFile)
@@ -169,6 +171,9 @@ ScrollView {
                             }
                         }
                         onClicked: {
+                            if (!FileManagement.isFileExists(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))) {
+                                FileManagement.createDir(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))
+                            }
                             f_report_dialog.open()
                         }
                     }

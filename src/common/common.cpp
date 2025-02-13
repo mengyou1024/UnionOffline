@@ -2,6 +2,7 @@
 #include "AScanInteractor.hpp"
 #include "CImage.hpp"
 #include "FileExists.hpp"
+#include "FileManagement.hpp"
 #include "FileReader.hpp"
 #include "GlobalCppProgress.hpp"
 #include "LinesMaskEnum.hpp"
@@ -167,6 +168,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "GlobalCppProgress", Morose::Utils::GlobalCppProgress::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "FileExists", Morose::Utils::FileExists::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "AppUpdater", Morose::Utils::AppUpdater::Instance());
+    qmlRegisterSingletonInstance("Union.Utils", 1, 0, "FileManagement", FileManagement::Instance());
     registeAllAScanFileSelector();
     registeAllTofdPeFileSelector();
     registNameFilter(context);
