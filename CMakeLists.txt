@@ -139,11 +139,12 @@ target_link_libraries(
 target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 
 if(Morose_FOUND)
-    set(PRODUCT_CONFIG_FILE "config/ProductConfig.json")
+    set(PRODUCT_CONFIG_FILE "config/DeployConfig.json")
 
     if(NOT EXISTS "${CMAKE_SOURCE_DIR}/config/ProductConfig.json")
         message(WARNING "no ProductConfig.json file please see ${CMAKE_SOURCE_DIR}/config/ProductConfigTemplate.json")
-        set(PRODUCT_CONFIG_FILE "config/DeployConfig.json")
+    else()
+        set(PRODUCT_CONFIG_FILE ${PRODUCT_CONFIG_FILE} "${CMAKE_SOURCE_DIR}/config/ProductConfig.json")
     endif()
 
     target_sources(${PROJECT_NAME} PUBLIC ${PRODUCT_CONFIG_FILE} ${CMAKE_BINARY_DIR}/private_include/morose_config.h)
