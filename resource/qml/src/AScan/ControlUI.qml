@@ -181,6 +181,7 @@ ScrollView {
             Layout.margins: 2
             Layout.preferredWidth: control.maxLayoutWidth + widthFix
             Layout.preferredHeight: layout_gain.height + heightFix
+            visible: false // v2.2.250123版本后移除
             ColumnLayout {
                 id: layout_gain
                 anchors.centerIn: parent
