@@ -248,6 +248,7 @@ ScrollView {
                             console.log(category, "isReplayStart:", isReplayStart)
                             if (isReplayStart === false) {
                                 replayTimer.stop()
+                                replayTimer.slTimerLineIncrease()
                             } else {
                                 if (replayContinuous && fileNameList.length >= 1) {
                                     com_fileName_list.currentIndex = 0
@@ -458,7 +459,8 @@ ScrollView {
         }
 
         repeat: true
-        onTriggered: {
+
+        function slTimerLineIncrease() {
             var newValue = sl_timerLine.value + 1
             sl_timerLine.value += 1
             if (newValue > sl_timerLine.to) {
@@ -480,6 +482,10 @@ ScrollView {
                 sl_timerLine.value = newValue
                 timeSliderMoved(sl_timerLine.value)
             }
+        }
+
+        onTriggered: {
+            slTimerLineIncrease()
         }
     }
 
