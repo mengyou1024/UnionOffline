@@ -33,6 +33,7 @@ ScrollView {
     property alias replayValue: sl_timerLine.value // 时间线值
     property alias cursorMax: sl_timerLine.to
     property alias replayContinuous: cb_continuous.checked
+    property alias replayFromHead: cb_start_from_head.checked
     property alias imageVisible: img_rect.visible
     property alias showRailWeldDigram: area_rail_weld_digram.visible
     property int replayTimerBaseInterval: 40
@@ -250,10 +251,12 @@ ScrollView {
                                 replayTimer.stop()
                                 replayTimer.slTimerLineIncrease()
                             } else {
-                                if (replayContinuous && fileNameList.length >= 1) {
+                                if (replayContinuous) {
                                     com_fileName_list.currentIndex = 0
                                 }
-
+                                if (replayFromHead) {
+                                    sl_timerLine.value = 0
+                                }
                                 if (sl_timerLine.value === sl_timerLine.to) {
                                     sl_timerLine.value = sl_timerLine.from
                                 }
@@ -337,6 +340,16 @@ ScrollView {
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("第 ") + (sl_timerLine.value + 1) + qsTr(" 帧 / 共 ") + (sl_timerLine.to + 1) + qsTr(" 帧")
                     font.pixelSize: 16
+                }
+
+                LQC.CheckBox {
+                    id: cb_start_from_head
+                    text: qsTr("从头开始播放")
+                    checked: true
+                    Layout.alignment: Qt.AlignHCenter
+                    HoverHandler {
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
 
                 LQC.CheckBox {
