@@ -11,10 +11,10 @@ ApplicationWindow {
 
     id: root_wnd
 
-    minimumWidth: 238
-    minimumHeight: 98
-    maximumWidth: 238
-    maximumHeight: 98
+    minimumWidth: 240
+    minimumHeight: 200
+    maximumWidth: 240
+    maximumHeight: 200
 
     LoggingCategory {
         id: tag
@@ -33,8 +33,21 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 5
         anchors.topMargin: 13
-        rows: 3
         columns: 2
+        Item {
+            GridLayout.columnSpan: 2
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
+            Text {
+                anchors.fill: parent
+                text: serial.isRunning ? qsTr("正在等待通讯 ...\n请在仪器上点击<数据通讯>") : qsTr("选择端口号后\n点击确定按钮开始通讯")
+                font.pointSize: 12
+                wrapMode: Text.Wrap
+                horizontalAlignment: Qt.AlignHCenter
+            }
+        }
+
         CComboBox {
             id: com
             GridLayout.columnSpan: 2
@@ -53,7 +66,7 @@ ApplicationWindow {
             Layout.preferredHeight: 32
             text: qsTr("确定")
             onClicked: {
-                serial.readSerialAndSaveFile(com.currentText, 10000)
+                serial.readSerialAndSaveFile(com.currentText, 15000)
             }
         }
 
