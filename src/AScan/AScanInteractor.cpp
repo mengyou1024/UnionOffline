@@ -76,43 +76,37 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
     if (!checkAScanCursorValid()) {
         return false;
     }
-    auto vmp            = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
-    auto excel_template = "excel_templates/AScan/T_报表生成.xlsx";
-    auto img_x          = 18;
-    auto img_y          = 2;
-    auto img_sw         = 667;
-    auto img_sh         = 339;
 
-    if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get()) ||
-        dynamic_cast<Union::AScan::Special::CMP001Special*>(aScanIntf().get())) {
-        // 390钢轨特化版本、T8钢轨特化版本
+    auto vmp = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
+
+    auto excel_template = "excel_templates/AScan/T_报表生成.xlsx";
+    if ((dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get()) &&
+         !dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get())) ||
+        (dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get()) &&
+         dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get())->isSpecial001Enabled(getAScanCursor()))) {
+        // 普通钢轨特化版本
         excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
-        img_x          = 20;
-        img_y          = 1;
-        img_sw         = 480;
-        img_sh         = 300;
     } else if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get())) {
         // 390N/T8带摄像头
         excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
     }
 
-    auto result = Yo::File::Render::Excel::Render(excel_template, _fileName, vmp);
-    if (!result || !img) {
-        return result;
+    QMap<QString, QImage> image_map = {};
+
+    if (img) {
+        image_map.insert("AScan", img->image());
     }
-    QXlsx::Document doc(_fileName);
-    result = doc.insertImage(img_x, img_y, img->image().scaled(img_sw, img_sh, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation));
-    qCInfo(TAG) << "保存A扫图像:" << result;
+
     auto img_ascan_interface = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get());
     if (img_ascan_interface) {
         auto cameraImage = img_ascan_interface->getCameraImage(getAScanCursor());
         if (!cameraImage.isNull()) {
-            cameraImage = cameraImage.scaled(480, 640, Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
-            doc.insertImage(35, 2, cameraImage);
+            image_map.insert("Camera", cameraImage);
         }
     }
-    result = doc.save();
-    qCInfo(TAG) << "保存报表:" << result;
+
+    auto result = Yo::File::Render::Excel::Render(excel_template, _fileName, vmp, image_map);
+    qCInfo(TAG) << "保存报表:" << _fileName;
     return result;
 }
 
@@ -130,7 +124,7 @@ bool AScanInteractor::performanceClicked(QString _fileName) {
         {QObject::tr("灵敏度余量"), QString::number(performance.sensitivity, 'f', 1)},
         {QObject::tr("检测单位"), ""},
     };
-    return Yo::File::Render::Excel::Render("excel_templates/AScan/T_仪器性能.xlsx", _fileName, vmp);
+    return Yo::File::Render::Excel::Render("excel_templates/AScan/T_仪器性能.xlsx", _fileName, vmp, {});
 }
 
 void AScanInteractor::gainValueModified([[maybe_unused]] qreal val) {}

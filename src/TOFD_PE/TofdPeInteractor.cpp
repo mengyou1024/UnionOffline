@@ -207,16 +207,14 @@ namespace TOFD_PE {
                 {"PeAngle", QString::number(m_data->getPeAngle(), 'f', 1) + "°"},
                 {"PeProbeSize", m_data->getPeCrystalPlate()},
             };
-
-            auto result = Yo::File::Render::Excel::Render("excel_templates/TOFD_PE/T_报表生成.xlsx", filePath, map);
-            if (!result) {
-                return false;
-            }
+            QMap<QString, QImage> images = {};
             if (img) {
-                QXlsx::Document doc(filePath);
-                qCDebug(TAG) << "Svae image return:" << doc.insertImage(13, 0, img->image());
-                return doc.save();
+                images.insert("TOFD/PE", img->image());
             }
+
+            auto result = Yo::File::Render::Excel::Render("excel_templates/TOFD_PE/T_报表生成.xlsx", filePath, map, images);
+            qCInfo(TAG) << "保存报表:" << filePath;
+            return result;
         }
         return false;
     }
