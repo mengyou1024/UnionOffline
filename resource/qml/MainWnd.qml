@@ -436,15 +436,26 @@ ApplicationWindow {
     }
 
     FileDialog {
+        property url cacheFolder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0]
         id: file_dialog
         title: qsTr("选择一个文件")
         nameFilters: FILEDIALOG_NAMEFILTER
+        folder: cacheFolder
         onAccepted: {
             listView.currentIndex = folder_list.indexOf(file_dialog.file)
             listview_unfold = true
             listview_unfold_ctrl.visible = true
             let filePath = String(file_dialog.file).substring(8)
             actionMainType(getMainUITypeIndex(filePath), filePath)
+        }
+        Settings {
+            id: openfile_cache
+            fileName: "setting.ini"
+            category: "cache"
+        }
+
+        onFolderChanged: {
+            cacheFolder = folder
         }
     }
 

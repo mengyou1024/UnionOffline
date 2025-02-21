@@ -139,17 +139,26 @@ ScrollView {
                         text: qsTr("仪器性能")
                         implicitWidth: Math.max(btn_performance.labelImplWidth, btn_report.labelImplWidth, 80)
                         FileDialog {
+                            property url cacheFolder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("仪器性能")
                             id: f_perf_dialog
                             fileMode: FileDialog.SaveFile
+                            folder: cacheFolder
                             nameFilters: ["*.xlsx"]
-                            currentFile: "file:///" + qsTr("仪器性能")
+                            currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr("仪器性能")
                             title: qsTr("仪器性能")
                             onAccepted: {
                                 console.log(category, currentFile)
                                 performanceClicked(String(currentFile).substring(8))
                             }
+
+                            onFolderChanged: {
+                                cacheFolder = folder
+                            }
                         }
                         onClicked: {
+                            if (!FileManagement.isFileExists(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("仪器性能"))) {
+                                FileManagement.createDir(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("仪器性能"))
+                            }
                             f_perf_dialog.open()
                         }
                     }
@@ -160,8 +169,9 @@ ScrollView {
                         text: qsTr("报表生成")
 
                         FileDialog {
+                            property url cacheFolder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             id: f_report_dialog
-                            folder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
+                            folder: cacheFolder
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
                             currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr("探伤报告")
@@ -169,6 +179,9 @@ ScrollView {
                             onAccepted: {
                                 console.log(category, currentFile)
                                 reportExportClicked(String(currentFile).substring(8))
+                            }
+                            onFolderChanged: {
+                                cacheFolder = folder
                             }
                         }
                         onClicked: {

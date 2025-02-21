@@ -152,8 +152,9 @@ ScrollView {
                     CButton {
                         text: qsTr("报表生成")
                         FileDialog {
+                            property url cacheFolder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             id: f_report_dialog
-                            folder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
+                            folder: cacheFolder
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
                             currentFile: "file:///" + reportFilename + "-" + qsTr("探伤报告")
@@ -163,6 +164,9 @@ ScrollView {
                                     FileManagement.createDir(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))
                                 }
                                 reportExportClicked(String(currentFile).substring(8))
+                            }
+                            onFolderChanged: {
+                                cacheFolder = folder
                             }
                         }
                         onClicked: {
