@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import "../../components"
 import Union.Utils 1.0
+import Qt.labs.settings 1.1
 
 ScrollView {
 
@@ -152,24 +153,31 @@ ScrollView {
                     CButton {
                         text: qsTr("报表生成")
                         FileDialog {
-                            property url cacheFolder: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
+
+                            Settings {
+                                id: report_file_dialog_cache
+                                fileName: "setting.ini"
+                                category: "Cache"
+                                property url reportCacheDir: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
+                            }
+
                             id: f_report_dialog
-                            folder: cacheFolder
+                            folder: report_file_dialog_cache.reportCacheDir
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
                             currentFile: "file:///" + reportFilename + "-" + qsTr("探伤报告")
                             title: qsTr("报表生成")
                             onAccepted: {
-                                if (!FileManagement.isFileExists(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))) {
-                                    FileManagement.createDir(StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录"))
-                                }
                                 reportExportClicked(String(currentFile).substring(8))
                             }
                             onFolderChanged: {
-                                cacheFolder = folder
+                                report_file_dialog_cache.reportCacheDir = folder
                             }
                         }
                         onClicked: {
+                            if (!FileManagement.isFileExists(report_file_dialog_cache.reportCacheDir)) {
+                                FileManagement.createDir(report_file_dialog_cache.reportCacheDir)
+                            }
                             f_report_dialog.open()
                         }
                     }
