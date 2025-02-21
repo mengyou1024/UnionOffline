@@ -448,11 +448,6 @@ ApplicationWindow {
             let filePath = String(file_dialog.file).substring(8)
             actionMainType(getMainUITypeIndex(filePath), filePath)
         }
-        Settings {
-            id: openfile_cache
-            fileName: "setting.ini"
-            category: "cache"
-        }
 
         onFolderChanged: {
             cacheFolder = folder
