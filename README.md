@@ -15,6 +15,16 @@
     * [⑦清理](#Cleanup)
     * [⑧GitHub自动化发布及变更文档(CHANGELOG.md)](#AutoReleaseAndChangeLog)
   * [UnionLib](./components/union/README.md)
+* [报表模板规则](./docs/ExcelTemplateRender.md)
+  * [1.说明](./docs/ExcelTemplateRender.md#1.说明)
+  * [2.渲染规则](./docs/ExcelTemplateRender.md#2.渲染规则)
+    * [① 字符串替换](./docs/ExcelTemplateRender.md#① 字符串替换)
+    * [② 图像插入](./docs/ExcelTemplateRender.md#② 图像插入)
+  * [3.可使用变量](./docs/ExcelTemplateRender.md#3.可使用变量)
+    * [- 通用](./docs/ExcelTemplateRender.md#- 通用)
+    * [- PXUT-390额外](./docs/ExcelTemplateRender.md#- PXUT-390额外)
+  * [4.注意事项](./docs/ExcelTemplateRender.md#4.注意事项)
+
 
 ## 系统架构
 
