@@ -29,7 +29,7 @@ index 65c019a..8d154be 100644
 -project(UnionOffline LANGUAGES CXX)
 +project(RailWeldOffline LANGUAGES CXX)
  
--set(PROJECT_NAME_ZH_CN "390N、T8离线分析软件")
+-set(PROJECT_NAME_ZH_CN "通用离线分析软件")
 +set(PROJECT_NAME_ZH_CN "390钢轨焊缝离线分析软件")
  
  set(CMAKE_CXX_STANDARD 23)
