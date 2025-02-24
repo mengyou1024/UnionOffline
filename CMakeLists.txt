@@ -113,7 +113,10 @@ add_custom_target(
     DEPENDS "translations/${PROJECT_NAME}_en.ts"
 )
 
-add_dependencies(lrelease lupdate)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_dependencies(lrelease lupdate)
+endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
 add_dependencies(${PROJECT_NAME} lrelease)
 
 find_package(Morose)
