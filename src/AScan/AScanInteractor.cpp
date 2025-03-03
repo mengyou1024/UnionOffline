@@ -207,7 +207,7 @@ void AScanInteractor::changeDataCursor() {
         updateAScanSeries();
         // 2. 更新波门曲线
         updateGateSeries<2>(aScanIntf()->getGate(getAScanCursor()));
-        if (dynamic_cast<Union::__330::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
+        if (dynamic_cast<Union::N_Set::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
             update330N_DAC_AVG_Series();
         } else {
             auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(aScanIntf().get());
@@ -248,7 +248,7 @@ void AScanInteractor::changeDataCursor() {
 void AScanInteractor::updateCurrentFrame() {
     if (aScanIntf() != nullptr) {
         updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain), {aScanIntf()->getAxisBias(getAScanCursor()), 0}, {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
-        if (dynamic_cast<Union::__330::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
+        if (dynamic_cast<Union::N_Set::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
             update330N_DAC_AVG_Series();
         } else {
             auto cmp000 = dynamic_cast<Union::AScan::Special::CMP000Special*>(aScanIntf().get());
@@ -427,7 +427,7 @@ void AScanInteractor::update330N_DAC_AVG_Series() {
     std::vector<QList<QPointF>> pts    = {};
     std::vector<int>            indexs = {};
 
-    auto _convert = dynamic_cast<Union::__330::_330_DAC_C*>(aScanIntf().get());
+    auto _convert = dynamic_cast<Union::N_Set::_330_DAC_C*>(aScanIntf().get());
     if (_convert != nullptr) {
         lines.resize(3);
         pts.resize(3);

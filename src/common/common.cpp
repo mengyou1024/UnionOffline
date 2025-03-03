@@ -185,13 +185,13 @@ void Morose::registeAllAScanFileSelector() {
     [[maybe_unused]]
     auto _ascan_register = Union::AScan::AScanFileSelector::Instance();
 #if MOROSE_ENABLE_DAS_DAT || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.das", "330N单幅图像", Union::__330::DASType::FromFile);
-    _ascan_register->RegistReader("*.DAT", "330N连续图像", Union::__330::DATType::FromFile);
+    _ascan_register->RegistReader("*.das", "N系列单幅图像", Union::N_Set::DASType::FromFile);
+    _ascan_register->RegistReader("*.DAT", "N系列连续图像", Union::N_Set::DATType::FromFile);
     _ascan_register->RegistReader("*.DAT", "R系列连续图像", Union::R_Set::DATType_R::FromFile);
 #endif
 
 #if MOROSE_ENABLE_COD || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.cod", "330N串口数据", Union::__330::Serial_330::FromFile);
+    _ascan_register->RegistReader("*.cod", "N系列串口数据", Union::N_Set::Serial_330::FromFile);
 #endif
 
 #if MOROSE_ENABLE_MDAT || defined(QT_DEBUG)
