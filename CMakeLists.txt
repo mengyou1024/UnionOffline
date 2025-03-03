@@ -125,7 +125,6 @@ target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE
     UnionLib
-    misc_utils
     SingleApplication::SingleApplication
 )
 
@@ -136,10 +135,9 @@ target_link_libraries(
     Qt5::Core
     Qt5::SerialPort
     Qt5::Widgets
-    misc_utils
+    QXlsx::QXlsx
     protobuf::libprotobuf
 )
-target_link_libraries(misc_utils PUBLIC QXlsx::QXlsx)
 
 if(Morose_FOUND)
     set(PRODUCT_CONFIG_FILE "config/DeployConfig.json")

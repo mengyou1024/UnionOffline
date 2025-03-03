@@ -1,9 +1,9 @@
 #include "AScanInteractor.hpp"
+#include <ExcelRender.hpp>
 #include <QLoggingCategory>
 #include <QQmlProperty>
 #include <QValueAxis>
 #include <QtCore>
-#include <Yo/File>
 
 static Q_LOGGING_CATEGORY(TAG, "AScanIntr");
 
