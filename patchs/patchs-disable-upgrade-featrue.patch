@@ -1,0 +1,25 @@
+From 80362ee77d29b68b24fdc362378bdec21f715fd5 Mon Sep 17 00:00:00 2001
+From: mengyou <1523038073@qq.com>
+Date: Mon, 3 Mar 2025 09:21:59 +0800
+Subject: [PATCH] patchs: disable upgrade featrue
+
+---
+ config/morose_config.h.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config/morose_config.h.in b/config/morose_config.h.in
+index 27602eb..c67619d 100644
+--- a/config/morose_config.h.in
++++ b/config/morose_config.h.in
+@@ -19,7 +19,7 @@
+ #define MOROSE_ENABLE_TOF_TPE                (1) ///< PXUT-F4 TOFD/PE图像
+ 
+ // 程序功能
+-#define MOROSE_ENABLE_UPGRADE_FEATURE        (1) ///< 软件升级功能
++#define MOROSE_ENABLE_UPGRADE_FEATURE        (0) ///< 软件升级功能
+ #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE (0) ///< 多语言配置
+ 
+ /// 设置功能
+-- 
+2.43.0.windows.1
+
