@@ -34,10 +34,9 @@ namespace Union::Extra {
 
     QVariantList SerialRuner::listSerialName() {
         QVariantList ret;
-
-        auto ports = QSerialPortInfo::availablePorts();
+        auto         ports = QSerialPortInfo::availablePorts();
         for (const auto& port : qAsConst(ports)) {
-            ret.push_back(port.portName());
+            ret.push_back(port.description() + "(" + port.portName() + ")");
         }
         qCDebug(TAG) << ret;
         return ret;
