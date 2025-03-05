@@ -79,12 +79,13 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
 
     auto vmp = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
 
-    auto excel_template = "excel_templates/AScan/T_报表生成.xlsx";
-    if ((dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get()) &&
-         !dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get())) ||
-        (dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get()) &&
-         dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get())->isSpecial001Enabled(getAScanCursor()))) {
-        // 普通钢轨特化版本
+    auto       excel_template   = "excel_templates/AScan/T_报表生成.xlsx";
+    auto       rail_weld_spec   = dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get());
+    auto       mdat_type        = dynamic_cast<Union::__390N_T8::MDATType::UnType*>(aScanIntf().get());
+    const auto is_rail_weld_390 = rail_weld_spec != nullptr && mdat_type == nullptr;
+    const auto is_rail_weld_t8  = mdat_type != nullptr && !mdat_type->isCMP001IsNullptr(getAScanCursor());
+    if (is_rail_weld_390 || is_rail_weld_t8) {
+        // 钢轨特化版本(390、T8)
         excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
     } else if (dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get())) {
         // 390N/T8带摄像头
