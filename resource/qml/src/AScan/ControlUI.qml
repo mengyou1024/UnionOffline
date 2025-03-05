@@ -307,6 +307,10 @@ ScrollView {
                         Layout.fillHeight: true
                         Layout.preferredWidth: layout_operation.maxBtnWidth
                         text: qsTr("上一帧")
+                        autoRepeat: true
+                        autoRepeatDelay: 1000
+                        autoRepeatInterval: 50
+
                         function valueMinus(val) {
                             sl_timerLine.value -= val
                             if (sl_timerLine.value < 0) {
@@ -314,10 +318,6 @@ ScrollView {
                             }
                             timeSliderMoved(sl_timerLine.value)
                             lastFrameClicked()
-                        }
-
-                        onPressAndHold: {
-                            valueMinus(1)
                         }
 
                         onReleased: {
@@ -329,6 +329,8 @@ ScrollView {
                         Layout.fillHeight: true
                         Layout.preferredWidth: layout_operation.maxBtnWidth
                         autoRepeat: true
+                        autoRepeatDelay: 1000
+                        autoRepeatInterval: 50
                         text: qsTr("下一帧")
                         function valuePlus(val) {
                             sl_timerLine.value += val
@@ -341,10 +343,6 @@ ScrollView {
 
                         onReleased: {
                             valuePlus(1)
-                        }
-
-                        onPressAndHold: {
-                            valueMinus(1)
                         }
                     }
                 }
