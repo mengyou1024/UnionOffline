@@ -243,10 +243,13 @@ void AScanInteractor::changeDataCursor() {
         if (camera_special != nullptr) {
             setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
         }
+        // 8. 更新B扫或C扫的坐标范围
+        updateBOrCScanViewRange();
     }
 }
 
 void AScanInteractor::updateCurrentFrame() {
+    // 增益发生变化
     if (aScanIntf() != nullptr) {
         updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain), {aScanIntf()->getAxisBias(getAScanCursor()), 0}, {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
         if (dynamic_cast<Union::N_Set::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
@@ -261,7 +264,68 @@ void AScanInteractor::updateCurrentFrame() {
             updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
         }
         setGateValue(CreateGateValue());
+        updateBOrCScanView();
+        updateBOrCScanViewRange();
     }
+}
+
+void AScanInteractor::updateBOrCScanView() {
+    if (showCScanView()) {
+        auto c_scan_sp = std::make_shared<Union::View::CScanView>();
+        m_scanViewSp   = c_scan_sp;
+        setScanViewHandler(m_scanViewSp.get());
+        // std::vector<uint8_t> cscan_image;
+        // const auto           width  = aScanIntf()->getDataSize();
+        // const auto           height = std::ssize(aScanIntf()->getScanData(0));
+        // cscan_image.resize(width * height);
+        // std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
+        // for (auto x = 0; x < width; x++) {
+        //     for (auto y = 0; y < height; y++) {
+        //         try {
+        //             cscan_image.at(y * width + x) = aScanIntf()->getScanData(x).at(y);
+        //         } catch (...) {}
+        //     }
+        // }
+        // c_scan_sp->replace(cscan_image, width, height);
+
+    } else if (showBScanView()) {
+        auto b_scan_sp = std::make_shared<Union::View::BScanView>();
+        m_scanViewSp   = b_scan_sp;
+        setScanViewHandler(m_scanViewSp.get());
+        std::vector<uint8_t> cscan_image;
+        const auto           height = aScanIntf()->getDataSize();
+        int                  width  = 0;
+        for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
+            if (std::ssize(aScanIntf()->getScanData(i)) > width) {
+                width = std::ssize(aScanIntf()->getScanData(i));
+            }
+        }
+        cscan_image.resize(width * height);
+        std::memset(cscan_image.data(), 255, std::ssize(cscan_image));
+        for (int frame = 0; frame < height; frame++) {
+            const auto& data     = aScanIntf()->getScanData(frame);
+            const auto  dist_ptr = &cscan_image[width * frame];
+            const auto  dist_sz  = width;
+            memcpy(dist_ptr, data.data(), std::min<int>(dist_sz, std::ssize(data)));
+        }
+        b_scan_sp->replace(cscan_image, width, height);
+    } else {
+        setScanViewHandler(nullptr);
+    }
+}
+
+void AScanInteractor::updateBOrCScanViewRange() {
+    // 更新B扫
+    if (showBScanView()) {
+        auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
+        if (b_scan_view) {
+            auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
+            auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
+            b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+            // TODO: 设置横坐标范围
+        }
+    }
+    // TODO: 更新C扫
 }
 
 const QJsonArray AScanInteractor::getGateValue() const {
@@ -410,6 +474,39 @@ void AScanInteractor::setAScanIntf(const ASCAN_TYPE& newAScanIntf) {
         return;
     m_aScanIntf = newAScanIntf;
     emit aScanIntfChanged();
+}
+
+bool AScanInteractor::showBScanView() const {
+    return m_showBScanView;
+}
+
+void AScanInteractor::setShowBScanView(bool newShowBScanView) {
+    if (m_showBScanView == newShowBScanView)
+        return;
+    m_showBScanView = newShowBScanView;
+    emit showBScanViewChanged();
+}
+
+bool AScanInteractor::showCScanView() const {
+    return m_showCScanView;
+}
+
+void AScanInteractor::setShowCScanView(bool newShowCScanView) {
+    if (m_showCScanView == newShowCScanView)
+        return;
+    m_showCScanView = newShowCScanView;
+    emit showCScanViewChanged();
+}
+
+QQuickItem* AScanInteractor::scanViewHandler() const {
+    return m_scanViewHandler;
+}
+
+void AScanInteractor::setScanViewHandler(QQuickItem* newScanViewHandler) {
+    if (m_scanViewHandler == newScanViewHandler)
+        return;
+    m_scanViewHandler = newScanViewHandler;
+    emit scanViewHandlerChanged();
 }
 
 bool AScanInteractor::checkAScanCursorValid() {
@@ -606,13 +703,15 @@ void AScanInteractor::setDefaultValue() {
     m_replaySpeed = 0;
     removeAllSeries();
     setDistanceMode("N");
-}
-
-bool AScanInteractor::openFile(QString _fileName) {
+    setShowBScanView(false);
+    setShowCScanView(false);
     setReplayVisible(false);
     setHasCameraImage(false);
     setShowRailWeldDigramSpecial(false);
     setShowCMP001Special(false);
+}
+
+bool AScanInteractor::openFile(QString _fileName) {
     auto READ_FUNC = Union::AScan::AScanFileSelector::Instance()->GetReadFunction(_fileName.toStdWString());
     if (!READ_FUNC.has_value()) {
         QFileInfo info(_fileName);
@@ -650,24 +749,44 @@ bool AScanInteractor::openFile(QString _fileName) {
     }
     setReportEnabled(aScanIntf()->getReportEnable());
     setDateEnabled(aScanIntf()->getDateEnable());
-    qCDebug(TAG) << "time:" << QString::fromStdString(aScanIntf()->getDate(getAScanCursor()));
     setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
     setAScanCursorMax(aScanIntf()->getDataSize() - 1);
     auto camera_special = dynamic_cast<Union::AScan::Special::CameraImageSpecial*>(aScanIntf().get());
     if (camera_special != nullptr) {
         setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
     }
-    if (getAScanCursor() == 0) {
-        changeDataCursor();
-    }
-    setAScanCursor(0);
     if (dynamic_cast<Union::AScan::Special::RailWeldDigramSpecial*>(aScanIntf().get())) {
         setShowRailWeldDigramSpecial(true);
     }
+    // Special: CMP001
     auto cmp001 = dynamic_cast<Union::AScan::Special::CMP001Special*>(aScanIntf().get());
     if (cmp001 && cmp001->isSpecial001Enabled(0)) {
         setShowCMP001Special(true);
     }
+    // Special: BScanSpecial
+    auto b_scan_sepcial = dynamic_cast<Union::AScan::Special::BScanSpecial*>(aScanIntf().get());
+    if (b_scan_sepcial && b_scan_sepcial->isSpecialBScanEnabled() && aScanIntf()->getDataSize() > 1) {
+        setShowBScanView(true);
+        setReplayVisible(false);
+    }
+    // Special: CScanSpecial
+    auto c_scan_special = dynamic_cast<Union::AScan::Special::CScanSpecial*>(aScanIntf().get());
+    if (c_scan_special && c_scan_special->isSpecialCScanEnabled() && aScanIntf()->getDataSize() > 1) {
+        if (showBScanView()) {
+            qCWarning(TAG) << QObject::tr("同时使用B扫和C扫, B扫已被禁用");
+            setShowBScanView(false);
+        }
+        setShowCScanView(true);
+        setReplayVisible(false);
+    }
+    updateBOrCScanView();
+    updateBOrCScanViewRange();
+
+    // 最后更新A扫数据指针
+    if (getAScanCursor() == 0) {
+        changeDataCursor();
+    }
+    setAScanCursor(0);
     return true;
 }
 

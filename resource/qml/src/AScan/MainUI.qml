@@ -5,6 +5,7 @@ import QtCharts 2.15
 import Union.Interactor 1.0
 import "../../components"
 import Union.AScan 1.0
+import Union.View 1.0
 
 Rectangle {
     LoggingCategory {
@@ -39,7 +40,7 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: 10
+        spacing: 0
         RowLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
@@ -144,6 +145,47 @@ Rectangle {
             antialiasing: false
             legend.visible: false
             dropShadowEnabled: true
+        }
+
+        Control {
+            property var childItem: interactor.scanViewHandler
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            visible: interactor ? childItem : false
+
+            ColumnLayout {
+                id: b_scan_box
+                anchors.fill: parent
+                anchors.leftMargin: 10
+                anchors.rightMargin: 10
+            }
+
+            Connections {
+                target: interactor.scanViewHandler
+                enabled: interactor.scanViewHandler
+
+                function onDataCursorChanged() {
+                    if (interactor.showBScanView) {
+                        interactor.aScanCursor = interactor.scanViewHandler.dataCursor
+                    }
+
+                    if (interactor.showCScanView) {
+                        interactor.aScanCursor = interactor.scanViewHandler.dataCursorInt
+                    }
+                }
+            }
+
+            onChildItemChanged: {
+                if (interactor.scanViewHandler) {
+                    b_scan_box.children.push(interactor.scanViewHandler)
+                    b_scan_box.children[0].Layout.fillWidth = true
+                    b_scan_box.children[0].Layout.fillHeight = true
+                    b_scan_box.children[0].Layout.bottomMargin = 10
+                } else {
+                    b_scan_box.children = []
+                }
+            }
         }
     }
 
@@ -306,6 +348,36 @@ Rectangle {
     }
 
     function openFileAction(filePath) {
+        controlTarget.replayVisible = Qt.binding(() => {
+                                                     return interactor.replayVisible
+                                                 })
+        controlTarget.date = Qt.binding(() => {
+                                            return interactor.date
+                                        })
+        controlTarget.cursorMax = Qt.binding(() => {
+                                                 return interactor.aScanCursorMax
+                                             })
+        controlTarget.imageVisible = Qt.binding(() => {
+                                                    return interactor.hasCameraImage
+                                                })
+        controlTarget.showRailWeldDigram = Qt.binding(() => {
+                                                          return interactor.showRailWeldDigramSpecial
+                                                      })
+        controlTarget.showCMP001Special = Qt.binding(() => {
+                                                         return interactor.showCMP001Special
+                                                     })
+        controlTarget.replayTimerBaseInterval = Qt.binding(() => {
+                                                               return interactor.replayTimerInterval
+                                                           })
+        controlTarget.reportEnable = Qt.binding(() => {
+                                                    return interactor.reportEnabled
+                                                })
+        controlTarget.dateEnable = Qt.binding(() => {
+                                                  return interactor.dateEnabled
+                                              })
+        controlTarget.railweldSpecial_ZeroPointInFoot = Qt.binding(() => {
+                                                                       return interactor.railWeldSpecial_ZeroPointInFoot()
+                                                                   })
         controlTarget.aScanInteractor = interactor
         interactor.setDefaultValue()
         if (interactor.openFile(filePath)) {

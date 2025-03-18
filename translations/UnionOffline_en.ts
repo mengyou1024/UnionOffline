@@ -386,46 +386,46 @@
 <context>
     <name>MainUI</name>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="25"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="31"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="26"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="32"/>
         <source>当量</source>
         <translation>Equivalent</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="54"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="55"/>
         <source>声程</source>
         <translation>Sonic Path Distance</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="134"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="130"/>
         <source>B-A(↓)</source>
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="180"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="189"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="218"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="227"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="182"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="191"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="220"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="229"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="263"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="301"/>
         <location filename="../resource/qml/src/TOFD_PE/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="321"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="389"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="354"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="422"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -1432,6 +1432,11 @@ Click &lt; Cancel &gt; to exit</translation>
         <location filename="../src/AScan/AScanInteractor.cpp" line="124"/>
         <source>灵敏度余量</source>
         <translation>Surplus Sensitivity</translation>
+    </message>
+    <message>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="773"/>
+        <source>同时使用B扫和C扫, B扫已被禁用</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/AppUpdater.cpp" line="69"/>

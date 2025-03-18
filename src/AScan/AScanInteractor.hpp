@@ -1,5 +1,7 @@
 #pragma once
 
+#include <BScanView.hpp>
+#include <CScanView.hpp>
 #include <QAbstractSeries>
 #include <QChartView>
 #include <QJsonArray>
@@ -37,10 +39,14 @@ class AScanInteractor : public QQuickItem {
     bool        m_dateEnabled               = true;
     bool        m_showCMP001Special         = false;
     ASCAN_TYPE  m_aScanIntf                 = {}; ///< A扫接口
+    bool        m_showBScanView             = false;
+    bool        m_showCScanView             = false;
+    QQuickItem* m_scanViewHandler           = nullptr;
 
-    int     m_replaySpeed             = 0;
-    bool    m_isPlaying               = false;
-    _STD_TP m_lastUpdateGateValueTime = std::chrono::system_clock::now();
+    int                                     m_replaySpeed             = 0;
+    bool                                    m_isPlaying               = false;
+    _STD_TP                                 m_lastUpdateGateValueTime = std::chrono::system_clock::now();
+    std::shared_ptr<Union::View::BasicView> m_scanViewSp              = nullptr;
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";
@@ -130,20 +136,26 @@ public:
     Q_INVOKABLE QVariantList getRailWeldDot(void) const;
     Q_INVOKABLE bool         isGateEnable(int gate_idx) const;
 
-    bool       getHasCameraImage() const;
-    void       setHasCameraImage(bool newHasCameraImage);
-    bool       getShowRailWeldDigramSpecial() const;
-    void       setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
-    int        getReplayTimerInterval() const;
-    void       setReplayTimerInterval(int newReplayTimerInterval);
-    bool       getReportEnabled() const;
-    void       setReportEnabled(bool newReportEnabled);
-    bool       getDateEnabled() const;
-    void       setDateEnabled(bool newDateEnabled);
-    bool       getShowCMP001Special() const;
-    void       setShowCMP001Special(bool newShowCMP001Special);
-    ASCAN_TYPE aScanIntf() const;
-    void       setAScanIntf(const ASCAN_TYPE& newAScanIntf);
+    bool        getHasCameraImage() const;
+    void        setHasCameraImage(bool newHasCameraImage);
+    bool        getShowRailWeldDigramSpecial() const;
+    void        setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
+    int         getReplayTimerInterval() const;
+    void        setReplayTimerInterval(int newReplayTimerInterval);
+    bool        getReportEnabled() const;
+    void        setReportEnabled(bool newReportEnabled);
+    bool        getDateEnabled() const;
+    void        setDateEnabled(bool newDateEnabled);
+    bool        getShowCMP001Special() const;
+    void        setShowCMP001Special(bool newShowCMP001Special);
+    ASCAN_TYPE  aScanIntf() const;
+    void        setAScanIntf(const ASCAN_TYPE& newAScanIntf);
+    bool        showBScanView() const;
+    void        setShowBScanView(bool newShowBScanView);
+    bool        showCScanView() const;
+    void        setShowCScanView(bool newShowCScanView);
+    QQuickItem* scanViewHandler() const;
+    void        setScanViewHandler(QQuickItem* newScanViewHandler);
 
 public slots:
     bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -177,10 +189,15 @@ signals:
     void dateEnabledChanged();
     void showCMP001SpecialChanged();
     void aScanIntfChanged();
+    void showBScanViewChanged();
+    void showCScanViewChanged();
+    void scanViewHandlerChanged();
 
 private:
     void changeDataCursor(void);
     void updateCurrentFrame(void);
+    void updateBOrCScanView(void);
+    void updateBOrCScanViewRange(void);
 
     Q_PROPERTY(bool replayVisible READ getReplayVisible WRITE setReplayVisible NOTIFY replayVisibleChanged)
     Q_PROPERTY(QString date READ getDate WRITE setDate NOTIFY dateChanged)
@@ -198,4 +215,7 @@ private:
     Q_PROPERTY(bool dateEnabled READ getDateEnabled WRITE setDateEnabled NOTIFY dateEnabledChanged FINAL)
     Q_PROPERTY(bool showCMP001Special READ getShowCMP001Special WRITE setShowCMP001Special NOTIFY showCMP001SpecialChanged FINAL)
     Q_PROPERTY(std::shared_ptr<Union::AScan::AScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
+    Q_PROPERTY(bool showBScanView READ showBScanView WRITE setShowBScanView NOTIFY showBScanViewChanged FINAL)
+    Q_PROPERTY(bool showCScanView READ showCScanView WRITE setShowCScanView NOTIFY showCScanViewChanged FINAL)
+    Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler WRITE setScanViewHandler NOTIFY scanViewHandlerChanged FINAL)
 };
