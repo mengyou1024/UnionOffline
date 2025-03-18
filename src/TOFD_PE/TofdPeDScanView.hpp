@@ -13,7 +13,7 @@
 #include <QTimer>
 #include <UnionType>
 
-namespace TOFD_PE {
+namespace TofdPe {
     class TofdPeDScanView : public QQuickPaintedItem {
         Q_OBJECT
         QML_ELEMENT
@@ -80,4 +80,4 @@ namespace TOFD_PE {
         Q_PROPERTY(TofdPeAScanView* aScanView READ aScanView WRITE setAScanView NOTIFY aScanViewChanged FINAL)
     };
 
-} // namespace TOFD_PE
+} // namespace TofdPe

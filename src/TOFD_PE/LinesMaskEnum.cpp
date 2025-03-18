@@ -1,10 +1,10 @@
 #include "LinesMaskEnum.hpp"
 
-namespace TOFD_PE {
+namespace TofdPe {
 
     LinesMakeEnum* LinesMakeEnum::Instance() {
         static LinesMakeEnum inst;
         return &inst;
     }
 
-} // namespace TOFD_PE
+} // namespace TofdPe

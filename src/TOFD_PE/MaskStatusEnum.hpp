@@ -2,7 +2,7 @@
 
 #include <QObject>
 
-namespace TOFD_PE {
+namespace TofdPe {
     class MaskStatusEnum : public QObject {
         Q_OBJECT
     public:
@@ -20,4 +20,4 @@ namespace TOFD_PE {
         Q_DISABLE_COPY_MOVE(MaskStatusEnum)
     };
 
-} // namespace TOFD_PE
+} // namespace TofdPe

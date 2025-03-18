@@ -19,7 +19,7 @@ ScrollView {
 
     LoggingCategory {
         id: category
-        name: "TOFD_PE.ctrl"
+        name: "TofdPe.ctrl"
     }
 
     background: Rectangle {

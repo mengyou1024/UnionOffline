@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtCharts 2.15
-import Union.TOFD_PE 1.0
+import Union.TofdPe 1.0
 
 Item {
     id: control
@@ -31,7 +31,7 @@ Item {
 
     LoggingCategory {
         id: category
-        name: "TOFD_PE.ScanView"
+        name: "TofdPe.ScanView"
     }
 
     function update() {

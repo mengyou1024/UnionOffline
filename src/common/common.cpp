@@ -150,9 +150,9 @@ void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_ENABLE_MULTI_LANGUATE_FEATURE", MOROSE_ENABLE_MULTI_LANGUATE_FEATURE);
     context->setContextProperty("MOROSE_ENABLE_SETTING_FEATURE", MOROSE_ENABLE_SETTING_FEATURE);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
-    qmlRegisterType<TOFD_PE::TofdPeDScanView>("Union.TOFD_PE", 1, 0, "TofdPeDScanView");
-    qmlRegisterType<TOFD_PE::TofdPeAScanView>("Union.TOFD_PE", 1, 0, "TofdPeAScanView");
-    qmlRegisterType<TOFD_PE::TofdPeInteractor>("Union.TOFD_PE", 1, 0, "TofdPeIntr");
+    qmlRegisterType<TofdPe::TofdPeDScanView>("Union.TofdPe", 1, 0, "TofdPeDScanView");
+    qmlRegisterType<TofdPe::TofdPeAScanView>("Union.TofdPe", 1, 0, "TofdPeAScanView");
+    qmlRegisterType<TofdPe::TofdPeInteractor>("Union.TofdPe", 1, 0, "TofdPeIntr");
     qmlRegisterType<Union::Extra::SerialRuner>("Union.Extra", 1, 0, "SerialRunner");
     qmlRegisterType<AScan::CImage>("Union.AScan", 1, 0, "CImage");
     qmlRegisterType<Union::AScan::RailWeld::RailWeldDigram>("Union.AScan", 1, 0, "RailWeldDigram");
@@ -163,8 +163,8 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<Union::View::BScanView>("Union.View", 1, 0, "BScanView");
     qmlRegisterType<Union::View::CScanView>("Union.View", 1, 0, "CScanView");
     qmlRegisterType<Union::AScan::RailWeld::RailWeldSimulation>("Union.AScan", 1, 0, "RailWeldSimulation");
-    qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "LinesMaskEnum", TOFD_PE::LinesMakeEnum::Instance());
-    qmlRegisterSingletonInstance("Union.TOFD_PE", 1, 0, "MaskStatusEnum", TOFD_PE::MaskStatusEnum::Instance());
+    qmlRegisterSingletonInstance("Union.TofdPe", 1, 0, "LinesMaskEnum", TofdPe::LinesMakeEnum::Instance());
+    qmlRegisterSingletonInstance("Union.TofdPe", 1, 0, "MaskStatusEnum", TofdPe::MaskStatusEnum::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "GlobalCppProgress", Morose::Utils::GlobalCppProgress::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "FileExists", Morose::Utils::FileExists::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "AppUpdater", Morose::Utils::AppUpdater::Instance());
@@ -183,34 +183,36 @@ void Morose::registerVariable(QQmlContext* context) {
 
 void Morose::registeAllAScanFileSelector() {
     [[maybe_unused]]
-    auto _ascan_register = Union::AScan::AScanFileSelector::Instance();
+    auto _ascan_register = ::Union::UniversalApparatus::AScan::AScanFileSelector::Instance();
+    using namespace ::Union::UniversalApparatus::AScan::Instance;
 #if MOROSE_ENABLE_DAS_DAT || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.das", "N系列单幅图像", Union::N_Set::DASType::FromFile);
-    _ascan_register->RegistReader("*.DAT", "N系列连续图像", Union::N_Set::DATType::FromFile);
-    _ascan_register->RegistReader("*.DAT", "R系列连续图像", Union::R_Set::DATType_R::FromFile);
+    _ascan_register->RegistReader("*.das", "N系列单幅图像", DASType::FromFile);
+    _ascan_register->RegistReader("*.DAT", "N系列连续图像", DATType::FromFile);
+    _ascan_register->RegistReader("*.DAT", "R系列连续图像", DATType_R::FromFile);
 #endif
 
 #if MOROSE_ENABLE_COD || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.cod", "N系列串口数据", Union::N_Set::Serial_330::FromFile);
+    _ascan_register->RegistReader("*.cod", "N系列串口数据", Serial_330::FromFile);
 #endif
 
 #if MOROSE_ENABLE_MDAT || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.mdat", "390N、T8图像", Union::__390N_T8::MDATType::UnType::FromFile);
+    _ascan_register->RegistReader("*.mdat", "390N、T8图像", Union::UniversalApparatus::AScan::Instance::UnType::FromFile);
 #endif
 
 #if MOROSE_ENABLE_DAA_HFD || defined(QT_DEBUG)
-    _ascan_register->RegistReader("*.daa", "390钢轨焊缝单幅图像", Union::__390::DAAType::FromFile);
-    _ascan_register->RegistReader("*.HFD", "390钢轨焊缝连续图像", Union::__390::HFDATType::FromFile);
+    _ascan_register->RegistReader("*.daa", "390钢轨焊缝单幅图像", DAAType::FromFile);
+    _ascan_register->RegistReader("*.HFD", "390钢轨焊缝连续图像", HFDATType::FromFile);
 #endif
 }
 
 void Morose::registeAllTofdPeFileSelector() {
     [[maybe_unused]]
-    auto _tofd_pe_register = Union::TOFD_PE::TofdPeFileSelector::Instance();
+    auto _TofdPe_register = ::Union::UniversalApparatus::TofdPe::TofdPeFileSelector::Instance();
+    using namespace ::Union::UniversalApparatus::TofdPe::Instance;
 
 #if MOROSE_ENABLE_TOF_TPE || defined(QT_DEBUG)
-    _tofd_pe_register->RegistReader("*.tpe", "TOFD/PE图像", Union::TOFD_PE::TPE::TpeType::FromFile);
-    _tofd_pe_register->RegistReader("*.tof", "TOFD/PE图像", Union::TOFD_PE::TOF::TofType::FromFile);
+    _TofdPe_register->RegistReader("*.tpe", "TOFD/PE图像", TpeType::FromFile);
+    _TofdPe_register->RegistReader("*.tof", "TOFD/PE图像", TofType::FromFile);
 #endif
 }
 
@@ -239,20 +241,23 @@ QJsonObject& Morose::loadGlobalEnvironment() {
 }
 
 void Morose::registNameFilter(QQmlContext* context) {
+    using namespace ::Union::UniversalApparatus::AScan;
+    using namespace ::Union::UniversalApparatus::TofdPe;
+
     QVariantList folderListModel_nameFilter;
     QVariantList filedialog_nameFilter;
     QVariantMap  mainUi_map;
 
     filedialog_nameFilter.push_back("所有文件 (*.*)");
     // AScan
-    mainUi_map.insert(Union::AScan::AScanFileSelector::Instance()->GetUINameMap().toVariantMap());
-    folderListModel_nameFilter += Union::AScan::AScanFileSelector::Instance()->GetFileListModelNameFilter().toVariantList();
-    filedialog_nameFilter += Union::AScan::AScanFileSelector::Instance()->GetFileNameFilter().toVariantList();
+    mainUi_map.insert(AScanFileSelector::Instance()->GetUINameMap().toVariantMap());
+    folderListModel_nameFilter += AScanFileSelector::Instance()->GetFileListModelNameFilter().toVariantList();
+    filedialog_nameFilter += AScanFileSelector::Instance()->GetFileNameFilter().toVariantList();
 
-    // TOFD_PE
-    mainUi_map.insert(Union::TOFD_PE::TofdPeFileSelector::Instance()->GetUINameMap().toVariantMap());
-    folderListModel_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance()->GetFileListModelNameFilter().toVariantList();
-    filedialog_nameFilter += Union::TOFD_PE::TofdPeFileSelector::Instance()->GetFileNameFilter().toVariantList();
+    // TofdPe
+    mainUi_map.insert(TofdPeFileSelector::Instance()->GetUINameMap().toVariantMap());
+    folderListModel_nameFilter += TofdPeFileSelector::Instance()->GetFileListModelNameFilter().toVariantList();
+    filedialog_nameFilter += TofdPeFileSelector::Instance()->GetFileNameFilter().toVariantList();
 
     context->setContextProperty("FOLDERLISTMODEL_NAMEFILTER", folderListModel_nameFilter);
     context->setContextProperty("FILEDIALOG_NAMEFILTER", filedialog_nameFilter);

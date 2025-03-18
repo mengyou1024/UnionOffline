@@ -9,6 +9,8 @@
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.RailWeldSimulation");
 
+using namespace ::Union::Common;
+
 [[maybe_unused]] constexpr auto LIST_SIMULATION_POSITON = {
     "轨头踏面",
     "轨距角",
@@ -141,22 +143,22 @@ namespace Union::AScan::RailWeld {
     }
 
     void RailWeldSimulation::cursorChanged(int idx, double soft_gain) {
-        using namespace Union::__390N_T8::MDATType;
-        auto ascan_intf = ascanIntf().value<std::shared_ptr<Union::AScan::AScanIntf>>();
+        using namespace Union::UniversalApparatus::AScan::Instance;
+        auto ascan_intf = ascanIntf().value<std::shared_ptr<Union::UniversalApparatus::AScan::AScanIntf>>();
         auto intf       = std::dynamic_pointer_cast<UnType>(ascan_intf);
         if (intf == nullptr || !intf->isSpecial001Enabled(idx)) {
             qCDebug(TAG) << "intf is nullptr or feature CMP001 is not enable";
             return;
         }
         const auto& data   = std::get<UnType::ID_ASCAN_DATA>(intf->m_data.second.at(idx)).m_data;
-        const auto& cmp001 = std::dynamic_pointer_cast<CMP001>(std::get<UnType::ID_CHANNEL_PARAM>(intf->m_data.second.at(idx)));
+        const auto& cmp001 = std::dynamic_pointer_cast<MdatImpl::CMP001>(std::get<UnType::ID_CHANNEL_PARAM>(intf->m_data.second.at(idx)));
         if (!cmp001) {
             qCWarning(TAG) << "convert to cmp001 error";
             return;
         }
         m_thicknessData.resize(std::ssize(data));
         std::ranges::transform(data.begin(), data.end(), m_thicknessData.begin(), [soft_gain](auto it) -> double {
-            auto ret = Union::CalculateGainOutput(it, soft_gain);
+            auto ret = CalculateGainOutput(it, soft_gain);
             if (ret > 255) {
                 ret = 255;
             }

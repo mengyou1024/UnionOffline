@@ -6,7 +6,7 @@
 #include <QtCharts>
 #include <QtCore>
 
-namespace TOFD_PE {
+namespace TofdPe {
 
     void TofdPeAScanView::replace(const std::vector<uint8_t>& v) {
         m_data = v;
@@ -19,7 +19,7 @@ namespace TOFD_PE {
         drawAScanLine(painter);
     }
 
-    void TOFD_PE::TofdPeAScanView::drawGridLines(QPainter* painter) {
+    void TofdPe::TofdPeAScanView::drawGridLines(QPainter* painter) {
         const QRect drawAble(0, 0, width(), height() - 1);
         // 绘制坐标轴
         // 虚线的画笔
@@ -64,4 +64,4 @@ namespace TOFD_PE {
         painter->drawLines(lines);
     }
 
-} // namespace TOFD_PE
+} // namespace TofdPe

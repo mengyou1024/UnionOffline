@@ -8,7 +8,9 @@
 #include <span>
 #include <vector>
 
-namespace TOFD_PE {
+using namespace ::Union::Common;
+
+namespace TofdPe {
     TofdPeInteractor* TofdPeDScanView::intr() const {
         return m_intr;
     }
@@ -198,7 +200,7 @@ namespace TOFD_PE {
                 auto index_x = static_cast<int>(x) + static_cast<int>(intr()->tofdSpace());
                 if (std::cmp_less(index_x, intr()->getLines()) && std::cmp_greater_equal(index_x, 0)) {
                     auto bias    = static_cast<int>(intr()->getTofdData()[index_x * intr()->getAScanSize() + y]) - 128;
-                    auto newBias = Union::CalculateGainOutput((double)bias, softGain());
+                    auto newBias = CalculateGainOutput((double)bias, softGain());
                     if (newBias > 72) {
                         newBias = 72;
                     } else if (newBias < -128) {
@@ -225,7 +227,7 @@ namespace TOFD_PE {
             for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
                 auto index_x = static_cast<int>(x) + static_cast<int>(intr()->peSpace());
                 if (std::cmp_less(index_x, intr()->getSubLines()) && std::cmp_greater_equal(index_x, 0)) {
-                    auto    _t   = Union::CalculateGainOutput((double)intr()->getPeData()[index_x * intr()->getAScanSize() + y], softGain());
+                    auto    _t   = CalculateGainOutput((double)intr()->getPeData()[index_x * intr()->getAScanSize() + y], softGain());
                     uint8_t gray = 0;
                     if (_t > 255.0) {
                         gray = 255;
@@ -337,7 +339,7 @@ namespace TOFD_PE {
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
-                auto newBias = Union::CalculateGainOutput((double)bias, softGain());
+                auto newBias = CalculateGainOutput((double)bias, softGain());
                 if (newBias < -128) {
                     newBias = -128;
                 }
@@ -359,7 +361,7 @@ namespace TOFD_PE {
             const std::span      data_ptr(intr()->getPeData().begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto  raw    = data_ptr[i];
-                auto  _t     = Union::CalculateGainOutput((double)raw, softGain());
+                auto  _t     = CalculateGainOutput((double)raw, softGain());
                 qreal result = 0;
                 if (_t > 255.0) {
                     result = 255.0;
@@ -383,4 +385,4 @@ namespace TOFD_PE {
             m_aScanView->replace(GetSecondData().value_or(data));
         }
     }
-} // namespace TOFD_PE
+} // namespace TofdPe

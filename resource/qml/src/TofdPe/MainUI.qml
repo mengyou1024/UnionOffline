@@ -4,12 +4,12 @@ import QtQuick.Layouts 1.15
 import QtCharts 2.15
 import Union.Interactor 1.0
 import "./compnents"
-import Union.TOFD_PE 1.0
+import Union.TofdPe 1.0
 
 Rectangle {
     LoggingCategory {
         id: category
-        name: "TOFD_PE.main"
+        name: "TofdPe.main"
     }
 
     property alias controlTarget: cons.target

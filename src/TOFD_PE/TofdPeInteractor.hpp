@@ -14,12 +14,12 @@
 #include <memory>
 #include <vector>
 
-namespace TOFD_PE {
+namespace TofdPe {
     class TofdPeInteractor : public QQuickItem {
         Q_OBJECT
         QML_ELEMENT
 
-        using DATA_PTR        = std::unique_ptr<Union::TOFD_PE::TofdPeIntf>;
+        using DATA_PTR        = std::unique_ptr<Union::UniversalApparatus::TofdPe::TofdPeIntf>;
         using ADJUST_FUNC     = std::optional<std::function<double(double)>>;
         using VAXIS_ZERO_FUNC = std::optional<std::function<double(void)>>;
 
@@ -76,4 +76,4 @@ namespace TOFD_PE {
         Q_PROPERTY(qreal peSpace READ peSpace WRITE setPeSpace NOTIFY peSpaceChanged FINAL)
         Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged FINAL)
     };
-} // namespace TOFD_PE
+} // namespace TofdPe

@@ -6,9 +6,12 @@
 #include <QValueAxis>
 #include <QtCore>
 
-static Q_LOGGING_CATEGORY(TAG, "TOFD_PE.INTR");
+static Q_LOGGING_CATEGORY(TAG, "TofdPe.INTR");
 
-namespace TOFD_PE {
+using namespace ::Union::Common;
+using namespace ::Union::UniversalApparatus::TofdPe;
+
+namespace TofdPe {
     qreal TofdPeInteractor::tofdSpace() const {
         return m_tofdSpace;
     }
@@ -54,7 +57,7 @@ namespace TOFD_PE {
 
     double TofdPeInteractor::getTofdDepth(double val) const {
         if (m_data == nullptr) {
-            return Union::KeepDecimals<1>(Union::ValueMap(val, {0.0, 100.0}));
+            return KeepDecimals<1>(ValueMap(val, {0.0, 100.0}));
         }
         if (m_adjsutDepthFunc == std::nullopt) {
             if (m_adjsutDepthFunc == std::nullopt) {
@@ -64,7 +67,7 @@ namespace TOFD_PE {
                 if (half_pcs > time_mm) {
                     sign = -1.0;
                 }
-                return Union::KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(time_mm, 2) - std::pow(half_pcs, 2))));
+                return KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(time_mm, 2) - std::pow(half_pcs, 2))));
             } else {
                 return m_adjsutDepthFunc.value()(val);
             }
@@ -118,7 +121,7 @@ namespace TOFD_PE {
     bool TofdPeInteractor::openFile(const QString& fileName) {
         m_file.clear();
         MOROSE_TEST_TIME_QUICK("open file:" + fileName);
-        auto READ_FUNC = Union::TOFD_PE::TofdPeFileSelector::Instance()->GetReadFunction(fileName.toStdWString());
+        auto READ_FUNC = Union::UniversalApparatus::TofdPe::TofdPeFileSelector::Instance()->GetReadFunction(fileName.toStdWString());
         if (!READ_FUNC.has_value()) {
             qCCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
             return false;
@@ -174,7 +177,7 @@ namespace TOFD_PE {
     }
 
     bool TofdPeInteractor::reportExport(QString filePath, QQuickItemGrabResult* img) const {
-        using Union::TOFD_PE::TofdPeIntf;
+        using Union::UniversalApparatus::TofdPe::TofdPeIntf;
         qCDebug(TAG) << "reportExport, filePath:" << filePath;
         if (!m_file.isEmpty() || m_data == nullptr) {
             QVariantMap map = {
@@ -212,7 +215,7 @@ namespace TOFD_PE {
                 images.insert("TOFD/PE", img->image());
             }
 
-            auto result = Yo::File::Render::Excel::Render("excel_templates/TOFD_PE/T_报表生成.xlsx", filePath, map, images);
+            auto result = ::Union::Common::File::RenderExcel::Render("excel_templates/TofdPe/T_报表生成.xlsx", filePath, map, images);
             qCInfo(TAG) << "保存报表:" << filePath;
             return result;
         }
@@ -281,7 +284,7 @@ namespace TOFD_PE {
             if (distance > current_mm) {
                 sign = -1.0;
             }
-            return Union::KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(current_mm, 2) - std::pow(distance, 2))));
+            return KeepDecimals<1>(sign * std::sqrt(std::abs(std::pow(current_mm, 2) - std::pow(distance, 2))));
         };
         emit updatePrivateData();
     }
@@ -296,4 +299,4 @@ namespace TOFD_PE {
         emit updatePrivateData();
     }
 
-} // namespace TOFD_PE
+} // namespace TofdPe

@@ -2,7 +2,7 @@
 
 #include <QObject>
 
-namespace TOFD_PE {
+namespace TofdPe {
     class LinesMakeEnum : public QObject {
         Q_OBJECT
     public:
@@ -26,4 +26,4 @@ namespace TOFD_PE {
         Q_DISABLE_COPY_MOVE(LinesMakeEnum)
     };
 
-} // namespace TOFD_PE
+} // namespace TofdPe

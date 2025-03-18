@@ -6,6 +6,8 @@
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Upgrade.Gitee");
 
+using namespace ::Union::Common;
+
 namespace Morose::Utils::UpgradeImpl {
 
     UpgradeFromGitee::UpgradeFromGitee(QString url) {
@@ -86,7 +88,7 @@ namespace Morose::Utils::UpgradeImpl {
         bool       return_value = false;
         QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
         QObject::connect(reply, &QNetworkReply::downloadProgress, &eventLoop, [reply, &file, &return_value, progress](qint64 recvd, qint64 total) {
-            auto download_done_rate = Union::KeepDecimals<3>(static_cast<double>(recvd) / total);
+            auto download_done_rate = KeepDecimals<3>(static_cast<double>(recvd) / total);
             qCDebug(TAG).nospace() << "download: " << download_done_rate * 100.0 << "% " << recvd << "/" << total;
 
             if (progress.has_value()) {

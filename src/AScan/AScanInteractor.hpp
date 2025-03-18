@@ -21,7 +21,7 @@ class AScanInteractor : public QQuickItem {
     QML_ELEMENT
 
     using _STD_TP    = std::chrono::system_clock::time_point;
-    using ASCAN_TYPE = std::shared_ptr<Union::AScan::AScanIntf>;
+    using ASCAN_TYPE = std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf>;
 
     bool        m_replayVisible             = false;
     QString     m_date                      = {};
@@ -97,9 +97,9 @@ public:
     QLineSeries*     createQuadraticCurveSeries(const QString& name, QPointF pt = {0.0, 0.0}, QSizeF sz = {100.0, 100.0});
     void             updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
     QLineSeries*     createGateSeries(int index = 0);
-    void             updateGateSeries(Union::Base::Gate gate, int index = 0);
+    void             updateGateSeries(::Union::BasicType::Gate gate, int index = 0);
     template <int N = 2>
-    void updateGateSeries(std::array<Union::Base::Gate, N> gate);
+    void updateGateSeries(std::array<::Union::BasicType::Gate, N> gate);
 
     QJsonArray CreateGateValue();
 
@@ -214,7 +214,7 @@ private:
     Q_PROPERTY(bool reportEnabled READ getReportEnabled WRITE setReportEnabled NOTIFY reportEnabledChanged FINAL)
     Q_PROPERTY(bool dateEnabled READ getDateEnabled WRITE setDateEnabled NOTIFY dateEnabledChanged FINAL)
     Q_PROPERTY(bool showCMP001Special READ getShowCMP001Special WRITE setShowCMP001Special NOTIFY showCMP001SpecialChanged FINAL)
-    Q_PROPERTY(std::shared_ptr<Union::AScan::AScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
+    Q_PROPERTY(std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
     Q_PROPERTY(bool showBScanView READ showBScanView WRITE setShowBScanView NOTIFY showBScanViewChanged FINAL)
     Q_PROPERTY(bool showCScanView READ showCScanView WRITE setShowCScanView NOTIFY showCScanViewChanged FINAL)
     Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler WRITE setScanViewHandler NOTIFY scanViewHandlerChanged FINAL)

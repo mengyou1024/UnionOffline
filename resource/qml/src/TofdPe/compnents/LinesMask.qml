@@ -1,11 +1,11 @@
 import QtQuick 2.15
-import Union.TOFD_PE 1.0
+import Union.TofdPe 1.0
 import Qt.labs.platform 1.1
 
 Canvas {
     LoggingCategory {
         id: category
-        name: "TOFD_PE.LineMask"
+        name: "TofdPe.LineMask"
     }
     id: control
     renderTarget: Canvas.FramebufferObject

@@ -19,16 +19,16 @@
         <file>qml/components/common/KeyValue.qml</file>
         <file>qml/src/OnStart/ControlUI.qml</file>
         <file>qml/src/OnStart/MainUI.qml</file>
-        <file>qml/src/TOFD_PE/ControlUI.qml</file>
-        <file>qml/src/TOFD_PE/MainUI.qml</file>
-        <file>qml/src/TOFD_PE/compnents/ScanView.qml</file>
-        <file>qml/src/TOFD_PE/compnents/qmldir</file>
-        <file>qml/src/TOFD_PE/compnents/LinesMask.qml</file>
+        <file>qml/src/TofdPe/ControlUI.qml</file>
+        <file>qml/src/TofdPe/MainUI.qml</file>
+        <file>qml/src/TofdPe/compnents/ScanView.qml</file>
+        <file>qml/src/TofdPe/compnents/qmldir</file>
+        <file>qml/src/TofdPe/compnents/LinesMask.qml</file>
         <file>qml/components/common/IconButton.qml</file>
         <file>qml/components/common/ComboBox.qml</file>
         <file>qml/CommunicateWnd.qml</file>
         <file>img/arrow.png</file>
-        <file>qml/src/TOFD_PE/HelpWnd.qml</file>
+        <file>qml/src/TofdPe/HelpWnd.qml</file>
         <file>qml/src/OnStart/components/ImageCard.qml</file>
         <file>qml/src/OnStart/components/qmldir</file>
         <file>img/instruments/PXUT-330N/description.md</file>

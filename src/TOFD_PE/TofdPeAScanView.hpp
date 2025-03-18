@@ -12,7 +12,7 @@
 #include <QTimer>
 #include <UnionType>
 
-namespace TOFD_PE {
+namespace TofdPe {
     class TofdPeAScanView : public QQuickPaintedItem {
         Q_OBJECT
         QML_ELEMENT
@@ -36,4 +36,4 @@ namespace TOFD_PE {
         void drawAScanLine(QPainter* painter);
     };
 
-} // namespace TOFD_PE
+} // namespace TofdPe
