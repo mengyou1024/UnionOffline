@@ -709,6 +709,9 @@ void AScanInteractor::setDefaultValue() {
     setHasCameraImage(false);
     setShowRailWeldDigramSpecial(false);
     setShowCMP001Special(false);
+}
+
+bool AScanInteractor::openFile(QString _fileName) {
     auto READ_FUNC = AScanFileSelector::Instance()->GetReadFunction(_fileName.toStdWString());
     if (!READ_FUNC.has_value()) {
         QFileInfo info(_fileName);
@@ -761,14 +764,15 @@ void AScanInteractor::setDefaultValue() {
     if (cmp001 && cmp001->isSpecial001Enabled(0)) {
         setShowCMP001Special(true);
     }
+    using namespace Union::UniversalApparatus::AScan::Special;
     // Special: BScanSpecial
-    auto b_scan_sepcial = dynamic_cast<Union::AScan::Special::BScanSpecial*>(aScanIntf().get());
+    auto b_scan_sepcial = dynamic_cast<BScanSpecial*>(aScanIntf().get());
     if (b_scan_sepcial && b_scan_sepcial->isSpecialBScanEnabled() && aScanIntf()->getDataSize() > 1) {
         setShowBScanView(true);
         setReplayVisible(false);
     }
     // Special: CScanSpecial
-    auto c_scan_special = dynamic_cast<Union::AScan::Special::CScanSpecial*>(aScanIntf().get());
+    auto c_scan_special = dynamic_cast<CScanSpecial*>(aScanIntf().get());
     if (c_scan_special && c_scan_special->isSpecialCScanEnabled() && aScanIntf()->getDataSize() > 1) {
         if (showBScanView()) {
             qCWarning(TAG) << QObject::tr("同时使用B扫和C扫, B扫已被禁用");
