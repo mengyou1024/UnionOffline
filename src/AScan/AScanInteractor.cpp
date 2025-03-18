@@ -4,6 +4,7 @@
 #include <QQmlProperty>
 #include <QValueAxis>
 #include <QtCore>
+#include <stacktrace>
 
 static Q_LOGGING_CATEGORY(TAG, "AScanIntr");
 
@@ -224,6 +225,8 @@ void AScanInteractor::changeDataCursor() {
 
         // 5. 更新AScan图的波门信息显示
         setGateValue(CreateGateValue());
+        qCDebug(TAG) << "当前指针:" << getAScanCursor();
+        qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint8_t>(0, 0)));
         // 6. 更新显示的声程模式
         switch (aScanIntf()->getDistanceMode(getAScanCursor())) {
             case DistanceMode_Y:
@@ -270,25 +273,42 @@ void AScanInteractor::updateCurrentFrame() {
 }
 
 void AScanInteractor::updateBOrCScanView() {
+    if (aScanIntf() == nullptr) {
+        qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
+    }
+
     if (showCScanView()) {
-        auto c_scan_sp = std::make_shared<Union::View::CScanView>();
-        m_scanViewSp   = c_scan_sp;
+        // VARIFY: 更新C扫图像
+
+        const auto cscan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
+
+        if (cscan_spec == nullptr) {
+            return;
+        }
+        const auto frame_per_row  = cscan_spec->getCScanFramePerLine();
+        const auto all_image_size = aScanIntf()->getDataSize();
+        const auto frame_per_col  = all_image_size / frame_per_row;
+        auto       c_scan_sp      = std::make_shared<Union::View::CScanView>();
+        m_scanViewSp              = c_scan_sp;
         setScanViewHandler(m_scanViewSp.get());
-        // std::vector<uint8_t> cscan_image;
-        // const auto           width  = aScanIntf()->getDataSize();
-        // const auto           height = std::ssize(aScanIntf()->getScanData(0));
-        // cscan_image.resize(width * height);
-        // std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
-        // for (auto x = 0; x < width; x++) {
-        //     for (auto y = 0; y < height; y++) {
-        //         try {
-        //             cscan_image.at(y * width + x) = aScanIntf()->getScanData(x).at(y);
-        //         } catch (...) {}
-        //     }
-        // }
-        // c_scan_sp->replace(cscan_image, width, height);
+        std::vector<uint8_t> cscan_image;
+
+        const auto width  = frame_per_row;
+        const auto height = frame_per_col;
+        cscan_image.resize(width * height);
+        std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                uint8_t amp_in_gate;
+                std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(y * width + x).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
+                cscan_image.at(y * width + x)      = amp_in_gate;
+            }
+        }
+
+        c_scan_sp->replace(cscan_image, width, height);
 
     } else if (showBScanView()) {
+        // VARIFY: 更新B扫图像
         auto b_scan_sp = std::make_shared<Union::View::BScanView>();
         m_scanViewSp   = b_scan_sp;
         setScanViewHandler(m_scanViewSp.get());
@@ -315,17 +335,42 @@ void AScanInteractor::updateBOrCScanView() {
 }
 
 void AScanInteractor::updateBOrCScanViewRange() {
-    // 更新B扫
-    if (showBScanView()) {
+    if (aScanIntf() == nullptr) {
+        qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
+    }
+
+    if (showCScanView()) {
+        // VARIFY: 更新C扫坐标轴
+        auto cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
+        auto c_scan_view = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+        if (c_scan_view && cscan_spec) {
+            const auto start_x        = cscan_spec->getCScanCoderStartX();
+            const auto step_x         = cscan_spec->getCScanCoderStepX();
+            const auto start_y        = cscan_spec->getCScanCoderStartY();
+            const auto step_y         = cscan_spec->getCScanCoderStepY();
+            const auto frame_per_row  = cscan_spec->getCScanFramePerLine();
+            const auto all_image_size = aScanIntf()->getDataSize();
+            const auto frame_per_col  = all_image_size / frame_per_row;
+
+            const auto end_x = start_x + step_x * frame_per_row;
+            const auto end_y = start_y + step_y * frame_per_col;
+            c_scan_view->setHorizontalAxisRange(QPointF(start_x, end_x));
+            c_scan_view->setVerticalAxisRange(QPointF(start_y, end_y));
+        }
+    } else if (showBScanView()) {
+        // VARIFY: 更新B扫坐标轴
+        auto bscan_spec  = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
         auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
-        if (b_scan_view) {
-            auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
-            auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
+        if (b_scan_view && bscan_spec) {
+            const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
+            const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
             b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
-            // TODO: 设置横坐标范围
+            const auto start = bscan_spec->getBScanCoderStart();
+            const auto step  = bscan_spec->getBScanCoderStep();
+            const auto end   = start + step * aScanIntf()->getDataSize();
+            b_scan_view->setVerticalAxisRange(QPointF(start, end));
         }
     }
-    // TODO: 更新C扫
 }
 
 const QJsonArray AScanInteractor::getGateValue() const {

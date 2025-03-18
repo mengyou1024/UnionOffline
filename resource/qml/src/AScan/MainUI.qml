@@ -167,10 +167,14 @@ Rectangle {
 
                 function onDataCursorChanged() {
                     if (interactor.showBScanView) {
+                        console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandler.dataCursorInt}`)
                         interactor.aScanCursor = interactor.scanViewHandler.dataCursor
                     }
+                }
 
+                function onDataCursorIntChanged() {
                     if (interactor.showCScanView) {
+                        console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandler.dataCursorInt}`)
                         interactor.aScanCursor = interactor.scanViewHandler.dataCursorInt
                     }
                 }
