@@ -229,13 +229,13 @@ void AScanInteractor::changeDataCursor() {
         qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint8_t>(0, 0)));
         // 6. 更新显示的声程模式
         switch (aScanIntf()->getDistanceMode(getAScanCursor())) {
-            case DistanceMode_Y:
+            case DISTANCE_MODE_Y:
                 setDistanceMode("Y");
                 break;
-            case DistanceMode_X:
+            case DISTANCE_MODE_X:
                 setDistanceMode("X");
                 break;
-            case DistanceMode_S:
+            case DISTANCE_MODE_S:
                 setDistanceMode("S");
                 break;
             default:
