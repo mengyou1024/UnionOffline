@@ -122,6 +122,11 @@ function(morose_auto_release)
                 "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
                 "${MOROSE_DIST_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
 
+                # 拷贝调试数据库
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pdb"
+                "${MOROSE_DIST_DIR}/${PROJECT_NAME}.pdb"
+
                 # 执行windeployqt进行打包
                 COMMAND ${WINDEPLOYQT_EXECUTABLE}
                 --verbose 0
@@ -145,6 +150,11 @@ function(morose_auto_release)
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
                 "${MOROSE_DIST_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
+
+                # 拷贝调试数据库
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pdb"
+                "${MOROSE_DIST_DIR}/${PROJECT_NAME}.pdb"
 
                 # 执行windeployqt进行打包
                 COMMAND echo "windeployqt ..."
