@@ -15,7 +15,48 @@
 #include <SingleApplication.h>
 #include <UnionType>
 
+#ifdef Q_OS_WIN32
+    #include <Dbghelp.h>
+    #include <Windows.h>
+    #include <stacktrace>
+    #include <tchar.h>
+
+    #pragma comment(lib, "Dbghelp.lib ")
+
+void CreateDumpFile(LPCSTR lpstrDumpFilePathName, EXCEPTION_POINTERS* pException) {
+    // 创建Dump文件
+    HANDLE hDumpFile = CreateFile(lpstrDumpFilePathName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    // Dump信息
+    MINIDUMP_EXCEPTION_INFORMATION dumpInfo;
+    dumpInfo.ExceptionPointers = pException;
+    dumpInfo.ThreadId          = GetCurrentThreadId();
+    dumpInfo.ClientPointers    = TRUE;
+    // 写入Dump文件内容
+    MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile, MiniDumpNormal, &dumpInfo, NULL, NULL);
+    CloseHandle(hDumpFile);
+}
+
+LONG ApplicationCrashHandler(EXCEPTION_POINTERS* pException) {
+    QString file_dump = qApp->applicationDirPath() + "/crash/" + QDateTime::currentDateTime().toString("yyyy-MM-dd/hh-mm-ss") + ".dmp";
+    if (auto file_dump_dir = QFileInfo(file_dump).dir(); !file_dump_dir.exists()) {
+        file_dump_dir.mkpath(file_dump_dir.path());
+    }
+
+    auto stack_trace = std::stacktrace::current();
+    qCritical(std::to_string(stack_trace).c_str());
+
+    CreateDumpFile(file_dump.toStdString().c_str(), pException);
+    FatalAppExit(0xFFFFFFFF, _T("*** Unhandled Exception ***"));
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+#endif
+
 int main(int argc, char* argv[]) {
+#ifdef Q_OS_WIN32
+    SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)ApplicationCrashHandler);
+#endif
+
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     // Qt5默认未开启高DPI模式, 需要手动打开
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

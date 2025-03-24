@@ -471,6 +471,13 @@ set(MOROSE_PLUGINS_TYPE "GENERIC" "VIEW" CACHE INTERNAL "Morose plugins type")
 set(MOROSE_MAIN ${PROJECT_NAME} CACHE INTERNAL "morose excutable file name")
 set(MOROSE_PLUGIN_QML_DIRS CACHE INTERNAL "Morose plugin qml directories")
 set(MOROSE_UNINSTALL_DELETE CACHE INTERNAL "Morose Inno Setup delete file or directory")
+
+if(MSVC)
+    # 设置编译选项以生成调试信息
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /DNDEBUG /Zi")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/DEBUG")
+endif()
+
 morose_add_subdirectory_path("extensions")
 morose_add_subdirectory_path("components")
 
