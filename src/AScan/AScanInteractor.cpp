@@ -285,11 +285,11 @@ void AScanInteractor::updateBOrCScanView() {
         if (cscan_spec == nullptr) {
             return;
         }
-        const auto frame_per_row  = cscan_spec->getCScanFramePerLine();
-        const auto all_image_size = aScanIntf()->getDataSize();
-        const auto frame_per_col  = all_image_size / frame_per_row;
-        auto       c_scan_sp      = std::make_shared<Union::View::CScanView>();
-        m_scanViewSp              = c_scan_sp;
+
+        const auto frame_per_row = cscan_spec->getCScanXDots();
+        const auto frame_per_col = cscan_spec->getCScanYDots();
+        auto       c_scan_sp     = std::make_shared<Union::View::CScanView>();
+        m_scanViewSp             = c_scan_sp;
         setScanViewHandler(m_scanViewSp.get());
         std::vector<uint8_t> cscan_image;
 
@@ -297,23 +297,24 @@ void AScanInteractor::updateBOrCScanView() {
         const auto height = frame_per_col;
         cscan_image.resize(width * height);
         std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                uint8_t amp_in_gate;
-                std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(y * width + x).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
-                cscan_image.at(y * width + x)      = amp_in_gate;
-            }
+
+        for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
+            uint8_t amp_in_gate;
+            std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
+            auto [x, y]                        = cscan_spec->getCScanEncoder(idx);
+            cscan_image.at(y * width + x)      = amp_in_gate;
         }
 
         c_scan_sp->replace(cscan_image, width, height);
 
     } else if (showBScanView()) {
         // VARIFY: 更新B扫图像
-        auto b_scan_sp = std::make_shared<Union::View::BScanView>();
-        m_scanViewSp   = b_scan_sp;
+        const auto bscan_spec = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
+        auto       b_scan_sp  = std::make_shared<Union::View::BScanView>();
+        m_scanViewSp          = b_scan_sp;
         setScanViewHandler(m_scanViewSp.get());
         std::vector<uint8_t> cscan_image;
-        const auto           height = aScanIntf()->getDataSize();
+        const auto           height = bscan_spec->getBScanXDots();
         int                  width  = 0;
         for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
             if (std::ssize(aScanIntf()->getScanData(i)) > width) {
@@ -322,12 +323,15 @@ void AScanInteractor::updateBOrCScanView() {
         }
         cscan_image.resize(width * height);
         std::memset(cscan_image.data(), 255, std::ssize(cscan_image));
-        for (int frame = 0; frame < height; frame++) {
-            const auto& data     = aScanIntf()->getScanData(frame);
+
+        for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
+            const auto& data     = aScanIntf()->getScanData(idx);
+            auto        frame    = bscan_spec->getBScanEncoder(idx);
             const auto  dist_ptr = &cscan_image[width * frame];
             const auto  dist_sz  = width;
             memcpy(dist_ptr, data.data(), std::min<int>(dist_sz, std::ssize(data)));
         }
+
         b_scan_sp->replace(cscan_image, width, height);
     } else {
         setScanViewHandler(nullptr);
@@ -344,18 +348,12 @@ void AScanInteractor::updateBOrCScanViewRange() {
         auto cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
         auto c_scan_view = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
         if (c_scan_view && cscan_spec) {
-            const auto start_x        = cscan_spec->getCScanCoderStartX();
-            const auto step_x         = cscan_spec->getCScanCoderStepX();
-            const auto start_y        = cscan_spec->getCScanCoderStartY();
-            const auto step_y         = cscan_spec->getCScanCoderStepY();
-            const auto frame_per_row  = cscan_spec->getCScanFramePerLine();
-            const auto all_image_size = aScanIntf()->getDataSize();
-            const auto frame_per_col  = all_image_size / frame_per_row;
-
-            const auto end_x = start_x + step_x * frame_per_row;
-            const auto end_y = start_y + step_y * frame_per_col;
-            c_scan_view->setHorizontalAxisRange(QPointF(start_x, end_x));
-            c_scan_view->setVerticalAxisRange(QPointF(start_y, end_y));
+            const auto [start_x, end_x] = cscan_spec->getCScanMinMaxXEncoderValue();
+            const auto [start_y, end_y] = cscan_spec->getCScanMinMaxXEncoderValue();
+            const auto step_x           = cscan_spec->getCScanXStepPerDot();
+            const auto step_y           = cscan_spec->getCScanYStepPerDot();
+            c_scan_view->setHorizontalAxisRange(QPointF(start_x * step_x, end_x * step_x));
+            c_scan_view->setVerticalAxisRange(QPointF(start_y * step_y, end_y * step_y));
         }
     } else if (showBScanView()) {
         // VARIFY: 更新B扫坐标轴
@@ -365,10 +363,9 @@ void AScanInteractor::updateBOrCScanViewRange() {
             const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
             const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
             b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
-            const auto start = bscan_spec->getBScanCoderStart();
-            const auto step  = bscan_spec->getBScanCoderStep();
-            const auto end   = start + step * aScanIntf()->getDataSize();
-            b_scan_view->setVerticalAxisRange(QPointF(start, end));
+            const auto [start, end] = bscan_spec->getBScanMinMaxXEncoderValue();
+            const auto step         = bscan_spec->getBScanXStepPerDot();
+            b_scan_view->setVerticalAxisRange(QPointF(start * step, end * step));
         }
     }
 }
