@@ -21,7 +21,7 @@
     #include <stacktrace>
     #include <tchar.h>
 
-    #pragma comment(lib, "Dbghelp.lib ")
+    #pragma comment(lib, "Dbghelp.lib")
 
 void CreateDumpFile(LPCSTR lpstrDumpFilePathName, EXCEPTION_POINTERS* pException) {
     // 创建Dump文件
@@ -83,9 +83,9 @@ int main(int argc, char* argv[]) {
     qInstallMessageHandler(Morose::logMessageHandler);
 
     // 删除缓存目录
-    QDir _userTempDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
-    _userTempDir.setNameFilters({"UnionOffline*"});
-    for (auto& it : (_userTempDir.entryInfoList())) {
+    QDir user_temp_dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    user_temp_dir.setNameFilters({"UnionOffline*"});
+    for (auto& it : (user_temp_dir.entryInfoList())) {
         if (it.isDir()) {
             qDebug() << "remove cache dir:" << it;
             QDir(it.absoluteFilePath()).removeRecursively();
@@ -96,20 +96,20 @@ int main(int argc, char* argv[]) {
     }
 
     // 设置日志过滤规则
-    QSettings logSetting("setting.ini", QSettings::IniFormat);
-    logSetting.beginGroup("Rules");
-    auto filter = logSetting.value("filterRules");
+    QSettings log_setting("setting.ini", QSettings::IniFormat);
+    log_setting.beginGroup("Rules");
+    auto filter = log_setting.value("filterRules");
     if (filter.isNull()) {
 #if defined(QT_DEBUG)
-        logSetting.setValue("filterRules", "");
+        log_setting.setValue("filterRules", "");
 #else
-        logSetting.setValue("filterRules", "*.debug=false");
+        log_setting.setValue("filterRules", "*.debug=false");
 #endif
-        filter = logSetting.value("filterRules");
+        filter = log_setting.value("filterRules");
     }
     QLoggingCategory::setFilterRules(filter.toString());
-    logSetting.endGroup();
-    logSetting.sync();
+    log_setting.endGroup();
+    log_setting.sync();
 
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
@@ -122,11 +122,11 @@ int main(int argc, char* argv[]) {
     qDebug() << "supprot ssl:" << QSslSocket::supportsSsl();
     qDebug() << "ssl lib version:" << QSslSocket::sslLibraryVersionString();
 
-    QTemporaryDir tempDir;
-    QSettings     cacheSetting("setting.ini", QSettings::IniFormat);
-    cacheSetting.beginGroup("Cache");
-    cacheSetting.setValue("dir", tempDir.path());
-    qInfo() << "register cache dir:" << tempDir.path();
+    QTemporaryDir temp_dir;
+    QSettings     cache_setting("setting.ini", QSettings::IniFormat);
+    cache_setting.beginGroup("Cache");
+    cache_setting.setValue("dir", temp_dir.path());
+    qInfo() << "register cache dir:" << temp_dir.path();
 
     // 加载QML、注册环境变量
     const QUrl            url("qrc:/qml/MainWnd.qml");
@@ -150,24 +150,25 @@ int main(int argc, char* argv[]) {
     Morose::loadGlobalEnvironment();
 
     engine.load(url);
-    QObject::connect(&app, &QApplication::aboutToQuit, &app, [&tempDir]() {
-        QDir temp_dir(tempDir.path());
+    QObject::connect(&app, &QApplication::aboutToQuit, &app, [temp_dir_path = temp_dir.path()]() {
+        QDir temp_dir(temp_dir_path);
+        qDebug() << "remove directory:" << temp_dir_path;
         temp_dir.removeRecursively();
         qInfo() << "application quit";
     });
-    auto rootObjs   = engine.rootObjects();
-    auto mainWindow = qobject_cast<QQuickWindow*>(rootObjs.first());
-    QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, [mainWindow]() {
-        mainWindow->setFlag(Qt::WindowStaysOnTopHint, true);
-        if (mainWindow->windowState() == Qt::WindowMaximized) {
-            mainWindow->resize(mainWindow->minimumSize());
-            mainWindow->setX((QGuiApplication::primaryScreen()->geometry().width() - mainWindow->minimumSize().width()) / 2);
-            mainWindow->setY((QGuiApplication::primaryScreen()->geometry().height() - mainWindow->minimumSize().height()) / 2);
+    auto root_objs   = engine.rootObjects();
+    auto main_window = qobject_cast<QQuickWindow*>(root_objs.first());
+    QObject::connect(&app, &SingleApplication::instanceStarted, main_window, [main_window]() {
+        main_window->setFlag(Qt::WindowStaysOnTopHint, true);
+        if (main_window->windowState() == Qt::WindowMaximized) {
+            main_window->resize(main_window->minimumSize());
+            main_window->setX((QGuiApplication::primaryScreen()->geometry().width() - main_window->minimumSize().width()) / 2);
+            main_window->setY((QGuiApplication::primaryScreen()->geometry().height() - main_window->minimumSize().height()) / 2);
         }
-        mainWindow->showNormal();
-        mainWindow->setFlag(Qt::WindowStaysOnTopHint, false);
-        mainWindow->requestActivate();
-        mainWindow->raise();
+        main_window->showNormal();
+        main_window->setFlag(Qt::WindowStaysOnTopHint, false);
+        main_window->requestActivate();
+        main_window->raise();
     });
     return app.exec();
 }
