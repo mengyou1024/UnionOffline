@@ -120,20 +120,12 @@ void Morose::logMessageHandler(QtMsgType type, const QMessageLogContext& context
 #else
     QFile file("./log/log.txt");
     mutex.lock();
-    if (file.size() > 1024 * 1024 * 4) {
-        QFile::copy("log/log.txt", "log/log0.txt");
-        file.resize(0);
+    if (file.size() > 1024 * 1024 * 50) {
+        QFile::remove("log/log.txt.bak");
+        QFile::rename("log/log.txt", "log/log.txt.bak");
     }
     file.open(QFile::WriteOnly | QIODevice::Append);
     QTextStream text_stream(&file);
-    if (type == QtCriticalMsg || type == QtFatalMsg) {
-        QFile _file("./log/error.txt");
-        _file.open(QFile::WriteOnly | QIODevice::Append);
-        QTextStream _text_stream(&_file);
-        _text_stream << message << "\n";
-        _file.flush();
-        _file.close();
-    }
     text_stream << message << "\n";
     file.flush();
     file.close();
