@@ -34,7 +34,7 @@ namespace TofdPe {
     public:
         TofdPeInteractor()  = default;
         ~TofdPeInteractor() = default;
-        Q_INVOKABLE bool              openFile(const QString& fileName);
+        Q_INVOKABLE bool              openFile(const QString& filename);
         Q_INVOKABLE int               getAScanSize() const;
         Q_INVOKABLE int               getLines() const;
         Q_INVOKABLE int               getSubLines() const;

@@ -84,7 +84,7 @@ public:
     ~AScanInteractor();
 
     Q_INVOKABLE void setDefaultValue();
-    Q_INVOKABLE bool openFile(QString fileName);
+    Q_INVOKABLE bool openFile(QString filename);
     QAbstractSeries* createSeries(QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY);
     QLineSeries*     createAScanSeries(QPointF pt, QSizeF sz);
     void             updateAScanSeries(const QList<QPointF>& data, QPointF pt, QSizeF sz);

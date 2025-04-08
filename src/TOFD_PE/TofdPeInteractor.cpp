@@ -118,17 +118,18 @@ namespace TofdPe {
         emit fileNameChanged();
     }
 
-    bool TofdPeInteractor::openFile(const QString& fileName) {
+    bool TofdPeInteractor::openFile(const QString& filename) {
+        qCInfo(TAG) << "open file:" << filename;
         m_file.clear();
-        MOROSE_TEST_TIME_QUICK("open file:" + fileName);
-        auto READ_FUNC = Union::UniversalApparatus::TofdPe::TofdPeFileSelector::Instance()->GetReadFunction(fileName.toStdWString());
+        MOROSE_TEST_TIME_QUICK("open file:" + filename);
+        auto READ_FUNC = Union::UniversalApparatus::TofdPe::TofdPeFileSelector::Instance()->GetReadFunction(filename.toStdWString());
         if (!READ_FUNC.has_value()) {
-            qCCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(fileName).suffix();
+            qCCritical(TAG) << "can't find read interface, file suffix:" << QFileInfo(filename).suffix();
             return false;
         }
         try {
             for (const auto& func : READ_FUNC.value()) {
-                m_data = func(fileName.toStdWString());
+                m_data = func(filename.toStdWString());
                 if (m_data != nullptr) {
                     break;
                 }
@@ -140,12 +141,12 @@ namespace TofdPe {
         m_getVerticalAixsZero = std::nullopt;
         m_adjsutDepthFunc     = std::nullopt;
         if (m_data != nullptr) {
-            m_file = fileName;
-            setFileName(QFileInfo(fileName).baseName());
+            m_file = filename;
+            setFileName(QFileInfo(filename).baseName());
             return true;
         }
         setFileName("");
-        qCCritical(TAG) << "read file error, fileName:" << fileName;
+        qCCritical(TAG) << "read file error, fileName:" << filename;
         return false;
     }
 

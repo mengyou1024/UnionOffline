@@ -589,17 +589,18 @@ void AScanInteractor::setDefaultValue() {
     setShowCMP001Special(false);
 }
 
-bool AScanInteractor::openFile(QString _fileName) {
-    auto READ_FUNC = AScanFileSelector::Instance()->GetReadFunction(_fileName.toStdWString());
+bool AScanInteractor::openFile(QString filename) {
+    qCInfo(TAG) << "open file:" << filename;
+    auto READ_FUNC = AScanFileSelector::Instance()->GetReadFunction(filename.toStdWString());
     if (!READ_FUNC.has_value()) {
-        QFileInfo info(_fileName);
+        QFileInfo info(filename);
         qCWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
         return false;
     }
     try {
         ASCAN_TYPE _tyy_ascan_type = nullptr;
         for (const auto& func : READ_FUNC.value()) {
-            _tyy_ascan_type = func(_fileName.toStdWString());
+            _tyy_ascan_type = func(filename.toStdWString());
             if (_tyy_ascan_type != nullptr) {
                 break;
             }
@@ -613,7 +614,7 @@ bool AScanInteractor::openFile(QString _fileName) {
     }
 
     if (!aScanIntf()) {
-        qCCritical(TAG) << "read file error, fileName:" << _fileName;
+        qCCritical(TAG) << "read file error, fileName:" << filename;
         return false;
     }
     if (aScanIntf()->getDataSize() > 1) {
@@ -622,7 +623,7 @@ bool AScanInteractor::openFile(QString _fileName) {
     } else if (aScanIntf()->getDataSize() == 1) {
         setReplayVisible(false);
     } else {
-        qCWarning(TAG) << "no data on file:" << _fileName;
+        qCCritical(TAG) << "no data on file:" << filename;
         return false;
     }
     setReportEnabled(aScanIntf()->getReportEnable());
