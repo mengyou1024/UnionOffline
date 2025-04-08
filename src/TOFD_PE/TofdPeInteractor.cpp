@@ -187,7 +187,7 @@ namespace TofdPe {
                 {"ScanMode", m_data->getScanMode()},
                 {"TriggerMode", m_data->getTriggerMode()},
                 {"ScanIncrement", QString::number(m_data->getScanIncrement(), 'f', 2) + "mm"},
-                {"WorkPieceThickness", QString::number(m_data->getThicknessOfWorkPiece(), 'f', 1) + "mm"},
+                {"WorkpieceThickness", QString::number(m_data->getThicknessOfWorkpiece(), 'f', 1) + "mm"},
                 {"WeldWidth", QString::number(m_data->getTofdWeldWidth(), 'f', 1) + "mm"},
                 {"ChannelParam", "(发射1 接收1)"},
                 {"PCS", QString::number(m_data->getPCS(), 'f', 1) + "mm"},

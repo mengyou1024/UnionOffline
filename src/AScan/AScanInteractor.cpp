@@ -4,6 +4,7 @@
 #include <QQmlProperty>
 #include <QValueAxis>
 #include <QtCore>
+#include <ranges>
 #include <stacktrace>
 
 static Q_LOGGING_CATEGORY(TAG, "AScanIntr");
@@ -209,19 +210,12 @@ void AScanInteractor::changeDataCursor() {
         updateAScanSeries();
         // 2. 更新波门曲线
         updateGateSeries<2>(aScanIntf()->getGate(getAScanCursor()));
-        if (dynamic_cast<::Union::UniversalApparatus::AScan::Instance::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
-            update330N_DAC_AVG_Series();
-        } else {
-            auto cmp000 = dynamic_cast<Special::CMP000Special*>(aScanIntf().get());
-            if (cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor())) {
-                CMP000Special_UpdateDacSeries();
-            } else {
-                // 3. 更新DAC曲线
-                updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
-            }
-            // 4. 更新AVG曲线
-            updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
-        }
+
+        // 3. 更新DAC曲线
+        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+
+        // 4. 更新AVG曲线
+        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
 
         // 5. 更新AScan图的波门信息显示
         setGateValue(CreateGateValue());
@@ -254,18 +248,11 @@ void AScanInteractor::changeDataCursor() {
 void AScanInteractor::updateCurrentFrame() {
     // 增益发生变化
     if (aScanIntf() != nullptr) {
-        updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain), {aScanIntf()->getAxisBias(getAScanCursor()), 0}, {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
-        if (dynamic_cast<::Union::UniversalApparatus::AScan::Instance::_330_DAC_C*>(aScanIntf().get()) != nullptr) {
-            update330N_DAC_AVG_Series();
-        } else {
-            auto cmp000 = dynamic_cast<Special::CMP000Special*>(aScanIntf().get());
-            if (cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor())) {
-                CMP000Special_UpdateDacSeries();
-            } else {
-                updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
-            }
-            updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
-        }
+        updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain),
+                          {aScanIntf()->getAxisBias(getAScanCursor()), 0},
+                          {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
+        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
         setGateValue(CreateGateValue());
         updateBOrCScanView();
         updateBOrCScanViewRange();
@@ -558,157 +545,6 @@ bool AScanInteractor::checkAScanCursorValid() {
     return true;
 }
 
-void AScanInteractor::update330N_DAC_AVG_Series() {
-    const auto LineName = [&](int index) -> QString {
-        return QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(index));
-    };
-
-    std::vector<QLineSeries*>   lines  = {};
-    std::vector<QList<QPointF>> pts    = {};
-    std::vector<int>            indexs = {};
-
-    auto _convert = dynamic_cast<::Union::UniversalApparatus::AScan::Instance::_330_DAC_C*>(aScanIntf().get());
-    if (_convert != nullptr) {
-        lines.resize(3);
-        pts.resize(3);
-        indexs = {1, 2, 3};
-        // 隐藏未使用的曲线
-        for (auto i = 0; std::cmp_less(i, DAC_AVG_SUB_NAME_MAX); i++) {
-            auto line = (QLineSeries*)series(LineName(i));
-            if (line) {
-                auto find_result = std::find(indexs.begin(), indexs.end(), i);
-                if (find_result == indexs.end()) {
-                    line->setVisible(false);
-                    line->deleteLater();
-                }
-            }
-        }
-        // 查找曲线
-        for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
-            lines[i] = (QLineSeries*)series(LineName(indexs[i]));
-            if (!lines[i]) {
-                lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
-            }
-            // 重新设置DAC曲线的坐标轴范围
-            lines[i]->attachedAxes().at(0)->setMin(aScanIntf()->getAxisBias(getAScanCursor()));
-            lines[i]->attachedAxes().at(0)->setMax(aScanIntf()->getAxisLen(getAScanCursor()));
-            lines[i]->attachedAxes().at(1)->setMin(0.0);
-            lines[i]->attachedAxes().at(1)->setMax(100.0);
-            lines[i]->setVisible();
-        }
-
-        for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
-            lines[i]->clear();
-            if (_convert) {
-                auto lineVector    = _convert->unResolvedGetDacLines(getAScanCursor())[i];
-                auto transformFunc = [this](QPointF pt) {
-                    return QPointF(pt.x(), CalculateGainOutput(pt.y(), static_cast<double>(getSoftGain())));
-                };
-                std::transform(lineVector.begin(), lineVector.end(), lineVector.begin(), transformFunc);
-                lines[i]->replace(lineVector);
-            }
-        }
-    }
-}
-
-void AScanInteractor::CMP000Special_UpdateDacSeries() {
-    // begin define lambda ->{
-    auto cmp000_data = dynamic_cast<Special::CMP000Special*>(aScanIntf().get());
-
-    auto CheckValid = [&]() {
-        // 检查数据指针是否有效
-        if (!checkAScanCursorValid()) {
-            return false;
-        }
-
-        if (cmp000_data == nullptr) {
-            return false;
-        }
-
-        // 检查曲线是否有值
-        auto has_value = aScanIntf()->getDAC(getAScanCursor()).has_value();
-        if (!has_value) {
-            for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
-                auto temp = (QLineSeries*)series(QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(i)));
-                if (temp) {
-                    temp->setVisible(false);
-                }
-            }
-        }
-        return has_value;
-    };
-
-    if (!CheckValid()) {
-        return;
-    }
-
-    // 获取曲线名称
-    const auto LineName = [&](int index) -> QString {
-        return QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(index));
-    };
-
-    // 获取曲线表达式
-    const auto LineExpr = [&]() {
-        return aScanIntf()->getDACLineExpr(getAScanCursor());
-    }();
-    // 获取增益修改
-    const auto ModifyGain = [&](int idx) {
-        return cmp000_data->getDACLineBias(getAScanCursor(), idx) + getSoftGain();
-    };
-    // } <- end define lambda
-
-    // ↓↓↓函数逻辑开始↓↓↓
-    std::vector<QLineSeries*>   lines  = {};
-    std::vector<QList<QPointF>> pts    = {};
-    std::vector<int>            indexs = {};
-
-    auto dac_line_number = cmp000_data->getDacLineNumber(getAScanCursor());
-    lines.resize(dac_line_number);
-    pts.resize(dac_line_number);
-    indexs.resize(dac_line_number);
-    for (auto i = 0; auto& it : indexs) {
-        it = ++i;
-    }
-
-    // 隐藏未使用的曲线
-    for (auto i = 0; std::cmp_less(i, DAC_AVG_SUB_NAME_MAX); i++) {
-        auto line = (QLineSeries*)series(LineName(i));
-        if (line) {
-            auto find_result = std::find(indexs.begin(), indexs.end(), i);
-            if (find_result == indexs.end()) {
-                line->setVisible(false);
-            }
-        }
-    }
-    // 查找曲线
-    for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
-        lines[i] = (QLineSeries*)series(LineName(indexs[i]));
-        if (!lines[i]) {
-            lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
-        }
-        // 重新设置DAC曲线的坐标轴范围
-        lines[i]->attachedAxes().at(0)->setMin(0.0);
-        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(aScanIntf()->getScanData(getAScanCursor()).size()));
-        lines[i]->attachedAxes().at(1)->setMin(0.0);
-        lines[i]->attachedAxes().at(1)->setMax(200.0);
-        lines[i]->setVisible();
-    }
-
-    // 填充数据
-    for (int i = 0; std::cmp_less(i, aScanIntf()->getScanData(getAScanCursor()).size()); i++) {
-        for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
-            auto val = LineExpr(i);
-            if (val.has_value()) {
-                pts[j].push_back(QPointF(i, CalculateGainOutput(val.value(), ModifyGain(indexs[j]))));
-            }
-        }
-    }
-    // 替换曲线数据
-    for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
-        lines[i]->replace(pts[i]);
-    }
-}
-
 AScanInteractor::AScanInteractor() {
     QJsonObject gate1;
     gate1.insert("amp", "-");
@@ -866,7 +702,7 @@ QLineSeries* AScanInteractor::createAScanSeries(QPointF pt, QSizeF sz) {
         QValueAxis* axis = new QValueAxis;
         axis->setMin(min);
         axis->setMax(max);
-        axis->setMinorTickCount(4);
+        axis->setMinorTickCount(3);
         axis->setTickCount(6);
         axis->setLabelFormat(fmt);
         axis->setGridLinePen(QPen(QColor(0xAEAEAE), 1, Qt::SolidLine));
@@ -996,19 +832,11 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }
     }();
     // 获取增益修改
-    const auto ModifyGain = [&](int idx) {
-        double ret = 0.0;
-        switch (idx) {
-            case 1:
-                ret = aScanIntf()->getDACStandard(getAScanCursor()).rlBias;
-                break;
-            case 2:
-                ret = aScanIntf()->getDACStandard(getAScanCursor()).slBias;
-                break;
-            case 3:
-                ret = aScanIntf()->getDACStandard(getAScanCursor()).elBias;
+    const auto ModifyGain = [&](int idx) -> double {
+        if (idx == 0) {
+            return getSoftGain();
         }
-        return ret + getSoftGain();
+        return aScanIntf()->getDacLineStandard(getAScanCursor()).at(idx - 1) + getSoftGain();
     };
     // } <- end define lambda
 
@@ -1022,9 +850,10 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         pts.resize(1);
         indexs = {0};
     } else {
-        lines.resize(3);
-        pts.resize(3);
-        indexs = {1, 2, 3};
+        int line_count = std::ssize(aScanIntf()->getDacLineStandard(getAScanCursor()));
+        lines.resize(line_count);
+        pts.resize(line_count);
+        indexs = std::views::iota(1, line_count + 1) | std::views::take(line_count) | std::ranges::to<std::vector<int>>();
     }
 
     // 隐藏未使用的曲线

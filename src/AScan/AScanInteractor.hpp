@@ -79,11 +79,6 @@ class AScanInteractor : public QQuickItem {
         AVG,
     };
 
-    [[deprecated("该函数需要重构, 向标准格式转换")]]
-    void update330N_DAC_AVG_Series();
-
-    void CMP000Special_UpdateDacSeries();
-
 public:
     AScanInteractor();
     ~AScanInteractor();
