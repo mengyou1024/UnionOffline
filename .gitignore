@@ -111,6 +111,6 @@ build/
 output/*
 .vscode/
 config/ProductConfig.json
-components/protobuf/
+components/protobuf*/
 components/ssl/
 components/ftd2xx_static/
