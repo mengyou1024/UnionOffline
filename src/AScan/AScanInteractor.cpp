@@ -205,57 +205,67 @@ bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
 }
 
 void AScanInteractor::changeDataCursor() {
-    if (std::cmp_less(getAScanCursor(), aScanIntf() ? aScanIntf()->getDataSize() : 0)) {
-        // 1. 更新A扫曲线
-        updateAScanSeries();
-        // 2. 更新波门曲线
-        updateGateSeries<2>(aScanIntf()->getGate(getAScanCursor()));
+    try {
+        if (std::cmp_less(getAScanCursor(), aScanIntf() ? aScanIntf()->getDataSize() : 0)) {
+            // 1. 更新A扫曲线
+            updateAScanSeries();
+            // 2. 更新波门曲线
+            updateGateSeries<2>(aScanIntf()->getGate(getAScanCursor()));
 
-        // 3. 更新DAC曲线
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+            // 3. 更新DAC曲线
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
 
-        // 4. 更新AVG曲线
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+            // 4. 更新AVG曲线
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
 
-        // 5. 更新AScan图的波门信息显示
-        setGateValue(CreateGateValue());
-        qCDebug(TAG) << "当前指针:" << getAScanCursor();
-        qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint8_t>(0, 0)));
-        // 6. 更新显示的声程模式
-        switch (aScanIntf()->getDistanceMode(getAScanCursor())) {
-            case DISTANCE_MODE_Y:
-                setDistanceMode("Y");
-                break;
-            case DISTANCE_MODE_X:
-                setDistanceMode("X");
-                break;
-            case DISTANCE_MODE_S:
-                setDistanceMode("S");
-                break;
-            default:
-                setDistanceMode("N");
+            // 5. 更新AScan图的波门信息显示
+            setGateValue(CreateGateValue());
+            qCDebug(TAG) << "当前指针:" << getAScanCursor();
+            qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint8_t>(0, 0)));
+            // 6. 更新显示的声程模式
+            switch (aScanIntf()->getDistanceMode(getAScanCursor())) {
+                case DISTANCE_MODE_Y:
+                    setDistanceMode("Y");
+                    break;
+                case DISTANCE_MODE_X:
+                    setDistanceMode("X");
+                    break;
+                case DISTANCE_MODE_S:
+                    setDistanceMode("S");
+                    break;
+                default:
+                    setDistanceMode("N");
+            }
+            // 7. 更新摄像头控件
+            auto camera_special = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+            if (camera_special != nullptr) {
+                setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
+            }
+            // 8. 更新B扫或C扫的坐标范围
+            updateBOrCScanViewRange();
         }
-        // 7. 更新摄像头控件
-        auto camera_special = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
-        if (camera_special != nullptr) {
-            setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
-        }
-        // 8. 更新B扫或C扫的坐标范围
-        updateBOrCScanViewRange();
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        qCCritical(TAG) << std::to_string(std::stacktrace::current()).c_str();
     }
 }
 
 void AScanInteractor::updateCurrentFrame() {
     // 增益发生变化
     if (aScanIntf() != nullptr) {
-        updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain),
-                          {aScanIntf()->getAxisBias(getAScanCursor()), 0},
-                          {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
-        updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
-        setGateValue(CreateGateValue());
-        updateBOrCScanView();
-        updateBOrCScanViewRange();
+        try {
+            updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain),
+                              {aScanIntf()->getAxisBias(getAScanCursor()), 0},
+                              {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
+            updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
+            setGateValue(CreateGateValue());
+            updateBOrCScanView();
+            updateBOrCScanViewRange();
+        } catch (std::exception& e) {
+            qCCritical(TAG) << e.what();
+            qCCritical(TAG) << std::to_string(std::stacktrace::current()).c_str();
+        }
     }
 }
 
@@ -954,22 +964,27 @@ QJsonArray AScanInteractor::CreateGateValue() {
         return getGateValue();
     }
 
-    m_lastUpdateGateValueTime = _cur_t;
+    m_lastUpdateGateValueTime               = _cur_t;
+    std::array<QVariantMap, 2> _m_gateValue = {};
+    for (auto i = 0; std::cmp_less(i, _m_gateValue.size()); i++) {
+        _m_gateValue[i] = {
+            {"amp",  "-"},
+            {"→",    "-"},
+            {"↓",    "-"},
+            {"↘",    "-"},
+            {"equi", "-"},
+        };
+    }
     if (!checkAScanCursorValid()) {
-        std::array<QVariantMap, 2> _m_gateValue = {};
-        for (auto i = 0; std::cmp_less(i, _m_gateValue.size()); i++) {
-            _m_gateValue[i] = {
-                {"amp",  "-"},
-                {"→",    "-"},
-                {"↓",    "-"},
-                {"↘",    "-"},
-                {"equi", "-"},
-            };
-        }
         return QJsonArray::fromVariantList({_m_gateValue[0], _m_gateValue[1]});
     }
-
-    return aScanIntf()->createGateValue(getAScanCursor(), getSoftGain());
+    try {
+        return aScanIntf()->createGateValue(getAScanCursor(), getSoftGain());
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        qCCritical(TAG) << std::to_string(std::stacktrace::current()).c_str();
+    }
+    return QJsonArray::fromVariantList({_m_gateValue[0], _m_gateValue[1]});
 }
 
 template <int N>
