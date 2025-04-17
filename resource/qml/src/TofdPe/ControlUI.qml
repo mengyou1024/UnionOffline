@@ -67,16 +67,14 @@ ScrollView {
     // PE间距更改
     signal peSpaceValueModified(real val)
 
-    readonly property int maxLayoutWidth: Math.max(layout_show.width, layout_report.width, layout_tofd_gain.width, layout_pe_gain.width, layout_tofd_line.width, layout_pe_line.width,
-                                                   layout_tofd_space.width, layout_pe_space.width, 280)
-
     ColumnLayout {
         id: layout_root
         CArea {
-            areaText: qsTr("显示")
+            text: qsTr("显示")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_show.height + heightFix
+            Layout.preferredWidth: layout_show.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_show.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             GridLayout {
                 id: layout_show
                 anchors.centerIn: parent
@@ -140,10 +138,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("报表")
+            text: qsTr("报表")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_report.height + heightFix
+            Layout.preferredWidth: layout_report.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_report.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             ColumnLayout {
                 id: layout_report
                 anchors.centerIn: parent
@@ -186,10 +185,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("TOFD软件增益")
+            text: qsTr("TOFD软件增益")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_tofd_gain.height + heightFix
+            Layout.preferredWidth: layout_tofd_gain.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_tofd_gain.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             visible: tofdShow
             ColumnLayout {
                 id: layout_tofd_gain
@@ -222,10 +222,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("PE软件增益:")
+            text: qsTr("PE软件增益:")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_pe_gain.height + heightFix
+            Layout.preferredWidth: layout_pe_gain.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_pe_gain.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             visible: peShow
             ColumnLayout {
                 id: layout_pe_gain
@@ -258,10 +259,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("TOFD测量线")
+            text: qsTr("TOFD测量线")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_tofd_line.height + heightFix
+            Layout.preferredWidth: layout_tofd_line.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_tofd_line.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             visible: tofdShow
             ColumnLayout {
                 id: layout_tofd_line
@@ -407,10 +409,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("PE测量线")
+            text: qsTr("PE测量线")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_pe_line.height + heightFix
+            Layout.preferredWidth: layout_pe_line.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_pe_line.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             visible: peShow
             ColumnLayout {
                 id: layout_pe_line
@@ -528,10 +531,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("TOFD间距")
+            text: qsTr("TOFD间距")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_tofd_space.height + heightFix
+            Layout.preferredWidth: layout_tofd_space.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_tofd_space.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             visible: tofdShow
             ColumnLayout {
                 id: layout_tofd_space
@@ -584,10 +588,11 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("PE间距")
+            text: qsTr("PE间距")
             Layout.margins: 2
-            Layout.preferredWidth: maxLayoutWidth
-            Layout.preferredHeight: layout_pe_space.height + heightFix
+            Layout.preferredWidth: layout_pe_space.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_pe_space.height + bottomPadding + topPadding
+            Layout.fillWidth: true
             visible: peShow
             ColumnLayout {
                 id: layout_pe_space

@@ -35,17 +35,18 @@ ApplicationWindow {
             width: scroll_view.width - scroll_view.padding * 2
             CArea {
                 visible: MOROSE_APP_ENABLE_UPGRADE === 1
-                areaText: qsTr("软件更新")
-                fontSize: 12
+                text: qsTr("软件更新")
+                font.pointSize: 12
                 Layout.fillWidth: true
-                Layout.preferredHeight: layout_upgrade.height + heightFix
-                Settings {
-                    id: update_setting
-                    category: "Upgrade"
-                    fileName: "setting.ini"
-                }
+                Layout.preferredWidth: layout_upgrade.width + horizontalPadding * 2
+                Layout.preferredHeight: layout_upgrade.height + bottomPadding + topPadding
 
                 ColumnLayout {
+                    Settings {
+                        id: update_setting
+                        category: "Upgrade"
+                        fileName: "setting.ini"
+                    }
                     id: layout_upgrade
                     CheckBox {
                         Layout.alignment: Qt.AlignVCenter
@@ -72,12 +73,14 @@ ApplicationWindow {
                     }
                 }
             }
+
             CArea {
                 visible: MOROSE_ENABLE_MULTI_LANGUATE_FEATURE === 1
-                areaText: qsTr("语言")
-                fontSize: 12
+                text: qsTr("语言")
+                font.pointSize: 12
                 Layout.fillWidth: true
-                Layout.preferredHeight: layout_language.height + heightFix
+                Layout.preferredWidth: layout_language.width + horizontalPadding * 2
+                Layout.preferredHeight: layout_language.height + topPadding + bottomPadding
                 ColumnLayout {
                     id: layout_language
                     CComboBox {

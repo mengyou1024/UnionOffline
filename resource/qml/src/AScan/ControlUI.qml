@@ -73,12 +73,12 @@ ScrollView {
     // ScrollBar.vertical.policy: ScrollBar.AlwaysOn
     ColumnLayout {
         id: layout_root
-
         CArea {
-            areaText: qsTr("文件")
+            text: qsTr("文件")
             Layout.margins: 2
-            Layout.preferredWidth: control.maxLayoutWidth + widthFix
-            Layout.preferredHeight: layout_file.height + heightFix
+            Layout.fillWidth: true
+            Layout.preferredWidth: layout_file.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_file.height + bottomPadding + topPadding
             ColumnLayout {
                 id: layout_file
                 anchors.centerIn: parent
@@ -207,11 +207,12 @@ ScrollView {
         }
 
         CArea {
-            areaText: qsTr("增益")
+            text: qsTr("增益")
             Layout.margins: 2
-            Layout.preferredWidth: control.maxLayoutWidth + widthFix
-            Layout.preferredHeight: layout_gain.height + heightFix
-            visible: false // v2.2.250123版本后移除
+            Layout.preferredWidth: layout_gain.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_gain.height + bottomPadding + topPadding
+            Layout.fillWidth: true
+            visible: false // v2.2.250123版本以后屏蔽此功能
             ColumnLayout {
                 id: layout_gain
                 anchors.centerIn: parent
@@ -246,28 +247,28 @@ ScrollView {
         }
 
         CArea {
+            visible: false
             id: replay_area
-            areaText: qsTr("操作")
+            text: qsTr("操作")
             Layout.margins: 2
-            Layout.preferredWidth: control.maxLayoutWidth + widthFix
-            Layout.preferredHeight: layout_operation.height + heightFix
+            Layout.fillWidth: true
+            Layout.preferredWidth: layout_operation.width + horizontalPadding * 2
+            Layout.preferredHeight: layout_operation.height + bottomPadding + topPadding
+
             ColumnLayout {
                 id: layout_operation
-                width: control.maxLayoutWidth
                 anchors.centerIn: parent
 
-                readonly property int maxBtnWidth: Math.max(btn_play.labelImplWidth, btn_play_speed.labelImplWidth, btn_previous_frame.labelImplWidth, btn_next_frame.labelImplWidth, 80)
-
                 GridLayout {
-                    Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
+                    Layout.fillHeight: true
                     rows: 2
                     columns: 2
                     CButton {
                         id: btn_play
                         text: isReplayStart ? qsTr("播放") : qsTr("停止")
                         Layout.fillHeight: true
-                        Layout.preferredWidth: layout_operation.maxBtnWidth
+                        Layout.fillWidth: true
                         onReleased: {
                             replayStartClicked(isReplayStart)
                             console.log(category, "isReplayStart:", isReplayStart)
@@ -293,7 +294,7 @@ ScrollView {
                         id: btn_play_speed
                         text: qsTr("×" + replaySpeed + ">>")
                         Layout.fillHeight: true
-                        Layout.preferredWidth: layout_operation.maxBtnWidth
+                        Layout.fillWidth: true
                         onReleased: {
                             replaySpeed *= 2
                             if (replaySpeed > 8) {
@@ -305,7 +306,7 @@ ScrollView {
                     CButton {
                         id: btn_previous_frame
                         Layout.fillHeight: true
-                        Layout.preferredWidth: layout_operation.maxBtnWidth
+                        Layout.fillWidth: true
                         text: qsTr("上一帧")
                         autoRepeat: true
                         autoRepeatDelay: 1000
@@ -327,7 +328,7 @@ ScrollView {
                     CButton {
                         id: btn_next_frame
                         Layout.fillHeight: true
-                        Layout.preferredWidth: layout_operation.maxBtnWidth
+                        Layout.fillWidth: true
                         autoRepeat: true
                         autoRepeatDelay: 1000
                         autoRepeatInterval: 50
@@ -427,11 +428,14 @@ ScrollView {
         }
 
         CArea {
+            visible: false
             id: area_rail_weld_digram
-            areaText: qsTr("钢轨焊缝示意图")
+            text: qsTr("钢轨焊缝示意图")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: control.maxLayoutWidth / 260 * 560
+            Layout.preferredWidth: 360
+            Layout.preferredHeight: area_rail_weld_digram.width / 260 * 560
+
             RailWeldDigram {
                 id: rail_weld_digram
                 anchors.centerIn: parent
@@ -443,11 +447,13 @@ ScrollView {
         }
 
         CArea {
+            visible: false
             id: area_t8_rail
-            areaText: qsTr("钢轨仿真")
+            text: qsTr("钢轨仿真")
             Layout.margins: 2
             Layout.fillWidth: true
-            Layout.preferredHeight: control.maxLayoutWidth / 260 * 360
+            Layout.preferredHeight: width / 260 * 360
+
             RailWeldSimulation {
                 id: t8_rail_simulation
                 anchors.fill: parent
