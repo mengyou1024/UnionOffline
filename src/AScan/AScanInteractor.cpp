@@ -243,6 +243,13 @@ void AScanInteractor::changeDataCursor() {
             }
             // 8. 更新B扫或C扫的坐标范围
             updateBOrCScanViewRange();
+            // 9. 更新钢轨仿真图
+            auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
+            if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
+                setShowCMP001Special(true);
+            } else {
+                setShowCMP001Special(false);
+            }
         }
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
@@ -262,6 +269,12 @@ void AScanInteractor::updateCurrentFrame() {
             setGateValue(CreateGateValue());
             updateBOrCScanView();
             updateBOrCScanViewRange();
+            auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
+            if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
+                setShowCMP001Special(true);
+            } else {
+                setShowCMP001Special(false);
+            }
         } catch (std::exception& e) {
             qCCritical(TAG) << e.what();
             qCCritical(TAG) << std::to_string(std::stacktrace::current()).c_str();
