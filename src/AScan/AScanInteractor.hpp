@@ -93,8 +93,7 @@ public:
     void             updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
     QLineSeries*     createGateSeries(int index = 0);
     void             updateGateSeries(::Union::BasicType::Gate gate, int index = 0);
-    template <int N = 2>
-    void updateGateSeries(std::array<::Union::BasicType::Gate, N> gate);
+    void             updateGateSeries(std::array<::Union::BasicType::Gate, 2> gate);
 
     QJsonArray CreateGateValue();
 

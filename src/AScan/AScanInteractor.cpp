@@ -14,6 +14,34 @@ using namespace ::Union::UniversalApparatus::AScan;
 constexpr auto SCAN_LINE_WIDTH = 1.5;
 constexpr auto GATE_LINE_WIDTH = 2.5;
 
+AScanInteractor::AScanInteractor() {
+    QJsonObject gate1;
+    gate1.insert("amp", "-");
+    gate1.insert("→", "-");
+    gate1.insert("↓", "-");
+    gate1.insert("↘", "-");
+    gate1.insert("equi", "-");
+    QJsonObject gate2;
+    gate2.insert("amp", "-");
+    gate2.insert("→", "-");
+    gate2.insert("↓", "-");
+    gate2.insert("↘", "-");
+    gate2.insert("equi", "-");
+
+    QJsonArray arr;
+    arr.append(gate1);
+    arr.append(gate2);
+    m_gateValue = arr;
+
+    connect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
+    connect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
+}
+
+AScanInteractor::~AScanInteractor() {
+    disconnect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
+    disconnect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
+}
+
 bool AScanInteractor::getReplayVisible() const {
     return m_replayVisible;
 }
@@ -210,7 +238,7 @@ void AScanInteractor::changeDataCursor() {
             // 1. 更新A扫曲线
             updateAScanSeries();
             // 2. 更新波门曲线
-            updateGateSeries<2>(aScanIntf()->getGate(getAScanCursor()));
+            updateGateSeries(aScanIntf()->getGate(getAScanCursor()));
 
             // 3. 更新DAC曲线
             updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
@@ -565,34 +593,6 @@ bool AScanInteractor::checkAScanCursorValid() {
         return false;
     }
     return true;
-}
-
-AScanInteractor::AScanInteractor() {
-    QJsonObject gate1;
-    gate1.insert("amp", "-");
-    gate1.insert("→", "-");
-    gate1.insert("↓", "-");
-    gate1.insert("↘", "-");
-    gate1.insert("equi", "-");
-    QJsonObject gate2;
-    gate2.insert("amp", "-");
-    gate2.insert("→", "-");
-    gate2.insert("↓", "-");
-    gate2.insert("↘", "-");
-    gate2.insert("equi", "-");
-
-    QJsonArray arr;
-    arr.append(gate1);
-    arr.append(gate2);
-    m_gateValue = arr;
-
-    connect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
-    connect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
-}
-
-AScanInteractor::~AScanInteractor() {
-    disconnect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
-    disconnect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
 }
 
 void AScanInteractor::setDefaultValue() {
@@ -964,6 +964,9 @@ void AScanInteractor::updateGateSeries(::Union::BasicType::Gate gate, int index)
         gateList.append({gate.pos + gate.width - midify_bias, gate.height});
         gateList.append({gate.pos + gate.width, gate.height + midify_bias});
         line->replace(gateList);
+
+        qCDebug(TAG) << "update gate series(" << index << "):" << gate;
+
     } else {
         line->clear();
     }
@@ -999,8 +1002,7 @@ QJsonArray AScanInteractor::CreateGateValue() {
     return QJsonArray::fromVariantList({_m_gateValue[0], _m_gateValue[1]});
 }
 
-template <int N>
-void AScanInteractor::updateGateSeries(std::array<::Union::BasicType::Gate, N> gate) {
+void AScanInteractor::updateGateSeries(std::array<::Union::BasicType::Gate, 2> gate) {
     for (auto i = 0; std::cmp_less(i, gate.size()); i++) {
         updateGateSeries(gate[i], i);
     }
