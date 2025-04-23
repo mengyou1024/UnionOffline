@@ -164,6 +164,7 @@ Rectangle {
             Connections {
                 target: interactor.scanViewHandler
                 enabled: interactor.scanViewHandler
+                ignoreUnknownSignals: true
 
                 function onDataCursorChanged() {
                     if (interactor.showBScanView) {

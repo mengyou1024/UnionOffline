@@ -345,7 +345,11 @@ void AScanInteractor::updateBOrCScanView() {
             uint8_t amp_in_gate;
             std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
             auto [x, y]                        = cscan_spec->getCScanEncoder(idx);
-            cscan_image.at(y * width + x)      = amp_in_gate;
+            const auto img_idx                 = y * width + x;
+            if (img_idx >= std::ssize(cscan_image)) {
+                continue;
+            }
+            cscan_image.at(img_idx) = amp_in_gate;
         }
 
         c_scan_sp->replace(cscan_image, width, height);
@@ -360,8 +364,8 @@ void AScanInteractor::updateBOrCScanView() {
             m_scanViewSp = b_scan_sp;
             setScanViewHandler(m_scanViewSp.get());
         }
-
-        std::vector<uint8_t> cscan_image;
+        setScanViewHandler(m_scanViewSp.get());
+        std::vector<uint8_t> bscan_image;
         const auto           height = bscan_spec->getBScanXDots();
         int                  width  = 0;
         for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
@@ -369,19 +373,23 @@ void AScanInteractor::updateBOrCScanView() {
                 width = std::ssize(mdata_sped->getDataInGate(i, 0));
             }
         }
-        cscan_image.resize(width * height);
-        std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
+        bscan_image.resize(width * height);
+        std::memset(bscan_image.data(), 0, std::ssize(bscan_image));
 
         for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
             const auto& data = mdata_sped->getDataInGate(idx, 0);
 
-            auto       frame    = bscan_spec->getBScanEncoder(idx);
-            const auto dist_ptr = &cscan_image[width * frame];
+            auto       frame   = bscan_spec->getBScanEncoder(idx);
+            const auto img_idx = width * frame;
+            if (img_idx >= std::ssize(bscan_image)) {
+                continue;
+            }
+            const auto dist_ptr = &bscan_image[img_idx];
             const auto dist_sz  = width;
             memcpy(dist_ptr, data.data(), std::min<int>(dist_sz, std::ssize(data)));
         }
 
-        b_scan_sp->replace(cscan_image, width, height);
+        b_scan_sp->replace(bscan_image, width, height);
     } else {
         setScanViewHandler(nullptr);
     }
