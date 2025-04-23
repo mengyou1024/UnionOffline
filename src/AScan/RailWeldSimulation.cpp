@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QtMath>
 #include <Specialization.hpp>
+#include <union_common.hpp>
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.RailWeldSimulation");
 
