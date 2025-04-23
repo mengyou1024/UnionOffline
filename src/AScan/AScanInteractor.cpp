@@ -326,9 +326,14 @@ void AScanInteractor::updateBOrCScanView() {
 
         const auto frame_per_row = cscan_spec->getCScanXDots();
         const auto frame_per_col = cscan_spec->getCScanYDots();
-        auto       c_scan_sp     = std::make_shared<Union::View::CScanView>();
-        m_scanViewSp             = c_scan_sp;
-        setScanViewHandler(m_scanViewSp.get());
+
+        auto c_scan_sp = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+        if (c_scan_sp == nullptr) {
+            c_scan_sp    = std::make_shared<Union::View::CScanView>();
+            m_scanViewSp = c_scan_sp;
+            setScanViewHandler(m_scanViewSp.get());
+        }
+
         std::vector<uint8_t> cscan_image;
 
         const auto width  = frame_per_row;
@@ -349,9 +354,13 @@ void AScanInteractor::updateBOrCScanView() {
         // VARIFY: 更新B扫图像
         const auto bscan_spec = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
         const auto mdata_sped = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
-        auto       b_scan_sp  = std::make_shared<Union::View::BScanView>();
-        m_scanViewSp          = b_scan_sp;
-        setScanViewHandler(m_scanViewSp.get());
+        auto       b_scan_sp  = std::dynamic_pointer_cast<Union::View::BScanView>(aScanIntf());
+        if (b_scan_sp == nullptr) {
+            b_scan_sp    = std::make_shared<Union::View::BScanView>();
+            m_scanViewSp = b_scan_sp;
+            setScanViewHandler(m_scanViewSp.get());
+        }
+
         std::vector<uint8_t> cscan_image;
         const auto           height = bscan_spec->getBScanXDots();
         int                  width  = 0;
@@ -361,7 +370,7 @@ void AScanInteractor::updateBOrCScanView() {
             }
         }
         cscan_image.resize(width * height);
-        std::memset(cscan_image.data(), 255, std::ssize(cscan_image));
+        std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
 
         for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
             const auto& data = mdata_sped->getDataInGate(idx, 0);
