@@ -77,6 +77,8 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
 )
 
+target_compile_definitions(${PROJECT_NAME} PUBLIC UNICODE _UNICODE)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 set(UNIONLIB_DISABLE_AUTOMATE ON)

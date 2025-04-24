@@ -23,7 +23,7 @@
 
     #pragma comment(lib, "Dbghelp.lib")
 
-void CreateDumpFile(LPCSTR lpstrDumpFilePathName, EXCEPTION_POINTERS* pException) {
+void CreateDumpFile(LPCWSTR lpstrDumpFilePathName, EXCEPTION_POINTERS* pException) {
     // 创建Dump文件
     HANDLE hDumpFile = CreateFile(lpstrDumpFilePathName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     // Dump信息
@@ -45,7 +45,7 @@ LONG ApplicationCrashHandler(EXCEPTION_POINTERS* pException) {
     auto stack_trace = std::stacktrace::current();
     qCritical(std::to_string(stack_trace).c_str());
 
-    CreateDumpFile(file_dump.toStdString().c_str(), pException);
+    CreateDumpFile(file_dump.toStdWString().c_str(), pException);
     FatalAppExit(0xFFFFFFFF, _T("*** Unhandled Exception ***"));
 
     return EXCEPTION_EXECUTE_HANDLER;
@@ -68,8 +68,16 @@ int main(int argc, char* argv[]) {
 #else
     QQuickWindow::setSceneGraphBackend(QSGRendererInterface::OpenGL);
 #endif
-    SingleApplication app(argc, argv);
+    SingleApplication app(argc, argv, true);
+
     app.setWindowIcon(QIcon(":/img/morose.ico"));
+
+    if (!app.isPrimary()) {
+        app.sendMessage(app.arguments().join('|').toUtf8());
+        return 0;
+    }
+
+    QDir::setCurrent(qApp->applicationDirPath());
 
     QDir logDir;
     if (!logDir.exists("log")) {
@@ -114,9 +122,11 @@ int main(int argc, char* argv[]) {
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
     qInfo() << "app start param:";
-    for (auto i = 0; i < argc; i++) {
-        qInfo() << argv[i];
+
+    for (auto&& arg : app.arguments()) {
+        qInfo() << arg;
     }
+
     qInfo() << std::string(80, '-').c_str();
     qDebug() << "ssl build version:" << QSslSocket::sslLibraryBuildVersionString();
     qDebug() << "supprot ssl:" << QSslSocket::supportsSsl();
@@ -158,6 +168,7 @@ int main(int argc, char* argv[]) {
     });
     auto root_objs   = engine.rootObjects();
     auto main_window = qobject_cast<QQuickWindow*>(root_objs.first());
+
     QObject::connect(&app, &SingleApplication::instanceStarted, main_window, [main_window]() {
         main_window->setFlag(Qt::WindowStaysOnTopHint, true);
         if (main_window->windowState() == Qt::WindowMaximized) {
@@ -167,6 +178,39 @@ int main(int argc, char* argv[]) {
         }
         main_window->showNormal();
         main_window->setFlag(Qt::WindowStaysOnTopHint, false);
+        main_window->requestActivate();
+        main_window->raise();
+    });
+
+    if (app.arguments().size() > 1) {
+        auto open_file = QFile(app.arguments().at(1));
+        if (open_file.exists()) {
+            QMetaObject::invokeMethod(main_window, "extern_open_file", Q_ARG(QVariant, app.arguments().at(1)));
+        }
+    }
+
+    QObject::connect(&app, &SingleApplication::receivedMessage, main_window, [main_window](int, QByteArray message) {
+        auto args = QString(message).split('|');
+
+        if (args.size() > 1) {
+            QMetaObject::invokeMethod(main_window, "extern_open_file", Q_ARG(QVariant, args.at(1)));
+        }
+
+        main_window->alert(500);
+        main_window->setFlag(Qt::WindowStaysOnTopHint, true);
+        bool show_maximized = false;
+        if (main_window->windowState() == Qt::WindowMaximized) {
+            main_window->resize(main_window->minimumSize());
+            main_window->setX((QGuiApplication::primaryScreen()->geometry().width() - main_window->minimumSize().width()) / 2);
+            main_window->setY((QGuiApplication::primaryScreen()->geometry().height() - main_window->minimumSize().height()) / 2);
+            show_maximized = true;
+        }
+        main_window->setFlag(Qt::WindowStaysOnTopHint, false);
+        if (show_maximized) {
+            main_window->showMaximized();
+        } else {
+            main_window->showNormal();
+        }
         main_window->requestActivate();
         main_window->raise();
     });

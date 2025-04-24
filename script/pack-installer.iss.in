@@ -11,6 +11,26 @@
 #define MoroseIcon  "@MOROSE_ICON@"
 #define MoroseInstallerName "@PROJECT_NAME@-Setup-@APP_VERSION@"
 
+#define MDAT_AppAssocName "T8/390N图像"
+#define MDAT_AppAssocExt ".mdat"
+#define MDAT_AppAssocKey StringChange(MDAT_AppAssocName, " ", "")
+
+#define DAS_AppAssocName "N、R系列单幅图像"
+#define DAS_AppAssocExt ".das"
+#define DAS_AppAssocKey StringChange(DAS_AppAssocName, " ", "")
+
+#define DAT_AppAssocName "N、R系列连续图像"
+#define DAT_AppAssocExt ".dat"
+#define DAT_AppAssocKey StringChange(DAT_AppAssocName, " ", "")
+
+#define TOF_AppAssocName "TOFD图像"
+#define TOF_AppAssocExt ".tof"
+#define TOF_AppAssocKey StringChange(TOF_AppAssocName, " ", "")
+
+#define TPE_AppAssocName "TOFD/PE图像"
+#define TPE_AppAssocExt ".tpe"
+#define TPE_AppAssocKey StringChange(TPE_AppAssocName, " ", "")
+
 [Setup]
 ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
 ; (要生成新的GUID，请在IDE中单击Tools | generate GUID。)
@@ -56,6 +76,7 @@ Source: "@MOROSE_DIST_DIR@/vc_redist.x64.exe"; DestDir: "{app}"; Flags: skipifso
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}/log"
+Type: filesandordirs; Name: "{app}/crash"
 Type: files; Name: "{app}/setting.ini"
 @MOROSE_UNINSTALL_DELETE_STRING@
 
@@ -68,6 +89,38 @@ Name: "{group}\{#MyAppNameZhCN}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppNameZhCN}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppNameZhCN}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppNameZhCN}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+
+[Registry]
+Root: HKA; Subkey: "Software\Classes\{#MDAT_AppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#MDAT_AppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MDAT_AppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#MDAT_AppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MDAT_AppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MDAT_AppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#MDAT_AppAssocExt}"; ValueData: ""; Flags: uninsdeletekey
+
+Root: HKA; Subkey: "Software\Classes\{#DAS_AppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#DAS_AppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#DAS_AppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#DAS_AppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#DAS_AppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#DAS_AppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#DAS_AppAssocExt}"; ValueData: ""; Flags: uninsdeletekey
+
+Root: HKA; Subkey: "Software\Classes\{#DAT_AppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#DAT_AppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#DAT_AppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#DAT_AppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#DAT_AppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#DAT_AppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#DAT_AppAssocExt}"; ValueData: ""; Flags: uninsdeletekey
+
+Root: HKA; Subkey: "Software\Classes\{#TOF_AppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#TOF_AppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#TOF_AppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#TOF_AppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#TOF_AppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#TOF_AppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#TOF_AppAssocExt}"; ValueData: ""; Flags: uninsdeletekey
+
+Root: HKA; Subkey: "Software\Classes\{#TPE_AppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#TPE_AppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#TPE_AppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#TPE_AppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#TPE_AppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#TPE_AppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#TPE_AppAssocExt}"; ValueData: ""; Flags: uninsdeletekey
+
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppNameZhCN, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

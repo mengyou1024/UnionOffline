@@ -77,7 +77,7 @@
 <context>
     <name>ControlUI</name>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="78"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="77"/>
         <source>文件</source>
         <translation>Filename</translation>
     </message>
@@ -102,20 +102,20 @@
     <message>
         <location filename="../resource/qml/src/AScan/ControlUI.qml" line="175"/>
         <location filename="../resource/qml/src/AScan/ControlUI.qml" line="189"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="154"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="169"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="153"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="168"/>
         <source>报表生成</source>
         <translation>Generate Report</translation>
     </message>
     <message>
         <location filename="../resource/qml/src/AScan/ControlUI.qml" line="183"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="161"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="160"/>
         <source>探伤记录</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../resource/qml/src/AScan/ControlUI.qml" line="188"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="168"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="167"/>
         <source>探伤报告</source>
         <translation type="unfinished"></translation>
     </message>
@@ -125,102 +125,102 @@
         <translation>Gain</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="223"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="224"/>
         <source>软件增益:</source>
         <translation>Software Gain:</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="250"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="252"/>
         <source>操作</source>
         <translation>Operation</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="268"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="269"/>
         <source>播放</source>
         <translation>Play</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="268"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="269"/>
         <source>停止</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="309"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="310"/>
         <source>上一帧</source>
         <translation>Previous</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="334"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="335"/>
         <source>下一帧</source>
         <translation>Next</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="363"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="364"/>
         <source>第 </source>
         <translation>The </translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="363"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="364"/>
         <source> 帧 / 共 </source>
         <translation> Frame / All </translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="363"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="364"/>
         <source> 帧</source>
         <translation> Frame</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="369"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="370"/>
         <source>从头开始播放</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="379"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="380"/>
         <source>连续播放所有子文件</source>
         <translation>Play all subfiles consecutively</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="431"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="433"/>
         <source>钢轨焊缝示意图</source>
         <translation>Rail weld diagram</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="447"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="452"/>
         <source>钢轨仿真</source>
         <translation>Rail simulation</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="76"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="73"/>
         <source>显示</source>
         <translation>Display</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="89"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="87"/>
         <source>TOFD显示</source>
         <translation>Display TOFD</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="98"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="96"/>
         <source>PE显示</source>
         <translation>Display PE</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="112"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="110"/>
         <source>垂直线联动</source>
         <translation>Vertical linkage</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="127"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="125"/>
         <source>水平线联动</source>
         <translation>Horizontal line linkage</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="143"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="141"/>
         <source>报表</source>
         <translation>Report Forms</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="189"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="188"/>
         <source>TOFD软件增益</source>
         <translation>TOFD Gain</translation>
     </message>
@@ -230,76 +230,76 @@
         <translation>PE Gain:</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="261"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="262"/>
         <source>TOFD测量线</source>
         <translation>TOFD Line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="274"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="290"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="423"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="439"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="276"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="292"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="426"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="442"/>
         <source>X轴</source>
         <translation>X Axial</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="306"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="322"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="455"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="471"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="308"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="324"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="458"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="474"/>
         <source>Z轴</source>
         <translation>Z Axial</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="343"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="492"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="345"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="495"/>
         <source>X轴间距</source>
         <translation>X Axial Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="363"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="512"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="365"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="515"/>
         <source>Z轴间距</source>
         <translation>Z Axial Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="384"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="386"/>
         <source>显示时间</source>
         <translation>Display Time</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="391"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="393"/>
         <source>深度</source>
         <translation>Depth</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="410"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="412"/>
         <source>PE测量线</source>
         <translation>PE Line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="531"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="534"/>
         <source>TOFD间距</source>
         <translation>TOFD Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="567"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="623"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="571"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="628"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="571"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="575"/>
         <source>TOFD更改</source>
         <translation>Set</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="587"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="591"/>
         <source>PE间距</source>
         <translation>PE Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="627"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="632"/>
         <source>PE更改</source>
         <translation>Set</translation>
     </message>
@@ -396,30 +396,30 @@
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="226"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="235"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="227"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="236"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="228"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="237"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="229"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="238"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="309"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="310"/>
         <location filename="../resource/qml/src/TofdPe/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="397"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="398"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="430"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="431"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -427,58 +427,58 @@
 <context>
     <name>MainWnd</name>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="54"/>
+        <location filename="../resource/qml/MainWnd.qml" line="65"/>
         <source>打开</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="60"/>
+        <location filename="../resource/qml/MainWnd.qml" line="71"/>
         <source>清除</source>
         <translation>Clear</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="63"/>
         <location filename="../resource/qml/MainWnd.qml" line="74"/>
+        <location filename="../resource/qml/MainWnd.qml" line="85"/>
         <source>当前未打开文件</source>
         <translation>No file is currently open</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="71"/>
+        <location filename="../resource/qml/MainWnd.qml" line="82"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="83"/>
+        <location filename="../resource/qml/MainWnd.qml" line="94"/>
         <source>通讯</source>
         <translation>Communication</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="106"/>
+        <location filename="../resource/qml/MainWnd.qml" line="117"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="123"/>
+        <location filename="../resource/qml/MainWnd.qml" line="134"/>
         <source>帮助/关于软件</source>
         <translation>Help/About</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="400"/>
+        <location filename="../resource/qml/MainWnd.qml" line="415"/>
         <source>友联科技, 欢迎使用</source>
         <translation>Welcome to Union Technology</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="406"/>
+        <location filename="../resource/qml/MainWnd.qml" line="421"/>
         <source>版权所有© 南通友联数码技术开发有限公司</source>
         <translation>Copyright © Nantong Youlian Digital Technology Development Co., LTD</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="440"/>
+        <location filename="../resource/qml/MainWnd.qml" line="455"/>
         <source>选择一个文件</source>
         <translation>Select a file</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="468"/>
+        <location filename="../resource/qml/MainWnd.qml" line="485"/>
         <source>错误的文件后缀</source>
         <translation>Incorrect file suffix</translation>
     </message>
@@ -486,277 +486,279 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390/hfdat.cpp" line="108"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390/hfdat.cpp" line="110"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="236"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="831"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="834"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="238"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="105"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="107"/>
         <source>基本信息</source>
         <translation>Basic Information</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390/hfdat.cpp" line="109"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="222"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="832"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="223"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="106"/>
         <source>通道</source>
         <translation>Channel</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="54"/>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="127"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="55"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="156"/>
         <source>检测单位</source>
         <translation>Company of detection</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="55"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="56"/>
         <source>报告编写</source>
         <translation>Reporting</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="56"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="57"/>
         <source>委托单位</source>
         <translation>Compayn of entrust</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="57"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="58"/>
         <source>检测日期</source>
         <translation>Date of detection</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="58"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="59"/>
         <source>名称</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="59"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="60"/>
         <source>编号</source>
         <translation>Serial Number</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="60"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="61"/>
         <source>表面热处理</source>
         <translation>Surface Heat Treatment</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="203"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="61"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="62"/>
         <source>材质</source>
         <translation>Material</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="62"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="63"/>
         <source>表面粗糙度</source>
         <translation>Surface Roughness</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="63"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="64"/>
         <source>探头型号</source>
         <translation>Probe Model</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="64"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="213"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="65"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="214"/>
         <source>晶片尺寸</source>
         <translation>Chip Size</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="65"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="211"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="66"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="212"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="233"/>
         <source>探头类型</source>
         <translation>Probe type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="66"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="218"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="67"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="219"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="246"/>
         <source>前沿</source>
         <translation>Front Edge</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="67"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="68"/>
         <source>探头K值</source>
         <translation>Probe K Value</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="68"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="69"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="248"/>
         <source>频率</source>
         <translation>Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="69"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="70"/>
         <source>折射角</source>
         <translation>Angle of refraction</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="261"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="70"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="219"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="269"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="71"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="220"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="238"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="247"/>
         <source>零点</source>
         <translation>Zero Point</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="71"/>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="121"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="804"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="72"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="150"/>
         <source>仪器型号</source>
         <translation>Instrument Model</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="72"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="73"/>
         <source>灵敏度</source>
         <translation>Sensitivity</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="73"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="74"/>
         <source>回波抑制</source>
         <translation>Echo Suppression</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="74"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="75"/>
         <source>回波延时</source>
         <translation>Echo Delay</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="75"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="76"/>
         <source>声程范围</source>
         <translation>Range of acoustic path</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="245"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="76"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="221"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="253"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="77"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="222"/>
         <source>声速</source>
         <translation>Sound Velocity</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="77"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="78"/>
         <source>距离</source>
         <translation>Distance</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="78"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="79"/>
         <source>水平</source>
         <translation>Horizontal</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="79"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="80"/>
         <source>垂直</source>
         <translation>Vertical</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="80"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="81"/>
         <source>当量</source>
         <translation>Equivalent</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="81"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="82"/>
         <source>长度</source>
         <translation>Length</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="82"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="83"/>
         <source>高度</source>
         <translation>Height</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="83"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="84"/>
         <source>等级</source>
         <translation>Level</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="84"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="85"/>
         <source>探伤结果</source>
         <translation>Det4ection Result</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="85"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="86"/>
         <source>探伤标准</source>
         <translation>Detection Standard</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="86"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="87"/>
         <source>探伤人员</source>
         <translation>Detection Persion</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="87"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="88"/>
         <source>负责人员</source>
         <translation>Responsible Officer</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="88"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="89"/>
         <source>备注</source>
         <translation>Comment</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="127"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="128"/>
         <source>当探头为直探头时, 使用声程模式X</source>
         <translation>When the probe is straight, the path mode X is used</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="132"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="133"/>
         <source>当探头为斜探头时, 探头角度近乎为0</source>
         <translation>When the probe is inclined, the probe Angle is almost 0</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="205"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="206"/>
         <source>基本增益</source>
         <translation>Basic Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="206"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="207"/>
         <source>扫查增益</source>
         <translation>Scan Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="207"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="208"/>
         <source>表面补偿</source>
         <translation>Surface Compensation Gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="212"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="213"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="235"/>
         <source>探头频率</source>
         <translation>Probe Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="286"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="374"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="906"/>
         <source>错误的声程模式</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="306"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="217"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="314"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="218"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="229"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="245"/>
         <source>声程</source>
         <translation>Sonic Path Distance</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="292"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="220"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="300"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="221"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="230"/>
         <source>延时</source>
         <translation>Delay</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="223"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="224"/>
         <source>K值/角度</source>
         <translation>K/Angle</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="225"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="226"/>
         <source>抑制</source>
         <translation>Supression</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="234"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="236"/>
         <source>增益参数</source>
         <translation>Gain Parameters</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="235"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="237"/>
         <source>探头信息</source>
         <translation>Probe Informations</translation>
     </message>
@@ -804,71 +806,71 @@ Click &lt; OK &gt; to exit and save the DAC
 Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="165"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="173"/>
         <source>通道数量</source>
         <translation>Channel Numbers</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="174"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="182"/>
         <source>波门数量</source>
         <translation>Gate Numbers</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="183"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="191"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="211"/>
         <source>重复频率</source>
         <translation>Repeat Freqency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="199"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="207"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="210"/>
         <source>发射电压</source>
         <translation>Transmitting Voltage</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="217"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="225"/>
         <source>通道标志</source>
         <translation>Channel Flag</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="231"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="239"/>
         <source>探头阻尼</source>
         <translation>Probe Damping</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="277"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="285"/>
         <source>脉冲宽度</source>
         <translation>Pulse Width</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="320"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="328"/>
         <source>采样因子</source>
         <translation>Sampling Factor</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="351"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="359"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="231"/>
         <source>滤波频带</source>
         <translation>Filter Band</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="369"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="377"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="232"/>
         <source>检波方式</source>
         <translation>Demodu Mode</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="394"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="402"/>
         <source>相位翻转</source>
         <translation>Phase Reverse</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="446"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="454"/>
         <source>声程模式</source>
         <translation>Sonic Path Distance Mode</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="465"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="473"/>
         <source>补偿增益</source>
         <translation type="unfinished"></translation>
     </message>
@@ -978,7 +980,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Scan Increment</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="230"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="232"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="220"/>
         <source>工件厚度</source>
         <translation>Workpiece Thickness</translation>
@@ -994,7 +996,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Groove Type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="336"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="344"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="228"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="244"/>
         <source>增益</source>
@@ -1006,7 +1008,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Probe Size</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="408"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="416"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="236"/>
         <source>探头角度</source>
         <translation>Probe Angle</translation>
@@ -1018,7 +1020,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Degree</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="430"/>
+        <location filename="../components/union/src/HDBridge/Properties/HDBridgePropertiesDefine.cpp" line="438"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="237"/>
         <source>探头前沿</source>
         <translation>Probe Front</translation>
@@ -1078,7 +1080,8 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/BasicType/Probe.cpp" line="22"/>
+        <location filename="../components/union/src/BasicType/Probe.cpp" line="23"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATImpl.cpp" line="20"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="265"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="280"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="291"/>
@@ -1129,298 +1132,68 @@ Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
         <location filename="../components/union/src/BasicType/Probe.cpp" line="16"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="301"/>
         <source>穿透探头</source>
         <translation>Penetration Probe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="448"/>
-        <source>管材长度</source>
-        <translation>Pipe Length</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="476"/>
-        <source>管材壁厚</source>
-        <translation>Wall thickness of pipe</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="490"/>
-        <source>周向步进</source>
-        <translation>Circumferential step</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="538"/>
-        <source>扫查速度</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="78"/>
-        <source>管材长度必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="85"/>
-        <source>管材外径必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="92"/>
-        <source>管材壁厚必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="99"/>
-        <source>轴向步进必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="106"/>
-        <source>轴向步进必须小于管材长度</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="113"/>
-        <source>周向步进必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="120"/>
-        <source>周向步进必须小于360</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="127"/>
-        <source>扫查速度必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="134"/>
-        <source>测厚正偏差必须大于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="141"/>
-        <source>测厚负偏差必须小于0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="148"/>
-        <source>回波次数必须大于等于1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="462"/>
-        <source>管材外径</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="504"/>
-        <source>托辊直径</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="523"/>
-        <source>扫查方向</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="532"/>
-        <source>正向</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="532"/>
-        <source>反向</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="552"/>
-        <source>托辊线速度</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="566"/>
-        <source>整体偏移量(左侧)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="580"/>
-        <source>整体偏移量(右侧)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="594"/>
-        <source>通道偏移量(左侧)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="608"/>
-        <source>通道偏移量(右侧)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="622"/>
-        <source>扫查长度</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="636"/>
-        <source>扫查高度</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="650"/>
-        <source>测厚正偏差</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="664"/>
-        <source>测厚负偏差</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceTube.cpp" line="678"/>
-        <source>回波次数</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="137"/>
-        <source>工件型号</source>
-        <translation>Workpiece Type</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="150"/>
-        <source>工件批次</source>
-        <translation>Workpiect batch</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="163"/>
-        <source>工件序号</source>
-        <translation>Workpiect Sequence</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="176"/>
-        <source>评定</source>
-        <translation>Evaluate</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="185"/>
-        <source>待定</source>
-        <translation>Pending</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="185"/>
-        <source>合格</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="185"/>
-        <source>不合格</source>
-        <translation>NG</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="191"/>
-        <source>仪器</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="215"/>
-        <source>表面状态</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="227"/>
-        <source>探伤要求</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="239"/>
-        <source>探伤比例</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="251"/>
-        <source>探头</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="263"/>
-        <source>试块</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="275"/>
-        <source>耦合剂</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="287"/>
-        <source>标准</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="299"/>
-        <source>检测人员</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.cpp" line="311"/>
-        <source>规格</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="301"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="356"/>
+        <location filename="../components/union/src/BasicType/Probe.cpp" line="18"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="346"/>
         <source>双探头</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="811"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="827"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="812"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="828"/>
         <source>轨型</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="813"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="829"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="817"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="833"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="227"/>
+        <source>仪器名称</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="838"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="122"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="151"/>
         <source>水平线性</source>
         <translation>Horizontal Linearity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="123"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="152"/>
         <source>垂直线性</source>
         <translation>Vertical Linearity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="124"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="153"/>
         <source>分辨力</source>
         <translation>Resolution</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="125"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="154"/>
         <source>动态范围</source>
         <translation>Dynamic Range</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="126"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="155"/>
         <source>灵敏度余量</source>
         <translation>Surplus Sensitivity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="820"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="696"/>
         <source>同时使用B扫和C扫, B扫已被禁用</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1436,40 +1209,9 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Unable to download update: interface is empty</translation>
     </message>
     <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="14"/>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="15"/>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="16"/>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="19"/>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="21"/>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="27"/>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="29"/>
-        <source>默认</source>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATImpl.cpp" line="18"/>
+        <source>PXUT-T8钢轨</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="22"/>
-        <source>内部质量</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="24"/>
-        <source>组合探头</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="25"/>
-        <source>气瓶样件</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="26"/>
-        <source>水</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/Automate/Workpiece/WorkpieceBase.hpp" line="28"/>
-        <source>无</source>
-        <translation type="unfinished">None</translation>
     </message>
 </context>
 <context>
@@ -1485,12 +1227,12 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Software Update</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="53"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="54"/>
         <source>软件启动时检查更新</source>
         <translation>Check for updates at software startup</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="77"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="79"/>
         <source>语言</source>
         <translation>Languages</translation>
     </message>

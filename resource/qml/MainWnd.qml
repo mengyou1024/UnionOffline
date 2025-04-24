@@ -8,6 +8,7 @@ import Qt.labs.platform 1.1
 import Qt.labs.settings 1.1
 import Morose.Utils 1.0
 import "./components"
+import Union.Utils 1.0
 
 ApplicationWindow {
     LoggingCategory {
@@ -31,6 +32,16 @@ ApplicationWindow {
     property bool controlui_unflod: true
     property string mainUi_name: ""
     property string fileName2Open: ""
+
+    DropArea {
+        anchors.fill: parent
+        onDropped: drop => {
+                       console.log(category, "drop:", drop.text)
+                       if (FileManagement.isFileExists(drop.text.substring(8))) {
+                           extern_open_file(drop.text.substring(8))
+                       }
+                   }
+    }
 
     Conditional {
         id: listview_updated
@@ -203,7 +214,11 @@ ApplicationWindow {
                             id: t
                             text: fileName
                             anchors.centerIn: parent
+                            anchors.fill: parent
                             font.pixelSize: 16
+                            elide: Text.ElideMiddle
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
                         }
                         MouseArea {
                             // @disable-check M16
@@ -441,6 +456,7 @@ ApplicationWindow {
         nameFilters: FILEDIALOG_NAMEFILTER
         folder: file_dialog_cache.openFileCacheDir
         onAccepted: {
+            console.log(category, "select file:", file_dialog.file)
             listView.currentIndex = folder_list.indexOf(file_dialog.file)
             listview_unfold = true
             listview_unfold_ctrl.visible = true
@@ -457,6 +473,7 @@ ApplicationWindow {
 
         onFolderChanged: {
             file_dialog_cache.openFileCacheDir = folder
+            file_dialog_updated.conditionRlease()
         }
     }
 
@@ -565,5 +582,25 @@ ApplicationWindow {
         if (MOROSE_APP_ENABLE_UPGRADE === 1) {
             AppUpdater.uiInitOK = true
         }
+    }
+
+    function extern_open_file(filepath) {
+        console.log(category, "filepath:", filepath)
+        let file_dir = FileManagement.resolveQmlFileDir(filepath)
+        file_dialog.folder = file_dir
+        folder_list.folder = ""
+        folder_list.folder = Qt.binding(() => {
+                                            return file_dialog.folder
+                                        })
+        listview_updated.waitCondition()
+        let filename = FileManagement.toQmlAbsolutePath(filepath)
+        console.log(category, "filename:", filename)
+        console.log(category, "file_dialog_file:", file_dialog.file)
+        let current_index = folder_list.indexOf(filename)
+        console.log(category, "current_index:", current_index)
+        listView.currentIndex = current_index
+        listview_unfold = true
+        listview_unfold_ctrl.visible = true
+        actionMainType(getMainUITypeIndex(filepath), filepath)
     }
 }
