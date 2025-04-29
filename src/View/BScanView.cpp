@@ -1,0 +1,111 @@
+#include "BScanView.hpp"
+#include "ColorTable.hpp"
+#include <QCursor>
+#include <QLoggingCategory>
+#include <QPainter>
+
+[[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.View.BScanView");
+
+namespace Union::View {
+
+    BScanView::BScanView() {
+        setAcceptedMouseButtons(Qt::LeftButton);
+        m_reverseVerticalAxis = true;
+    }
+
+    QColor BScanView::cursorLineColor() const {
+        return m_cursorLineColor;
+    }
+
+    void BScanView::setCursorLineColor(const QColor &newCursorLineColor) {
+        if (m_cursorLineColor == newCursorLineColor)
+            return;
+        m_cursorLineColor = newCursorLineColor;
+        emit cursorLineColorChanged();
+        QMetaObject::invokeMethod(this, [this]() { this->update(); });
+    }
+
+    int BScanView::cursorLineWidth() const {
+        return m_cursorLineWidth;
+    }
+
+    void BScanView::setCursorLineWidth(int newCursorLineWidth) {
+        if (m_cursorLineWidth == newCursorLineWidth)
+            return;
+        m_cursorLineWidth = newCursorLineWidth;
+        emit cursorLineWidthChanged();
+    }
+
+    int BScanView::dataCursor() const {
+        return m_dataCursor;
+    }
+
+    void BScanView::setDataCursor(int newDataCursor) {
+        if (m_dataCursor == newDataCursor)
+            return;
+        m_dataCursor = newDataCursor;
+        emit dataCursorChanged();
+    }
+
+    void BScanView::resetDrawLine() {
+        m_drawLine = std::nullopt;
+    }
+
+    void BScanView::replace(const std::vector<std::optional<uint8_t>> &data, int width, int height) noexcept {
+        try {
+            auto           image       = QImage(width, height, QImage::Format_RGB888);
+            decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::T8ColorTable();
+            image.fill(0);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (data.at(y * width + x).has_value()) {
+                        image.setPixel(x, y, COLOR_TABLE.at(data.at(y * width + x).value()));
+                    }
+                }
+            }
+
+            QMetaObject::invokeMethod(this, [=, this, image = std::move(image)]() mutable {
+                m_image = std::move(image);
+                update();
+            });
+        } catch (const std::exception &e) {
+            qCWarning(TAG) << "replace image error";
+            qCWarning(TAG) << e.what();
+        }
+    }
+
+    void BScanView::paint(QPainter *painter) {
+        BasicView::paint(painter);
+        painter->drawImage(getDrawable(), m_image);
+        if (m_drawLine.has_value()) {
+            painter->setPen(QPen(cursorLineColor(), cursorLineWidth()));
+            painter->drawLine(QPoint(getDrawable().left(), m_drawLine.value()), QPoint(getDrawable().right(), m_drawLine.value()));
+        }
+    }
+
+    void BScanView::mousePressEvent(QMouseEvent *event) {
+        eventHandlerCommon(event);
+    }
+
+    void BScanView::mouseMoveEvent(QMouseEvent *event) {
+        if (eventHandlerCommon(event)) {
+            setCursor(Qt::SizeVerCursor);
+        }
+    }
+
+    void BScanView::mouseReleaseEvent(QMouseEvent *) {
+        setCursor(Qt::ArrowCursor);
+    }
+
+    bool BScanView::eventHandlerCommon(QMouseEvent *event) noexcept {
+        if (!getDrawable().contains(QPoint(event->x(), event->y()))) {
+            return false;
+        }
+
+        auto data_cursor = (getDrawable().y() - event->y()) * m_image.height() / getDrawable().height();
+        setDataCursor(std::abs(data_cursor));
+        m_drawLine = event->y();
+        QMetaObject::invokeMethod(this, [this]() { this->update(); });
+        return true;
+    }
+} // namespace Union::View
