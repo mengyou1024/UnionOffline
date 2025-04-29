@@ -444,7 +444,14 @@ void AScanInteractor::setAScanCursor(int newAScanCursor) {
     if (m_aScanCursor == newAScanCursor) {
         return;
     }
+
     m_aScanCursor = newAScanCursor;
+
+    auto cscan_spec = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
+    if (cscan_spec && (cscan_spec->isSpecialCScanEnabled() || cscan_spec->isSpecialBScanEnabled())) {
+        m_aScanCursor = cscan_spec->redirectDataCursor(m_aScanCursor);
+    }
+
     emit aScanCursorChanged();
 }
 

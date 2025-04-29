@@ -473,7 +473,6 @@ ApplicationWindow {
 
         onFolderChanged: {
             file_dialog_cache.openFileCacheDir = folder
-            file_dialog_updated.conditionRlease()
         }
     }
 
