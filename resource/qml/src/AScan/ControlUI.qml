@@ -212,7 +212,7 @@ ScrollView {
             Layout.preferredWidth: layout_gain.width + horizontalPadding * 2
             Layout.preferredHeight: layout_gain.height + bottomPadding + topPadding
             Layout.fillWidth: true
-            visible: false // v2.2.250123版本以后屏蔽此功能
+            visible: true
             ColumnLayout {
                 id: layout_gain
                 anchors.centerIn: parent

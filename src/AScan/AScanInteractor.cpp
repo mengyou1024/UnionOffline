@@ -334,12 +334,12 @@ void AScanInteractor::updateBOrCScanView() {
             setScanViewHandler(m_scanViewSp.get());
         }
 
-        std::vector<uint8_t> cscan_image;
+        std::vector<std::optional<uint8_t>> cscan_image;
 
         const auto width  = frame_per_row;
         const auto height = frame_per_col;
         cscan_image.resize(width * height);
-        std::memset(cscan_image.data(), 0, std::ssize(cscan_image));
+        std::ranges::fill(cscan_image, std::nullopt);
 
         for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
             uint8_t amp_in_gate;
@@ -349,9 +349,8 @@ void AScanInteractor::updateBOrCScanView() {
             if (img_idx >= std::ssize(cscan_image)) {
                 continue;
             }
-            cscan_image.at(img_idx) = amp_in_gate;
+            cscan_image.at(img_idx) = std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(amp_in_gate, getSoftGain()));
         }
-
         c_scan_sp->replace(cscan_image, width, height);
 
     } else if (showBScanView()) {
@@ -365,28 +364,35 @@ void AScanInteractor::updateBOrCScanView() {
             setScanViewHandler(m_scanViewSp.get());
         }
         setScanViewHandler(m_scanViewSp.get());
-        std::vector<uint8_t> bscan_image;
-        const auto           height = bscan_spec->getBScanXDots();
-        int                  width  = 0;
+        std::vector<std::optional<uint8_t>> bscan_image;
+        const auto                          height = bscan_spec->getBScanXDots();
+        int                                 width  = 0;
         for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
             if (std::ssize(mdata_sped->getDataInGate(i, 0)) > width) {
                 width = std::ssize(mdata_sped->getDataInGate(i, 0));
             }
         }
         bscan_image.resize(width * height);
-        std::memset(bscan_image.data(), 0, std::ssize(bscan_image));
+        std::ranges::fill(bscan_image, std::nullopt);
 
         for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-            const auto& data = mdata_sped->getDataInGate(idx, 0);
+            auto data = mdata_sped->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
+                            return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
+                        }) |
+                        std::ranges::to<std::vector<std::optional<uint8_t>>>();
 
             auto       frame   = bscan_spec->getBScanEncoder(idx);
             const auto img_idx = width * frame;
+
             if (img_idx >= std::ssize(bscan_image)) {
                 continue;
             }
-            const auto dist_ptr = &bscan_image[img_idx];
-            const auto dist_sz  = width;
-            memcpy(dist_ptr, data.data(), std::min<int>(dist_sz, std::ssize(data)));
+
+            auto dist_ptr = bscan_image.begin() + img_idx;
+
+            for (auto i : std::views::iota(0, std::min<int>(width, std::ssize(data)))) {
+                *(dist_ptr + i) = data.at(i);
+            }
         }
 
         b_scan_sp->replace(bscan_image, width, height);
