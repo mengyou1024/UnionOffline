@@ -103,59 +103,73 @@ void AScanInteractor::setChartView(QQuickItem* newChartView) {
 }
 
 bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResult* img) {
-    if (!checkAScanCursorValid()) {
+    try {
+        if (!checkAScanCursorValid()) {
+            return false;
+        }
+
+        auto vmp = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
+
+        auto       excel_template   = "excel_templates/AScan/T_报表生成.xlsx";
+        auto       rail_weld_spec   = dynamic_cast<Special::RailWeldDigramSpecial*>(aScanIntf().get());
+        auto       mdat_type        = dynamic_cast<Union::UniversalApparatus::AScan::Instance::UnType*>(aScanIntf().get());
+        const auto is_rail_weld_390 = rail_weld_spec != nullptr && mdat_type == nullptr;
+        const auto is_rail_weld_t8  = mdat_type != nullptr && !mdat_type->isCMP001IsNullptr(getAScanCursor());
+        if (is_rail_weld_390 || is_rail_weld_t8) {
+            // 钢轨特化版本(390、T8)
+            excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
+        } else if (dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get())) {
+            // 390N/T8带摄像头
+            excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
+        }
+
+        QMap<QString, QImage> image_map = {};
+
+        if (img) {
+            image_map.insert("AScan", img->image());
+        }
+
+        auto img_ascan_interface = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+        if (img_ascan_interface) {
+            auto cameraImage = img_ascan_interface->getCameraImage(getAScanCursor());
+            if (!cameraImage.isNull()) {
+                image_map.insert("Camera", cameraImage);
+            }
+        }
+
+        auto result = Union::Common::File::RenderExcel::Render(excel_template, _fileName, vmp, image_map);
+        qCInfo(TAG) << "保存报表:" << _fileName;
+        return result;
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
         return false;
     }
-
-    auto vmp = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
-
-    auto       excel_template   = "excel_templates/AScan/T_报表生成.xlsx";
-    auto       rail_weld_spec   = dynamic_cast<Special::RailWeldDigramSpecial*>(aScanIntf().get());
-    auto       mdat_type        = dynamic_cast<Union::UniversalApparatus::AScan::Instance::UnType*>(aScanIntf().get());
-    const auto is_rail_weld_390 = rail_weld_spec != nullptr && mdat_type == nullptr;
-    const auto is_rail_weld_t8  = mdat_type != nullptr && !mdat_type->isCMP001IsNullptr(getAScanCursor());
-    if (is_rail_weld_390 || is_rail_weld_t8) {
-        // 钢轨特化版本(390、T8)
-        excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
-    } else if (dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get())) {
-        // 390N/T8带摄像头
-        excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
-    }
-
-    QMap<QString, QImage> image_map = {};
-
-    if (img) {
-        image_map.insert("AScan", img->image());
-    }
-
-    auto img_ascan_interface = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
-    if (img_ascan_interface) {
-        auto cameraImage = img_ascan_interface->getCameraImage(getAScanCursor());
-        if (!cameraImage.isNull()) {
-            image_map.insert("Camera", cameraImage);
-        }
-    }
-
-    auto result = Union::Common::File::RenderExcel::Render(excel_template, _fileName, vmp, image_map);
-    qCInfo(TAG) << "保存报表:" << _fileName;
-    return result;
 }
 
 bool AScanInteractor::performanceClicked(QString _fileName) {
-    if (!checkAScanCursorValid()) {
+    try {
+        if (!checkAScanCursorValid()) {
+            return false;
+        }
+        const auto& performance = aScanIntf()->getPerformance(getAScanCursor());
+        QVariantMap vmp         = {
+            {QObject::tr("仪器型号"), QString::fromStdString(aScanIntf()->getInstrumentName())},
+            {QObject::tr("水平线性"), QString::number(performance.horizontalLinearity, 'f', 2)},
+            {QObject::tr("垂直线性"), QString::number(performance.verticalLinearity, 'f', 2)},
+            {QObject::tr("分辨力"), QString::number(performance.resolution, 'f', 1)},
+            {QObject::tr("动态范围"), QString::number(performance.dynamicRange, 'f', 1)},
+            {QObject::tr("灵敏度余量"), QString::number(performance.sensitivity, 'f', 1)},
+            {QObject::tr("检测单位"), ""},
+        };
+        return Union::Common::File::RenderExcel::Render("excel_templates/AScan/T_仪器性能.xlsx", _fileName, vmp, {});
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
         return false;
     }
-    const auto& performance = aScanIntf()->getPerformance(getAScanCursor());
-    QVariantMap vmp         = {
-        {QObject::tr("仪器型号"), QString::fromStdString(aScanIntf()->getInstrumentName())},
-        {QObject::tr("水平线性"), QString::number(performance.horizontalLinearity, 'f', 2)},
-        {QObject::tr("垂直线性"), QString::number(performance.verticalLinearity, 'f', 2)},
-        {QObject::tr("分辨力"), QString::number(performance.resolution, 'f', 1)},
-        {QObject::tr("动态范围"), QString::number(performance.dynamicRange, 'f', 1)},
-        {QObject::tr("灵敏度余量"), QString::number(performance.sensitivity, 'f', 1)},
-        {QObject::tr("检测单位"), ""},
-    };
-    return Union::Common::File::RenderExcel::Render("excel_templates/AScan/T_仪器性能.xlsx", _fileName, vmp, {});
 }
 
 void AScanInteractor::gainValueModified([[maybe_unused]] qreal val) {}
@@ -194,23 +208,44 @@ QVariantMap AScanInteractor::getTechnologicalParameter() {
         return {};
     }
 
-    return aScanIntf()->createTechnologicalParameter(getAScanCursor());
+    try {
+        return aScanIntf()->createTechnologicalParameter(getAScanCursor());
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
+        return {};
+    }
 }
 
 QVariantList AScanInteractor::getFileNameList() {
-    if (aScanIntf() == nullptr) {
+    try {
+        if (aScanIntf() == nullptr) {
+            return {};
+        }
+        auto         fileName_list = aScanIntf()->getFileNameList();
+        QVariantList ret;
+        for (const auto& fileName : fileName_list) {
+            ret.push_back(QVariant(QString::fromStdWString(fileName)));
+        }
+        return ret;
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
         return {};
     }
-    auto         fileName_list = aScanIntf()->getFileNameList();
-    QVariantList ret;
-    for (const auto& fileName : fileName_list) {
-        ret.push_back(QVariant(QString::fromStdWString(fileName)));
-    }
-    return ret;
 }
 
 void AScanInteractor::setFileNameIndex(int idx) {
-    if (aScanIntf() != nullptr) {
+    if (aScanIntf() == nullptr) {
+        qCCritical(TAG) << "ascan interface is nullptr";
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
+        return;
+    }
+
+    try {
         auto _last_idx = aScanIntf()->getFileNameIndex();
         if (_last_idx == idx) {
             return;
@@ -221,6 +256,10 @@ void AScanInteractor::setFileNameIndex(int idx) {
         setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
         setReplayValue(0);
         changeDataCursor();
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
     }
 }
 
@@ -315,92 +354,99 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
         qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
     }
 
-    if (showCScanView()) {
-        // VARIFY: 更新C扫图像
+    try {
+        if (showCScanView()) {
+            // VARIFY: 更新C扫图像
 
-        const auto cscan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
+            const auto cscan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
 
-        if (cscan_spec == nullptr) {
-            return;
-        }
-
-        const auto frame_per_row = cscan_spec->getCScanXDots();
-        const auto frame_per_col = cscan_spec->getCScanYDots();
-
-        auto c_scan_sp = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
-        if (c_scan_sp == nullptr) {
-            c_scan_sp    = std::make_shared<Union::View::CScanView>();
-            m_scanViewSp = c_scan_sp;
-        }
-
-        std::vector<std::optional<uint8_t>> cscan_image;
-
-        const auto width  = frame_per_row;
-        const auto height = frame_per_col;
-        cscan_image.resize(width * height);
-        std::ranges::fill(cscan_image, std::nullopt);
-
-        for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-            uint8_t amp_in_gate;
-            std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
-            auto [x, y]                        = cscan_spec->getCScanEncoder(idx);
-            const auto img_idx                 = y * width + x;
-            if (img_idx >= std::ssize(cscan_image)) {
-                continue;
-            }
-            cscan_image.at(img_idx) = std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(amp_in_gate, getSoftGain()));
-        }
-        c_scan_sp->replace(cscan_image, width, height, set_size);
-
-        setScanViewHandler(m_scanViewSp.get());
-        setSoftGainEnable(true);
-
-    } else if (showBScanView()) {
-        // VARIFY: 更新B扫图像
-        const auto bscan_spec = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
-        const auto mdata_sped = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
-        auto       b_scan_sp  = std::dynamic_pointer_cast<Union::View::BScanView>(aScanIntf());
-        if (b_scan_sp == nullptr) {
-            b_scan_sp    = std::make_shared<Union::View::BScanView>();
-            m_scanViewSp = b_scan_sp;
-        }
-
-        std::vector<std::optional<uint8_t>> bscan_image;
-        const auto                          height = bscan_spec->getBScanXDots();
-        int                                 width  = 0;
-        for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
-            if (std::ssize(mdata_sped->getDataInGate(i, 0)) > width) {
-                width = std::ssize(mdata_sped->getDataInGate(i, 0));
-            }
-        }
-        bscan_image.resize(width * height);
-        std::ranges::fill(bscan_image, std::nullopt);
-
-        for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-            auto data = mdata_sped->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
-                            return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
-                        }) |
-                        std::ranges::to<std::vector<std::optional<uint8_t>>>();
-
-            auto       frame   = bscan_spec->getBScanEncoder(idx);
-            const auto img_idx = width * frame;
-
-            if (img_idx >= std::ssize(bscan_image)) {
-                continue;
+            if (cscan_spec == nullptr) {
+                return;
             }
 
-            auto dist_ptr = bscan_image.begin() + img_idx;
+            const auto frame_per_row = cscan_spec->getCScanXDots();
+            const auto frame_per_col = cscan_spec->getCScanYDots();
 
-            for (auto i : std::views::iota(0, std::min<int>(width, std::ssize(data)))) {
-                *(dist_ptr + i) = data.at(i);
+            auto c_scan_sp = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+            if (c_scan_sp == nullptr) {
+                c_scan_sp    = std::make_shared<Union::View::CScanView>();
+                m_scanViewSp = c_scan_sp;
             }
+
+            std::vector<std::optional<uint8_t>> cscan_image;
+
+            const auto width  = frame_per_row;
+            const auto height = frame_per_col;
+            cscan_image.resize(width * height);
+            std::ranges::fill(cscan_image, std::nullopt);
+
+            for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
+                uint8_t amp_in_gate;
+                std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
+                auto [x, y]                        = cscan_spec->getCScanEncoder(idx);
+                const auto img_idx                 = y * width + x;
+                if (img_idx >= std::ssize(cscan_image)) {
+                    continue;
+                }
+                cscan_image.at(img_idx) = std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(amp_in_gate, getSoftGain()));
+            }
+            c_scan_sp->replace(cscan_image, width, height, set_size);
+
+            setScanViewHandler(m_scanViewSp.get());
+            setSoftGainEnable(true);
+
+        } else if (showBScanView()) {
+            // VARIFY: 更新B扫图像
+            const auto bscan_spec = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
+            const auto mdata_sped = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
+            auto       b_scan_sp  = std::dynamic_pointer_cast<Union::View::BScanView>(aScanIntf());
+            if (b_scan_sp == nullptr) {
+                b_scan_sp    = std::make_shared<Union::View::BScanView>();
+                m_scanViewSp = b_scan_sp;
+            }
+
+            std::vector<std::optional<uint8_t>> bscan_image;
+            const auto                          height = bscan_spec->getBScanXDots();
+            int                                 width  = 0;
+            for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
+                if (std::ssize(mdata_sped->getDataInGate(i, 0)) > width) {
+                    width = std::ssize(mdata_sped->getDataInGate(i, 0));
+                }
+            }
+            bscan_image.resize(width * height);
+            std::ranges::fill(bscan_image, std::nullopt);
+
+            for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
+                auto data = mdata_sped->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
+                                return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
+                            }) |
+                            std::ranges::to<std::vector<std::optional<uint8_t>>>();
+
+                auto       frame   = bscan_spec->getBScanEncoder(idx);
+                const auto img_idx = width * frame;
+
+                if (img_idx >= std::ssize(bscan_image)) {
+                    continue;
+                }
+
+                auto dist_ptr = bscan_image.begin() + img_idx;
+
+                for (auto i : std::views::iota(0, std::min<int>(width, std::ssize(data)))) {
+                    *(dist_ptr + i) = data.at(i);
+                }
+            }
+
+            b_scan_sp->replace(bscan_image, width, height, set_size);
+
+            setScanViewHandler(m_scanViewSp.get());
+            setSoftGainEnable(true);
+        } else {
+            setScanViewHandler(nullptr);
         }
-
-        b_scan_sp->replace(bscan_image, width, height, set_size);
-
-        setScanViewHandler(m_scanViewSp.get());
-        setSoftGainEnable(true);
-    } else {
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
         setScanViewHandler(nullptr);
     }
 }
@@ -410,27 +456,33 @@ void AScanInteractor::updateBOrCScanViewRange() {
         qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
     }
 
-    if (showCScanView()) {
-        // VARIFY: 更新C扫坐标轴
-        auto cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
-        auto c_scan_view = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
-        if (c_scan_view && cscan_spec) {
-            const auto range_x = cscan_spec->getCScanRangeX();
-            const auto range_y = cscan_spec->getCScanRangeY();
-            c_scan_view->setHorizontalAxisRange(QPointF(range_x.first, range_x.second));
-            c_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+    try {
+        if (showCScanView()) {
+            // VARIFY: 更新C扫坐标轴
+            auto cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
+            auto c_scan_view = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+            if (c_scan_view && cscan_spec) {
+                const auto range_x = cscan_spec->getCScanRangeX();
+                const auto range_y = cscan_spec->getCScanRangeY();
+                c_scan_view->setHorizontalAxisRange(QPointF(range_x.first, range_x.second));
+                c_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+            }
+        } else if (showBScanView()) {
+            // VARIFY: 更新B扫坐标轴
+            auto bscan_spec  = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
+            auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
+            if (b_scan_view && bscan_spec) {
+                const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
+                const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
+                b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+                const auto range = bscan_spec->getBScanRange();
+                b_scan_view->setVerticalAxisRange(QPointF(range.first, range.second));
+            }
         }
-    } else if (showBScanView()) {
-        // VARIFY: 更新B扫坐标轴
-        auto bscan_spec  = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
-        auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
-        if (b_scan_view && bscan_spec) {
-            const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
-            const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
-            b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
-            const auto range = bscan_spec->getBScanRange();
-            b_scan_view->setVerticalAxisRange(QPointF(range.first, range.second));
-        }
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
     }
 }
 
@@ -549,11 +601,18 @@ void AScanInteractor::setReportEnabled(bool newReportEnabled) {
 }
 
 bool AScanInteractor::isGateEnable(int gate_idx) const {
-    if (aScanIntf() == nullptr) {
+    try {
+        if (aScanIntf() == nullptr) {
+            return false;
+        }
+        auto gate = aScanIntf()->getGate(getAScanCursor());
+        return gate.at(gate_idx % 2).enable;
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
         return false;
     }
-    auto gate = aScanIntf()->getGate(getAScanCursor());
-    return gate.at(gate_idx % 2).enable;
 }
 
 bool AScanInteractor::getDateEnabled() const {
@@ -658,85 +717,93 @@ void AScanInteractor::setDefaultValue() {
 }
 
 bool AScanInteractor::openFile(QString filename) {
-    qCInfo(TAG) << "open file:" << filename;
-    auto READ_FUNC = AScanFileSelector::Instance()->GetReadFunction(filename.toStdWString());
-    if (!READ_FUNC.has_value()) {
-        QFileInfo info(filename);
-        qCWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
-        return false;
-    }
     try {
-        ASCAN_TYPE _tyy_ascan_type = nullptr;
-        for (const auto& func : READ_FUNC.value()) {
-            _tyy_ascan_type = func(filename.toStdWString());
-            if (_tyy_ascan_type != nullptr) {
-                break;
-            }
+        qCInfo(TAG) << "open file:" << filename;
+        auto READ_FUNC = AScanFileSelector::Instance()->GetReadFunction(filename.toStdWString());
+        if (!READ_FUNC.has_value()) {
+            QFileInfo info(filename);
+            qCWarning(TAG) << "can't find read interface, file suffix" << info.suffix();
+            return false;
         }
-        setAScanIntf(_tyy_ascan_type);
-        emit aScanIntfChanged();
+        try {
+            ASCAN_TYPE _tyy_ascan_type = nullptr;
+            for (const auto& func : READ_FUNC.value()) {
+                _tyy_ascan_type = func(filename.toStdWString());
+                if (_tyy_ascan_type != nullptr) {
+                    break;
+                }
+            }
+            setAScanIntf(_tyy_ascan_type);
+            emit aScanIntfChanged();
+        } catch (std::exception& e) {
+            qCCritical(TAG) << e.what();
+            setAScanIntf(nullptr);
+            emit aScanIntfChanged();
+        }
+
+        if (!aScanIntf()) {
+            qCCritical(TAG) << "read file error, fileName:" << filename;
+            return false;
+        }
+
+        if (aScanIntf()->getDataSize() > 1) {
+            setReplayVisible(true);
+            setReplayTimerInterval(aScanIntf()->getReplayTimerInterval());
+        } else if (aScanIntf()->getDataSize() == 1) {
+            setReplayVisible(false);
+        } else {
+            qCCritical(TAG) << "no data on file:" << filename;
+            return false;
+        }
+        setReportEnabled(aScanIntf()->getReportEnable());
+        setDateEnabled(aScanIntf()->getDateEnable());
+        setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
+        setAScanCursorMax(aScanIntf()->getDataSize() - 1);
+        auto camera_special = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+        if (camera_special != nullptr) {
+            setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
+        }
+        if (getAScanCursor() == 0) {
+            changeDataCursor();
+        }
+        setAScanCursor(0);
+        // Special: CMP001
+        auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
+        if (cmp001 && cmp001->isSpecial001Enabled(0)) {
+            setShowCMP001Special(true);
+        }
+        using namespace Union::UniversalApparatus::AScan::Special;
+        // Special: BScanSpecial
+        auto b_scan_sepcial = dynamic_cast<BScanSpecial*>(aScanIntf().get());
+        if (b_scan_sepcial && b_scan_sepcial->isSpecialBScanEnabled() && aScanIntf()->getDataSize() > 1) {
+            setShowBScanView(true);
+            setReplayVisible(false);
+        }
+        // Special: CScanSpecial
+        auto c_scan_special = dynamic_cast<CScanSpecial*>(aScanIntf().get());
+        if (c_scan_special && c_scan_special->isSpecialCScanEnabled() && aScanIntf()->getDataSize() > 1) {
+            if (showBScanView()) {
+                qCWarning(TAG) << QObject::tr("同时使用B扫和C扫, B扫已被禁用");
+                setShowBScanView(false);
+            }
+            setShowCScanView(true);
+            setReplayVisible(false);
+        }
+        updateBOrCScanView(true);
+        updateBOrCScanViewRange();
+
+        // 最后更新A扫数据指针
+        if (getAScanCursor() == 0) {
+            changeDataCursor();
+        }
+        setAScanCursor(0);
+        return true;
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
-        setAScanIntf(nullptr);
-        emit aScanIntfChanged();
-    }
-
-    if (!aScanIntf()) {
-        qCCritical(TAG) << "read file error, fileName:" << filename;
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
         return false;
     }
-    if (aScanIntf()->getDataSize() > 1) {
-        setReplayVisible(true);
-        setReplayTimerInterval(aScanIntf()->getReplayTimerInterval());
-    } else if (aScanIntf()->getDataSize() == 1) {
-        setReplayVisible(false);
-    } else {
-        qCCritical(TAG) << "no data on file:" << filename;
-        return false;
-    }
-    setReportEnabled(aScanIntf()->getReportEnable());
-    setDateEnabled(aScanIntf()->getDateEnable());
-    setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
-    setAScanCursorMax(aScanIntf()->getDataSize() - 1);
-    auto camera_special = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
-    if (camera_special != nullptr) {
-        setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
-    }
-    if (getAScanCursor() == 0) {
-        changeDataCursor();
-    }
-    setAScanCursor(0);
-    // Special: CMP001
-    auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
-    if (cmp001 && cmp001->isSpecial001Enabled(0)) {
-        setShowCMP001Special(true);
-    }
-    using namespace Union::UniversalApparatus::AScan::Special;
-    // Special: BScanSpecial
-    auto b_scan_sepcial = dynamic_cast<BScanSpecial*>(aScanIntf().get());
-    if (b_scan_sepcial && b_scan_sepcial->isSpecialBScanEnabled() && aScanIntf()->getDataSize() > 1) {
-        setShowBScanView(true);
-        setReplayVisible(false);
-    }
-    // Special: CScanSpecial
-    auto c_scan_special = dynamic_cast<CScanSpecial*>(aScanIntf().get());
-    if (c_scan_special && c_scan_special->isSpecialCScanEnabled() && aScanIntf()->getDataSize() > 1) {
-        if (showBScanView()) {
-            qCWarning(TAG) << QObject::tr("同时使用B扫和C扫, B扫已被禁用");
-            setShowBScanView(false);
-        }
-        setShowCScanView(true);
-        setReplayVisible(false);
-    }
-    updateBOrCScanView(true);
-    updateBOrCScanViewRange();
-
-    // 最后更新A扫数据指针
-    if (getAScanCursor() == 0) {
-        changeDataCursor();
-    }
-    setAScanCursor(0);
-    return true;
 }
 
 QAbstractSeries* AScanInteractor::createSeries(QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY) {
@@ -805,7 +872,15 @@ void AScanInteractor::updateAScanSeries(const QList<QPointF>& data, QPointF pt, 
 }
 
 void AScanInteractor::updateAScanSeries(void) {
-    updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain), {aScanIntf()->getAxisBias(getAScanCursor()), 0}, {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
+    try {
+        updateAScanSeries(aScanIntf()->getAScanSeriesData(getAScanCursor(), m_softGain),
+                          {aScanIntf()->getAxisBias(getAScanCursor()), 0},
+                          {aScanIntf()->getAxisLen(getAScanCursor()), 100.0});
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
+    }
 }
 
 QLineSeries* AScanInteractor::createQuadraticCurveSeries(const QString& name, QPointF pt, QSizeF sz) {
@@ -826,141 +901,147 @@ QLineSeries* AScanInteractor::createQuadraticCurveSeries(const QString& name, QP
 }
 
 void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) {
-    // begin define lambda ->{
-    auto CheckValid = [&]() {
-        // 检查数据指针是否有效
-        if (!checkAScanCursorValid()) {
-            return false;
-        }
+    try {
+        // begin define lambda ->{
+        auto CheckValid = [&]() {
+            // 检查数据指针是否有效
+            if (!checkAScanCursorValid()) {
+                return false;
+            }
 
-        // 检查曲线是否有值
-        switch (type) {
-            case QuadraticCurveSeriesType::DAC: {
-                auto has_value = aScanIntf()->getDAC(getAScanCursor()).has_value();
-                if (!has_value) {
-                    for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
-                        auto temp = (QLineSeries*)series(QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(i)));
-                        if (temp) {
-                            temp->setVisible(false);
+            // 检查曲线是否有值
+            switch (type) {
+                case QuadraticCurveSeriesType::DAC: {
+                    auto has_value = aScanIntf()->getDAC(getAScanCursor()).has_value();
+                    if (!has_value) {
+                        for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
+                            auto temp = (QLineSeries*)series(QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(i)));
+                            if (temp) {
+                                temp->setVisible(false);
+                            }
                         }
                     }
+                    return has_value;
                 }
-                return has_value;
-            }
-            case QuadraticCurveSeriesType::AVG: {
-                auto has_value = aScanIntf()->getAVG(getAScanCursor()).has_value();
-                if (!has_value) {
-                    for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
-                        auto temp = (QLineSeries*)series(QString(AVG_SERIES_NAME).arg(getAVGSeriesSubName(i)));
-                        if (temp) {
-                            temp->setVisible(false);
+                case QuadraticCurveSeriesType::AVG: {
+                    auto has_value = aScanIntf()->getAVG(getAScanCursor()).has_value();
+                    if (!has_value) {
+                        for (auto i = 0; i < DAC_AVG_SUB_NAME_MAX; i++) {
+                            auto temp = (QLineSeries*)series(QString(AVG_SERIES_NAME).arg(getAVGSeriesSubName(i)));
+                            if (temp) {
+                                temp->setVisible(false);
+                            }
                         }
                     }
+                    return has_value;
                 }
-                return has_value;
+                default:
+                    throw std::runtime_error("QuadraticCurveSeriesType error");
             }
-            default:
-                throw std::runtime_error("QuadraticCurveSeriesType error");
+        };
+        if (!CheckValid()) {
+            return;
         }
-    };
-    if (!CheckValid()) {
-        return;
-    }
 
-    // 获取曲线名称
-    const auto LineName = [&](int index) -> QString {
-        switch (type) {
-            case QuadraticCurveSeriesType::DAC:
-                return QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(index));
-            case QuadraticCurveSeriesType::AVG:
-                return QString(AVG_SERIES_NAME).arg(getAVGSeriesSubName(index));
-            default:
-                throw std::runtime_error("QuadraticCurveSeriesType error");
-        }
-    };
-    // 获取isSubLine
-    const auto IsSubline = [&]() {
-        switch (type) {
-            case QuadraticCurveSeriesType::DAC:
-                return aScanIntf()->getDAC(getAScanCursor())->isSubline;
-            case QuadraticCurveSeriesType::AVG:
-                return aScanIntf()->getAVG(getAScanCursor())->isSubline;
-            default:
-                throw std::runtime_error("QuadraticCurveSeriesType error");
-        }
-    };
-    // 获取曲线表达式
-    const auto LineExpr = [&]() {
-        switch (type) {
-            case QuadraticCurveSeriesType::DAC:
-                return aScanIntf()->getDACLineExpr(getAScanCursor());
-            case QuadraticCurveSeriesType::AVG:
-                return aScanIntf()->getAVGLineExpr(getAScanCursor());
-            default:
-                throw std::runtime_error("QuadraticCurveSeriesType error");
-        }
-    }();
-    // 获取增益修改
-    const auto ModifyGain = [&](int idx) -> double {
-        if (idx == 0) {
-            return getSoftGain();
-        }
-        return aScanIntf()->getDacLineStandard(getAScanCursor()).at(idx - 1) + getSoftGain();
-    };
-    // } <- end define lambda
-
-    // ↓↓↓函数逻辑开始↓↓↓
-    std::vector<QLineSeries*>   lines  = {};
-    std::vector<QList<QPointF>> pts    = {};
-    std::vector<int>            indexs = {};
-
-    if (!IsSubline()) {
-        lines.resize(1);
-        pts.resize(1);
-        indexs = {0};
-    } else {
-        int line_count = std::ssize(aScanIntf()->getDacLineStandard(getAScanCursor()));
-        lines.resize(line_count);
-        pts.resize(line_count);
-        indexs = std::views::iota(1, line_count + 1) | std::views::take(line_count) | std::ranges::to<std::vector<int>>();
-    }
-
-    // 隐藏未使用的曲线
-    for (auto i = 0; std::cmp_less(i, DAC_AVG_SUB_NAME_MAX); i++) {
-        auto line = (QLineSeries*)series(LineName(i));
-        if (line) {
-            auto find_result = std::find(indexs.begin(), indexs.end(), i);
-            if (find_result == indexs.end()) {
-                line->setVisible(false);
+        // 获取曲线名称
+        const auto LineName = [&](int index) -> QString {
+            switch (type) {
+                case QuadraticCurveSeriesType::DAC:
+                    return QString(DAC_SERIES_NAME).arg(getDACSeriesSubName(index));
+                case QuadraticCurveSeriesType::AVG:
+                    return QString(AVG_SERIES_NAME).arg(getAVGSeriesSubName(index));
+                default:
+                    throw std::runtime_error("QuadraticCurveSeriesType error");
             }
-        }
-    }
-    // 查找曲线
-    for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
-        lines[i] = (QLineSeries*)series(LineName(indexs[i]));
-        if (!lines[i]) {
-            lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
-        }
-        // 重新设置DAC曲线的坐标轴范围
-        lines[i]->attachedAxes().at(0)->setMin(0.0);
-        lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(aScanIntf()->getScanData(getAScanCursor()).size()));
-        lines[i]->attachedAxes().at(1)->setMin(0.0);
-        lines[i]->attachedAxes().at(1)->setMax(200.0);
-        lines[i]->setVisible();
-    }
+        };
+        // 获取isSubLine
+        const auto IsSubline = [&]() {
+            switch (type) {
+                case QuadraticCurveSeriesType::DAC:
+                    return aScanIntf()->getDAC(getAScanCursor())->isSubline;
+                case QuadraticCurveSeriesType::AVG:
+                    return aScanIntf()->getAVG(getAScanCursor())->isSubline;
+                default:
+                    throw std::runtime_error("QuadraticCurveSeriesType error");
+            }
+        };
+        // 获取曲线表达式
+        const auto LineExpr = [&]() {
+            switch (type) {
+                case QuadraticCurveSeriesType::DAC:
+                    return aScanIntf()->getDACLineExpr(getAScanCursor());
+                case QuadraticCurveSeriesType::AVG:
+                    return aScanIntf()->getAVGLineExpr(getAScanCursor());
+                default:
+                    throw std::runtime_error("QuadraticCurveSeriesType error");
+            }
+        }();
+        // 获取增益修改
+        const auto ModifyGain = [&](int idx) -> double {
+            if (idx == 0) {
+                return getSoftGain();
+            }
+            return aScanIntf()->getDacLineStandard(getAScanCursor()).at(idx - 1) + getSoftGain();
+        };
+        // } <- end define lambda
 
-    // 填充数据
-    for (int i = 0; std::cmp_less(i, aScanIntf()->getScanData(getAScanCursor()).size()); i++) {
-        for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
-            auto val = LineExpr(i);
-            if (val.has_value()) {
-                pts[j].push_back(QPointF(i, CalculateGainOutput(val.value(), ModifyGain(indexs[j]))));
+        // ↓↓↓函数逻辑开始↓↓↓
+        std::vector<QLineSeries*>   lines  = {};
+        std::vector<QList<QPointF>> pts    = {};
+        std::vector<int>            indexs = {};
+
+        if (!IsSubline()) {
+            lines.resize(1);
+            pts.resize(1);
+            indexs = {0};
+        } else {
+            int line_count = std::ssize(aScanIntf()->getDacLineStandard(getAScanCursor()));
+            lines.resize(line_count);
+            pts.resize(line_count);
+            indexs = std::views::iota(1, line_count + 1) | std::views::take(line_count) | std::ranges::to<std::vector<int>>();
+        }
+
+        // 隐藏未使用的曲线
+        for (auto i = 0; std::cmp_less(i, DAC_AVG_SUB_NAME_MAX); i++) {
+            auto line = (QLineSeries*)series(LineName(i));
+            if (line) {
+                auto find_result = std::find(indexs.begin(), indexs.end(), i);
+                if (find_result == indexs.end()) {
+                    line->setVisible(false);
+                }
             }
         }
-    }
-    // 替换曲线数据
-    for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
-        lines[i]->replace(pts[i]);
+        // 查找曲线
+        for (auto i = 0; std::cmp_less(i, lines.size()); i++) {
+            lines[i] = (QLineSeries*)series(LineName(indexs[i]));
+            if (!lines[i]) {
+                lines[i] = createQuadraticCurveSeries(LineName(indexs[i]));
+            }
+            // 重新设置DAC曲线的坐标轴范围
+            lines[i]->attachedAxes().at(0)->setMin(0.0);
+            lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(aScanIntf()->getScanData(getAScanCursor()).size()));
+            lines[i]->attachedAxes().at(1)->setMin(0.0);
+            lines[i]->attachedAxes().at(1)->setMax(200.0);
+            lines[i]->setVisible();
+        }
+
+        // 填充数据
+        for (int i = 0; std::cmp_less(i, aScanIntf()->getScanData(getAScanCursor()).size()); i++) {
+            for (auto j = 0; std::cmp_less(j, pts.size()); j++) {
+                auto val = LineExpr(i);
+                if (val.has_value()) {
+                    pts[j].push_back(QPointF(i, CalculateGainOutput(val.value(), ModifyGain(indexs[j]))));
+                }
+            }
+        }
+        // 替换曲线数据
+        for (auto i = 0; std::cmp_less(i, pts.size()); i++) {
+            lines[i]->replace(pts[i]);
+        }
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
     }
 }
 
