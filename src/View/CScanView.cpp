@@ -43,6 +43,7 @@ namespace Union::View {
     }
 
     CScanView::CScanView() {
+        setKeepMouseGrab(true);
         setAcceptedMouseButtons(Qt::LeftButton);
         m_reverseVerticalAxis = true;
     }
