@@ -190,7 +190,7 @@ signals:
 private:
     void changeDataCursor(void);
     void updateCurrentFrame(void);
-    void updateBOrCScanView(void);
+    void updateBOrCScanView(bool set_size);
     void updateBOrCScanViewRange(void);
 
     Q_PROPERTY(bool replayVisible READ getReplayVisible WRITE setReplayVisible NOTIFY replayVisibleChanged)

@@ -8,6 +8,28 @@
 
 namespace Union::View {
 
+    int BScanView::imgWidth() const {
+        return m_imgWidth;
+    }
+
+    void BScanView::setImgWidth(int newImgWidth) {
+        if (m_imgWidth == newImgWidth)
+            return;
+        m_imgWidth = newImgWidth;
+        emit imgWidthChanged();
+    }
+
+    int BScanView::imgHeight() const {
+        return m_imgHeight;
+    }
+
+    void BScanView::setImgHeight(int newImgHeight) {
+        if (m_imgHeight == newImgHeight)
+            return;
+        m_imgHeight = newImgHeight;
+        emit imgHeightChanged();
+    }
+
     BScanView::BScanView() {
         setAcceptedMouseButtons(Qt::LeftButton);
         m_reverseVerticalAxis = true;
@@ -17,7 +39,7 @@ namespace Union::View {
         return m_cursorLineColor;
     }
 
-    void BScanView::setCursorLineColor(const QColor &newCursorLineColor) {
+    void BScanView::setCursorLineColor(const QColor& newCursorLineColor) {
         if (m_cursorLineColor == newCursorLineColor)
             return;
         m_cursorLineColor = newCursorLineColor;
@@ -51,7 +73,7 @@ namespace Union::View {
         m_drawLine = std::nullopt;
     }
 
-    void BScanView::replace(const std::vector<std::optional<uint8_t>> &data, int width, int height) noexcept {
+    void BScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
         try {
             auto           image       = QImage(width, height, QImage::Format_RGB888);
             decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::T8ColorTable();
@@ -64,17 +86,22 @@ namespace Union::View {
                 }
             }
 
+            if (set_size) {
+                setWidth(width + AXIS_WIDTH);
+                setHeight(height + AXIS_WIDTH);
+            }
             QMetaObject::invokeMethod(this, [=, this, image = std::move(image)]() mutable {
                 m_image = std::move(image);
+
                 update();
             });
-        } catch (const std::exception &e) {
+        } catch (const std::exception& e) {
             qCWarning(TAG) << "replace image error";
             qCWarning(TAG) << e.what();
         }
     }
 
-    void BScanView::paint(QPainter *painter) {
+    void BScanView::paint(QPainter* painter) {
         BasicView::paint(painter);
         painter->drawImage(getDrawable(), m_image);
         if (m_drawLine.has_value()) {
@@ -83,21 +110,21 @@ namespace Union::View {
         }
     }
 
-    void BScanView::mousePressEvent(QMouseEvent *event) {
+    void BScanView::mousePressEvent(QMouseEvent* event) {
         eventHandlerCommon(event);
     }
 
-    void BScanView::mouseMoveEvent(QMouseEvent *event) {
+    void BScanView::mouseMoveEvent(QMouseEvent* event) {
         if (eventHandlerCommon(event)) {
             setCursor(Qt::SizeVerCursor);
         }
     }
 
-    void BScanView::mouseReleaseEvent(QMouseEvent *) {
+    void BScanView::mouseReleaseEvent(QMouseEvent*) {
         setCursor(Qt::ArrowCursor);
     }
 
-    bool BScanView::eventHandlerCommon(QMouseEvent *event) noexcept {
+    bool BScanView::eventHandlerCommon(QMouseEvent* event) noexcept {
         if (!getDrawable().contains(QPoint(event->x(), event->y()))) {
             return false;
         }

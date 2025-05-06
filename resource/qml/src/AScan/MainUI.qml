@@ -152,13 +152,20 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.topMargin: -10
             visible: interactor ? childItem : false
 
-            ColumnLayout {
+            id: scan_view_box
+
+            Component.onCompleted: {
+                console.log("control width:", width, "height:", height)
+            }
+
+            ScrollView {
                 id: b_scan_box
                 anchors.fill: parent
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
+                anchors.margins: 10
+                clip: true
             }
 
             Connections {
@@ -183,12 +190,31 @@ Rectangle {
 
             onChildItemChanged: {
                 if (interactor.scanViewHandler) {
-                    b_scan_box.children.push(interactor.scanViewHandler)
-                    b_scan_box.children[0].Layout.fillWidth = true
-                    b_scan_box.children[0].Layout.fillHeight = true
-                    b_scan_box.children[0].Layout.bottomMargin = 10
+                    b_scan_box.contentChildren.push(interactor.scanViewHandler)
+                    b_scan_box.onChildrenChanged()
+
+                    let img_width = interactor.scanViewHandler.width
+                    let img_height = interactor.scanViewHandler.height
+
+                    interactor.scanViewHandler.width = Qt.binding(() => {
+                                                                      let content_width = img_width
+                                                                      if (img_width < b_scan_box.width) {
+                                                                          content_width = b_scan_box.width
+                                                                      }
+                                                                      b_scan_box.contentWidth = content_width
+                                                                      return content_width
+                                                                  })
+
+                    interactor.scanViewHandler.height = Qt.binding(() => {
+                                                                       let content_height = img_height
+                                                                       if (img_height < b_scan_box.height) {
+                                                                           content_height = b_scan_box.height
+                                                                       }
+                                                                       b_scan_box.contentHeight = content_height
+                                                                       return content_height
+                                                                   })
                 } else {
-                    b_scan_box.children = []
+                    b_scan_box.contentChildren = []
                 }
             }
         }

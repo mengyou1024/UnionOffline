@@ -295,7 +295,7 @@ void AScanInteractor::updateCurrentFrame() {
             updateQuadraticCurveSeries(QuadraticCurveSeriesType::DAC);
             updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
             setGateValue(CreateGateValue());
-            updateBOrCScanView();
+            updateBOrCScanView(false);
             updateBOrCScanViewRange();
             auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
             if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
@@ -310,7 +310,7 @@ void AScanInteractor::updateCurrentFrame() {
     }
 }
 
-void AScanInteractor::updateBOrCScanView() {
+void AScanInteractor::updateBOrCScanView(bool set_size) {
     if (aScanIntf() == nullptr) {
         qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
     }
@@ -331,7 +331,6 @@ void AScanInteractor::updateBOrCScanView() {
         if (c_scan_sp == nullptr) {
             c_scan_sp    = std::make_shared<Union::View::CScanView>();
             m_scanViewSp = c_scan_sp;
-            setScanViewHandler(m_scanViewSp.get());
         }
 
         std::vector<std::optional<uint8_t>> cscan_image;
@@ -351,7 +350,9 @@ void AScanInteractor::updateBOrCScanView() {
             }
             cscan_image.at(img_idx) = std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(amp_in_gate, getSoftGain()));
         }
-        c_scan_sp->replace(cscan_image, width, height);
+        c_scan_sp->replace(cscan_image, width, height, set_size);
+
+        setScanViewHandler(m_scanViewSp.get());
 
     } else if (showBScanView()) {
         // VARIFY: 更新B扫图像
@@ -361,9 +362,8 @@ void AScanInteractor::updateBOrCScanView() {
         if (b_scan_sp == nullptr) {
             b_scan_sp    = std::make_shared<Union::View::BScanView>();
             m_scanViewSp = b_scan_sp;
-            setScanViewHandler(m_scanViewSp.get());
         }
-        setScanViewHandler(m_scanViewSp.get());
+
         std::vector<std::optional<uint8_t>> bscan_image;
         const auto                          height = bscan_spec->getBScanXDots();
         int                                 width  = 0;
@@ -395,7 +395,9 @@ void AScanInteractor::updateBOrCScanView() {
             }
         }
 
-        b_scan_sp->replace(bscan_image, width, height);
+        b_scan_sp->replace(bscan_image, width, height, set_size);
+
+        setScanViewHandler(m_scanViewSp.get());
     } else {
         setScanViewHandler(nullptr);
     }
@@ -712,7 +714,7 @@ bool AScanInteractor::openFile(QString filename) {
         setShowCScanView(true);
         setReplayVisible(false);
     }
-    updateBOrCScanView();
+    updateBOrCScanView(true);
     updateBOrCScanViewRange();
 
     // 最后更新A扫数据指针
