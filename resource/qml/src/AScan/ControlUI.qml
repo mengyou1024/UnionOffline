@@ -39,6 +39,7 @@ ScrollView {
     property alias showRailWeldDigram: area_rail_weld_digram.visible
     property int replayTimerBaseInterval: 40
     property alias reportEnable: btn_report.enabled
+    property alias softGainEnable: area_soft_gain.visible
     property bool dateEnable: true
     property alias railweldSpecial_ZeroPointInFoot: rail_weld_digram.zeroPointInFoot
     property alias showCMP001Special: area_t8_rail.visible
@@ -207,6 +208,7 @@ ScrollView {
         }
 
         CArea {
+            id: area_soft_gain
             text: qsTr("增益")
             Layout.margins: 2
             Layout.preferredWidth: layout_gain.width + horizontalPadding * 2

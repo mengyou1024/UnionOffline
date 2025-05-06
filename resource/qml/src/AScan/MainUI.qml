@@ -409,6 +409,9 @@ Rectangle {
         controlTarget.railweldSpecial_ZeroPointInFoot = Qt.binding(() => {
                                                                        return interactor.railWeldSpecial_ZeroPointInFoot()
                                                                    })
+        controlTarget.softGainEnable = Qt.binding(() => {
+                                                      return interactor.softGainEnable
+                                                  })
         controlTarget.aScanInteractor = interactor
         interactor.setDefaultValue()
         if (interactor.openFile(filePath)) {

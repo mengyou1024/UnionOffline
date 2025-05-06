@@ -42,6 +42,7 @@ class AScanInteractor : public QQuickItem {
     bool        m_showBScanView             = false;
     bool        m_showCScanView             = false;
     QQuickItem* m_scanViewHandler           = nullptr;
+    bool        m_softGainEnable            = false;
 
     int                                     m_replaySpeed             = 0;
     bool                                    m_isPlaying               = false;
@@ -150,6 +151,8 @@ public:
     void        setShowCScanView(bool newShowCScanView);
     QQuickItem* scanViewHandler() const;
     void        setScanViewHandler(QQuickItem* newScanViewHandler);
+    bool        softGainEnable() const;
+    void        setSoftGainEnable(bool newSoftGainEnable);
 
 public slots:
     bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -186,6 +189,7 @@ signals:
     void showBScanViewChanged();
     void showCScanViewChanged();
     void scanViewHandlerChanged();
+    void softGainEnableChanged();
 
 private:
     void changeDataCursor(void);
@@ -212,4 +216,5 @@ private:
     Q_PROPERTY(bool showBScanView READ showBScanView WRITE setShowBScanView NOTIFY showBScanViewChanged FINAL)
     Q_PROPERTY(bool showCScanView READ showCScanView WRITE setShowCScanView NOTIFY showCScanViewChanged FINAL)
     Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler WRITE setScanViewHandler NOTIFY scanViewHandlerChanged FINAL)
+    Q_PROPERTY(bool softGainEnable READ softGainEnable WRITE setSoftGainEnable NOTIFY softGainEnableChanged FINAL)
 };

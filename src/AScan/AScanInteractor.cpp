@@ -353,6 +353,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
         c_scan_sp->replace(cscan_image, width, height, set_size);
 
         setScanViewHandler(m_scanViewSp.get());
+        setSoftGainEnable(true);
 
     } else if (showBScanView()) {
         // VARIFY: 更新B扫图像
@@ -398,6 +399,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
         b_scan_sp->replace(bscan_image, width, height, set_size);
 
         setScanViewHandler(m_scanViewSp.get());
+        setSoftGainEnable(true);
     } else {
         setScanViewHandler(nullptr);
     }
@@ -620,6 +622,17 @@ void AScanInteractor::setScanViewHandler(QQuickItem* newScanViewHandler) {
     emit scanViewHandlerChanged();
 }
 
+bool AScanInteractor::softGainEnable() const {
+    return m_softGainEnable;
+}
+
+void AScanInteractor::setSoftGainEnable(bool newSoftGainEnable) {
+    if (m_softGainEnable == newSoftGainEnable)
+        return;
+    m_softGainEnable = newSoftGainEnable;
+    emit softGainEnableChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(aScanIntf() ? aScanIntf()->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -628,6 +641,7 @@ bool AScanInteractor::checkAScanCursorValid() {
 }
 
 void AScanInteractor::setDefaultValue() {
+    setSoftGainEnable(false);
     setAScanIntf(nullptr);
     setDate("");
     setAScanCursorMax(0);
