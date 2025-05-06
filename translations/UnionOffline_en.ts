@@ -396,30 +396,30 @@
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="227"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="236"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="253"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="262"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="229"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="238"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="255"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="264"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="310"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="336"/>
         <location filename="../resource/qml/src/TofdPe/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="398"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="424"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="431"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="457"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -478,7 +478,7 @@
         <translation>Select a file</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="485"/>
+        <location filename="../resource/qml/MainWnd.qml" line="484"/>
         <source>错误的文件后缀</source>
         <translation>Incorrect file suffix</translation>
     </message>
@@ -486,8 +486,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="831"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="834"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="888"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="891"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="238"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="105"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="107"/>
@@ -495,7 +495,7 @@
         <translation>Basic Information</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="832"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="889"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="223"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="106"/>
         <source>通道</source>
@@ -598,7 +598,7 @@
         <translation>Zero Point</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="804"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="861"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="72"/>
         <location filename="../src/AScan/AScanInteractor.cpp" line="150"/>
         <source>仪器型号</source>
@@ -723,7 +723,7 @@
         <translation>Probe Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="906"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="963"/>
         <source>错误的声程模式</source>
         <translation type="unfinished"></translation>
     </message>
@@ -763,8 +763,8 @@
         <translation>Probe Informations</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="187"/>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="238"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="191"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="242"/>
         <source>移动探头,
 使%1mm反射体最高回波在门内,
 然后点击&lt;确定&gt;</source>
@@ -773,14 +773,14 @@ Make the highest echo of %1mm reflector inside the door,
 Then click &lt; OK &gt;</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="213"/>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="265"/>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="424"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="217"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="269"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="428"/>
         <source>无法获取测量深度</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="380"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="384"/>
         <source>移动探头,
 使中心深度%1mm反射体最高回波在门内,
 然后点击&lt;确定&gt;
@@ -793,7 +793,7 @@ Then click &lt; OK &gt;
 </translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="508"/>
+        <location filename="../components/union/src/HDBridge/Actions/HDBridgeActions.cpp" line="512"/>
         <source>按&lt;+&gt;号键选择下一个点
 按&lt;-&gt;号键选择上一个点
 按&lt;记录&gt;键记录DAC点
@@ -875,54 +875,65 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="193"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="207"/>
         <source>宽频</source>
         <translation>Broadband</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="194"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
         <source>低频</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="195"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
         <source>中频</source>
         <translation>Medium</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="196"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="210"/>
         <source>高频</source>
         <translation>High</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="210"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B.cpp" line="234"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="233"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="235"/>
+        <source>2.5MHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="236"/>
+        <source>5MHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="252"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="253"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="226"/>
         <source>射频检波</source>
         <translation>RF</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="211"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B.cpp" line="235"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="234"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="253"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="254"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="227"/>
         <source>全检波</source>
         <translation>Full</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="212"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B.cpp" line="236"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="235"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="254"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="255"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="228"/>
         <source>正检波</source>
         <translation>Positive</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="213"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B.cpp" line="237"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/_12CH_8B/_12CH_8B_Compat.cpp" line="236"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="255"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="256"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="229"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
     <message>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_10B/_12CH_10B.cpp" line="234"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="130"/>
         <source>不滤波</source>
         <translation>None</translation>
@@ -1137,33 +1148,33 @@ Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
         <location filename="../components/union/src/BasicType/Probe.cpp" line="18"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="346"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="369"/>
         <source>双探头</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="827"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="884"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="828"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="885"/>
         <source>轨型</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="829"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="886"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="833"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="890"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="227"/>
         <source>仪器名称</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="838"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="895"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
@@ -1193,7 +1204,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Surplus Sensitivity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="696"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="711"/>
         <source>同时使用B扫和C扫, B扫已被禁用</source>
         <translation type="unfinished"></translation>
     </message>

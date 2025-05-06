@@ -289,8 +289,6 @@ function(morose_copy)
             # 拷贝文件至运行目录
             ${COPY_FILE_STRING}
             COMMENT "copy file"
-            DEPENDS
-            "${DEP_FILE_STRING}"
             BYPRODUCTS
             "${BYPRODUCTS_STRING}"
         )
@@ -347,13 +345,11 @@ function(morose_copy)
 
             # 拷贝的是目录
             ${COPY_DIR_STRING}
-            DEPENDS "${DEP_FILE_STRING}"
         )
 
         add_custom_command(
             TARGET clean-all POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
-            DEPENDS "${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
             COMMENT "remove directory: ${CMAKE_BINARY_DIR}${COPY_DIST_DIR}${COPY_DIRNAME}"
         )
 
@@ -432,7 +428,6 @@ function(morose_add_environment_config_file)
         TARGET ${CONF_TARGET} POST_BUILD
         COMMAND ${CONF_FILE_STRING}
         COMMENT "MOROSE COPY"
-        DEPENDS "${CONFIG_DEPS}"
         BYPRODUCTS "${CMAKE_BINARY_DIR}/${CONF_DIST}"
     )
 endfunction(morose_add_environment_config_file)
