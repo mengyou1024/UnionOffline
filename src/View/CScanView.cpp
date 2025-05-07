@@ -46,6 +46,7 @@ namespace Union::View {
         setKeepMouseGrab(true);
         setAcceptedMouseButtons(Qt::LeftButton);
         m_reverseVerticalAxis = true;
+        m_enableAxis          = false;
     }
 
     QPoint CScanView::dataCursor() const {

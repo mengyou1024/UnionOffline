@@ -150,22 +150,116 @@ Rectangle {
         Control {
             property var childItem: interactor.scanViewHandler
 
+            id: scan_view_box
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.topMargin: -10
+
             visible: interactor ? childItem : false
 
-            id: scan_view_box
-
-            Component.onCompleted: {
-                console.log("control width:", width, "height:", height)
-            }
-
-            ScrollView {
-                id: b_scan_box
+            GridLayout {
                 anchors.fill: parent
                 anchors.margins: 10
-                clip: true
+                columns: 2
+                rows: 2
+                columnSpacing: 0
+                rowSpacing: 0
+
+                Item {
+                    Layout.row: 0
+                    Layout.column: 0
+                    Layout.preferredWidth: 35
+                    Layout.fillHeight: true
+                    ScrollView {
+                        id: axis_vertical_box
+                        anchors.fill: parent
+
+                        clip: true
+
+                        contentWidth: 35
+                        contentHeight: axis_vertical.height
+
+                        ScrollBar.vertical.visible: false
+                        ScrollBar.vertical.interactive: false
+                        ScrollBar.vertical.position: b_or_c_scan_view_box.ScrollBar.vertical.position
+
+                        Flickable {
+                            boundsBehavior: Flickable.StopAtBounds
+                        }
+
+                        Binding {
+                            target: b_or_c_scan_view_box.ScrollBar.vertical
+                            property: "position"
+                            value: axis_vertical_box.ScrollBar.vertical.position
+                        }
+
+                        AxisView {
+                            id: axis_vertical
+                            isVertical: true
+                            reverse: true
+                            width: 35
+                        }
+                    }
+                }
+
+                Item {
+                    Layout.row: 0
+                    Layout.column: 1
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    ScrollView {
+                        id: b_or_c_scan_view_box
+                        anchors.fill: parent
+                        clip: true
+
+                        Flickable {
+                            boundsBehavior: Flickable.StopAtBounds
+                        }
+                    }
+                }
+
+                Rectangle {
+                    Layout.row: 1
+                    Layout.column: 0
+                    Layout.preferredWidth: 35
+                    Layout.preferredHeight: 35
+                    color: "#afeeee"
+                }
+
+                Item {
+                    Layout.preferredHeight: 35
+                    Layout.fillWidth: true
+                    Layout.row: 1
+                    Layout.column: 1
+
+                    ScrollView {
+                        id: axis_horizontal_boax
+                        anchors.fill: parent
+                        contentWidth: axis_horizontal.width
+                        contentHeight: axis_horizontal.height
+                        clip: true
+
+                        ScrollBar.horizontal.visible: false
+                        ScrollBar.horizontal.interactive: false
+                        ScrollBar.horizontal.position: b_or_c_scan_view_box.ScrollBar.horizontal.position
+
+                        Flickable {
+                            boundsBehavior: Flickable.StopAtBounds
+                        }
+
+                        Binding {
+                            target: b_or_c_scan_view_box.ScrollBar.horizontal
+                            property: "position"
+                            value: axis_horizontal_boax.ScrollBar.horizontal.position
+                        }
+
+                        AxisView {
+                            id: axis_horizontal
+                            height: 35
+                        }
+                    }
+                }
             }
 
             Connections {
@@ -190,31 +284,46 @@ Rectangle {
 
             onChildItemChanged: {
                 if (interactor.scanViewHandler) {
-                    b_scan_box.contentChildren.push(interactor.scanViewHandler)
-                    b_scan_box.onChildrenChanged()
+                    b_or_c_scan_view_box.contentChildren.push(interactor.scanViewHandler)
+                    b_or_c_scan_view_box.onChildrenChanged()
 
                     let img_width = interactor.scanViewHandler.width
                     let img_height = interactor.scanViewHandler.height
 
                     interactor.scanViewHandler.width = Qt.binding(() => {
                                                                       let content_width = img_width
-                                                                      if (img_width < b_scan_box.width) {
-                                                                          content_width = b_scan_box.width
+                                                                      if (img_width < b_or_c_scan_view_box.width) {
+                                                                          content_width = b_or_c_scan_view_box.width
                                                                       }
-                                                                      b_scan_box.contentWidth = content_width
+                                                                      b_or_c_scan_view_box.contentWidth = content_width
                                                                       return content_width
                                                                   })
 
                     interactor.scanViewHandler.height = Qt.binding(() => {
                                                                        let content_height = img_height
-                                                                       if (img_height < b_scan_box.height) {
-                                                                           content_height = b_scan_box.height
+                                                                       if (img_height < b_or_c_scan_view_box.height) {
+                                                                           content_height = b_or_c_scan_view_box.height
                                                                        }
-                                                                       b_scan_box.contentHeight = content_height
+                                                                       b_or_c_scan_view_box.contentHeight = content_height
                                                                        return content_height
                                                                    })
+                    axis_horizontal.width = Qt.binding(() => {
+                                                           return interactor.scanViewHandler.width
+                                                       })
+
+                    axis_vertical.height = Qt.binding(() => {
+                                                          return interactor.scanViewHandler.height
+                                                      })
+
+                    axis_horizontal.axisRange = Qt.binding(() => {
+                                                               return interactor.scanViewHandler.horizontalAxisRange
+                                                           })
+
+                    axis_vertical.axisRange = Qt.binding(() => {
+                                                             return interactor.scanViewHandler.verticalAxisRange
+                                                         })
                 } else {
-                    b_scan_box.contentChildren = []
+                    b_or_c_scan_view_box.contentChildren = []
                 }
             }
         }

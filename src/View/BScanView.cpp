@@ -34,6 +34,7 @@ namespace Union::View {
         setKeepMouseGrab(true);
         setAcceptedMouseButtons(Qt::LeftButton);
         m_reverseVerticalAxis = true;
+        m_enableAxis          = false;
     }
 
     QColor BScanView::cursorLineColor() const {

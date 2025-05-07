@@ -55,7 +55,7 @@ namespace Union::View {
         return m_axisBackgroundColor;
     }
 
-    void BasicView::setAxisBackgroundColor(const QColor &newAxisBackgroundColor) {
+    void BasicView::setAxisBackgroundColor(const QColor& newAxisBackgroundColor) {
         if (m_axisBackgroundColor == newAxisBackgroundColor)
             return;
         m_axisBackgroundColor = newAxisBackgroundColor;
@@ -91,7 +91,7 @@ namespace Union::View {
         return m_gridColor;
     }
 
-    void BasicView::setgridColor(const QColor &newgridColor) {
+    void BasicView::setgridColor(const QColor& newgridColor) {
         if (m_gridColor == newgridColor)
             return;
         m_gridColor = newgridColor;
@@ -99,7 +99,7 @@ namespace Union::View {
         QMetaObject::invokeMethod(this, [this]() { this->update(); });
     }
 
-    void BasicView::paint(QPainter *painter) {
+    void BasicView::paint(QPainter* painter) {
         painter->fillRect(QRect(0, 0, width(), height()), QBrush(Qt::black));
         if (m_enableGrid) {
             drawGrid(painter);
@@ -110,7 +110,7 @@ namespace Union::View {
         }
     }
 
-    void BasicView::drawHorizontalAxis(QPainter *painter) const {
+    void BasicView::drawHorizontalAxis(QPainter* painter) const {
         const auto drawable = getDrawable();
         painter->fillRect(QRect(AXIS_WIDTH, drawable.bottom() + 1, drawable.width(), AXIS_WIDTH), QBrush(0xafeeee));
         const auto    step         = (m_horizontalAxisRange.y() - m_horizontalAxisRange.x()) / (m_horizontalTickCount * 10.0);
@@ -149,7 +149,7 @@ namespace Union::View {
         }
     }
 
-    void BasicView::drawVerticalAxis(QPainter *painter) const {
+    void BasicView::drawVerticalAxis(QPainter* painter) const {
         const auto drawable = getDrawable();
         painter->fillRect(QRect(0, 0, AXIS_WIDTH, height()), QBrush(0xafeeee));
         auto          step         = (m_verticalAxisRange.y() - m_verticalAxisRange.x()) / (m_verticalTickCount * 10.0);
@@ -211,12 +211,12 @@ namespace Union::View {
         return QRect(0, 0, width(), height());
     }
 
-    void BasicView::drawAxis(QPainter *painter) const noexcept {
+    void BasicView::drawAxis(QPainter* painter) const noexcept {
         drawHorizontalAxis(painter);
         drawVerticalAxis(painter);
     }
 
-    void BasicView::drawGrid(QPainter *painter) const noexcept {
+    void BasicView::drawGrid(QPainter* painter) const noexcept {
         auto drawable = getDrawable();
         // 绘制坐标轴
         auto             points = (m_horizontalTickCount + 1) * 2 + (m_verticalTickCount + 1) * 2;
