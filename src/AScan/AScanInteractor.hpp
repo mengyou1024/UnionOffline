@@ -190,6 +190,7 @@ signals:
     void showCScanViewChanged();
     void scanViewHandlerChanged();
     void softGainEnableChanged();
+    void updateBOrCScanHandler();
 
 private:
     void changeDataCursor(void);

@@ -449,6 +449,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
         qCCritical(TAG) << std::to_string(stack_trace).c_str();
         setScanViewHandler(nullptr);
     }
+    emit updateBOrCScanHandler();
 }
 
 void AScanInteractor::updateBOrCScanViewRange() {

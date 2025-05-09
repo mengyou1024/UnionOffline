@@ -148,15 +148,13 @@ Rectangle {
         }
 
         Control {
-            property var childItem: interactor.scanViewHandler
-
             id: scan_view_box
 
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.topMargin: -10
 
-            visible: interactor ? childItem : false
+            visible: interactor ? interactor.scanViewHandler : false
 
             GridLayout {
                 anchors.fill: parent
@@ -177,7 +175,7 @@ Rectangle {
 
                         clip: true
 
-                        contentWidth: 35
+                        contentWidth: axis_vertical.width
                         contentHeight: axis_vertical.height
 
                         ScrollBar.vertical.visible: false
@@ -282,48 +280,54 @@ Rectangle {
                 }
             }
 
-            onChildItemChanged: {
-                if (interactor.scanViewHandler) {
-                    b_or_c_scan_view_box.contentChildren.push(interactor.scanViewHandler)
-                    b_or_c_scan_view_box.onChildrenChanged()
+            Connections {
+                target: interactor
+                enabled: interactor
 
-                    let img_width = interactor.scanViewHandler.width
-                    let img_height = interactor.scanViewHandler.height
+                function onUpdateBOrCScanHandler() {
+                    if (interactor.scanViewHandler) {
+                        b_or_c_scan_view_box.contentChildren.push(interactor.scanViewHandler)
+                        b_or_c_scan_view_box.onChildrenChanged()
 
-                    interactor.scanViewHandler.width = Qt.binding(() => {
-                                                                      let content_width = img_width
-                                                                      if (img_width < b_or_c_scan_view_box.width) {
-                                                                          content_width = b_or_c_scan_view_box.width
-                                                                      }
-                                                                      b_or_c_scan_view_box.contentWidth = content_width
-                                                                      return content_width
-                                                                  })
+                        let img_width = interactor.scanViewHandler.width
+                        let img_height = interactor.scanViewHandler.height
 
-                    interactor.scanViewHandler.height = Qt.binding(() => {
-                                                                       let content_height = img_height
-                                                                       if (img_height < b_or_c_scan_view_box.height) {
-                                                                           content_height = b_or_c_scan_view_box.height
-                                                                       }
-                                                                       b_or_c_scan_view_box.contentHeight = content_height
-                                                                       return content_height
-                                                                   })
-                    axis_horizontal.width = Qt.binding(() => {
-                                                           return interactor.scanViewHandler.width
-                                                       })
+                        interactor.scanViewHandler.width = Qt.binding(() => {
+                                                                          let content_width = img_width
+                                                                          if (img_width < b_or_c_scan_view_box.width) {
+                                                                              content_width = b_or_c_scan_view_box.width
+                                                                          }
+                                                                          b_or_c_scan_view_box.contentWidth = content_width
+                                                                          return content_width
+                                                                      })
 
-                    axis_vertical.height = Qt.binding(() => {
-                                                          return interactor.scanViewHandler.height
-                                                      })
+                        interactor.scanViewHandler.height = Qt.binding(() => {
+                                                                           let content_height = img_height
+                                                                           if (img_height < b_or_c_scan_view_box.height) {
+                                                                               content_height = b_or_c_scan_view_box.height
+                                                                           }
+                                                                           b_or_c_scan_view_box.contentHeight = content_height
+                                                                           return content_height
+                                                                       })
 
-                    axis_horizontal.axisRange = Qt.binding(() => {
-                                                               return interactor.scanViewHandler.horizontalAxisRange
+                        axis_horizontal.width = Qt.binding(() => {
+                                                               return interactor.scanViewHandler.width
                                                            })
 
-                    axis_vertical.axisRange = Qt.binding(() => {
-                                                             return interactor.scanViewHandler.verticalAxisRange
-                                                         })
-                } else {
-                    b_or_c_scan_view_box.contentChildren = []
+                        axis_vertical.height = Qt.binding(() => {
+                                                              return interactor.scanViewHandler.height
+                                                          })
+
+                        axis_horizontal.axisRange = Qt.binding(() => {
+                                                                   return interactor.scanViewHandler.horizontalAxisRange
+                                                               })
+
+                        axis_vertical.axisRange = Qt.binding(() => {
+                                                                 return interactor.scanViewHandler.verticalAxisRange
+                                                             })
+                    } else {
+                        b_or_c_scan_view_box.contentChildren = []
+                    }
                 }
             }
         }
