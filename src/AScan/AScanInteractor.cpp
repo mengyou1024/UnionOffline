@@ -607,7 +607,7 @@ bool AScanInteractor::isGateEnable(int gate_idx) const {
             return false;
         }
         auto gate = aScanIntf()->getGate(getAScanCursor());
-        return gate.at(gate_idx % 2).enable;
+        return gate.at(gate_idx % 2).enable();
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
         auto stack_trace = std::stacktrace::current();
@@ -1076,21 +1076,21 @@ void AScanInteractor::updateGateSeries(::Union::BasicType::Gate gate, int index)
         line = createGateSeries(index);
     }
     QList<QPointF> gateList = {};
-    if (gate.enable) {
+    if (gate.enable()) {
         constexpr auto midify_bias = 0.005;
         auto           cmp000      = dynamic_cast<Union::UniversalApparatus::AScan::Special::CMP000Special*>(aScanIntf().get());
         if (index == 1 && cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor()) && cmp000->gateBIsLostType(getAScanCursor())) {
-            gateList.append({gate.pos, gate.height - midify_bias});
-            gateList.append({gate.pos + midify_bias, gate.height});
-            gateList.append({gate.pos + gate.width - midify_bias, gate.height});
-            gateList.append({gate.pos + gate.width, gate.height - midify_bias});
+            gateList.append({gate.pos(), gate.height() - midify_bias});
+            gateList.append({gate.pos() + midify_bias, gate.height()});
+            gateList.append({gate.pos() + gate.width() - midify_bias, gate.height()});
+            gateList.append({gate.pos() + gate.width(), gate.height() - midify_bias});
             line->replace(gateList);
             return;
         }
-        gateList.append({gate.pos, gate.height + midify_bias});
-        gateList.append({gate.pos + midify_bias, gate.height});
-        gateList.append({gate.pos + gate.width - midify_bias, gate.height});
-        gateList.append({gate.pos + gate.width, gate.height + midify_bias});
+        gateList.append({gate.pos(), gate.height() + midify_bias});
+        gateList.append({gate.pos() + midify_bias, gate.height()});
+        gateList.append({gate.pos() + gate.width() - midify_bias, gate.height()});
+        gateList.append({gate.pos() + gate.width(), gate.height() + midify_bias});
         line->replace(gateList);
 
         qCDebug(TAG) << "update gate series(" << index << "):" << gate;

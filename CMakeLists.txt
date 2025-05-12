@@ -125,7 +125,7 @@ find_package(Morose)
 
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE
+    PUBLIC
     UnionLib
     SingleApplication::SingleApplication
 )
