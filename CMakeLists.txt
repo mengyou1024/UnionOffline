@@ -5,7 +5,6 @@ project(UnionOffline LANGUAGES CXX)
 set(PROJECT_NAME_ZH_CN "通用离线分析软件")
 
 set(CMAKE_CXX_STANDARD 23)
-set(NUMCPP_NO_USE_BOOST ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_definitions(QT_NO_DEBUG_OUTPUT)
@@ -89,8 +88,8 @@ file(GLOB_RECURSE LUPDATE_SOURCES
     "src/*.hpp"
     "src/*.cpp"
     "resource/*.qml"
-    "components/union/include_private/*.h"
-    "components/union/include_private/*.hpp"
+    "components/union/include/*.h"
+    "components/union/include/*.hpp"
     "components/union/src/*.h"
     "components/union/src/*.c"
     "components/union/src/*.hpp"
