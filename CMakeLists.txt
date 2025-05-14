@@ -88,8 +88,6 @@ file(GLOB_RECURSE LUPDATE_SOURCES
     "src/*.hpp"
     "src/*.cpp"
     "resource/*.qml"
-    "components/union/include/*.h"
-    "components/union/include/*.hpp"
     "components/union/src/*.h"
     "components/union/src/*.c"
     "components/union/src/*.hpp"
