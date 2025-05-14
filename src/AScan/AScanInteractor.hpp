@@ -43,11 +43,13 @@ class AScanInteractor : public QQuickItem {
     bool        m_showCScanView             = false;
     QQuickItem* m_scanViewHandler           = nullptr;
     bool        m_softGainEnable            = false;
+    QQuickItem* m_scanViewHandlerExtra      = nullptr;
 
     int                                     m_replaySpeed             = 0;
     bool                                    m_isPlaying               = false;
     _STD_TP                                 m_lastUpdateGateValueTime = std::chrono::system_clock::now();
     std::shared_ptr<Union::View::BasicView> m_scanViewSp              = nullptr;
+    std::shared_ptr<Union::View::BasicView> m_scanViewSpExtra         = nullptr;
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";
@@ -153,6 +155,8 @@ public:
     void        setScanViewHandler(QQuickItem* newScanViewHandler);
     bool        softGainEnable() const;
     void        setSoftGainEnable(bool newSoftGainEnable);
+    QQuickItem* scanViewHandlerExtra() const;
+    void        setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra);
 
 public slots:
     bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -191,12 +195,16 @@ signals:
     void scanViewHandlerChanged();
     void softGainEnableChanged();
     void updateBOrCScanHandler();
+    void scanViewHandlerExtraChanged();
+    void updateBScanExtraHandler();
 
 private:
     void changeDataCursor(void);
     void updateCurrentFrame(void);
     void updateBOrCScanView(bool set_size);
     void updateBOrCScanViewRange(void);
+    void updateExtraBScanView(bool set_size);
+    void updateExtraBScanViewRange(void);
 
     Q_PROPERTY(bool replayVisible READ getReplayVisible WRITE setReplayVisible NOTIFY replayVisibleChanged)
     Q_PROPERTY(QString date READ getDate WRITE setDate NOTIFY dateChanged)
@@ -218,4 +226,5 @@ private:
     Q_PROPERTY(bool showCScanView READ showCScanView WRITE setShowCScanView NOTIFY showCScanViewChanged FINAL)
     Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler WRITE setScanViewHandler NOTIFY scanViewHandlerChanged FINAL)
     Q_PROPERTY(bool softGainEnable READ softGainEnable WRITE setSoftGainEnable NOTIFY softGainEnableChanged FINAL)
+    Q_PROPERTY(QQuickItem* scanViewHandlerExtra READ scanViewHandlerExtra WRITE setScanViewHandlerExtra NOTIFY scanViewHandlerExtraChanged FINAL)
 };

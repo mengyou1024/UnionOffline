@@ -30,6 +30,17 @@ namespace Union::View {
         emit imgHeightChanged();
     }
 
+    bool BScanView::enableCursor() const {
+        return m_enableCursor;
+    }
+
+    void BScanView::setEnableCursor(bool newEnableCursor) {
+        if (m_enableCursor == newEnableCursor)
+            return;
+        m_enableCursor = newEnableCursor;
+        emit enableCursorChanged();
+    }
+
     BScanView::BScanView() {
         setKeepMouseGrab(true);
         setAcceptedMouseButtons(Qt::LeftButton);
@@ -106,24 +117,28 @@ namespace Union::View {
     void BScanView::paint(QPainter* painter) {
         BasicView::paint(painter);
         painter->drawImage(getDrawable(), m_image);
-        if (m_drawLine.has_value()) {
+        if (enableCursor() && m_drawLine.has_value()) {
             painter->setPen(QPen(cursorLineColor(), cursorLineWidth()));
             painter->drawLine(QPoint(getDrawable().left(), m_drawLine.value()), QPoint(getDrawable().right(), m_drawLine.value()));
         }
     }
 
     void BScanView::mousePressEvent(QMouseEvent* event) {
-        eventHandlerCommon(event);
+        if (enableCursor()) {
+            eventHandlerCommon(event);
+        }
     }
 
     void BScanView::mouseMoveEvent(QMouseEvent* event) {
-        if (eventHandlerCommon(event)) {
+        if (enableCursor() && eventHandlerCommon(event)) {
             setCursor(Qt::SizeVerCursor);
         }
     }
 
     void BScanView::mouseReleaseEvent(QMouseEvent*) {
-        setCursor(Qt::ArrowCursor);
+        if (enableCursor()) {
+            setCursor(Qt::ArrowCursor);
+        }
     }
 
     bool BScanView::eventHandlerCommon(QMouseEvent* event) noexcept {

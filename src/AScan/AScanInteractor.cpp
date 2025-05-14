@@ -310,6 +310,8 @@ void AScanInteractor::changeDataCursor() {
             }
             // 8. 更新B扫或C扫的坐标范围
             updateBOrCScanViewRange();
+            updateExtraBScanViewRange();
+
             // 9. 更新钢轨仿真图
             auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
             if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
@@ -336,6 +338,8 @@ void AScanInteractor::updateCurrentFrame() {
             setGateValue(CreateGateValue());
             updateBOrCScanView(false);
             updateBOrCScanViewRange();
+            updateExtraBScanView(false);
+            updateExtraBScanViewRange();
             auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
             if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
                 setShowCMP001Special(true);
@@ -356,8 +360,6 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
 
     try {
         if (showCScanView()) {
-            // VARIFY: 更新C扫图像
-
             const auto cscan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
 
             if (cscan_spec == nullptr) {
@@ -396,10 +398,9 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             setSoftGainEnable(true);
 
         } else if (showBScanView()) {
-            // VARIFY: 更新B扫图像
             const auto bscan_spec = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
-            const auto mdata_sped = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
-            auto       b_scan_sp  = std::dynamic_pointer_cast<Union::View::BScanView>(aScanIntf());
+            const auto mdata_spec = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
+            auto       b_scan_sp  = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
             if (b_scan_sp == nullptr) {
                 b_scan_sp    = std::make_shared<Union::View::BScanView>();
                 m_scanViewSp = b_scan_sp;
@@ -409,15 +410,16 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             const auto                          height = bscan_spec->getBScanXDots();
             int                                 width  = 0;
             for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
-                if (std::ssize(mdata_sped->getDataInGate(i, 0)) > width) {
-                    width = std::ssize(mdata_sped->getDataInGate(i, 0));
+                if (std::ssize(mdata_spec->getDataInGate(i, 0)) > width) {
+                    width = std::ssize(mdata_spec->getDataInGate(i, 0));
                 }
             }
+
             bscan_image.resize(width * height);
             std::ranges::fill(bscan_image, std::nullopt);
 
             for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-                auto data = mdata_sped->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
+                auto data = mdata_spec->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
                                 return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
                             }) |
                             std::ranges::to<std::vector<std::optional<uint8_t>>>();
@@ -437,6 +439,9 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             }
 
             b_scan_sp->replace(bscan_image, width, height, set_size);
+
+            m_scanViewSpExtra = nullptr;
+            setScanViewHandlerExtra(m_scanViewSpExtra.get());
 
             setScanViewHandler(m_scanViewSp.get());
             setSoftGainEnable(true);
@@ -459,7 +464,6 @@ void AScanInteractor::updateBOrCScanViewRange() {
 
     try {
         if (showCScanView()) {
-            // VARIFY: 更新C扫坐标轴
             auto cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
             auto c_scan_view = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
             if (c_scan_view && cscan_spec) {
@@ -468,18 +472,127 @@ void AScanInteractor::updateBOrCScanViewRange() {
                 c_scan_view->setHorizontalAxisRange(QPointF(range_x.first, range_x.second));
                 c_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
             }
+
         } else if (showBScanView()) {
-            // VARIFY: 更新B扫坐标轴
             auto bscan_spec  = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
             auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
             if (b_scan_view && bscan_spec) {
-                const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
-                const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
-                b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+                if (!bscan_spec->isGateMode()) {
+                    const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
+                    const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
+                    b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+                } else {
+                    auto&& [gate0, _]     = aScanIntf()->getGate(getAScanCursor());
+                    auto       axis_range = aScanIntf()->getAxisRange(0);
+                    const auto start      = ValueMap(gate0.pos(), axis_range);
+                    const auto end        = ValueMap(gate0.pos() + gate0.width(), axis_range);
+                    b_scan_view->setHorizontalAxisRange(QPointF(start, end));
+                }
+
                 const auto range = bscan_spec->getBScanRange();
                 b_scan_view->setVerticalAxisRange(QPointF(range.first, range.second));
             }
         }
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
+    }
+}
+
+void AScanInteractor::updateExtraBScanView(bool set_size) {
+    if (aScanIntf() == nullptr) {
+        qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
+    }
+    try {
+        if (showCScanView()) {
+            const auto c_scan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
+            const auto mdata_spec  = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
+            auto       b_scan_sp   = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
+            if (b_scan_sp == nullptr) {
+                b_scan_sp         = std::make_shared<Union::View::BScanView>();
+                m_scanViewSpExtra = b_scan_sp;
+            }
+
+            std::vector<std::optional<uint8_t>> bscan_image;
+            // 获取当前行的B扫数据游标
+            const auto line_width           = mdata_spec->getCScanXDots();
+            const auto line_count           = getAScanCursor() / line_width;
+            auto       extra_b_scan_cursors = std::views::iota(line_count * line_width, (line_count + 1) * line_width);
+
+            int  width    = 0;
+            auto encoders = extra_b_scan_cursors | std::views::transform([&](auto&& cursor) -> uint16_t {
+                                return mdata_spec->getBScanEncoder(cursor);
+                            }) |
+                            std::ranges::to<std::vector>();
+            auto&& [min_encoder, max_encoder] = std::ranges::minmax(encoders);
+            for (auto idx : extra_b_scan_cursors) {
+                auto current_frame_ascan_size = std::ssize(mdata_spec->getScanData(idx));
+                if (current_frame_ascan_size > width) {
+                    width = current_frame_ascan_size;
+                }
+            }
+            const auto height = max_encoder - min_encoder + 1;
+
+            bscan_image.resize(width * height);
+            std::ranges::fill(bscan_image, std::nullopt);
+
+            for (auto idx : extra_b_scan_cursors) {
+                auto data = mdata_spec->getScanData(idx) | std::views::transform([this](auto&& val) {
+                                return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
+                            }) |
+                            std::ranges::to<std::vector<std::optional<uint8_t>>>();
+
+                auto       frame   = mdata_spec->getBScanEncoder(idx);
+                const auto img_idx = width * frame;
+
+                if (img_idx >= std::ssize(bscan_image)) {
+                    continue;
+                }
+
+                auto dist_ptr = bscan_image.data() + img_idx;
+                memcpy_s(dist_ptr, width * sizeof(std::optional<uint8_t>),
+                         data.data(), std::ssize(data) * sizeof(std::optional<uint8_t>));
+            }
+
+            b_scan_sp->setEnableCursor(false);
+            b_scan_sp->replace(bscan_image, width, height, set_size);
+
+            setScanViewHandlerExtra(m_scanViewSpExtra.get());
+        } else {
+            m_scanViewSpExtra = nullptr;
+            setScanViewHandlerExtra(m_scanViewSpExtra.get());
+        }
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        auto stack_trace = std::stacktrace::current();
+        qCCritical(TAG) << std::to_string(stack_trace).c_str();
+    }
+    emit updateBScanExtraHandler();
+}
+
+void AScanInteractor::updateExtraBScanViewRange() {
+    if (aScanIntf() == nullptr) {
+        qCWarning(TAG) << "nullptr error:" << std::to_string(std::stacktrace::current()).c_str();
+    }
+
+    if (!showCScanView()) {
+        return;
+    }
+
+    try {
+        // VARIFY: 更新C扫坐标轴
+        auto       cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
+        auto       b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
+        const auto mdata_spec  = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
+        if (b_scan_view && cscan_spec) {
+            const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
+            const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
+            b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+            const auto range_y = mdata_spec->getSubBScanRange(getAScanCursor());
+            b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+        }
+
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
         auto stack_trace = std::stacktrace::current();
@@ -508,11 +621,13 @@ void AScanInteractor::setAScanCursor(int newAScanCursor) {
         return;
     }
 
+    const auto old_cursor = m_aScanCursor;
+
     m_aScanCursor = newAScanCursor;
 
-    auto cscan_spec = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
-    if (cscan_spec && (cscan_spec->isSpecialCScanEnabled() || cscan_spec->isSpecialBScanEnabled())) {
-        m_aScanCursor = cscan_spec->redirectDataCursor(m_aScanCursor);
+    const auto mdata_spec = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
+    if (mdata_spec && mdata_spec->isCScanSubLineChanged(old_cursor, m_aScanCursor)) {
+        updateExtraBScanView(true);
     }
 
     emit aScanCursorChanged();
@@ -693,6 +808,17 @@ void AScanInteractor::setSoftGainEnable(bool newSoftGainEnable) {
     emit softGainEnableChanged();
 }
 
+QQuickItem* AScanInteractor::scanViewHandlerExtra() const {
+    return m_scanViewHandlerExtra;
+}
+
+void AScanInteractor::setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra) {
+    if (m_scanViewHandlerExtra == newScanViewHandlerExtra)
+        return;
+    m_scanViewHandlerExtra = newScanViewHandlerExtra;
+    emit scanViewHandlerExtraChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(aScanIntf() ? aScanIntf()->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -792,6 +918,8 @@ bool AScanInteractor::openFile(QString filename) {
         }
         updateBOrCScanView(true);
         updateBOrCScanViewRange();
+        updateExtraBScanView(true);
+        updateExtraBScanViewRange();
 
         // 最后更新A扫数据指针
         if (getAScanCursor() == 0) {

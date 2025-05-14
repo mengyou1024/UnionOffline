@@ -151,8 +151,8 @@ namespace Union::AScan::RailWeld {
             qCDebug(TAG) << "intf is nullptr or feature CMP001 is not enable";
             return;
         }
-        const auto& data   = std::get<UnType::ID_ASCAN_DATA>(intf->m_data.second.at(idx)).m_data;
-        const auto& cmp001 = std::dynamic_pointer_cast<MdatImpl::CMP001>(std::get<UnType::ID_CHANNEL_PARAM>(intf->m_data.second.at(idx)));
+        const auto& data   = std::get<UnType::ID_ASCAN_DATA>(intf->m_data.second.at(idx).value())->m_data;
+        const auto& cmp001 = std::dynamic_pointer_cast<MdatImpl::CMP001>(std::get<UnType::ID_CHANNEL_PARAM>(intf->m_data.second.at(idx).value()));
         if (!cmp001) {
             qCWarning(TAG) << "convert to cmp001 error";
             return;

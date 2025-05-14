@@ -137,14 +137,199 @@ Rectangle {
             }
         }
 
-        ChartView {
-            id: chart_view
-            readonly property bool hiddenOnResizing: false
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            antialiasing: false
-            legend.visible: false
-            dropShadowEnabled: true
+        RowLayout {
+
+            ChartView {
+                id: chart_view
+                readonly property bool hiddenOnResizing: false
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                antialiasing: false
+                legend.visible: false
+                dropShadowEnabled: true
+            }
+
+            Control {
+                id: scan_view_box_extra
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                visible: interactor.scanViewHandlerExtra
+
+                GridLayout {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    columns: 2
+                    rows: 2
+                    columnSpacing: 0
+                    rowSpacing: 0
+
+                    Item {
+                        Layout.row: 0
+                        Layout.column: 0
+                        Layout.preferredWidth: 35
+                        Layout.fillHeight: true
+                        ScrollView {
+                            id: axis_vertical_box_extra
+                            anchors.fill: parent
+
+                            clip: true
+
+                            contentWidth: axis_vertical_extra.width
+                            contentHeight: axis_vertical_extra.height
+
+                            ScrollBar.vertical.visible: false
+                            ScrollBar.vertical.interactive: false
+                            ScrollBar.vertical.position: b_or_c_scan_view_box_extra.ScrollBar.vertical.position
+
+                            Flickable {
+                                boundsBehavior: Flickable.StopAtBounds
+                            }
+
+                            Binding {
+                                target: b_or_c_scan_view_box_extra.ScrollBar.vertical
+                                property: "position"
+                                value: axis_vertical_box_extra.ScrollBar.vertical.position
+                            }
+
+                            AxisView {
+                                id: axis_vertical_extra
+                                isVertical: true
+                                reverse: true
+                                width: 35
+                            }
+                        }
+                    }
+
+                    Item {
+                        Layout.row: 0
+                        Layout.column: 1
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        ScrollView {
+                            id: b_or_c_scan_view_box_extra
+                            anchors.fill: parent
+                            clip: true
+
+                            Flickable {
+                                boundsBehavior: Flickable.StopAtBounds
+                            }
+                        }
+                    }
+
+                    Rectangle {
+                        Layout.row: 1
+                        Layout.column: 0
+                        Layout.preferredWidth: 35
+                        Layout.preferredHeight: 35
+                        color: "#afeeee"
+                    }
+
+                    Item {
+                        Layout.preferredHeight: 35
+                        Layout.fillWidth: true
+                        Layout.row: 1
+                        Layout.column: 1
+
+                        ScrollView {
+                            id: axis_horizontal_boax_extra
+                            anchors.fill: parent
+                            contentWidth: axis_horizontal_extra.width
+                            contentHeight: axis_horizontal_extra.height
+                            clip: true
+
+                            ScrollBar.horizontal.visible: false
+                            ScrollBar.horizontal.interactive: false
+                            ScrollBar.horizontal.position: b_or_c_scan_view_box_extra.ScrollBar.horizontal.position
+
+                            Flickable {
+                                boundsBehavior: Flickable.StopAtBounds
+                            }
+
+                            Binding {
+                                target: b_or_c_scan_view_box_extra.ScrollBar.horizontal
+                                property: "position"
+                                value: axis_horizontal_boax_extra.ScrollBar.horizontal.position
+                            }
+
+                            AxisView {
+                                id: axis_horizontal_extra
+                                height: 35
+                            }
+                        }
+                    }
+                }
+
+                Connections {
+                    target: interactor.scanViewHandlerExtra
+                    enabled: interactor.scanViewHandlerExtra
+                    ignoreUnknownSignals: true
+
+                    function onDataCursorChanged() {// if (interactor.showBScanView) {
+                        //     console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandlerExtra.dataCursorInt}`)
+                        //     interactor.aScanCursor = interactor.scanViewHandlerExtra.dataCursor
+                        // }
+                    }
+
+                    function onDataCursorIntChanged() {// if (interactor.showCScanView) {
+                        //     console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandlerExtra.dataCursorInt}`)
+                        //     interactor.aScanCursor = interactor.scanViewHandlerExtra.dataCursorInt
+                        // }
+                    }
+                }
+
+                Connections {
+                    target: interactor
+                    enabled: interactor
+
+                    function onUpdateBScanExtraHandler() {
+                        if (interactor.scanViewHandlerExtra) {
+                            b_or_c_scan_view_box_extra.contentChildren.push(interactor.scanViewHandlerExtra)
+                            b_or_c_scan_view_box_extra.onChildrenChanged()
+
+                            let img_width = interactor.scanViewHandlerExtra.width
+                            let img_height = interactor.scanViewHandlerExtra.height
+
+                            interactor.scanViewHandlerExtra.width = Qt.binding(() => {
+                                                                                   let content_width = img_width
+                                                                                   if (img_width < b_or_c_scan_view_box_extra.width) {
+                                                                                       content_width = b_or_c_scan_view_box_extra.width
+                                                                                   }
+                                                                                   b_or_c_scan_view_box_extra.contentWidth = content_width
+                                                                                   return content_width
+                                                                               })
+
+                            interactor.scanViewHandlerExtra.height = Qt.binding(() => {
+                                                                                    let content_height = img_height
+                                                                                    if (img_height < b_or_c_scan_view_box_extra.height) {
+                                                                                        content_height = b_or_c_scan_view_box_extra.height
+                                                                                    }
+                                                                                    b_or_c_scan_view_box_extra.contentHeight = content_height
+                                                                                    return content_height
+                                                                                })
+
+                            axis_horizontal_extra.width = Qt.binding(() => {
+                                                                         return interactor.scanViewHandlerExtra.width
+                                                                     })
+
+                            axis_vertical_extra.height = Qt.binding(() => {
+                                                                        return interactor.scanViewHandlerExtra.height
+                                                                    })
+
+                            axis_horizontal_extra.axisRange = Qt.binding(() => {
+                                                                             return interactor.scanViewHandlerExtra.horizontalAxisRange
+                                                                         })
+
+                            axis_vertical_extra.axisRange = Qt.binding(() => {
+                                                                           return interactor.scanViewHandlerExtra.verticalAxisRange
+                                                                       })
+                        } else {
+                            b_or_c_scan_view_box_extra.contentChildren = []
+                        }
+                    }
+                }
+            }
         }
 
         Control {
@@ -267,14 +452,12 @@ Rectangle {
 
                 function onDataCursorChanged() {
                     if (interactor.showBScanView) {
-                        console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandler.dataCursorInt}`)
                         interactor.aScanCursor = interactor.scanViewHandler.dataCursor
                     }
                 }
 
                 function onDataCursorIntChanged() {
                     if (interactor.showCScanView) {
-                        console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandler.dataCursorInt}`)
                         interactor.aScanCursor = interactor.scanViewHandler.dataCursorInt
                     }
                 }

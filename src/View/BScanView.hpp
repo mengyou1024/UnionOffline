@@ -13,6 +13,7 @@ namespace Union::View {
         int    m_cursorLineWidth = 1;
         int    m_imgWidth        = 0;
         int    m_imgHeight       = 0;
+        bool   m_enableCursor    = true;
 
     public:
         BScanView();
@@ -25,22 +26,21 @@ namespace Union::View {
         void                 setCursorLineColor(const QColor& newCursorLineColor);
         [[nodiscard]] int    cursorLineWidth() const;
         void                 setCursorLineWidth(int newCursorLineWidth);
-
-        int  imgWidth() const;
-        void setImgWidth(int newImgWidth);
-
-        int  imgHeight() const;
-        void setImgHeight(int newImgHeight);
+        [[nodiscard]] int    imgWidth() const;
+        void                 setImgWidth(int newImgWidth);
+        [[nodiscard]] int    imgHeight() const;
+        void                 setImgHeight(int newImgHeight);
+        [[nodiscard]] bool   enableCursor() const;
+        void                 setEnableCursor(bool newEnableCursor);
 
     signals:
 
         void dataCursorChanged();
         void cursorLineColorChanged();
         void cursorLineWidthChanged();
-
         void imgWidthChanged();
-
         void imgHeightChanged();
+        void enableCursorChanged();
 
     protected:
         virtual void paint(QPainter* painter) override;
@@ -60,5 +60,6 @@ namespace Union::View {
         Q_PROPERTY(int cursorLineWidth READ cursorLineWidth WRITE setCursorLineWidth NOTIFY cursorLineWidthChanged FINAL)
         Q_PROPERTY(int imgWidth READ imgWidth WRITE setImgWidth NOTIFY imgWidthChanged FINAL)
         Q_PROPERTY(int imgHeight READ imgHeight WRITE setImgHeight NOTIFY imgHeightChanged FINAL)
+        Q_PROPERTY(bool enableCursor READ enableCursor WRITE setEnableCursor NOTIFY enableCursorChanged FINAL)
     };
 } // namespace Union::View
