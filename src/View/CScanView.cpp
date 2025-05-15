@@ -96,7 +96,7 @@ namespace Union::View {
     void CScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
         try {
             auto           image       = QImage(width, height, QImage::Format_RGB888);
-            decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::T8ColorTable();
+            decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::WhileBlueYellowRedGradient();
             image.fill(0);
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
