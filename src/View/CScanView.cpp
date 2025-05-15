@@ -42,17 +42,6 @@ namespace Union::View {
         emit imgHeightChanged();
     }
 
-    int CScanView::lineHeight() const {
-        return m_lineHeight;
-    }
-
-    void CScanView::setLineHeight(int newLineHeight) {
-        if (m_lineHeight == newLineHeight)
-            return;
-        m_lineHeight = newLineHeight;
-        emit lineHeightChanged();
-    }
-
     CScanView::CScanView() {
         setKeepMouseGrab(true);
         setAcceptedMouseButtons(Qt::LeftButton);
@@ -152,7 +141,7 @@ namespace Union::View {
         }
 
         auto cursor_x = (event->x() - getDrawable().x()) * m_image.width() / getDrawable().width();
-        auto cursor_y = (event->y() - getDrawable().y()) * m_image.height() / (getDrawable().height() * lineHeight());
+        auto cursor_y = (event->y() - getDrawable().y()) * m_image.height() / getDrawable().height();
         setDataCursor({cursor_x, cursor_y});
         setDataCursorInt(cursor_y * m_image.width() + cursor_x);
         m_drawPoint = event->pos();

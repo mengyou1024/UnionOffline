@@ -361,9 +361,8 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
     try {
         if (showCScanView()) {
             const auto cscan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
-            const auto mdata_spec = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
 
-            if (cscan_spec == nullptr || mdata_spec == nullptr) {
+            if (cscan_spec == nullptr) {
                 return;
             }
 
@@ -378,33 +377,22 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
 
             std::vector<std::optional<uint8_t>> cscan_image;
 
-            const auto width             = frame_per_row;
-            const auto height            = frame_per_col;
-            auto       date_size_in_gate = std::ssize(mdata_spec->getDataInGate(0, 0));
-
-            if (date_size_in_gate == 0) {
-                throw std::logic_error("error date size of gate");
-            }
-
-            cscan_image.resize(width * height * date_size_in_gate);
+            const auto width  = frame_per_row;
+            const auto height = frame_per_col;
+            cscan_image.resize(width * height);
             std::ranges::fill(cscan_image, std::nullopt);
 
-            for (auto x = 0; std::cmp_less(x, width); x++) {
-                for (auto y = 0; std::cmp_less(y, height); y++) {
-                    const auto cursor               = y * width + x;
-                    const auto resampling_gate_data = mdata_spec->resamplingGateDate(cursor, 0, date_size_in_gate);
-                    if (resampling_gate_data.size() == 0) {
-                        continue;
-                    }
-                    for (int i = 0; i < date_size_in_gate; i++) {
-                        const auto image_idx      = y * (date_size_in_gate * width) + (width * i) + x;
-                        cscan_image.at(image_idx) = resampling_gate_data.at(i);
-                    }
+            for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
+                uint8_t amp_in_gate;
+                std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
+                auto [x, y]                        = cscan_spec->getCScanEncoder(idx);
+                const auto img_idx                 = y * width + x;
+                if (img_idx >= std::ssize(cscan_image)) {
+                    continue;
                 }
+                cscan_image.at(img_idx) = std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(amp_in_gate, getSoftGain()));
             }
-
-            c_scan_sp->setLineHeight(date_size_in_gate);
-            c_scan_sp->replace(cscan_image, width, height * date_size_in_gate, set_size);
+            c_scan_sp->replace(cscan_image, width, height, set_size);
 
             setScanViewHandler(m_scanViewSp.get());
             setSoftGainEnable(true);
@@ -435,10 +423,6 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
                                 return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
                             }) |
                             std::ranges::to<std::vector<std::optional<uint8_t>>>();
-
-                if (std::ssize(data) == 0) {
-                    continue;
-                }
 
                 auto       frame   = bscan_spec->getBScanEncoder(idx);
                 const auto img_idx = width * frame;
