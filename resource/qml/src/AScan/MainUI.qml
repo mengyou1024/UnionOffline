@@ -274,19 +274,13 @@ Rectangle {
                             let img_height = interactor.scanViewHandlerExtra.height
 
                             interactor.scanViewHandlerExtra.width = Qt.binding(() => {
-                                                                                   let content_width = img_width
-                                                                                   if (img_width < b_or_c_scan_view_box_extra.width) {
-                                                                                       content_width = b_or_c_scan_view_box_extra.width
-                                                                                   }
+                                                                                   let content_width = b_or_c_scan_view_box_extra.width
                                                                                    b_or_c_scan_view_box_extra.contentWidth = content_width
                                                                                    return content_width
                                                                                })
 
                             interactor.scanViewHandlerExtra.height = Qt.binding(() => {
-                                                                                    let content_height = img_height
-                                                                                    if (img_height < b_or_c_scan_view_box_extra.height) {
-                                                                                        content_height = b_or_c_scan_view_box_extra.height
-                                                                                    }
+                                                                                    let content_height = b_or_c_scan_view_box_extra.height
                                                                                     b_or_c_scan_view_box_extra.contentHeight = content_height
                                                                                     return content_height
                                                                                 })
@@ -465,28 +459,21 @@ Rectangle {
                 target: interactor
                 enabled: interactor
 
+                function zoomIn() {}
+
                 function onUpdateBOrCScanHandler() {
                     if (interactor.scanViewHandler) {
                         b_or_c_scan_view_box.contentChildren.push(interactor.scanViewHandler)
                         b_or_c_scan_view_box.onChildrenChanged()
 
-                        let img_width = interactor.scanViewHandler.width
-                        let img_height = interactor.scanViewHandler.height
-
                         interactor.scanViewHandler.width = Qt.binding(() => {
-                                                                          let content_width = img_width
-                                                                          if (img_width < b_or_c_scan_view_box.width) {
-                                                                              content_width = b_or_c_scan_view_box.width
-                                                                          }
+                                                                          let content_width = b_or_c_scan_view_box.width
                                                                           b_or_c_scan_view_box.contentWidth = content_width
                                                                           return content_width
                                                                       })
 
                         interactor.scanViewHandler.height = Qt.binding(() => {
-                                                                           let content_height = img_height
-                                                                           if (img_height < b_or_c_scan_view_box.height) {
-                                                                               content_height = b_or_c_scan_view_box.height
-                                                                           }
+                                                                           let content_height = b_or_c_scan_view_box.height
                                                                            b_or_c_scan_view_box.contentHeight = content_height
                                                                            return content_height
                                                                        })

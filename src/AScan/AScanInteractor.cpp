@@ -378,28 +378,33 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
 
             std::vector<std::optional<uint8_t>> cscan_image;
 
-            const auto     width               = frame_per_row;
-            const auto     height              = frame_per_col;
-            constexpr auto k_C_SCAN_LINE_COUNT = 20;
-            cscan_image.resize(width * height * k_C_SCAN_LINE_COUNT);
+            const auto width             = frame_per_row;
+            const auto height            = frame_per_col;
+            auto       date_size_in_gate = std::ssize(mdata_spec->getDataInGate(0, 0));
+
+            if (date_size_in_gate == 0) {
+                throw std::logic_error("error date size of gate");
+            }
+
+            cscan_image.resize(width * height * date_size_in_gate);
             std::ranges::fill(cscan_image, std::nullopt);
 
             for (auto x = 0; std::cmp_less(x, width); x++) {
                 for (auto y = 0; std::cmp_less(y, height); y++) {
-                    const auto cursor      = y * width + x;
-                    const auto freeze_data = mdata_spec->resamplingGateDate(cursor, 0, k_C_SCAN_LINE_COUNT);
-                    if (freeze_data.size() == 0) {
+                    const auto cursor               = y * width + x;
+                    const auto resampling_gate_data = mdata_spec->resamplingGateDate(cursor, 0, date_size_in_gate);
+                    if (resampling_gate_data.size() == 0) {
                         continue;
                     }
-                    for (int i = 0; i < k_C_SCAN_LINE_COUNT; i++) {
-                        const auto image_idx      = y * (k_C_SCAN_LINE_COUNT * width) + (width * i) + x;
-                        cscan_image.at(image_idx) = freeze_data.at(i);
+                    for (int i = 0; i < date_size_in_gate; i++) {
+                        const auto image_idx      = y * (date_size_in_gate * width) + (width * i) + x;
+                        cscan_image.at(image_idx) = resampling_gate_data.at(i);
                     }
                 }
             }
 
-            c_scan_sp->setLineHeight(k_C_SCAN_LINE_COUNT);
-            c_scan_sp->replace(cscan_image, width, height * k_C_SCAN_LINE_COUNT, set_size);
+            c_scan_sp->setLineHeight(date_size_in_gate);
+            c_scan_sp->replace(cscan_image, width, height * date_size_in_gate, set_size);
 
             setScanViewHandler(m_scanViewSp.get());
             setSoftGainEnable(true);
