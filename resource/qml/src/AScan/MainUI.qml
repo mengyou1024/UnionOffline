@@ -262,24 +262,6 @@ Rectangle {
                 }
 
                 Connections {
-                    target: interactor.scanViewHandlerExtra
-                    enabled: interactor.scanViewHandlerExtra
-                    ignoreUnknownSignals: true
-
-                    function onDataCursorChanged() {// if (interactor.showBScanView) {
-                        //     console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandlerExtra.dataCursorInt}`)
-                        //     interactor.aScanCursor = interactor.scanViewHandlerExtra.dataCursor
-                        // }
-                    }
-
-                    function onDataCursorIntChanged() {// if (interactor.showCScanView) {
-                        //     console.log(`数据指针${interactor.aScanCursor} -> ${interactor.scanViewHandlerExtra.dataCursorInt}`)
-                        //     interactor.aScanCursor = interactor.scanViewHandlerExtra.dataCursorInt
-                        // }
-                    }
-                }
-
-                Connections {
                     target: interactor
                     enabled: interactor
 
