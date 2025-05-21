@@ -292,19 +292,35 @@ Rectangle {
                                                                                 })
 
                             axis_horizontal_extra.width = Qt.binding(() => {
-                                                                         return interactor.scanViewHandlerExtra.width
+                                                                         try {
+                                                                             return interactor.scanViewHandlerExtra.width
+                                                                         } catch (e) {
+                                                                             return axis_horizontal_extra.width
+                                                                         }
                                                                      })
 
                             axis_vertical_extra.height = Qt.binding(() => {
-                                                                        return interactor.scanViewHandlerExtra.height
+                                                                        try {
+                                                                            return interactor.scanViewHandlerExtra.height
+                                                                        } catch (e) {
+                                                                            return axis_vertical_extra.height
+                                                                        }
                                                                     })
 
                             axis_horizontal_extra.axisRange = Qt.binding(() => {
-                                                                             return interactor.scanViewHandlerExtra.horizontalAxisRange
+                                                                             try {
+                                                                                 return interactor.scanViewHandlerExtra.horizontalAxisRange
+                                                                             } catch (e) {
+                                                                                 return axis_horizontal_extra.axisRange
+                                                                             }
                                                                          })
 
                             axis_vertical_extra.axisRange = Qt.binding(() => {
-                                                                           return interactor.scanViewHandlerExtra.verticalAxisRange
+                                                                           try {
+                                                                               return interactor.scanViewHandlerExtra.verticalAxisRange
+                                                                           } catch (e) {
+                                                                               return axis_vertical_extra.axisRange
+                                                                           }
                                                                        })
                         } else {
                             b_or_c_scan_view_box_extra.contentChildren = []
@@ -476,19 +492,35 @@ Rectangle {
                                                                        })
 
                         axis_horizontal.width = Qt.binding(() => {
-                                                               return interactor.scanViewHandler.width
+                                                               try {
+                                                                   return interactor.scanViewHandler.width
+                                                               } catch (e) {
+                                                                   return axis_horizontal.width
+                                                               }
                                                            })
 
                         axis_vertical.height = Qt.binding(() => {
-                                                              return interactor.scanViewHandler.height
+                                                              try {
+                                                                  return interactor.scanViewHandler.height
+                                                              } catch (e) {
+                                                                  return axis_vertical.height
+                                                              }
                                                           })
 
                         axis_horizontal.axisRange = Qt.binding(() => {
-                                                                   return interactor.scanViewHandler.horizontalAxisRange
+                                                                   try {
+                                                                       return interactor.scanViewHandler.horizontalAxisRange
+                                                                   } catch (e) {
+                                                                       return axis_horizontal.axisRange
+                                                                   }
                                                                })
 
                         axis_vertical.axisRange = Qt.binding(() => {
-                                                                 return interactor.scanViewHandler.verticalAxisRange
+                                                                 try {
+                                                                     return interactor.scanViewHandler.verticalAxisRange
+                                                                 } catch (e) {
+                                                                     return axis_vertical.axisRange
+                                                                 }
                                                              })
                     } else {
                         b_or_c_scan_view_box.contentChildren = []
