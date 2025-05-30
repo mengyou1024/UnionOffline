@@ -84,27 +84,31 @@ namespace Union::View {
 
     void CScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
         try {
-            auto           image       = QImage(width, height, QImage::Format_RGB888);
-            decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::WhileBlueYellowRedGradient();
-            image.fill(0);
+            auto           _image      = QImage(width, height, QImage::Format_RGB888);
+            decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::BlackWhiteGradient();
+            _image.fill(0);
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (data.at(y * width + x).has_value()) {
-                        image.setPixel(x, y, COLOR_TABLE.at(data.at(y * width + x).value()));
+                        _image.setPixel(x, y, COLOR_TABLE.at(data.at(y * width + x).value()));
                     }
                 }
             }
+
+            _raw_width  = width;
+            _raw_height = height;
 
             if (set_size) {
                 setWidth(width + AXIS_WIDTH);
                 setHeight(height + AXIS_WIDTH);
             }
 
-            QMetaObject::invokeMethod(this, [=, this, image = std::move(image)]() mutable {
+            QMetaObject::invokeMethod(this, [=, this, image = std::move(_image)]() mutable {
                 m_image = std::move(image);
 
                 update();
             });
+
         } catch (const std::exception& e) {
             qCWarning(TAG) << "replace image error";
             qCWarning(TAG) << e.what();
@@ -113,7 +117,20 @@ namespace Union::View {
 
     void CScanView::paint(QPainter* painter) {
         BasicView::paint(painter);
-        painter->drawImage(getDrawable(), m_image);
+
+        auto _image = m_image.scaled(getDrawable().size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+        auto           image       = QImage(_image.size(), QImage::Format_RGBA8888);
+        decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::T8ColorTable();
+        image.fill(0);
+
+        for (int x = 0; x < _image.width(); x++) {
+            for (int y = 0; y < _image.height(); y++) {
+                image.setPixel(x, y, COLOR_TABLE.at(_image.pixel(x, y) & 0xFF));
+            }
+        }
+
+        painter->drawImage(getDrawable(), image);
         if (m_drawPoint.has_value()) {
             painter->setPen(QPen(cursorLineColor(), cursorLineWidth()));
             painter->drawLine(QPoint(getDrawable().left(), m_drawPoint.value().y()), QPoint(getDrawable().right(), m_drawPoint.value().y()));
@@ -140,10 +157,10 @@ namespace Union::View {
             return false;
         }
 
-        auto cursor_x = (event->x() - getDrawable().x()) * m_image.width() / getDrawable().width();
-        auto cursor_y = (event->y() - getDrawable().y()) * m_image.height() / getDrawable().height();
+        auto cursor_x = (event->x() - getDrawable().x()) * _raw_width / getDrawable().width();
+        auto cursor_y = (event->y() - getDrawable().y()) * _raw_height / getDrawable().height();
         setDataCursor({cursor_x, cursor_y});
-        setDataCursorInt(cursor_y * m_image.width() + cursor_x);
+        setDataCursorInt(cursor_y * _raw_width + cursor_x);
         m_drawPoint = event->pos();
         QMetaObject::invokeMethod(this, [this]() { this->update(); });
         return true;

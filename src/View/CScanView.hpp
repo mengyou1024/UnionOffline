@@ -53,6 +53,8 @@ namespace Union::View {
 
     private:
         QImage                m_image     = {};
+        int                   _raw_width  = 0;
+        int                   _raw_height = 0;
         std::optional<QPoint> m_drawPoint = std::nullopt;
 
         bool eventHandlerCommon(QMouseEvent* event) noexcept;

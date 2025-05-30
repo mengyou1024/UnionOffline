@@ -527,7 +527,7 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
                             std::ranges::to<std::vector>();
             auto&& [min_encoder, max_encoder] = std::ranges::minmax(encoders);
             for (auto idx : extra_b_scan_cursors) {
-                auto current_frame_ascan_size = std::ssize(mdata_spec->getScanData(idx));
+                auto current_frame_ascan_size = std::ssize(mdata_spec->getDataInGate(idx, 0));
                 if (current_frame_ascan_size > width) {
                     width = current_frame_ascan_size;
                 }
@@ -538,7 +538,7 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             std::ranges::fill(bscan_image, std::nullopt);
 
             for (auto idx : extra_b_scan_cursors) {
-                auto data = mdata_spec->getScanData(idx) | std::views::transform([this](auto&& val) {
+                auto data = mdata_spec->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
                                 return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
                             }) |
                             std::ranges::to<std::vector<std::optional<uint8_t>>>();

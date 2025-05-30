@@ -398,30 +398,30 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="549"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="558"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="548"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="557"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="551"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="560"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="550"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="559"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="632"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="631"/>
         <location filename="../resource/qml/src/TofdPe/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="723"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="722"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="756"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="755"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -877,87 +877,87 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>compensation gain</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="207"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="206"/>
         <source>宽频</source>
         <translation>Broadband</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="207"/>
         <source>低频</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
         <source>中频</source>
         <translation>Medium</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="210"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
         <source>高频</source>
         <translation>High</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="242"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="236"/>
         <source>2.5MHz</source>
         <translation>2.5MHz</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="243"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="237"/>
         <source>5MHz</source>
         <translation>5MHz</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="278"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="258"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="231"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="272"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="257"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="230"/>
         <source>射频检波</source>
         <translation>RF</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="279"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="259"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="232"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="273"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="258"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="231"/>
         <source>全检波</source>
         <translation>Full</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="280"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="260"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="233"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="274"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="259"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="232"/>
         <source>正检波</source>
         <translation>Positive</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="281"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="261"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="234"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="275"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="260"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="233"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="241"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="132"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="235"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="131"/>
         <source>不滤波</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="147"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="146"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="340"/>
         <source>射频</source>
         <translation>RF</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="148"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="147"/>
         <source>全波</source>
         <translation>Full</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="149"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="148"/>
         <source>正半波</source>
         <translation>Positive</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="150"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="149"/>
         <source>负半波</source>
         <translation>Negative</translation>
     </message>
@@ -1049,14 +1049,14 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Chip</translation>
     </message>
     <message>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="106"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="107"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="108"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="257"/>
         <source>低压</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="109"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="108"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="259"/>
         <source>中压</source>
         <translation>Medium</translation>
@@ -1067,7 +1067,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="110"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="109"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="263"/>
         <source>高压</source>
         <translation>High</translation>
@@ -1206,7 +1206,7 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Surplus Sensitivity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="924"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="913"/>
         <source>同时使用B扫和C扫, B扫已被禁用</source>
         <translation>Use both B-scan and C-scan simultaneously. B-scan has been disabled</translation>
     </message>

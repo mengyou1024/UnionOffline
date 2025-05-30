@@ -459,8 +459,6 @@ Rectangle {
                 target: interactor
                 enabled: interactor
 
-                function zoomIn() {}
-
                 function onUpdateBOrCScanHandler() {
                     if (interactor.scanViewHandler) {
                         b_or_c_scan_view_box.contentChildren.push(interactor.scanViewHandler)
