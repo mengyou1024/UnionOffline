@@ -25,7 +25,7 @@ T.ComboBox {
 
     // 弹出框行委托
     delegate: ItemDelegate {
-        width: parent.width
+        width: control.width
         height: 28
         clip: true
         // 行字体样式

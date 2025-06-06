@@ -118,7 +118,13 @@ namespace Union::View {
     void CScanView::paint(QPainter* painter) {
         BasicView::paint(painter);
 
-        auto _image = m_image.scaled(getDrawable().size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        auto transformation_mode = Qt::SmoothTransformation;
+        // 如果图像太小则使用邻近插值
+        if (m_image.height() < 5 || m_image.width() < 5) {
+            transformation_mode = Qt::FastTransformation;
+        }
+
+        auto _image = m_image.scaled(getDrawable().size(), Qt::IgnoreAspectRatio, transformation_mode);
 
         auto           image       = QImage(_image.size(), QImage::Format_RGBA8888);
         decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::T8ColorTable();
