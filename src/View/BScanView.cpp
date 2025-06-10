@@ -3,6 +3,7 @@
 #include <QCursor>
 #include <QLoggingCategory>
 #include <QPainter>
+#include <union_common.hpp>
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.View.BScanView");
 
@@ -94,7 +95,15 @@ namespace Union::View {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (data.at(y * width + x).has_value()) {
-                        image.setPixel(x, y, COLOR_TABLE.at(data.at(y * width + x).value()));
+                        auto value     = data.at(y * width + x).value();
+                        auto new_value = Common::ValueMap(value, {0, 255}, {0, 200});
+                        if (new_value > 255.0) {
+                            new_value = 255;
+                        } else if (new_value < 0) {
+                            new_value = 0;
+                        }
+
+                        image.setPixel(x, y, COLOR_TABLE.at(static_cast<uint8_t>(new_value)));
                     }
                 }
             }
