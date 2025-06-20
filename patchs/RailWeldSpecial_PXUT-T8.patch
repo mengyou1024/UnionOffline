@@ -1,6 +1,6 @@
-From a28d472f6323c979f28e2da91ee3e328163696ef Mon Sep 17 00:00:00 2001
-From: mengyou <1523038073@qq.com>
-Date: Wed, 9 Apr 2025 08:12:44 +0800
+From ff2995ad481db98ed7ba3b51224992a561a7e02a Mon Sep 17 00:00:00 2001
+From: mengyou1024 <mengyuo1024@foxmail.com>
+Date: Fri, 20 Jun 2025 10:34:51 +0800
 Subject: [PATCH] feat(PXUT-T8): create T8 rail special
 
 ---
@@ -11,7 +11,7 @@ Subject: [PATCH] feat(PXUT-T8): create T8 rail special
  4 files changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dd7450e..24a727f 100644
+index 0ee6636..d7950c8 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,8 +1,8 @@
@@ -24,12 +24,12 @@ index dd7450e..24a727f 100644
 +set(PROJECT_NAME_ZH_CN "PXUT-T8钢轨焊缝离线分析软件")
  
  set(CMAKE_CXX_STANDARD 23)
- set(NUMCPP_NO_USE_BOOST ON)
+ 
 diff --git a/cmake/FindMorose.cmake b/cmake/FindMorose.cmake
-index d242a18..af97548 100644
+index a220fbb..003353d 100644
 --- a/cmake/FindMorose.cmake
 +++ b/cmake/FindMorose.cmake
-@@ -502,7 +502,8 @@ add_custom_target(
+@@ -497,7 +497,8 @@ add_custom_target(
      COMMAND powershell "Copy-Item -Force -Recurse ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/output/archive/.git;\
      cd ${CMAKE_SOURCE_DIR}/output/archive/; \
      git reset --hard;\
@@ -72,10 +72,10 @@ index 27602eb..135e8e2 100644
 -#define MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE (1) ///< 仪器通讯功能
 +#define MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE (0) ///< 仪器通讯功能
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
-index 3a42983..ab1db83 100644
+index 769ffde..f4b972d 100644
 --- a/script/pack-installer.iss.in
 +++ b/script/pack-installer.iss.in
-@@ -14,7 +14,7 @@
+@@ -34,7 +34,7 @@
  [Setup]
  ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
  ; (要生成新的GUID，请在IDE中单击Tools | generate GUID。)
