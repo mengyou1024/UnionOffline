@@ -488,8 +488,8 @@ Click the &quot;OK&quot; button to start the communication</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="946"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="949"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="950"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="953"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="238"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="105"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="107"/>
@@ -497,7 +497,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Basic Information</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="947"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="951"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="223"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="106"/>
         <source>通道</source>
@@ -600,7 +600,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Zero Point</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="919"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="923"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="72"/>
         <location filename="../src/AScan/AScanInteractor.cpp" line="158"/>
         <source>仪器型号</source>
@@ -725,7 +725,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Probe Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1021"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1025"/>
         <source>错误的声程模式</source>
         <translation>Incorrect sound distance</translation>
     </message>
@@ -897,67 +897,67 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>High</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="236"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="245"/>
         <source>2.5MHz</source>
         <translation>2.5MHz</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="237"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="246"/>
         <source>5MHz</source>
         <translation>5MHz</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="272"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="281"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="257"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="230"/>
         <source>射频检波</source>
         <translation>RF</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="273"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="282"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="258"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="231"/>
         <source>全检波</source>
         <translation>Full</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="274"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="283"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="259"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="232"/>
         <source>正检波</source>
         <translation>Positive</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="275"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="284"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="260"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="233"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="235"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="131"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="244"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="155"/>
         <source>不滤波</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="146"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="170"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="340"/>
         <source>射频</source>
         <translation>RF</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="147"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="171"/>
         <source>全波</source>
         <translation>Full</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="148"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="172"/>
         <source>正半波</source>
         <translation>Positive</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="149"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="173"/>
         <source>负半波</source>
         <translation>Negative</translation>
     </message>
@@ -1150,33 +1150,33 @@ Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
         <location filename="../components/union/src/BasicType/Probe.cpp" line="18"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="414"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="418"/>
         <source>双探头</source>
         <translation>Dual Probe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="942"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="946"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="943"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="947"/>
         <source>轨型</source>
         <translation>rail type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="944"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="948"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="948"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="952"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="227"/>
         <source>仪器名称</source>
         <translation>name of instrument</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="953"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="957"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
