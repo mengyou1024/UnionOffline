@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-// import QtQuick.Controls.impl
 import QtQuick.Templates 2.15 as T
 
 T.SpinBox {
@@ -17,6 +16,9 @@ T.SpinBox {
     property color btnHoverColor: Qt.lighter(btnNormalColor, 1.1)
     property color btnPressColor: Qt.darker(btnNormalColor, 1.1)
 
+    editable: true
+
+    value: 0
     implicitWidth: 120
     implicitHeight: 30
 
@@ -24,13 +26,15 @@ T.SpinBox {
     leftPadding: padding + (down.indicator ? down.indicator.width : 0)
     rightPadding: padding + (up.indicator ? up.indicator.width : 0)
 
-    font {
-        family: "SimSun"
-        pixelSize: 16
+    textFromValue: function (value, locale) {
+        return Number(value).toString()
+    }
+
+    valueFromText: function (text, locale) {
+        return parseInt(text)
     }
 
     validator: IntValidator {
-        // locale: control.locale.name
         bottom: Math.min(control.from, control.to)
         top: Math.max(control.from, control.to)
     }
@@ -53,6 +57,18 @@ T.SpinBox {
             selectionColor: "black"
             font: control.font
             renderType: Text.NativeRendering
+
+            Keys.onPressed: event => {
+                                if (event.key === Qt.Key_Plus) {
+                                    control.increase()
+                                } else if (event.key === Qt.Key_Minus) {
+                                    control.decrease()
+                                }
+                            }
+
+            onEditingFinished: {
+                value = valueFromText(text)
+            }
         }
 
         Rectangle {
@@ -70,13 +86,11 @@ T.SpinBox {
 
     up.indicator: Rectangle {
         x: parent.width - width
-        height: parent.height
-        implicitWidth: 30
-        implicitHeight: 30
+        width: height
+        implicitHeight: parent.height
         color: up.pressed ? btnPressColor : up.hovered ? btnHoverColor : btnNormalColor
         border.width: borderVisible ? 1 : 0
         border.color: borderColor
-
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
@@ -96,15 +110,25 @@ T.SpinBox {
         }
     }
 
+    up.onPressedChanged: {
+        if (up.pressed) {
+            forceActiveFocus()
+        }
+    }
+
+    down.onPressedChanged: {
+        if (down.pressed) {
+            forceActiveFocus()
+        }
+    }
+
     down.indicator: Rectangle {
         x: 0
-        height: parent.height
-        implicitWidth: 30
-        implicitHeight: 30
+        width: height
+        implicitHeight: parent.height
         color: down.pressed ? btnPressColor : down.hovered ? btnHoverColor : btnNormalColor
         border.width: borderVisible ? 1 : 0
         border.color: borderColor
-
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2

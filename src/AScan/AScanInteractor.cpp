@@ -35,11 +35,15 @@ AScanInteractor::AScanInteractor() {
 
     connect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
     connect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
+    connect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged,
+            this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
 }
 
 AScanInteractor::~AScanInteractor() {
     disconnect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
     disconnect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
+    disconnect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged,
+               this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
 }
 
 bool AScanInteractor::getReplayVisible() const {
@@ -194,7 +198,7 @@ void AScanInteractor::timeSliderMoved(qreal val) {
     setAScanCursor(static_cast<int>(val));
 }
 
-void AScanInteractor::seriesRemoved(QAbstractSeries* series) {
+void AScanInteractor::seriesRemoved(QtCharts::QAbstractSeries* series) {
     qCDebug(TAG) << series;
     qCDebug(TAG) << series->attachedAxes();
     for (auto& axis : series->attachedAxes()) {
@@ -269,6 +273,23 @@ bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
         return railweld_ptr->zeroPointInFoot();
     }
     return false;
+}
+
+void AScanInteractor::onWorkpieceThicknessSpecialValueChanged() {
+    using namespace ::Union::UniversalApparatus::AScan::Special;
+    auto set_workpiece_thicknes_spec = std::dynamic_pointer_cast<SetWorkpieceThicknessSpecial>(aScanIntf());
+    if (set_workpiece_thicknes_spec == nullptr) {
+        return;
+    }
+    bool  is_ok           = false;
+    qreal thickness_value = m_workpieceThicknessSpecialValue.toReal(&is_ok);
+    if (is_ok) {
+        set_workpiece_thicknes_spec->setWorkpieceThickness(thickness_value);
+
+    } else {
+        set_workpiece_thicknes_spec->setWorkpieceThickness(std::nullopt);
+    }
+    setGateValue(CreateGateValue());
 }
 
 void AScanInteractor::changeDataCursor() {
@@ -819,6 +840,29 @@ void AScanInteractor::setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtr
     emit scanViewHandlerExtraChanged();
 }
 
+bool AScanInteractor::isSetWorkpieceThicknessSpecialEnabled() const {
+    return m_isSetWorkpieceThicknessSpecialEnabled;
+}
+
+void AScanInteractor::setIsSetWorkpieceThicknessSpecialEnabled(bool newIsSetWorkpieceThicknessSpecialEnabled) {
+    if (m_isSetWorkpieceThicknessSpecialEnabled == newIsSetWorkpieceThicknessSpecialEnabled)
+        return;
+    m_isSetWorkpieceThicknessSpecialEnabled = newIsSetWorkpieceThicknessSpecialEnabled;
+    emit isSetWorkpieceThicknessSpecialEnabledChanged();
+}
+
+QVariant AScanInteractor::workpieceThicknessSpecialValue() const {
+    return m_workpieceThicknessSpecialValue;
+}
+
+void AScanInteractor::setWorkpieceSpecialValue(const QVariant& newSetWorkpieceSpecialValue) {
+    if (m_workpieceThicknessSpecialValue == newSetWorkpieceSpecialValue)
+        return;
+    m_workpieceThicknessSpecialValue = newSetWorkpieceSpecialValue;
+
+    emit workpieceThicknessSpecialValueChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(aScanIntf() ? aScanIntf()->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -841,6 +885,8 @@ void AScanInteractor::setDefaultValue() {
     setHasCameraImage(false);
     setShowRailWeldDigramSpecial(false);
     setShowCMP001Special(false);
+    setIsSetWorkpieceThicknessSpecialEnabled(false);
+    setWorkpieceSpecialValue(QVariant::Invalid);
 }
 
 bool AScanInteractor::openFile(QString filename) {
@@ -916,6 +962,13 @@ bool AScanInteractor::openFile(QString filename) {
             setShowCScanView(true);
             setReplayVisible(false);
         }
+
+        auto workpiece_thickness_spec = dynamic_cast<Special::SetWorkpieceThicknessSpecial*>(aScanIntf().get());
+        if (workpiece_thickness_spec) {
+            setIsSetWorkpieceThicknessSpecialEnabled(
+                workpiece_thickness_spec->isSpecialSetWorkpieceThicknessEnabled());
+        }
+
         updateBOrCScanView(true);
         updateBOrCScanViewRange();
         updateExtraBScanView(true);

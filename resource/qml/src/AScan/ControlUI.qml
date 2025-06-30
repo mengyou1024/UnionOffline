@@ -145,13 +145,16 @@ ScrollView {
                                 id: performance_file_dialog_cache
                                 fileName: "setting.ini"
                                 category: "Cache"
-                                property url performanceCacheDir: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("仪器性能")
+                                property url performanceCacheDir: StandardPaths.standardLocations(
+                                                                      StandardPaths.DesktopLocation)[0] + "/" + qsTr(
+                                                                      "仪器性能")
                             }
                             id: f_perf_dialog
                             fileMode: FileDialog.SaveFile
                             folder: performance_file_dialog_cache.performanceCacheDir
                             nameFilters: ["*.xlsx"]
-                            currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr("仪器性能")
+                            currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr(
+                                             "仪器性能")
                             title: qsTr("仪器性能")
                             onAccepted: {
                                 console.log(category, currentFile)
@@ -181,12 +184,14 @@ ScrollView {
                                 id: report_file_dialog_cache
                                 fileName: "setting.ini"
                                 category: "Cache"
-                                property url reportCacheDir: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
+                                property url reportCacheDir: StandardPaths.standardLocations(
+                                                                 StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             }
                             folder: report_file_dialog_cache.reportCacheDir
                             fileMode: FileDialog.SaveFile
                             nameFilters: ["*.xlsx"]
-                            currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr("探伤报告")
+                            currentFile: "file:///" + (fileNameList ? fileNameList[com_fileName_list.currentIndex] + "-" : "") + qsTr(
+                                             "探伤报告")
                             title: qsTr("报表生成")
                             onAccepted: {
                                 console.log(category, currentFile)
@@ -477,6 +482,38 @@ ScrollView {
                     function onValueChanged() {
                         t8_rail_simulation.cursorChanged(aScanInteractor.aScanCursor, softGain)
                     }
+                }
+            }
+        }
+
+        CArea {
+            visible: aScanInteractor.isSetWorkpieceThicknessSpecialEnabled
+            id: area_workpiece_thickness
+            text: qsTr("工件厚度设置")
+            Layout.margins: 2
+            Layout.fillWidth: true
+            Layout.preferredHeight: 60
+            RowLayout {
+                anchors.centerIn: parent
+                Label {
+                    text: qsTr("工件厚度")
+                }
+
+                CSpinBox {
+                    id: text_field_workpiece_thickness
+                    Layout.preferredWidth: 120
+                    Layout.preferredHeight: 28
+                    editable: true
+                    from: 0
+                    to: 100
+
+                    onValueChanged: {
+                        aScanInteractor.workpieceThicknessSpecialValue = value
+                    }
+                }
+
+                Text {
+                    text: "mm"
                 }
             }
         }

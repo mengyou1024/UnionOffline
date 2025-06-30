@@ -23,27 +23,29 @@ class AScanInteractor : public QQuickItem {
     using _STD_TP    = std::chrono::system_clock::time_point;
     using ASCAN_TYPE = std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf>;
 
-    bool        m_replayVisible             = false;
-    QString     m_date                      = {};
-    int         m_softGain                  = {};
-    int         m_replayValue               = {};
-    QQuickItem* m_chartView                 = nullptr;
-    QJsonArray  m_gateValue                 = {};
-    int         m_aScanCursor               = 0;
-    int         m_aScanCursorMax            = 0;
-    QString     m_distanceMode              = "N";
-    bool        m_hasCameraImage            = false;
-    bool        m_showRailWeldDigramSpecial = false;
-    int         m_replayTimerInterval       = 0;
-    bool        m_reportEnabled             = true;
-    bool        m_dateEnabled               = true;
-    bool        m_showCMP001Special         = false;
-    ASCAN_TYPE  m_aScanIntf                 = {}; ///< A扫接口
-    bool        m_showBScanView             = false;
-    bool        m_showCScanView             = false;
-    QQuickItem* m_scanViewHandler           = nullptr;
-    bool        m_softGainEnable            = false;
-    QQuickItem* m_scanViewHandlerExtra      = nullptr;
+    bool        m_replayVisible                         = false;
+    QString     m_date                                  = {};
+    int         m_softGain                              = {};
+    int         m_replayValue                           = {};
+    QQuickItem* m_chartView                             = nullptr;
+    QJsonArray  m_gateValue                             = {};
+    int         m_aScanCursor                           = 0;
+    int         m_aScanCursorMax                        = 0;
+    QString     m_distanceMode                          = "N";
+    bool        m_hasCameraImage                        = false;
+    bool        m_showRailWeldDigramSpecial             = false;
+    int         m_replayTimerInterval                   = 0;
+    bool        m_reportEnabled                         = true;
+    bool        m_dateEnabled                           = true;
+    bool        m_showCMP001Special                     = false;
+    ASCAN_TYPE  m_aScanIntf                             = {}; ///< A扫接口
+    bool        m_showBScanView                         = false;
+    bool        m_showCScanView                         = false;
+    QQuickItem* m_scanViewHandler                       = nullptr;
+    bool        m_softGainEnable                        = false;
+    QQuickItem* m_scanViewHandlerExtra                  = nullptr;
+    bool        m_isSetWorkpieceThicknessSpecialEnabled = false;
+    QVariant    m_workpieceThicknessSpecialValue     = QVariant::Invalid;
 
     int                                     m_replaySpeed             = 0;
     bool                                    m_isPlaying               = false;
@@ -157,6 +159,10 @@ public:
     void        setSoftGainEnable(bool newSoftGainEnable);
     QQuickItem* scanViewHandlerExtra() const;
     void        setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra);
+    bool        isSetWorkpieceThicknessSpecialEnabled() const;
+    void        setIsSetWorkpieceThicknessSpecialEnabled(bool newIsSetWorkpieceThicknessSpecialEnabled);
+    QVariant    workpieceThicknessSpecialValue() const;
+    void        setWorkpieceSpecialValue(const QVariant& newSetWorkpieceSpecialValue);
 
 public slots:
     bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -167,11 +173,12 @@ public slots:
     void         lastFrameClicked(void);
     void         nextFrameClicked(void);
     void         timeSliderMoved(qreal val);
-    void         seriesRemoved(QAbstractSeries* series);
+    void         seriesRemoved(QtCharts::QAbstractSeries* series);
     QVariantMap  getTechnologicalParameter();
     QVariantList getFileNameList(void);
     void         setFileNameIndex(int idx);
     bool         railWeldSpecial_ZeroPointInFoot();
+    void         onWorkpieceThicknessSpecialValueChanged();
 
 signals:
     void replayVisibleChanged();
@@ -197,6 +204,8 @@ signals:
     void updateBOrCScanHandler();
     void scanViewHandlerExtraChanged();
     void updateBScanExtraHandler();
+    void isSetWorkpieceThicknessSpecialEnabledChanged();
+    void workpieceThicknessSpecialValueChanged();
 
 private:
     void changeDataCursor(void);
@@ -227,4 +236,6 @@ private:
     Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler WRITE setScanViewHandler NOTIFY scanViewHandlerChanged FINAL)
     Q_PROPERTY(bool softGainEnable READ softGainEnable WRITE setSoftGainEnable NOTIFY softGainEnableChanged FINAL)
     Q_PROPERTY(QQuickItem* scanViewHandlerExtra READ scanViewHandlerExtra WRITE setScanViewHandlerExtra NOTIFY scanViewHandlerExtraChanged FINAL)
+    Q_PROPERTY(bool isSetWorkpieceThicknessSpecialEnabled READ isSetWorkpieceThicknessSpecialEnabled WRITE setIsSetWorkpieceThicknessSpecialEnabled NOTIFY isSetWorkpieceThicknessSpecialEnabledChanged FINAL)
+    Q_PROPERTY(QVariant workpieceThicknessSpecialValue READ workpieceThicknessSpecialValue WRITE setWorkpieceSpecialValue NOTIFY workpieceThicknessSpecialValueChanged FINAL)
 };
