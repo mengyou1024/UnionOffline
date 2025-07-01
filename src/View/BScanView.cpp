@@ -1,5 +1,6 @@
 #include "BScanView.hpp"
 #include "ColorTable.hpp"
+#include <AppSetting.hpp>
 #include <QCursor>
 #include <QLoggingCategory>
 #include <QPainter>
@@ -47,6 +48,11 @@ namespace Union::View {
         setAcceptedMouseButtons(Qt::LeftButton);
         m_reverseVerticalAxis = true;
         m_enableAxis          = false;
+        connect(AppSetting::Instance(), &AppSetting::bScanImageSmoothingChanged, this, [this] { update(); });
+    }
+
+    BScanView::~BScanView() {
+        disconnect(AppSetting::Instance(), &AppSetting::bScanImageSmoothingChanged, this, nullptr);
     }
 
     QColor BScanView::cursorLineColor() const {
@@ -126,7 +132,15 @@ namespace Union::View {
     void BScanView::paint(QPainter* painter) {
         BasicView::paint(painter);
 
-        auto _image = m_image.scaled(getDrawable().size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        auto transformation_mode = Qt::SmoothTransformation;
+
+        if (AppSetting::Instance()->cScanImageSmoothing()) {
+            transformation_mode = Qt::SmoothTransformation;
+        } else {
+            transformation_mode = Qt::FastTransformation;
+        }
+
+        auto _image = m_image.scaled(getDrawable().size(), Qt::IgnoreAspectRatio, transformation_mode);
 
         auto           image       = QImage(_image.size(), QImage::Format_RGBA8888);
         decltype(auto) COLOR_TABLE = Union::Common::Color::ColorTable::T8ColorTable();

@@ -12,6 +12,9 @@ namespace Union::View {
         QPointF m_axisRange  = {0, 100.0}; ///< 轴坐标
 
     public:
+        AxisView();
+        ~AxisView() override;
+
         bool    isVertical() const;
         void    setIsVertical(bool newIsVertical);
         bool    reverse() const;

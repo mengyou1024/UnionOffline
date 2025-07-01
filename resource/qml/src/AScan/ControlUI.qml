@@ -487,7 +487,7 @@ ScrollView {
         }
 
         CArea {
-            visible: aScanInteractor.isSetWorkpieceThicknessSpecialEnabled
+            visible: aScanInteractor ? aScanInteractor.isSetWorkpieceThicknessSpecialEnabled : false
             id: area_workpiece_thickness
             text: qsTr("工件厚度设置")
             Layout.margins: 2

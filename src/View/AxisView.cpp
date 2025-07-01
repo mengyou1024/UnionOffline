@@ -1,9 +1,18 @@
 #include "AxisView.hpp"
 
 #include "union_common.hpp"
+#include <AppSetting.hpp>
 #include <QPainter>
 
 namespace Union::View {
+
+    AxisView::AxisView() {
+        connect(AppSetting::Instance(), &AppSetting::roundToIntChanged, this, [this] { update(); });
+    }
+
+    AxisView::~AxisView() {
+        disconnect(AppSetting::Instance(), &AppSetting::roundToIntChanged, this, nullptr);
+    }
 
     bool AxisView::isVertical() const {
         return m_isVertical;
@@ -49,12 +58,20 @@ namespace Union::View {
         QFontMetricsF font_metrics = painter->fontMetrics();
         // 水平
         for (int i = 0; i <= tick_count * 10; i++) {
-            qreal      x             = std::round(((width() - 1) / (tick_count * 10.0)) * i);
-            qreal      y             = 0;
-            QColor     color         = QColor(0x00cc00);
-            const auto display_value = KeepDecimals<1>(ValueMap(x, {m_axisRange.x(), m_axisRange.y()}, {0, width() - 1}));
-            QString    value         = QString::number(display_value, 'f', 1);
-            QLineF     line;
+            qreal   x             = std::round(((width() - 1) / (tick_count * 10.0)) * i);
+            qreal   y             = 0;
+            QColor  color         = QColor(0x00cc00);
+            double  display_value = 0;
+            QString value         = {};
+            if (AppSetting::Instance()->roundToInt()) {
+                display_value = KeepDecimals<0>(ValueMap(x, {m_axisRange.x(), m_axisRange.y()}, {0, width() - 1}));
+                value         = QString::number(display_value, 'f', 0);
+            } else {
+                display_value = KeepDecimals<1>(ValueMap(x, {m_axisRange.x(), m_axisRange.y()}, {0, width() - 1}));
+                value         = QString::number(display_value, 'f', 1);
+            }
+
+            QLineF line;
             painter->setPen(color);
             if (i % 10 == 0) {
                 line = {x, y, x, y + 15};
@@ -99,9 +116,15 @@ namespace Union::View {
             } else {
                 display_value = KeepDecimals<1>(ValueMap(y, {m_axisRange.y(), m_axisRange.x()}, {0, height() - 1}));
             }
-            QColor  color = QColor(0x00cc00);
+
             QString value = QString::number(display_value, 'f', 1);
-            QLineF  line;
+            if (AppSetting::Instance()->roundToInt()) {
+                display_value = KeepDecimals<0>(display_value);
+                value         = QString::number(display_value, 'f', 0);
+            }
+
+            QColor color = QColor(0x00cc00);
+            QLineF line;
             painter->setPen(color);
             if (i % 10 == 0) {
                 line = {x - 15, y, x, y};

@@ -1,8 +1,10 @@
 #include "CScanView.hpp"
+#include "AppSetting.hpp"
 #include "ColorTable.hpp"
 #include <QCursor>
 #include <QLoggingCategory>
 #include <QPainter>
+#include <QSettings>
 #include <union_common.hpp>
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.View.CScanView");
@@ -48,6 +50,13 @@ namespace Union::View {
         setAcceptedMouseButtons(Qt::LeftButton);
         m_reverseVerticalAxis = true;
         m_enableAxis          = false;
+        connect(AppSetting::Instance(), &AppSetting::displayCScanLayerLineChanged, this, [this] { update(); });
+        connect(AppSetting::Instance(), &AppSetting::cScanImageSmoothingChanged, this, [this] { update(); });
+    }
+
+    CScanView::~CScanView() {
+        disconnect(AppSetting::Instance(), &AppSetting::displayCScanLayerLineChanged, this, nullptr);
+        disconnect(AppSetting::Instance(), &AppSetting::cScanImageSmoothingChanged, this, nullptr);
     }
 
     QPoint CScanView::dataCursor() const {
@@ -128,8 +137,10 @@ namespace Union::View {
         BasicView::paint(painter);
 
         auto transformation_mode = Qt::SmoothTransformation;
-        // 如果图像太小则使用邻近插值
-        if (m_image.height() < 5 || m_image.width() < 5) {
+
+        if (AppSetting::Instance()->cScanImageSmoothing()) {
+            transformation_mode = Qt::SmoothTransformation;
+        } else {
             transformation_mode = Qt::FastTransformation;
         }
 
@@ -150,6 +161,14 @@ namespace Union::View {
             painter->setPen(QPen(cursorLineColor(), cursorLineWidth()));
             painter->drawLine(QPoint(getDrawable().left(), m_drawPoint.value().y()), QPoint(getDrawable().right(), m_drawPoint.value().y()));
             painter->drawLine(QPoint(m_drawPoint.value().x(), getDrawable().top()), QPoint(m_drawPoint.value().x(), getDrawable().bottom()));
+        }
+
+        if (AppSetting::Instance()->displayCScanLayerLine()) {
+            painter->setPen(QPen(Qt::white, cursorLineWidth()));
+            for (int index = 1; index < m_image.height(); index++) {
+                const auto y = static_cast<double>(height()) / m_image.height() * index;
+                painter->drawLine(0, y, width() - 1, y);
+            }
         }
     }
 

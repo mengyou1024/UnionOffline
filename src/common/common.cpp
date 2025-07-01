@@ -15,6 +15,7 @@
 #include "TofdPeDScanView.hpp"
 #include "morose_config.h"
 #include <AScanView.hpp>
+#include <AppSetting.hpp>
 #include <AppUpdater.hpp>
 #include <AxisView.hpp>
 #include <BScanView.hpp>
@@ -163,6 +164,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "FileExists", Morose::Utils::FileExists::Instance());
     qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "AppUpdater", Morose::Utils::AppUpdater::Instance());
     qmlRegisterSingletonInstance("Union.Utils", 1, 0, "FileManagement", FileManagement::Instance());
+    qmlRegisterSingletonInstance("Morose.Utils", 1, 0, "AppSetting", AppSetting::Instance());
     registeAllAScanFileSelector();
     registeAllTofdPeFileSelector();
     registNameFilter(context);

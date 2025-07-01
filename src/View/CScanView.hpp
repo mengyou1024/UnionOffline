@@ -17,6 +17,7 @@ namespace Union::View {
 
     public:
         CScanView();
+        ~CScanView() override;
 
         void   replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size = true) noexcept;
         QPoint dataCursor() const;
@@ -27,21 +28,17 @@ namespace Union::View {
         void   setCursorLineWidth(int newCursorLineWidth);
         int    dataCursorInt() const;
         void   setDataCursorInt(int newDataCursorInt);
-
-        int  imgWidth() const;
-        void setImgWidth(int newImgWidth);
-
-        int  imgHeight() const;
-        void setImgHeight(int newImgHeight);
+        int    imgWidth() const;
+        void   setImgWidth(int newImgWidth);
+        int    imgHeight() const;
+        void   setImgHeight(int newImgHeight);
 
     signals:
         void dataCursorChanged();
         void cursorLineColorChanged();
         void cursorLineWidthChanged();
         void dataCursorIntChanged();
-
         void imgWidthChanged();
-
         void imgHeightChanged();
 
     protected:
@@ -56,8 +53,7 @@ namespace Union::View {
         int                   _raw_width  = 0;
         int                   _raw_height = 0;
         std::optional<QPoint> m_drawPoint = std::nullopt;
-
-        bool eventHandlerCommon(QMouseEvent* event) noexcept;
+        bool                  eventHandlerCommon(QMouseEvent* event) noexcept;
 
         Q_PROPERTY(QPoint dataCursor READ dataCursor WRITE setDataCursor NOTIFY dataCursorChanged FINAL)
         Q_PROPERTY(QColor cursorLineColor READ cursorLineColor WRITE setCursorLineColor NOTIFY cursorLineColorChanged FINAL)

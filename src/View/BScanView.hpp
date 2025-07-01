@@ -17,6 +17,7 @@ namespace Union::View {
 
     public:
         BScanView();
+        ~BScanView() override;
 
         void                 replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size = true) noexcept;
         [[nodiscard]] int    dataCursor() const;

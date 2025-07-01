@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 import Qt.labs.settings 1.0
 import "./components"
 import Union.Utils 1.0
+import Morose.Utils 1.0
 
 ApplicationWindow {
 
@@ -42,12 +43,13 @@ ApplicationWindow {
                 Layout.preferredHeight: layout_upgrade.height + bottomPadding + topPadding
 
                 ColumnLayout {
+                    id: layout_upgrade
                     Settings {
                         id: update_setting
                         category: "Upgrade"
                         fileName: "setting.ini"
                     }
-                    id: layout_upgrade
+
                     CheckBox {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 10
@@ -95,6 +97,104 @@ ApplicationWindow {
 
                         Component.onCompleted: {
                             currentIndex = Translator.languageSelected
+                        }
+                    }
+                }
+            }
+
+            CArea {
+                text: qsTr("T8/390N")
+                font.pointSize: 12
+                Layout.fillWidth: true
+                Layout.preferredWidth: layout_mdat_setting.width + horizontalPadding * 2
+                Layout.preferredHeight: layout_mdat_setting.height + topPadding + bottomPadding
+                ColumnLayout {
+                    id: layout_mdat_setting
+
+
+
+                    CheckBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        text: qsTr("重新计算波门数据")
+                        font.pointSize: 12
+
+                        checkState: mdat_setting.calculateGateResult ? Qt.Checked : Qt.Unchecked
+
+                        onCheckStateChanged: {
+                            if (checkState == Qt.Checked) {
+                                mdat_setting.calculateGateResult = true
+                            } else {
+                                mdat_setting.calculateGateResult = false
+                            }
+                        }
+                    }
+
+                    CheckBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        text: qsTr("显示C扫分层线")
+                        font.pointSize: 12
+
+                        checkState: mdat_setting.displayCScanLayerLine ? Qt.Checked : Qt.Unchecked
+
+                        onCheckStateChanged: {
+                            if (checkState == Qt.Checked) {
+                                mdat_setting.displayCScanLayerLine = true
+                            } else {
+                                mdat_setting.displayCScanLayerLine = false
+                            }
+                        }
+                    }
+
+                    CheckBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        text: qsTr("B/C扫坐标轴取整")
+                        font.pointSize: 12
+
+                        checkState: mdat_setting.roundToInt ? Qt.Checked : Qt.Unchecked
+
+                        onCheckStateChanged: {
+                            if (checkState == Qt.Checked) {
+                                mdat_setting.roundToInt = true
+                            } else {
+                                mdat_setting.roundToInt = false
+                            }
+                        }
+                    }
+
+                    CheckBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        text: qsTr("B扫图像平滑")
+                        font.pointSize: 12
+
+                        checkState: mdat_setting.bScanImageSmoothing ? Qt.Checked : Qt.Unchecked
+
+                        onCheckStateChanged: {
+                            if (checkState == Qt.Checked) {
+                                mdat_setting.bScanImageSmoothing = true
+                            } else {
+                                mdat_setting.bScanImageSmoothing = false
+                            }
+                        }
+                    }
+
+                    CheckBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        text: qsTr("C扫图像平滑")
+                        font.pointSize: 12
+
+                        checkState: mdat_setting.cScanImageSmoothing ? Qt.Checked : Qt.Unchecked
+
+                        onCheckStateChanged: {
+                            if (checkState == Qt.Checked) {
+                                mdat_setting.cScanImageSmoothing = true
+                            } else {
+                                mdat_setting.cScanImageSmoothing = false
+                            }
                         }
                     }
                 }

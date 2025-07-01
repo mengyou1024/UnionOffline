@@ -101,8 +101,11 @@ ApplicationWindow {
                                                         com_wnd.destroy()
                                                     })
                             com_wnd.saveTemporaryFile.connect(filePath => {
-                                                                  console.log(category, "on saveTemporaryFile trigger file:", filePath)
-                                                                  actionMainType(getMainUITypeIndex(filePath), filePath, true)
+                                                                  console.log(category,
+                                                                              "on saveTemporaryFile trigger file:",
+                                                                              filePath)
+                                                                  actionMainType(getMainUITypeIndex(filePath),
+                                                                                 filePath, true)
                                                                   listView.currentIndex = -1
                                                               })
                         } else if (comp.status === Component.Error) {
@@ -231,7 +234,8 @@ ApplicationWindow {
                                 }
                                 listView.currentIndex = index
                                 color = "transparent"
-                                console.log(category, "listview index changed, index:", index, "filepath:", folder_list.get(index, "filePath"))
+                                console.log(category, "listview index changed, index:", index, "filepath:",
+                                            folder_list.get(index, "filePath"))
                                 let filePath = folder_list.get(index, "filePath")
                                 let uiType = getMainUITypeIndex(filePath)
                                 console.log(category, "uiType:", uiType)
@@ -601,5 +605,47 @@ ApplicationWindow {
         listview_unfold = true
         listview_unfold_ctrl.visible = true
         actionMainType(getMainUITypeIndex(filepath), filepath)
+    }
+
+    Settings {
+        id: mdat_setting
+        category: "Mdat"
+        fileName: "setting.ini"
+
+        property bool calculateGateResult: true
+        property bool displayCScanLayerLine: true
+        property bool roundToInt: true
+        property bool bScanImageSmoothing: true
+        property bool cScanImageSmoothing: true
+    }
+
+    Binding {
+        target: AppSetting
+        property: "calculateGateResult"
+        value: mdat_setting.calculateGateResult
+    }
+
+    Binding {
+        target: AppSetting
+        property: "displayCScanLayerLine"
+        value: mdat_setting.displayCScanLayerLine
+    }
+
+    Binding {
+        target: AppSetting
+        property: "roundToInt"
+        value: mdat_setting.roundToInt
+    }
+
+    Binding {
+        target: AppSetting
+        property: "bScanImageSmoothing"
+        value: mdat_setting.bScanImageSmoothing
+    }
+
+    Binding {
+        target: AppSetting
+        property: "cScanImageSmoothing"
+        value: mdat_setting.cScanImageSmoothing
     }
 }

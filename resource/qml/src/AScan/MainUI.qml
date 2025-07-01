@@ -147,6 +147,16 @@ Rectangle {
                 antialiasing: false
                 legend.visible: false
                 dropShadowEnabled: true
+
+                Text {
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 15
+                    anchors.bottomMargin: 10
+                    font.pointSize: 20
+
+                    text: "A"
+                }
             }
 
             Control {
@@ -224,6 +234,11 @@ Rectangle {
                         Layout.preferredWidth: 35
                         Layout.preferredHeight: 35
                         color: "#afeeee"
+                        Text {
+                            font.pointSize: 20
+                            text: "B"
+                            anchors.centerIn: parent
+                        }
                     }
 
                     Item {
@@ -281,7 +296,8 @@ Rectangle {
 
                             interactor.scanViewHandlerExtra.height = Qt.binding(() => {
                                                                                     let content_height = b_or_c_scan_view_box_extra.height
-                                                                                    b_or_c_scan_view_box_extra.contentHeight = content_height
+                                                                                    b_or_c_scan_view_box_extra.contentHeight
+                                                                                    = content_height
                                                                                     return content_height
                                                                                 })
 
@@ -400,6 +416,22 @@ Rectangle {
                     Layout.preferredWidth: 35
                     Layout.preferredHeight: 35
                     color: "#afeeee"
+
+                    Text {
+                        font.pointSize: 20
+                        function getText() {
+                            if (interactor && interactor.showBScanView) {
+                                return "B"
+                            }
+                            if (interactor && interactor.showCScanView) {
+                                return "C"
+                            }
+                            return ""
+                        }
+
+                        text: getText()
+                        anchors.centerIn: parent
+                    }
                 }
 
                 Item {

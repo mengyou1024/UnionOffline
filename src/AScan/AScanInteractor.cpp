@@ -1,4 +1,5 @@
 #include "AScanInteractor.hpp"
+#include <AppSetting.hpp>
 #include <ExcelRender.hpp>
 #include <QLoggingCategory>
 #include <QQmlProperty>
@@ -37,6 +38,20 @@ AScanInteractor::AScanInteractor() {
     connect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
     connect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged,
             this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
+    connect(AppSetting::Instance(), &AppSetting::calculateGateResultChanged, this, [this] {
+        auto mdat_spec = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
+        if (mdat_spec == nullptr) {
+            return;
+        }
+
+        if (AppSetting::Instance()->calculateGateResult()) {
+            mdat_spec->setUseGateResultCalculate(true);
+        } else {
+            mdat_spec->setUseGateResultCalculate(false);
+        }
+        // 重新设置门内数据
+        setGateValue(CreateGateValue());
+    });
 }
 
 AScanInteractor::~AScanInteractor() {
@@ -44,6 +59,7 @@ AScanInteractor::~AScanInteractor() {
     disconnect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
     disconnect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged,
                this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
+    disconnect(AppSetting::Instance(), &AppSetting::calculateGateResultChanged, this, nullptr);
 }
 
 bool AScanInteractor::getReplayVisible() const {
@@ -115,14 +131,14 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
         auto vmp = aScanIntf()->createReportValueMap(getAScanCursor(), getSoftGain());
 
         auto       excel_template   = "excel_templates/AScan/T_报表生成.xlsx";
-        auto       rail_weld_spec   = dynamic_cast<Special::RailWeldDigramSpecial*>(aScanIntf().get());
-        auto       mdat_type        = dynamic_cast<Union::UniversalApparatus::AScan::Instance::UnType*>(aScanIntf().get());
+        auto       rail_weld_spec   = std::dynamic_pointer_cast<Special::RailWeldDigramSpecial>(aScanIntf());
+        auto       mdat_type        = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
         const auto is_rail_weld_390 = rail_weld_spec != nullptr && mdat_type == nullptr;
         const auto is_rail_weld_t8  = mdat_type != nullptr && !mdat_type->isCMP001IsNullptr(getAScanCursor());
         if (is_rail_weld_390 || is_rail_weld_t8) {
             // 钢轨特化版本(390、T8)
             excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
-        } else if (dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get())) {
+        } else if (std::dynamic_pointer_cast<Special::CameraImageSpecial>(aScanIntf())) {
             // 390N/T8带摄像头
             excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
         }
@@ -133,7 +149,7 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
             image_map.insert("AScan", img->image());
         }
 
-        auto img_ascan_interface = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+        auto img_ascan_interface = std::dynamic_pointer_cast<Special::CameraImageSpecial>(aScanIntf());
         if (img_ascan_interface) {
             auto cameraImage = img_ascan_interface->getCameraImage(getAScanCursor());
             if (!cameraImage.isNull()) {
@@ -268,7 +284,7 @@ void AScanInteractor::setFileNameIndex(int idx) {
 }
 
 bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
-    auto railweld_ptr = dynamic_cast<Special::RailWeldDigramSpecial*>(aScanIntf().get());
+    auto railweld_ptr = std::dynamic_pointer_cast<Special::RailWeldDigramSpecial>(aScanIntf());
     if (railweld_ptr != nullptr) {
         return railweld_ptr->zeroPointInFoot();
     }
@@ -276,8 +292,7 @@ bool AScanInteractor::railWeldSpecial_ZeroPointInFoot() {
 }
 
 void AScanInteractor::onWorkpieceThicknessSpecialValueChanged() {
-    using namespace ::Union::UniversalApparatus::AScan::Special;
-    auto set_workpiece_thicknes_spec = std::dynamic_pointer_cast<SetWorkpieceThicknessSpecial>(aScanIntf());
+    auto set_workpiece_thicknes_spec = std::dynamic_pointer_cast<Special::SetWorkpieceThicknessSpecial>(aScanIntf());
     if (set_workpiece_thicknes_spec == nullptr) {
         return;
     }
@@ -325,7 +340,7 @@ void AScanInteractor::changeDataCursor() {
                     setDistanceMode("N");
             }
             // 7. 更新摄像头控件
-            auto camera_special = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+            auto camera_special = std::dynamic_pointer_cast<Special::CameraImageSpecial>(aScanIntf());
             if (camera_special != nullptr) {
                 setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
             }
@@ -334,7 +349,7 @@ void AScanInteractor::changeDataCursor() {
             updateExtraBScanViewRange();
 
             // 9. 更新钢轨仿真图
-            auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
+            auto cmp001 = std::dynamic_pointer_cast<Special::CMP001Special>(aScanIntf());
             if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
                 setShowCMP001Special(true);
             } else {
@@ -361,7 +376,7 @@ void AScanInteractor::updateCurrentFrame() {
             updateBOrCScanViewRange();
             updateExtraBScanView(false);
             updateExtraBScanViewRange();
-            auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
+            auto cmp001 = std::dynamic_pointer_cast<Special::CMP001Special>(aScanIntf());
             if (cmp001 && cmp001->isSpecial001Enabled(getAScanCursor())) {
                 setShowCMP001Special(true);
             } else {
@@ -678,7 +693,7 @@ void AScanInteractor::setDistanceMode(const QString& newDistanceMode) {
 }
 
 QImage AScanInteractor::getCameraImage() const {
-    auto img_ascan_interface = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+    auto img_ascan_interface = std::dynamic_pointer_cast<Special::CameraImageSpecial>(aScanIntf());
     if (img_ascan_interface == nullptr) {
         return QImage();
     }
@@ -686,7 +701,7 @@ QImage AScanInteractor::getCameraImage() const {
 }
 
 QVariantList AScanInteractor::getRailWeldDot() const {
-    auto railweld_ascan_interface = dynamic_cast<Special::RailWeldDigramSpecial*>(aScanIntf().get());
+    auto railweld_ascan_interface = std::dynamic_pointer_cast<Special::RailWeldDigramSpecial>(aScanIntf());
     if (railweld_ascan_interface) {
         return QVariantList({railweld_ascan_interface->getDotX(), railweld_ascan_interface->getDotY(), railweld_ascan_interface->getDotZ()});
     }
@@ -932,7 +947,7 @@ bool AScanInteractor::openFile(QString filename) {
         setDateEnabled(aScanIntf()->getDateEnable());
         setDate(QString::fromStdString(aScanIntf()->getDate(getAScanCursor())));
         setAScanCursorMax(aScanIntf()->getDataSize() - 1);
-        auto camera_special = dynamic_cast<Special::CameraImageSpecial*>(aScanIntf().get());
+        auto camera_special = std::dynamic_pointer_cast<Special::CameraImageSpecial>(aScanIntf());
         if (camera_special != nullptr) {
             setHasCameraImage(camera_special->showCameraImage(getAScanCursor()));
         }
@@ -941,19 +956,18 @@ bool AScanInteractor::openFile(QString filename) {
         }
         setAScanCursor(0);
         // Special: CMP001
-        auto cmp001 = dynamic_cast<Special::CMP001Special*>(aScanIntf().get());
+        auto cmp001 = std::dynamic_pointer_cast<Special::CMP001Special>(aScanIntf());
         if (cmp001 && cmp001->isSpecial001Enabled(0)) {
             setShowCMP001Special(true);
         }
-        using namespace Union::UniversalApparatus::AScan::Special;
         // Special: BScanSpecial
-        auto b_scan_sepcial = dynamic_cast<BScanSpecial*>(aScanIntf().get());
+        auto b_scan_sepcial = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
         if (b_scan_sepcial && b_scan_sepcial->isSpecialBScanEnabled() && aScanIntf()->getDataSize() > 1) {
             setShowBScanView(true);
             setReplayVisible(false);
         }
         // Special: CScanSpecial
-        auto c_scan_special = dynamic_cast<CScanSpecial*>(aScanIntf().get());
+        auto c_scan_special = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
         if (c_scan_special && c_scan_special->isSpecialCScanEnabled() && aScanIntf()->getDataSize() > 1) {
             if (showBScanView()) {
                 qCWarning(TAG) << QObject::tr("同时使用B扫和C扫, B扫已被禁用");
@@ -962,12 +976,21 @@ bool AScanInteractor::openFile(QString filename) {
             setShowCScanView(true);
             setReplayVisible(false);
         }
-
-        auto workpiece_thickness_spec = dynamic_cast<Special::SetWorkpieceThicknessSpecial*>(aScanIntf().get());
+        // Special: SetWorkpieceThickness
+        auto workpiece_thickness_spec = std::dynamic_pointer_cast<Special::SetWorkpieceThicknessSpecial>(aScanIntf());
         if (workpiece_thickness_spec) {
             setIsSetWorkpieceThicknessSpecialEnabled(
                 workpiece_thickness_spec->isSpecialSetWorkpieceThicknessEnabled());
         }
+        QSettings settings("setting.ini", QSettings::IniFormat);
+        settings.beginGroup("Mdat");
+        auto mdat_spec = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
+        if (mdat_spec && settings.value("calculateGateResult", true).toBool()) {
+            mdat_spec->setUseGateResultCalculate(true);
+        } else if (mdat_spec) {
+            mdat_spec->setUseGateResultCalculate(false);
+        }
+        settings.endGroup();
 
         updateBOrCScanView(true);
         updateBOrCScanViewRange();
@@ -1201,7 +1224,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
             }
             // 重新设置DAC曲线的坐标轴范围
             lines[i]->attachedAxes().at(0)->setMin(0.0);
-            lines[i]->attachedAxes().at(0)->setMax(static_cast<double>(aScanIntf()->getScanData(getAScanCursor()).size()));
+            lines[i]->attachedAxes().at(0)->setMax(aScanIntf()->getScanData(getAScanCursor()).size() - 1);
             lines[i]->attachedAxes().at(1)->setMin(0.0);
             lines[i]->attachedAxes().at(1)->setMax(200.0);
             lines[i]->setVisible();
@@ -1259,8 +1282,10 @@ void AScanInteractor::updateGateSeries(::Union::BasicType::Gate gate, int index)
     QList<QPointF> gateList = {};
     if (gate.enable()) {
         constexpr auto midify_bias = 0.005;
-        auto           cmp000      = dynamic_cast<Union::UniversalApparatus::AScan::Special::CMP000Special*>(aScanIntf().get());
-        if (index == 1 && cmp000 != nullptr && cmp000->isSpecial000Enabled(getAScanCursor()) && cmp000->gateBIsLostType(getAScanCursor())) {
+        auto           cmp000      = std::dynamic_pointer_cast<Special::CMP000Special>(aScanIntf());
+        if (index == 1 &&
+            cmp000 != nullptr &&
+            cmp000->isSpecial000Enabled(getAScanCursor()) && cmp000->gateBIsLostType(getAScanCursor())) {
             gateList.append({gate.pos(), gate.height() - midify_bias});
             gateList.append({gate.pos() + midify_bias, gate.height()});
             gateList.append({gate.pos() + gate.width() - midify_bias, gate.height()});
