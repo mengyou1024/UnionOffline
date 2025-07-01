@@ -47,5 +47,6 @@
         <file>qml/UpdateWnd.qml</file>
         <file>img/setting.png</file>
         <file>qml/SettingWnd.qml</file>
+        <file>qml/components/common/GateDrawMask.qml</file>
     </qresource>
 </RCC>

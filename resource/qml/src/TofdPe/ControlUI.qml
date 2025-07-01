@@ -72,12 +72,9 @@ ScrollView {
         CArea {
             text: qsTr("显示")
             Layout.margins: 2
-            Layout.preferredWidth: layout_show.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_show.height + bottomPadding + topPadding
             Layout.fillWidth: true
             GridLayout {
                 id: layout_show
-                anchors.centerIn: parent
                 rows: 2
                 columns: 2
                 columnSpacing: 10
@@ -140,12 +137,9 @@ ScrollView {
         CArea {
             text: qsTr("报表")
             Layout.margins: 2
-            Layout.preferredWidth: layout_report.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_report.height + bottomPadding + topPadding
             Layout.fillWidth: true
             ColumnLayout {
                 id: layout_report
-                anchors.centerIn: parent
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: 5
@@ -157,7 +151,8 @@ ScrollView {
                                 id: report_file_dialog_cache
                                 fileName: "setting.ini"
                                 category: "Cache"
-                                property url reportCacheDir: StandardPaths.standardLocations(StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
+                                property url reportCacheDir: StandardPaths.standardLocations(
+                                                                 StandardPaths.DesktopLocation)[0] + "/" + qsTr("探伤记录")
                             }
 
                             id: f_report_dialog
@@ -187,13 +182,10 @@ ScrollView {
         CArea {
             text: qsTr("TOFD软件增益")
             Layout.margins: 2
-            Layout.preferredWidth: layout_tofd_gain.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_tofd_gain.height + bottomPadding + topPadding
             Layout.fillWidth: true
             visible: tofdShow
             ColumnLayout {
                 id: layout_tofd_gain
-                anchors.centerIn: parent
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
@@ -224,13 +216,10 @@ ScrollView {
         CArea {
             text: qsTr("PE软件增益:")
             Layout.margins: 2
-            Layout.preferredWidth: layout_pe_gain.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_pe_gain.height + bottomPadding + topPadding
             Layout.fillWidth: true
             visible: peShow
             ColumnLayout {
                 id: layout_pe_gain
-                anchors.centerIn: parent
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
@@ -261,15 +250,11 @@ ScrollView {
         CArea {
             text: qsTr("TOFD测量线")
             Layout.margins: 2
-            Layout.preferredWidth: layout_tofd_line.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_tofd_line.height + bottomPadding + topPadding
             Layout.fillWidth: true
             visible: tofdShow
             ColumnLayout {
                 id: layout_tofd_line
-                anchors.centerIn: parent
                 GridLayout {
-                    Layout.alignment: Qt.AlignHCenter
                     rows: 2
                     columns: 4
                     Label {
@@ -411,13 +396,10 @@ ScrollView {
         CArea {
             text: qsTr("PE测量线")
             Layout.margins: 2
-            Layout.preferredWidth: layout_pe_line.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_pe_line.height + bottomPadding + topPadding
             Layout.fillWidth: true
             visible: peShow
             ColumnLayout {
                 id: layout_pe_line
-                anchors.centerIn: parent
                 GridLayout {
                     Layout.alignment: Qt.AlignHCenter
                     rows: 2
@@ -533,13 +515,10 @@ ScrollView {
         CArea {
             text: qsTr("TOFD间距")
             Layout.margins: 2
-            Layout.preferredWidth: layout_tofd_space.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_tofd_space.height + bottomPadding + topPadding
             Layout.fillWidth: true
             visible: tofdShow
             ColumnLayout {
                 id: layout_tofd_space
-                anchors.centerIn: parent
                 GridLayout {
                     Layout.alignment: Qt.AlignHCenter
                     rows: 1
@@ -590,13 +569,10 @@ ScrollView {
         CArea {
             text: qsTr("PE间距")
             Layout.margins: 2
-            Layout.preferredWidth: layout_pe_space.width + horizontalPadding * 2
-            Layout.preferredHeight: layout_pe_space.height + bottomPadding + topPadding
             Layout.fillWidth: true
             visible: peShow
             ColumnLayout {
                 id: layout_pe_space
-                anchors.centerIn: parent
                 GridLayout {
                     Layout.alignment: Qt.AlignHCenter
                     rows: 1

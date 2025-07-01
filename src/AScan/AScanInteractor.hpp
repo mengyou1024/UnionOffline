@@ -45,7 +45,9 @@ class AScanInteractor : public QQuickItem {
     bool        m_softGainEnable                        = false;
     QQuickItem* m_scanViewHandlerExtra                  = nullptr;
     bool        m_isSetWorkpieceThicknessSpecialEnabled = false;
-    QVariant    m_workpieceThicknessSpecialValue     = QVariant::Invalid;
+    QVariant    m_workpieceThicknessSpecialValue        = QVariant::Invalid;
+    bool        m_enableOverWriteGate                   = false;
+    bool        m_bScanIsGateMode                       = false;
 
     int                                     m_replaySpeed             = 0;
     bool                                    m_isPlaying               = false;
@@ -88,29 +90,32 @@ public:
     AScanInteractor();
     ~AScanInteractor();
 
-    Q_INVOKABLE void setDefaultValue();
-    Q_INVOKABLE bool openFile(QString filename);
-    QAbstractSeries* createSeries(QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY);
-    QLineSeries*     createAScanSeries(QPointF pt, QSizeF sz);
-    void             updateAScanSeries(const QList<QPointF>& data, QPointF pt, QSizeF sz);
-    void             updateAScanSeries(void);
-    QLineSeries*     createQuadraticCurveSeries(const QString& name, QPointF pt = {0.0, 0.0}, QSizeF sz = {100.0, 100.0});
-    void             updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
-    QLineSeries*     createGateSeries(int index = 0);
-    void             updateGateSeries(::Union::BasicType::Gate gate, int index = 0);
-    void             updateGateSeries(std::array<::Union::BasicType::Gate, 2> gate);
-
-    QJsonArray CreateGateValue();
-
-    void  setTimeSliderStepSize(qreal step);
-    qreal getTimeSliderStepSize();
-    void  setTimeSliderMax(qreal max);
-
-    void removeAllSeries();
-
-    QAbstractSeries* series(const QString& name);
-    QAbstractSeries* series(int index);
-    int              seriesCount() const;
+    Q_INVOKABLE void         setDefaultValue();
+    Q_INVOKABLE bool         openFile(QString filename);
+    QAbstractSeries*         createSeries(QAbstractSeries::SeriesType type, QString name, QAbstractAxis* axisX, QAbstractAxis* axisY);
+    QLineSeries*             createAScanSeries(QPointF pt, QSizeF sz);
+    void                     updateAScanSeries(const QList<QPointF>& data, QPointF pt, QSizeF sz);
+    void                     updateAScanSeries(void);
+    QLineSeries*             createQuadraticCurveSeries(const QString& name, QPointF pt = {0.0, 0.0}, QSizeF sz = {100.0, 100.0});
+    void                     updateQuadraticCurveSeries(QuadraticCurveSeriesType type);
+    QLineSeries*             createGateSeries(int index = 0);
+    void                     updateGateSeries(::Union::BasicType::Gate gate, int index = 0);
+    void                     updateGateSeries(std::array<::Union::BasicType::Gate, 2> gate);
+    QJsonArray               CreateGateValue();
+    void                     setTimeSliderStepSize(qreal step);
+    qreal                    getTimeSliderStepSize();
+    void                     setTimeSliderMax(qreal max);
+    void                     removeAllSeries();
+    QAbstractSeries*         series(const QString& name);
+    QAbstractSeries*         series(int index);
+    int                      seriesCount() const;
+    Q_INVOKABLE QImage       getCameraImage(void) const;
+    Q_INVOKABLE QVariantList getRailWeldDot(void) const;
+    Q_INVOKABLE bool         isGateEnable(int gate_idx) const;
+    Q_INVOKABLE void         drawGate(int gate_idx, qreal pos, qreal width, qreal height);
+    Q_INVOKABLE QVariant     isNearGate(int x, int y, int w, int h, int threshold);
+    Q_INVOKABLE void         drawGateDelta(int gate_idx, qreal pos, qreal width, qreal height);
+    Q_INVOKABLE void         clearGate();
 
     bool             getReplayVisible() const;
     void             setReplayVisible(bool newReplayVisible);
@@ -130,39 +135,38 @@ public:
     void             setAScanCursorMax(int newAScanCursorMax);
     QString          getDistanceMode() const;
     void             setDistanceMode(const QString& newDistanceMode);
-
-    Q_INVOKABLE QImage       getCameraImage(void) const;
-    Q_INVOKABLE QVariantList getRailWeldDot(void) const;
-    Q_INVOKABLE bool         isGateEnable(int gate_idx) const;
-
-    bool        getHasCameraImage() const;
-    void        setHasCameraImage(bool newHasCameraImage);
-    bool        getShowRailWeldDigramSpecial() const;
-    void        setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
-    int         getReplayTimerInterval() const;
-    void        setReplayTimerInterval(int newReplayTimerInterval);
-    bool        getReportEnabled() const;
-    void        setReportEnabled(bool newReportEnabled);
-    bool        getDateEnabled() const;
-    void        setDateEnabled(bool newDateEnabled);
-    bool        getShowCMP001Special() const;
-    void        setShowCMP001Special(bool newShowCMP001Special);
-    ASCAN_TYPE  aScanIntf() const;
-    void        setAScanIntf(const ASCAN_TYPE& newAScanIntf);
-    bool        showBScanView() const;
-    void        setShowBScanView(bool newShowBScanView);
-    bool        showCScanView() const;
-    void        setShowCScanView(bool newShowCScanView);
-    QQuickItem* scanViewHandler() const;
-    void        setScanViewHandler(QQuickItem* newScanViewHandler);
-    bool        softGainEnable() const;
-    void        setSoftGainEnable(bool newSoftGainEnable);
-    QQuickItem* scanViewHandlerExtra() const;
-    void        setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra);
-    bool        isSetWorkpieceThicknessSpecialEnabled() const;
-    void        setIsSetWorkpieceThicknessSpecialEnabled(bool newIsSetWorkpieceThicknessSpecialEnabled);
-    QVariant    workpieceThicknessSpecialValue() const;
-    void        setWorkpieceSpecialValue(const QVariant& newSetWorkpieceSpecialValue);
+    bool             getHasCameraImage() const;
+    void             setHasCameraImage(bool newHasCameraImage);
+    bool             getShowRailWeldDigramSpecial() const;
+    void             setShowRailWeldDigramSpecial(bool newShowRailWeldDigramSpecial);
+    int              getReplayTimerInterval() const;
+    void             setReplayTimerInterval(int newReplayTimerInterval);
+    bool             getReportEnabled() const;
+    void             setReportEnabled(bool newReportEnabled);
+    bool             getDateEnabled() const;
+    void             setDateEnabled(bool newDateEnabled);
+    bool             getShowCMP001Special() const;
+    void             setShowCMP001Special(bool newShowCMP001Special);
+    ASCAN_TYPE       aScanIntf() const;
+    void             setAScanIntf(const ASCAN_TYPE& newAScanIntf);
+    bool             showBScanView() const;
+    void             setShowBScanView(bool newShowBScanView);
+    bool             showCScanView() const;
+    void             setShowCScanView(bool newShowCScanView);
+    QQuickItem*      scanViewHandler() const;
+    void             setScanViewHandler(QQuickItem* newScanViewHandler);
+    bool             softGainEnable() const;
+    void             setSoftGainEnable(bool newSoftGainEnable);
+    QQuickItem*      scanViewHandlerExtra() const;
+    void             setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra);
+    bool             isSetWorkpieceThicknessSpecialEnabled() const;
+    void             setIsSetWorkpieceThicknessSpecialEnabled(bool newIsSetWorkpieceThicknessSpecialEnabled);
+    QVariant         workpieceThicknessSpecialValue() const;
+    void             setWorkpieceSpecialValue(const QVariant& newSetWorkpieceSpecialValue);
+    bool             enableOverWriteGate() const;
+    void             setEnableOverWriteGate(bool newEnableOverWriteGate);
+    bool             bScanIsGateMode() const;
+    void             setBScanIsGateMode(bool newBScanIsGateMode);
 
 public slots:
     bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -206,6 +210,8 @@ signals:
     void updateBScanExtraHandler();
     void isSetWorkpieceThicknessSpecialEnabledChanged();
     void workpieceThicknessSpecialValueChanged();
+    void enableOverWriteGateChanged();
+    void bScanIsGateModeChanged();
 
 private:
     void changeDataCursor(void);
@@ -214,6 +220,7 @@ private:
     void updateBOrCScanViewRange(void);
     void updateExtraBScanView(bool set_size);
     void updateExtraBScanViewRange(void);
+    void updateOnDrawGate(void);
 
     Q_PROPERTY(bool replayVisible READ getReplayVisible WRITE setReplayVisible NOTIFY replayVisibleChanged)
     Q_PROPERTY(QString date READ getDate WRITE setDate NOTIFY dateChanged)
@@ -238,4 +245,6 @@ private:
     Q_PROPERTY(QQuickItem* scanViewHandlerExtra READ scanViewHandlerExtra WRITE setScanViewHandlerExtra NOTIFY scanViewHandlerExtraChanged FINAL)
     Q_PROPERTY(bool isSetWorkpieceThicknessSpecialEnabled READ isSetWorkpieceThicknessSpecialEnabled WRITE setIsSetWorkpieceThicknessSpecialEnabled NOTIFY isSetWorkpieceThicknessSpecialEnabledChanged FINAL)
     Q_PROPERTY(QVariant workpieceThicknessSpecialValue READ workpieceThicknessSpecialValue WRITE setWorkpieceSpecialValue NOTIFY workpieceThicknessSpecialValueChanged FINAL)
+    Q_PROPERTY(bool enableOverWriteGate READ enableOverWriteGate WRITE setEnableOverWriteGate NOTIFY enableOverWriteGateChanged FINAL)
+    Q_PROPERTY(bool bScanIsGateMode READ bScanIsGateMode WRITE setBScanIsGateMode NOTIFY bScanIsGateModeChanged FINAL)
 };

@@ -9,3 +9,4 @@ CKeyValue 1.0 common/KeyValue.qml
 CIconButton 1.0 common/IconButton.qml
 CComboBox 1.0 common/ComboBox.qml
 CJsonTable 1.0 common/JsonTable.qml
+GateDrawMask 1.0 common/GateDrawMask.qml

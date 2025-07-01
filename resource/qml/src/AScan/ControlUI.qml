@@ -517,6 +517,55 @@ ScrollView {
                 }
             }
         }
+
+        CArea {
+            visible: aScanInteractor ? aScanInteractor.enableOverWriteGate : false
+            id: overwirte_gate
+            text: qsTr("波门重绘")
+            Layout.margins: 2
+            Layout.preferredHeight: layout_overwrite_gate.height + bottomPadding + topPadding
+            Layout.fillWidth: true
+            RowLayout {
+                id: layout_overwrite_gate
+                anchors.centerIn: parent
+                CButton {
+                    text: qsTr("重置波门")
+
+                    onClicked: {
+                        aScanInteractor.clearGate()
+                    }
+                }
+            }
+        }
+
+        CArea {
+            visible: aScanInteractor ? aScanInteractor.scanViewHandler : false
+            id: b_c_scan_overwrite_gate_mode
+            text: qsTr("B/C扫")
+            Layout.margins: 2
+            Layout.preferredHeight: layout_b_c_scan_overwrite_gate_mode.height + bottomPadding + topPadding
+            Layout.fillWidth: true
+            RowLayout {
+                id: layout_b_c_scan_overwrite_gate_mode
+                anchors.centerIn: parent
+                CheckBox {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.leftMargin: 10
+                    text: qsTr("B扫仅显示门内数据")
+                    font.pointSize: 12
+
+                    checkState: aScanInteractor.bScanIsGateMode ? Qt.Checked : Qt.Unchecked
+
+                    onCheckStateChanged: {
+                        if (checkState == Qt.Checked) {
+                            aScanInteractor.bScanIsGateMode = true
+                        } else {
+                            aScanInteractor.bScanIsGateMode = false
+                        }
+                    }
+                }
+            }
+        }
     }
 
     function init() {

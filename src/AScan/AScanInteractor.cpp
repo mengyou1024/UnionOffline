@@ -52,14 +52,27 @@ AScanInteractor::AScanInteractor() {
         // 重新设置门内数据
         setGateValue(CreateGateValue());
     });
+    connect(this, &AScanInteractor::bScanIsGateModeChanged,
+            this, [this] {
+                // 更新B扫或C扫
+                auto mdat_spec = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
+                if (mdat_spec == nullptr) {
+                    return;
+                }
+                mdat_spec->setUseBScanGateMode(bScanIsGateMode());
+                updateBOrCScanView(false);
+                updateBOrCScanViewRange();
+                updateExtraBScanView(false);
+                updateExtraBScanViewRange();
+            });
 }
 
 AScanInteractor::~AScanInteractor() {
     disconnect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
     disconnect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
-    disconnect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged,
-               this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
+    disconnect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged, this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
     disconnect(AppSetting::Instance(), &AppSetting::calculateGateResultChanged, this, nullptr);
+    disconnect(this, &AScanInteractor::bScanIsGateModeChanged, this, nullptr);
 }
 
 bool AScanInteractor::getReplayVisible() const {
@@ -513,7 +526,7 @@ void AScanInteractor::updateBOrCScanViewRange() {
             auto bscan_spec  = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
             auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
             if (b_scan_view && bscan_spec) {
-                if (!bscan_spec->isGateMode()) {
+                if (!bScanIsGateMode()) {
                     const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
                     const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
                     b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
@@ -627,12 +640,48 @@ void AScanInteractor::updateExtraBScanViewRange() {
             b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
             const auto range_y = mdata_spec->getSubBScanRange(getAScanCursor());
             b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+
+            if (!bScanIsGateMode()) {
+                const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
+                const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
+                b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+                const auto range_y = mdata_spec->getSubBScanRange(getAScanCursor());
+                b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+            } else {
+                auto&& [gate0, _]     = aScanIntf()->getGate(getAScanCursor());
+                auto       axis_range = aScanIntf()->getAxisRange(0);
+                const auto start      = ValueMap(gate0.pos(), axis_range);
+                const auto end        = ValueMap(gate0.pos() + gate0.width(), axis_range);
+                b_scan_view->setHorizontalAxisRange(QPointF(start, end));
+            }
         }
 
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();
         auto stack_trace = std::stacktrace::current();
         qCCritical(TAG) << std::to_string(stack_trace).c_str();
+    }
+}
+
+void AScanInteractor::updateOnDrawGate() {
+    try {
+        if (std::cmp_less(getAScanCursor(), aScanIntf() ? aScanIntf()->getDataSize() : 0)) {
+            // 更新波门曲线
+            updateGateSeries(aScanIntf()->getGate(getAScanCursor()));
+            // 更新AScan图的波门信息显示
+            setGateValue(CreateGateValue());
+            // 更新B扫或C扫
+            if (bScanIsGateMode()) {
+                // 如果B扫是门内模式则需要更新B扫图像
+                updateBOrCScanView(false);
+                updateBOrCScanViewRange();
+            }
+            updateExtraBScanView(false);
+            updateExtraBScanViewRange();
+        }
+    } catch (std::exception& e) {
+        qCCritical(TAG) << e.what();
+        qCCritical(TAG) << std::to_string(std::stacktrace::current()).c_str();
     }
 }
 
@@ -878,6 +927,100 @@ void AScanInteractor::setWorkpieceSpecialValue(const QVariant& newSetWorkpieceSp
     emit workpieceThicknessSpecialValueChanged();
 }
 
+void AScanInteractor::drawGate(int gate_idx, qreal pos, qreal width, qreal height) {
+    qCDebug(TAG) << "重绘波门:" << gate_idx << Gate(pos, width, height, true);
+    auto overwrite_gate_spexc = std::dynamic_pointer_cast<Special::OverWriteGateInfoSpecial>(aScanIntf());
+    if (overwrite_gate_spexc == nullptr) {
+        return;
+    }
+    overwrite_gate_spexc->setGateInfo(gate_idx, Gate(pos, width, height, true));
+    updateOnDrawGate();
+}
+
+QVariant AScanInteractor::isNearGate(int x, int y, int w, int h, int threshold) {
+    if (aScanIntf() == nullptr) {
+        return {};
+    }
+
+    qCDebug(TAG) << "x:" << x << "y:" << y << "w:" << w << "h:" << h;
+
+    for (int i = 0; i < 2; i++) {
+        auto gate = aScanIntf()->getGate(getAScanCursor()).at(i);
+        if (!gate.enable()) {
+            continue;
+        }
+        auto rect_gate_head = QRectF(
+            gate.pos() * w - threshold,
+            (1.0 - gate.height()) * h - threshold,
+            gate.width() * w / 2 + 2 * threshold,
+            2 * threshold);
+
+        auto rect_gate_tail = QRectF(
+            (gate.pos() + gate.width() / 2.0) * w - threshold,
+            (1.0 - gate.height()) * h - threshold,
+            gate.width() * w / 2.0 + 2 * threshold,
+            2 * threshold);
+
+        if (rect_gate_head.contains(x, y)) {
+            return QVariantList{i, 0};
+        } else if (rect_gate_tail.contains(x, y)) {
+            return QVariantList{i, 1};
+        }
+    }
+    qCDebug(TAG) << "未点击到波门附近";
+    return {};
+}
+
+void AScanInteractor::drawGateDelta(int gate_idx, qreal pos, qreal width, qreal height) {
+    auto overwrite_gate_spexc = std::dynamic_pointer_cast<Special::OverWriteGateInfoSpecial>(aScanIntf());
+    if (overwrite_gate_spexc == nullptr) {
+        return;
+    }
+
+    auto gate = aScanIntf()->getGate(getAScanCursor()).at(gate_idx);
+    if (!gate.enable()) {
+        return;
+    }
+
+    gate.enable(true);
+    gate.pos(gate.pos() + pos);
+    gate.width(gate.width() + width);
+    gate.height(gate.height() + height);
+    overwrite_gate_spexc->setGateInfo(gate_idx, gate);
+    updateOnDrawGate();
+}
+
+void AScanInteractor::clearGate() {
+    auto overwrite_gate_spexc = std::dynamic_pointer_cast<Special::OverWriteGateInfoSpecial>(aScanIntf());
+    if (overwrite_gate_spexc == nullptr) {
+        return;
+    }
+    overwrite_gate_spexc->clearGateInfo();
+    updateOnDrawGate();
+}
+
+bool AScanInteractor::enableOverWriteGate() const {
+    return m_enableOverWriteGate;
+}
+
+void AScanInteractor::setEnableOverWriteGate(bool newEnableOverWriteGate) {
+    if (m_enableOverWriteGate == newEnableOverWriteGate)
+        return;
+    m_enableOverWriteGate = newEnableOverWriteGate;
+    emit enableOverWriteGateChanged();
+}
+
+bool AScanInteractor::bScanIsGateMode() const {
+    return m_bScanIsGateMode;
+}
+
+void AScanInteractor::setBScanIsGateMode(bool newBScanIsGateMode) {
+    if (m_bScanIsGateMode == newBScanIsGateMode)
+        return;
+    m_bScanIsGateMode = newBScanIsGateMode;
+    emit bScanIsGateModeChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(aScanIntf() ? aScanIntf()->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -902,6 +1045,8 @@ void AScanInteractor::setDefaultValue() {
     setShowCMP001Special(false);
     setIsSetWorkpieceThicknessSpecialEnabled(false);
     setWorkpieceSpecialValue(QVariant::Invalid);
+    setEnableOverWriteGate(false);
+    setBScanIsGateMode(false);
 }
 
 bool AScanInteractor::openFile(QString filename) {
@@ -965,6 +1110,7 @@ bool AScanInteractor::openFile(QString filename) {
         if (b_scan_sepcial && b_scan_sepcial->isSpecialBScanEnabled() && aScanIntf()->getDataSize() > 1) {
             setShowBScanView(true);
             setReplayVisible(false);
+            setBScanIsGateMode(b_scan_sepcial->isGateMode());
         }
         // Special: CScanSpecial
         auto c_scan_special = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
@@ -975,6 +1121,7 @@ bool AScanInteractor::openFile(QString filename) {
             }
             setShowCScanView(true);
             setReplayVisible(false);
+            setBScanIsGateMode(true);
         }
         // Special: SetWorkpieceThickness
         auto workpiece_thickness_spec = std::dynamic_pointer_cast<Special::SetWorkpieceThicknessSpecial>(aScanIntf());
@@ -982,15 +1129,10 @@ bool AScanInteractor::openFile(QString filename) {
             setIsSetWorkpieceThicknessSpecialEnabled(
                 workpiece_thickness_spec->isSpecialSetWorkpieceThicknessEnabled());
         }
-        QSettings settings("setting.ini", QSettings::IniFormat);
-        settings.beginGroup("Mdat");
-        auto mdat_spec = std::dynamic_pointer_cast<Instance::UnType>(aScanIntf());
-        if (mdat_spec && settings.value("calculateGateResult", true).toBool()) {
-            mdat_spec->setUseGateResultCalculate(true);
-        } else if (mdat_spec) {
-            mdat_spec->setUseGateResultCalculate(false);
+
+        if (std::dynamic_pointer_cast<Special::OverWriteGateInfoSpecial>(aScanIntf())) {
+            setEnableOverWriteGate(true);
         }
-        settings.endGroup();
 
         updateBOrCScanView(true);
         updateBOrCScanViewRange();

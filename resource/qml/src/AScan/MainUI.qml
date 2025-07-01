@@ -157,6 +157,14 @@ Rectangle {
 
                     text: "A"
                 }
+
+                GateDrawMask {
+                    x: chart_view.plotArea.x
+                    y: chart_view.plotArea.y
+                    width: chart_view.plotArea.width
+                    height: chart_view.plotArea.height
+                    interactor: interactor
+                }
             }
 
             Control {
