@@ -635,12 +635,6 @@ void AScanInteractor::updateExtraBScanViewRange() {
         auto       b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
         const auto mdata_spec  = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
         if (b_scan_view && cscan_spec) {
-            const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
-            const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
-            b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
-            const auto range_y = mdata_spec->getSubBScanRange(getAScanCursor());
-            b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
-
             if (!bScanIsGateMode()) {
                 const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
                 const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;

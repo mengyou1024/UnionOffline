@@ -230,6 +230,11 @@ Rectangle {
                             anchors.fill: parent
                             clip: true
 
+                            ScrollBar.horizontal.visible: false
+                            ScrollBar.horizontal.interactive: false
+                            ScrollBar.vertical.visible: false
+                            ScrollBar.vertical.interactive: false
+
                             Flickable {
                                 boundsBehavior: Flickable.StopAtBounds
                             }
@@ -256,7 +261,7 @@ Rectangle {
                         Layout.column: 1
 
                         ScrollView {
-                            id: axis_horizontal_boax_extra
+                            id: axis_horizontal_box_extra
                             anchors.fill: parent
                             contentWidth: axis_horizontal_extra.width
                             contentHeight: axis_horizontal_extra.height
@@ -273,7 +278,7 @@ Rectangle {
                             Binding {
                                 target: b_or_c_scan_view_box_extra.ScrollBar.horizontal
                                 property: "position"
-                                value: axis_horizontal_boax_extra.ScrollBar.horizontal.position
+                                value: axis_horizontal_box_extra.ScrollBar.horizontal.position
                             }
 
                             AxisView {
@@ -412,6 +417,11 @@ Rectangle {
                         anchors.fill: parent
                         clip: true
 
+                        ScrollBar.horizontal.visible: false
+                        ScrollBar.horizontal.interactive: false
+                        ScrollBar.vertical.visible: false
+                        ScrollBar.vertical.interactive: false
+
                         Flickable {
                             boundsBehavior: Flickable.StopAtBounds
                         }
@@ -449,7 +459,7 @@ Rectangle {
                     Layout.column: 1
 
                     ScrollView {
-                        id: axis_horizontal_boax
+                        id: axis_horizontal_box
                         anchors.fill: parent
                         contentWidth: axis_horizontal.width
                         contentHeight: axis_horizontal.height
@@ -466,7 +476,7 @@ Rectangle {
                         Binding {
                             target: b_or_c_scan_view_box.ScrollBar.horizontal
                             property: "position"
-                            value: axis_horizontal_boax.ScrollBar.horizontal.position
+                            value: axis_horizontal_box.ScrollBar.horizontal.position
                         }
 
                         AxisView {

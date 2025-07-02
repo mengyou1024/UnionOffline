@@ -548,16 +548,15 @@ ScrollView {
             RowLayout {
                 id: layout_b_c_scan_overwrite_gate_mode
                 anchors.centerIn: parent
-                CheckBox {
+                LQC.CheckBox {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.leftMargin: 10
                     text: qsTr("B扫仅显示门内数据")
-                    font.pointSize: 12
 
-                    checkState: aScanInteractor.bScanIsGateMode ? Qt.Checked : Qt.Unchecked
+                    checkedState: aScanInteractor ? aScanInteractor.bScanIsGateMode ? Qt.Checked : Qt.Unchecked : Qt.Unchecked
 
-                    onCheckStateChanged: {
-                        if (checkState == Qt.Checked) {
+                    onCheckedStateChanged: {
+                        if (checkedState === Qt.Checked) {
                             aScanInteractor.bScanIsGateMode = true
                         } else {
                             aScanInteractor.bScanIsGateMode = false
