@@ -1,3 +1,111 @@
+# v2.2.250703 - 2025-07-03
+
+## 🎉 New Features
+- 重构工艺参数界面
+- 修改配色及菜单栏按钮
+- 增加T8钢轨功能(仿真图)
+- 软件更名为
+390N/T8离线分析软件
+- 更新软件名为390N、T8离线分析软件并启用钢轨焊缝特化接口
+- 修改软件图标
+- 添加设置功能，打开和关闭软件升级功能
+- **AScan:** 添加文件名列表动态启用、禁用功能
+- 修改软件关于软件界面的显示, 修改Toast的样式
+- **AScan:** 新增A扫类型:R系列
+- **config:** 启用仪器通讯功能
+- **AScan:** 支持 T8 钢轨特化版本
+- **resource:** 添加文件对话框缓存功能
+- **SerialRunner:** 修改串口列表显示格式
+- A扫连续数据上一帧、下一帧按钮增加长按功能
+- **AScan:** 添加390N/T8的B、C扫功能
+- **win32:** 添加生成调试信息和异常捕获功能
+- **关联文件:** 实现文件关联打开功能
+- **View:** 修改 BScanView 和 CScanView 的颜色表
+- **PXUT-T8:** 创建 T8 钢轨特殊版本
+- **AScan:** 添加工件厚度设置功能
+- **设置:** 添加 Mdat 设置功能
+- **AScan:** 新增波门重绘功能
+- **BScanView:** 实现 B 扫描视图的测量线功能
+
+## 🐛 Bugfixes
+- **resource:** 修复工艺参数窗口相关问题
+- **resource:** 修复下拉框颜色和启用状态问题
+- **resource:** 修复 JsonTable 组件表格展示不完整
+- 修复某些PXUT-F4仪器保存的连续图像打开程序崩溃
+- **communicate:** 修复如果当前已在A扫界面, 通讯后无法打开
+- **ascan:** 播放暂停后，波门数据未使用最新值
+- 修复T8摄像头上下翻转、N系列DAC不显示、T8钢轨报表模板使用错误
+- R系列无法读取文件名
+- **AScan:** 更新钢轨仿真图显示逻辑, 修复连续记录过程中打开仿真图后不显示
+- **components:** 修复 B 扫描视图的越界问题
+- **components:** 修复 C 扫描和 B 扫描中 A 扫描光标同步问题
+
+## 🚀 Performance Improvements
+- **AppUpdater:** 优化 channel 属性的设置逻辑
+- **view:** 优化 B 扫描和 C 扫描视图的创建和更新
+
+## 🧱 Build System
+- 更新 Gitee action 版本并优化工作流
+- 重构项目构建配置和文件结构
+- **installer:** 禁用根据运行键决定是否需要重启
+- 移除 MSVC 构建的特定标识
+- 修改安装程序名称以Setup为中缀
+- 添加工作流编译标识
+- **cmake:** 更新 morose_copy 函数并修正安装程序生成路径
+- 更新配置文件处理逻辑
+- **CMakeLists.txt:** 优化 lrelease 和 lupdate 的依赖关系
+- **cmake:** 发布脚本增加调试数据库复制
+- 移除文件拷贝相关的依赖关系
+- **CMakeLists.txt:** 更新项目构建配置
+- 更新 CMakeLists.txt 文件
+
+## 🪚 Refactors
+- **installer:** 重构安装程序脚本
+- **updater:** 重构升级模块中的文件下载逻辑
+- **installer:** 屏蔽卸载 vc_redist.x64 库
+- **qml:** 重构A扫界面的波门数据显示布局
+- **AScan:** 重构 AScan 组件的文件读取逻辑
+- **report:** 重构报表生成逻辑
+- **TofdPe:** 重构 TOFD_PE 模块
+- **AScan:** 优化 AScanInteractor 中的特殊扫描处理逻辑
+- **AScan:** 重构 AScanInteractor 中的 CScan 和 BScan 逻辑
+- **AScan:** 更新距离模式枚举值
+- 重构N系列和R系列DAC、AVG、DGS曲线的绘制
+- 重构设置界面和控制UI的布局
+- **AScan:** 重构 B 扫描和 C 扫描视图的更新逻辑
+- **AScan:** 重构 AScanInteractor 类
+- **AScan:** 重构 B/C 扫描视图的生成逻辑
+- 更新 union 组件的提交引用
+- **AScan:** 重构 B/C 扫描视图显示逻辑
+- **src:** 重构 AScanInteractor 类
+- **AScan:** 优化 AScanInteractor 中的 gate 相关操作
+- **View:** 重构 AxisView 类
+- **view:** 优化 BScanView 和 CScanView 的图像处理和颜色映射, 添加图像颜色平滑
+
+## 💅 Code Style Changes
+- **AScanIntf:** 修复 AScanInteractor 类的变量命名
+- **main:** 优化代码格式和变量命名
+
+## Patchs
+- update railweld specialization patch
+- **RailWeldSpecial:** 更新 PXUT-390 钢轨焊缝离线分析软件补丁
+- 修复钢轨焊缝特化补丁失效问题
+- disable upgrade featrue
+- **PXUT-T8:** 创建 PXUT-T8 钢轨焊缝离线分析软件
+
+## Refector
+- **updater:** 重构软件更新功能
+
+## Broken
+- 修改软件名称为通用离线分析软件
+
+## Beta
+- 移除B、C扫滚动条, 直接缩放
+
+## Fix-patch
+- **AScan:** 滤除错误的编码器数据 x 轴数值
+
+
 # v2.0.240830 - 2024-09-24
 
 ## 🎉 New Features
