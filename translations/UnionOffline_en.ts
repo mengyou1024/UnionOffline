@@ -50,8 +50,8 @@
         <location filename="../resource/qml/CommunicateWnd.qml" line="44"/>
         <source>正在等待通讯 ...
 请在仪器上点击&lt;数据通讯&gt;</source>
-        <translation type="unfinished">Waiting for communication...
-Please click on &lt;Data Communication&gt; on the instrument.</translation>
+        <translation>Waiting for communication...
+Please click on &lt;Data Communication&gt; on the instrument</translation>
     </message>
     <message>
         <location filename="../resource/qml/CommunicateWnd.qml" line="44"/>
@@ -95,101 +95,131 @@ Click the &quot;OK&quot; button to start the communication</translation>
     </message>
     <message>
         <location filename="../resource/qml/src/AScan/ControlUI.qml" line="141"/>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="148"/>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="154"/>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="155"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="149"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="156"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="158"/>
         <source>仪器性能</source>
         <translation>Instrument Performance</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="176"/>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="190"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="179"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="195"/>
         <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="153"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="168"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="169"/>
         <source>报表生成</source>
         <translation>Generate Report</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="184"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="160"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="188"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="161"/>
         <source>探伤记录</source>
         <translation>detection record</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="189"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="167"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="193"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="168"/>
         <source>探伤报告</source>
         <translation>inspection report</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="212"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="217"/>
         <source>增益</source>
         <translation>Gain</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="226"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="231"/>
         <source>软件增益:</source>
         <translation>Software Gain:</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="254"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="259"/>
         <source>操作</source>
         <translation>Operation</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="271"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="276"/>
         <source>播放</source>
         <translation>Play</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="271"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="276"/>
         <source>停止</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="312"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="317"/>
         <source>上一帧</source>
         <translation>Previous</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="337"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="342"/>
         <source>下一帧</source>
         <translation>Next</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="366"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="371"/>
         <source>第 </source>
         <translation>The </translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="366"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="371"/>
         <source> 帧 / 共 </source>
         <translation> Frame / All </translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="366"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="371"/>
         <source> 帧</source>
         <translation> Frame</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="372"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="377"/>
         <source>从头开始播放</source>
         <translation>Start from begin</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="382"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="387"/>
         <source>连续播放所有子文件</source>
         <translation>Play all subfiles consecutively</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="435"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="440"/>
         <source>钢轨焊缝示意图</source>
         <translation>Rail weld diagram</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="454"/>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="459"/>
         <source>钢轨仿真</source>
         <translation>Rail simulation</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="492"/>
+        <source>工件厚度设置</source>
+        <translation>Workpiece thickness setting</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="499"/>
+        <source>工件厚度</source>
+        <translation>Workpiece Thickness</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="524"/>
+        <source>波门重绘</source>
+        <translation>Redrawn gate</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="532"/>
+        <source>重置波门</source>
+        <translation>Reset Gate</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="544"/>
+        <source>B/C扫</source>
+        <translation>B/C Scan、</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/ControlUI.qml" line="554"/>
+        <source>B扫仅显示门内数据</source>
+        <translation>B scan only displays the data inside the door</translation>
     </message>
     <message>
         <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="73"/>
@@ -222,86 +252,86 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Report Forms</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="188"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="189"/>
         <source>TOFD软件增益</source>
         <translation>TOFD Gain</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="225"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="226"/>
         <source>PE软件增益:</source>
         <translation>PE Gain:</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="262"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="263"/>
         <source>TOFD测量线</source>
         <translation>TOFD Line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="276"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="292"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="426"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="442"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="277"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="293"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="427"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="443"/>
         <source>X轴</source>
         <translation>X Axial</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="308"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="324"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="458"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="474"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="309"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="325"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="459"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="475"/>
         <source>Z轴</source>
         <translation>Z Axial</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="345"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="495"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="346"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="496"/>
         <source>X轴间距</source>
         <translation>X Axial Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="365"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="515"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="366"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="516"/>
         <source>Z轴间距</source>
         <translation>Z Axial Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="386"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="387"/>
         <source>显示时间</source>
         <translation>Display Time</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="393"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="394"/>
         <source>深度</source>
         <translation>Depth</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="412"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="413"/>
         <source>PE测量线</source>
         <translation>PE Line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="534"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="535"/>
         <source>TOFD间距</source>
         <translation>TOFD Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="571"/>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="628"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="572"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="629"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="575"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="576"/>
         <source>TOFD更改</source>
         <translation>Set</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="591"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="592"/>
         <source>PE间距</source>
         <translation>PE Space</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="632"/>
+        <location filename="../resource/qml/src/TofdPe/ControlUI.qml" line="633"/>
         <source>PE更改</source>
         <translation>Set</translation>
     </message>
@@ -398,30 +428,30 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="548"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="557"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="598"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="607"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="550"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="559"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="600"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="609"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="631"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="681"/>
         <location filename="../resource/qml/src/TofdPe/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="722"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="772"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="755"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="805"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -455,32 +485,32 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Communication</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="117"/>
+        <location filename="../resource/qml/MainWnd.qml" line="120"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="134"/>
+        <location filename="../resource/qml/MainWnd.qml" line="137"/>
         <source>帮助/关于软件</source>
         <translation>Help/About</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="415"/>
+        <location filename="../resource/qml/MainWnd.qml" line="419"/>
         <source>友联科技, 欢迎使用</source>
         <translation>Welcome to Union Technology</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="421"/>
+        <location filename="../resource/qml/MainWnd.qml" line="425"/>
         <source>版权所有© 南通友联数码技术开发有限公司</source>
         <translation>Copyright © Nantong Youlian Digital Technology Development Co., LTD</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="455"/>
+        <location filename="../resource/qml/MainWnd.qml" line="459"/>
         <source>选择一个文件</source>
         <translation>Select a file</translation>
     </message>
     <message>
-        <location filename="../resource/qml/MainWnd.qml" line="484"/>
+        <location filename="../resource/qml/MainWnd.qml" line="488"/>
         <source>错误的文件后缀</source>
         <translation>Incorrect file suffix</translation>
     </message>
@@ -488,8 +518,8 @@ Click the &quot;OK&quot; button to start the communication</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="950"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="953"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="990"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="993"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="238"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="105"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="107"/>
@@ -497,7 +527,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Basic Information</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="951"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="991"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="223"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="106"/>
         <source>通道</source>
@@ -505,7 +535,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
     </message>
     <message>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="55"/>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="164"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="197"/>
         <source>检测单位</source>
         <translation>Company of detection</translation>
     </message>
@@ -600,9 +630,9 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Zero Point</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="923"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="963"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="72"/>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="158"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="191"/>
         <source>仪器型号</source>
         <translation>Instrument Model</translation>
     </message>
@@ -725,7 +755,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Probe Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1025"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1122"/>
         <source>错误的声程模式</source>
         <translation>Incorrect sound distance</translation>
     </message>
@@ -878,88 +908,86 @@ Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="206"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="18"/>
         <source>宽频</source>
         <translation>Broadband</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="207"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="19"/>
         <source>低频</source>
         <translation>Low</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="208"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="20"/>
         <source>中频</source>
         <translation>Medium</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="209"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="21"/>
         <source>高频</source>
         <translation>High</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="245"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="18"/>
         <source>2.5MHz</source>
         <translation>2.5MHz</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="246"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="19"/>
         <source>5MHz</source>
         <translation>5MHz</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="281"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="23"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="257"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="230"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="25"/>
         <source>射频检波</source>
         <translation>RF</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="282"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="24"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="258"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="231"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="26"/>
         <source>全检波</source>
         <translation>Full</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="283"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="25"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="259"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="232"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="27"/>
         <source>正检波</source>
         <translation>Positive</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="284"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="26"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_8B/_12CH_8B.cpp" line="260"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="233"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="28"/>
         <source>负检波</source>
         <translation>Negative</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.cpp" line="244"/>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="155"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/12CH_1xB/_12CH_1xB.hpp" line="17"/>
         <source>不滤波</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="170"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="340"/>
         <source>射频</source>
         <translation>RF</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="171"/>
-        <source>全波</source>
-        <translation>Full</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="172"/>
-        <source>正半波</source>
-        <translation>Positive</translation>
-    </message>
-    <message>
-        <location filename="../components/union/src/HDBridge/LowLevel/boards/Emulator/HDBridgeEmulator.cpp" line="173"/>
-        <source>负半波</source>
-        <translation>Negative</translation>
     </message>
     <message>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="196"/>
@@ -1051,12 +1079,15 @@ Click &lt; Cancel &gt; to exit</translation>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="106"/>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="107"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="11"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="12"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="257"/>
         <source>低压</source>
         <translation>Low</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="108"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="13"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="259"/>
         <source>中压</source>
         <translation>Medium</translation>
@@ -1068,6 +1099,7 @@ Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
         <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.cpp" line="109"/>
+        <location filename="../components/union/src/HDBridge/LowLevel/boards/8CH_USB/_8CH_USB.hpp" line="14"/>
         <location filename="../components/union/src/UniversalApparatus/TofdPe/TPE/tpe.cpp" line="263"/>
         <source>高压</source>
         <translation>High</translation>
@@ -1155,58 +1187,58 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Dual Probe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="946"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="986"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="947"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="987"/>
         <source>轨型</source>
         <translation>rail type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="948"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="988"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="952"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="992"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="227"/>
         <source>仪器名称</source>
         <translation>name of instrument</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="957"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="997"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="159"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="192"/>
         <source>水平线性</source>
         <translation>Horizontal Linearity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="160"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="193"/>
         <source>垂直线性</source>
         <translation>Vertical Linearity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="161"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="194"/>
         <source>分辨力</source>
         <translation>Resolution</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="162"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="195"/>
         <source>动态范围</source>
         <translation>Dynamic Range</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="163"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="196"/>
         <source>灵敏度余量</source>
         <translation>Surplus Sensitivity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="913"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="1113"/>
         <source>同时使用B扫和C扫, B扫已被禁用</source>
         <translation>Use both B-scan and C-scan simultaneously. B-scan has been disabled</translation>
     </message>
@@ -1221,28 +1253,178 @@ Click &lt; Cancel &gt; to exit</translation>
         <source>无法下载更新:接口为空</source>
         <translation>Unable to download update: interface is empty</translation>
     </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/DynamicRange.cpp" line="25"/>
+        <source>测动态范围:
+    将探头放置在DB-P Z20-2试块上, 使200mm深Φ2平底孔的回波位于波门内, 等待回波稳定后点击&lt;确定&gt;</source>
+        <translation>Dynamic range measurement
+Place the probe on the DB-P Z20-2 test block so that the echo of the 200mm deep Φ2 flat-bottom hole is located inside the wave gate. Wait for the echo to stabilize and then click &lt; OK &gt;</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/DynamicRange.cpp" line="52"/>
+        <source>测动态范围:
+    测试中, 请稍候...</source>
+        <translation>Dynamic range measurement
+Testing in progress. Please wait a moment...</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/DynamicRange.cpp" line="73"/>
+        <source>动态范围测试完成:
+    %1 dB (国标≥26dB), 点击&lt;确定&gt;继续</source>
+        <translation>Dynamic range test completed
+%1 dB (national standard ≥26dB), click &lt; OK &gt; to continue</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/HorizontalLinearity.cpp" line="24"/>
+        <source>测水平线性:
+    探头放置CSK-IA试块距底面25mm处, 等待回波稳定后点击&lt;确定&gt;</source>
+        <translation>Measure horizontal linearity
+Place the probe 25mm away from the bottom surface of the CSK-IA test block. Wait for the echo to stabilize and then click &lt; OK &gt;</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/HorizontalLinearity.cpp" line="51"/>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Sensitivity.cpp" line="52"/>
+        <source>测水平线性:
+    测试中, 请稍候...</source>
+        <translation>Measure horizontal linearity
+Testing in progress. Please wait a moment...</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/HorizontalLinearity.cpp" line="72"/>
+        <source>自动增益超时</source>
+        <translation>Automatic gain timeout</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/HorizontalLinearity.cpp" line="91"/>
+        <source>水平线性测试完成:
+    %1 dB (国标≤2%), 点击&lt;确定&gt;继续</source>
+        <translation>Horizontal linearity test completed:
+%1 dB (national standard ≤2%), click &lt; OK &gt; to continue</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Resolution.cpp" line="25"/>
+        <source>测分辨力:
+    在CSK-IA试块上移动探头, 调整探头使85mm和91mm两处的回波波峰等高, 回波稳定后点击&lt;确定&gt;</source>
+        <translation>Resolution measurement
+Move the probe on the CSK-IA test block and adjust the probe so that the echo peaks at 85mm and 91mm are of the same height. After the echoes are stable, click &lt; OK &gt;</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Resolution.cpp" line="52"/>
+        <source>测分辨力:
+    测试中, 请稍候...</source>
+        <translation>Resolution measurement
+Testing in progress. Please wait a moment...</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Resolution.cpp" line="107"/>
+        <source>分辨力测试完成:
+    %1 dB (国标≥26dB), 点击&lt;确定&gt;继续</source>
+        <translation>Resolution test completed
+%1 dB (national standard ≥26dB), click &lt; OK &gt; to continue</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Sensitivity.cpp" line="25"/>
+        <source>测灵敏度余量:
+    将探头放置在DB-P Z20-2试块上, 使200mm深Φ2平底孔的回波位于波门内, 回波稳定后点击&lt;确定&gt;</source>
+        <translation>Measurement of sensitivity margin
+Place the probe on the DB-P Z20-2 test block so that the echo of the 200mm deep Φ2 flat-bottom hole is located inside the wave gate. After the echo stabilizes, click &lt; OK &gt;</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Sensitivity.cpp" line="62"/>
+        <source>测灵敏度余量:
+拔掉探头, 然后点击确定</source>
+        <translation>Measurement of sensitivity margin
+Unplug the probe and then click OK</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/Sensitivity.cpp" line="136"/>
+        <source>灵敏度余量测试完成:
+    %1 dB (国标≥46dB), 点击&lt;确定&gt;继续</source>
+        <translation>The sensitivity margin test has been completed
+%1 dB (national standard ≥46dB), click &lt; OK &gt; to continue</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/VerticalLinearity.cpp" line="30"/>
+        <source>测垂直线性:
+    将探头放置在DB-P Z20-2试块上, 使200mm深Φ2平底孔的回波位于波门内, 回波稳定点击确定</source>
+        <translation>Measure vertical linearity
+Place the probe on the DB-P Z20-2 test block so that the echo of the 200mm deep Φ2 flat-bottom hole is located inside the wave gate. When the echo is stable, click OK</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/VerticalLinearity.cpp" line="57"/>
+        <source>测垂直线性:
+    测试中, 请稍候...</source>
+        <translation>Measure vertical linearity
+Testing in progress. Please wait a moment...</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/VerticalLinearity.cpp" line="97"/>
+        <source>垂直线程测量完成:
+    %1 dB (国标≤6%), 点击&lt;确定&gt;继续</source>
+        <translation>Vertical thread measurement completed
+%1 dB (national standard ≤6%), click &lt; OK &gt; to continue</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/ZeroPoint.cpp" line="26"/>
+        <source>测零点:
+探头放置CSK-IA试块距底面100mm处, 等待回波稳定后点击确定</source>
+        <translation>Zero point measurement
+Place the probe 100mm above the bottom surface of the CSC-IA test block. Wait for the echo to stabilize and then click &quot;OK&quot;</translation>
+    </message>
+    <message>
+        <location filename="../components/union/src/HDBridge/Actions/Performance/ZeroPoint.cpp" line="63"/>
+        <source>零点测试完成:
+    %1 us, 点击&lt;确定&gt;继续</source>
+        <translation>Zero-point test completed
+%1 us, click &lt; OK &gt; to continue</translation>
+    </message>
 </context>
 <context>
     <name>SettingWnd</name>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="19"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="20"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="38"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="39"/>
         <source>软件更新</source>
         <translation>Software Update</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="54"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="56"/>
         <source>软件启动时检查更新</source>
         <translation>Check for updates at software startup</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="79"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="81"/>
         <source>语言</source>
         <translation>Languages</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="106"/>
+        <source>T8/390N</source>
+        <translation>T8/390N</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="117"/>
+        <source>重新计算波门数据</source>
+        <translation>Recalculate the gate data</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="134"/>
+        <source>显示C扫分层线</source>
+        <translation>Display the C scan layering line</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="151"/>
+        <source>B/C扫坐标轴取整</source>
+        <translation>B/C scan the coordinate axis to round</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="168"/>
+        <source>C扫图像平滑</source>
+        <translation>The C-scan image is smooth</translation>
     </message>
 </context>
 <context>
