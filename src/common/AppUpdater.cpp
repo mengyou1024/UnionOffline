@@ -2,6 +2,7 @@
 #include "UpgradeFromGitee.hpp"
 #include "morose_config.h"
 #include <QLoggingCategory>
+#include <common.hpp>
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "AppUpgrader");
 
@@ -138,7 +139,9 @@ namespace Morose::Utils {
 
     void AppUpdater::doUpgrade() {
         QProcess::startDetached(m_downloadFilename, {});
+#ifdef QUIT_AFTER_UPGRADE
         qApp->postEvent(qApp, new QEvent(QEvent::Quit), Qt::LowEventPriority);
+#endif
     }
 
     void AppUpdater::doManualCheckVersion() {
