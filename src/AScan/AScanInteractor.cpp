@@ -601,6 +601,7 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             }
 
             b_scan_sp->replace(bscan_image, width, height, set_size);
+            b_scan_sp->clearValueFromCScan();
 
             setScanViewHandlerExtra(m_scanViewSpExtra.get());
         } else {

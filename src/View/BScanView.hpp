@@ -61,6 +61,10 @@ namespace Union::View {
 
         Q_INVOKABLE void setRedHLineFromCScan(qreal pos);
         Q_INVOKABLE void setBlueHLineFromCScan(qreal pos);
+        Q_INVOKABLE void setValueFromCScan(qreal red, qreal blue);
+        Q_INVOKABLE void setRedValueFromCScan(qreal red);
+        Q_INVOKABLE void setBlueValueFromCScan(qreal blue);
+        Q_INVOKABLE void clearValueFromCScan();
 
     signals:
 
@@ -97,6 +101,9 @@ namespace Union::View {
 
         QPoint m_measuringPointRed  = {};
         QPoint m_measuringPointBlue = {};
+
+        std::optional<double> _red_h_value  = std::nullopt;
+        std::optional<double> _blue_h_value = std::nullopt;
 
         bool eventHandlerCommon(QMouseEvent* event) noexcept;
         void drawMeasuringLine(QPainter* painter);

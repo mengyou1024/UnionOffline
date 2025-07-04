@@ -81,7 +81,7 @@ namespace Union::View {
     }
 
     void CScanView::setRedVLineFromBScan(qreal pos) {
-        m_measuringPointRed.setX(getDrawable().width() * pos);
+        m_measuringPointRed.setX(std::round((getDrawable().width() - 1) * pos));
         auto   cursor_x = pos * _raw_width;
         QPoint cursor   = dataCursor();
         cursor.setX(cursor_x);
@@ -91,7 +91,7 @@ namespace Union::View {
     }
 
     void CScanView::setBlueVLineFromBScan(qreal pos) {
-        m_measuringPointBlue.setX(width() * pos);
+        m_measuringPointBlue.setX(std::round((getDrawable().width() - 1) * pos));
         update();
     }
 
@@ -99,6 +99,28 @@ namespace Union::View {
         m_measuringPointRed  = QPoint(width() * 0.2, height() * 0.2);
         m_measuringPointBlue = QPoint(width() * 0.4, height() * 0.4);
         update();
+    }
+
+    qreal CScanView::extraBScanRedValue() const {
+        return m_extraBScanRedValue;
+    }
+
+    void CScanView::setExtraBScanRedValue(qreal newExtraBScanRedValue) {
+        if (qFuzzyCompare(m_extraBScanRedValue, newExtraBScanRedValue))
+            return;
+        m_extraBScanRedValue = newExtraBScanRedValue;
+        emit extraBScanRedValueChanged();
+    }
+
+    qreal CScanView::extraBScanBlueValue() const {
+        return m_extraBScanBlueValue;
+    }
+
+    void CScanView::setExtraBScanBlueValue(qreal newExtraBScanBlueValue) {
+        if (qFuzzyCompare(m_extraBScanBlueValue, newExtraBScanBlueValue))
+            return;
+        m_extraBScanBlueValue = newExtraBScanBlueValue;
+        emit extraBScanBlueValueChanged();
     }
 
     CScanView::CScanView() {
@@ -502,31 +524,35 @@ namespace Union::View {
         painter->setFont(font);
         QFontMetricsF font_metrics = painter->fontMetrics();
 
-        const auto value_vertical_red = Common::ValueMap(
+        const auto value_vertical_red = Common::KeepDecimals<1>(Common::ValueMap(
             m_measuringPointRed.x(),
             {m_horizontalAxisRange.x(), m_horizontalAxisRange.y()},
-            {getDrawable().left(), getDrawable().right()});
+            {getDrawable().left(), getDrawable().right()}));
 
-        const auto value_vertical_blue = Common::ValueMap(
+        setExtraBScanRedValue(value_vertical_red);
+
+        const auto value_vertical_blue = Common::KeepDecimals<1>(Common::ValueMap(
             m_measuringPointBlue.x(),
             {m_horizontalAxisRange.x(), m_horizontalAxisRange.y()},
-            {getDrawable().left(), getDrawable().right()});
+            {getDrawable().left(), getDrawable().right()}));
 
-        const auto value_vertical_bias = value_vertical_blue - value_vertical_red;
+        setExtraBScanBlueValue(value_vertical_blue);
 
-        const auto value_horizontal_red = Common::ValueMap(
+        const auto value_vertical_bias = Common::KeepDecimals<1>(value_vertical_blue - value_vertical_red);
+
+        const auto value_horizontal_red = Common::KeepDecimals<1>(Common::ValueMap(
             m_measuringPointRed.y(),
             {m_verticalAxisRange.x(), m_verticalAxisRange.y()},
-            {getDrawable().top(), getDrawable().bottom()});
+            {getDrawable().top(), getDrawable().bottom()}));
 
-        const auto value_horizontal_blue = Common::ValueMap(
+        const auto value_horizontal_blue = Common::KeepDecimals<1>(Common::ValueMap(
             m_measuringPointBlue.y(),
             {m_verticalAxisRange.x(), m_verticalAxisRange.y()},
-            {getDrawable().top(), getDrawable().bottom()});
+            {getDrawable().top(), getDrawable().bottom()}));
 
-        const auto value_horizontal_bias = value_horizontal_blue - value_horizontal_red;
+        const auto value_horizontal_bias = Common::KeepDecimals<1>(value_horizontal_blue - value_horizontal_red);
 
-        QString str  = QString::asprintf("%.1f", Common::KeepDecimals<1>(value_vertical_red));
+        QString str  = QString::asprintf("%.1f", value_vertical_red);
         auto    rect = font_metrics.boundingRect(str);
 
         if (m_measuringPointRed.x() <= (width() / 2.0)) {
@@ -537,7 +563,7 @@ namespace Union::View {
         painter->setPen(QPen(Qt::black, 1));
         painter->drawText(rect.bottomLeft(), str);
 
-        str  = QString::asprintf("%.1f", Common::KeepDecimals<1>(value_vertical_blue));
+        str  = QString::asprintf("%.1f", value_vertical_blue);
         rect = font_metrics.boundingRect(str);
 
         if (m_measuringPointBlue.x() <= (width() / 2.0)) {
@@ -548,14 +574,14 @@ namespace Union::View {
         painter->setPen(QPen(Qt::black, 1));
         painter->drawText(rect.bottomLeft(), str);
 
-        str  = QString::asprintf("水平间距: %.1f", Common::KeepDecimals<1>(value_vertical_bias));
+        str  = QString::asprintf("水平间距: %.1f", value_vertical_bias);
         rect = font_metrics.boundingRect(str);
 
         rect.moveTopRight(getDrawable().topRight() + QPoint(-10, 0));
         painter->setPen(QPen(Qt::black, 1));
         painter->drawText(rect.bottomLeft(), str);
 
-        str  = QString::asprintf("%.1f", Common::KeepDecimals<1>(value_horizontal_red));
+        str  = QString::asprintf("%.1f", value_horizontal_red);
         rect = font_metrics.boundingRect(str);
 
         if (m_measuringPointRed.y() <= (height() / 2.0)) {
@@ -574,7 +600,7 @@ namespace Union::View {
         painter->setPen(QPen(Qt::black, 1));
         painter->drawText(rect.bottomLeft(), str);
 
-        str  = QString::asprintf("%.1f", Common::KeepDecimals<1>(value_horizontal_blue));
+        str  = QString::asprintf("%.1f", value_horizontal_blue);
         rect = font_metrics.boundingRect(str);
 
         if (m_measuringPointBlue.y() <= (height() / 2.0)) {
@@ -594,7 +620,7 @@ namespace Union::View {
         painter->setPen(QPen(Qt::black, 1));
         painter->drawText(rect.bottomLeft(), str);
 
-        str  = QString::asprintf("垂直间距: %.1f", Common::KeepDecimals<1>(value_horizontal_bias));
+        str  = QString::asprintf("垂直间距: %.1f", value_horizontal_bias);
         rect = font_metrics.boundingRect(str);
 
         rect.moveTopRight(getDrawable().topRight() + QPoint(-10, rect.height()));

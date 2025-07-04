@@ -24,15 +24,17 @@ namespace Union::View {
         Q_OBJECT
         QML_ELEMENT
 
-        QPoint         m_dataCursor       = {};
-        QColor         m_cursorLineColor  = Qt::black;
-        int            m_cursorLineWidth  = 1;
-        int            m_dataCursorInt    = {};
-        int            m_imgWidth         = 0;
-        int            m_imgHeight        = 0;
-        bool           m_isPressed        = false;
-        bool           m_isControlPressed = false;
-        CursorLocation m_cursorLocation   = CursorLocation::LOCATION_NEAR_NONE;
+        QPoint         m_dataCursor          = {};
+        QColor         m_cursorLineColor     = Qt::black;
+        int            m_cursorLineWidth     = 1;
+        int            m_dataCursorInt       = {};
+        int            m_imgWidth            = 0;
+        int            m_imgHeight           = 0;
+        bool           m_isPressed           = false;
+        bool           m_isControlPressed    = false;
+        CursorLocation m_cursorLocation      = CursorLocation::LOCATION_NEAR_NONE;
+        qreal          m_extraBScanRedValue  = {};
+        qreal          m_extraBScanBlueValue = {};
 
     public:
         CScanView();
@@ -61,6 +63,12 @@ namespace Union::View {
         Q_INVOKABLE void setRedVLineFromBScan(qreal pos);
         Q_INVOKABLE void setBlueVLineFromBScan(qreal pos);
 
+        qreal extraBScanRedValue() const;
+        void  setExtraBScanRedValue(qreal newExtraBScanRedValue);
+
+        qreal extraBScanBlueValue() const;
+        void  setExtraBScanBlueValue(qreal newExtraBScanBlueValue);
+
     signals:
         void dataCursorChanged();
         void cursorLineColorChanged();
@@ -73,6 +81,8 @@ namespace Union::View {
         void cursorLocationChanged();
         void updateExtraBScanRedHLine(qreal pos);
         void updateExtraBScanBlueHLine(qreal pos);
+        void extraBScanRedValueChanged();
+        void extraBScanBlueValueChanged();
 
     public slots:
         void resetLines();
@@ -109,5 +119,7 @@ namespace Union::View {
         Q_PROPERTY(bool isPressed READ isPressed WRITE setIsPressed NOTIFY isPressedChanged FINAL)
         Q_PROPERTY(bool isControlPressed READ isControlPressed WRITE setIsControlPressed NOTIFY isControlPressedChanged FINAL)
         Q_PROPERTY(CursorLocation cursorLocation READ cursorLocation WRITE setCursorLocation NOTIFY cursorLocationChanged FINAL)
+        Q_PROPERTY(qreal extraBScanRedValue READ extraBScanRedValue WRITE setExtraBScanRedValue NOTIFY extraBScanRedValueChanged FINAL)
+        Q_PROPERTY(qreal extraBScanBlueValue READ extraBScanBlueValue WRITE setExtraBScanBlueValue NOTIFY extraBScanBlueValueChanged FINAL)
     };
 } // namespace Union::View

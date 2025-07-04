@@ -534,6 +534,20 @@ Rectangle {
                         interactor.scanViewHandlerExtra.setBlueHLineFromCScan(pos)
                     }
                 }
+
+                function onExtraBScanRedValueChanged() {
+                    if (interactor.scanViewHandlerExtra) {
+                        interactor.scanViewHandlerExtra.setRedValueFromCScan(
+                                    interactor.scanViewHandler.extraBScanRedValue)
+                    }
+                }
+
+                function onExtraBScanBlueValueChanged() {
+                    if (interactor.scanViewHandlerExtra) {
+                        interactor.scanViewHandlerExtra.setBlueValueFromCScan(
+                                    interactor.scanViewHandler.extraBScanBlueValue)
+                    }
+                }
             }
 
             Connections {
