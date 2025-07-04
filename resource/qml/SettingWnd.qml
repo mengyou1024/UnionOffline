@@ -111,6 +111,8 @@ ApplicationWindow {
                 ColumnLayout {
                     id: layout_mdat_setting
 
+
+
                     CheckBox {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 10
@@ -158,6 +160,23 @@ ApplicationWindow {
                                 mdat_setting.roundToInt = true
                             } else {
                                 mdat_setting.roundToInt = false
+                            }
+                        }
+                    }
+
+                    CheckBox {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        text: qsTr("B扫图像平滑")
+                        font.pointSize: 12
+
+                        checkState: mdat_setting.bScanImageSmoothing ? Qt.Checked : Qt.Unchecked
+
+                        onCheckStateChanged: {
+                            if (checkState == Qt.Checked) {
+                                mdat_setting.bScanImageSmoothing = true
+                            } else {
+                                mdat_setting.bScanImageSmoothing = false
                             }
                         }
                     }
