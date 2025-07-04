@@ -31,7 +31,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: 18
-            text: qsTr(`Ctrl + 鼠标左键: 快速定位红色线条\nCtrl + 鼠标右键: 快速定位蓝色线条\nWASD: 移动红色线条\n↑←↓→: 移动蓝色线条\n(仅T8/390N B/C扫功能 鼠标需先进入图谱区域)`)
+            text: qsTr("Ctrl + 鼠标左键: 快速定位红色线条\nCtrl + 鼠标右键: 快速定位蓝色线条\nWASD: 移动红色线条\n↑←↓→: 移动蓝色线条\n(仅T8/390N B/C扫功能 鼠标需先进入图谱区域)")
         }
 
         Text {
