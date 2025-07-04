@@ -59,6 +59,9 @@ namespace Union::View {
         bool                 isControlPressed() const;
         void                 setIsControlPressed(bool newIsControlPressed);
 
+        Q_INVOKABLE void setRedHLineFromCScan(qreal pos);
+        Q_INVOKABLE void setBlueHLineFromCScan(qreal pos);
+
     signals:
 
         void dataCursorChanged();
@@ -70,6 +73,9 @@ namespace Union::View {
         void cursorLocationChanged();
         void isPressedChanged();
         void isControlPressedChanged();
+
+        void updateCScanRedVLine(qreal pos);
+        void updateCScanBlueVLine(qreal pos);
 
     public slots:
         void resetLines();

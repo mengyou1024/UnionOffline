@@ -58,6 +58,9 @@ namespace Union::View {
         CursorLocation cursorLocation() const;
         void           setCursorLocation(CursorLocation newCursorLocation);
 
+        Q_INVOKABLE void setRedVLineFromBScan(qreal pos);
+        Q_INVOKABLE void setBlueVLineFromBScan(qreal pos);
+
     signals:
         void dataCursorChanged();
         void cursorLineColorChanged();
@@ -68,6 +71,8 @@ namespace Union::View {
         void isPressedChanged();
         void isControlPressedChanged();
         void cursorLocationChanged();
+        void updateExtraBScanRedHLine(qreal pos);
+        void updateExtraBScanBlueHLine(qreal pos);
 
     public slots:
         void resetLines();

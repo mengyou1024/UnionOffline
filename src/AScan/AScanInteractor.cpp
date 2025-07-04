@@ -569,12 +569,8 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             const auto line_count           = getAScanCursor() / line_width;
             auto       extra_b_scan_cursors = std::views::iota(line_count * line_width, (line_count + 1) * line_width);
 
-            int  width    = 0;
-            auto encoders = extra_b_scan_cursors | std::views::transform([&](auto&& cursor) -> uint16_t {
-                                return mdata_spec->getBScanEncoder(cursor);
-                            }) |
-                            std::ranges::to<std::vector>();
-            auto&& [min_encoder, max_encoder] = std::ranges::minmax(encoders);
+            int width                         = 0;
+            auto&& [min_encoder, max_encoder] = mdata_spec->getBScanMinMaxXEncoderValue();
             for (auto idx : extra_b_scan_cursors) {
                 auto current_frame_ascan_size = std::ssize(mdata_spec->getDataInGate(idx, 0));
                 if (current_frame_ascan_size > width) {
@@ -604,7 +600,6 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
                          data.data(), std::ssize(data) * sizeof(std::optional<uint8_t>));
             }
 
-            b_scan_sp->setEnableCursor(false);
             b_scan_sp->replace(bscan_image, width, height, set_size);
 
             setScanViewHandlerExtra(m_scanViewSpExtra.get());
@@ -639,7 +634,7 @@ void AScanInteractor::updateExtraBScanViewRange() {
                 const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
                 const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
                 b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
-                const auto range_y = mdata_spec->getSubBScanRange(getAScanCursor());
+                const auto range_y = mdata_spec->getSubBScanRange();
                 b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
             } else {
                 auto&& [gate0, _]     = aScanIntf()->getGate(getAScanCursor());
@@ -647,6 +642,8 @@ void AScanInteractor::updateExtraBScanViewRange() {
                 const auto start      = ValueMap(gate0.pos(), axis_range);
                 const auto end        = ValueMap(gate0.pos() + gate0.width(), axis_range);
                 b_scan_view->setHorizontalAxisRange(QPointF(start, end));
+                const auto range_y = mdata_spec->getSubBScanRange();
+                b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
             }
         }
 

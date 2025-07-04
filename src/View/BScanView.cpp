@@ -79,6 +79,16 @@ namespace Union::View {
         emit isControlPressedChanged();
     }
 
+    void BScanView::setRedHLineFromCScan(qreal pos) {
+        m_measuringPointRed.setY(pos * getDrawable().height());
+        update();
+    }
+
+    void BScanView::setBlueHLineFromCScan(qreal pos) {
+        m_measuringPointBlue.setY(pos * getDrawable().height());
+        update();
+    }
+
     BScanView::BScanView() {
         setFocus(true);
         setKeepMouseGrab(true);
@@ -180,7 +190,7 @@ namespace Union::View {
 
         auto transformation_mode = Qt::SmoothTransformation;
 
-        if (AppSetting::Instance()->cScanImageSmoothing()) {
+        if (AppSetting::Instance()->bScanImageSmoothing()) {
             transformation_mode = Qt::SmoothTransformation;
         } else {
             transformation_mode = Qt::FastTransformation;
@@ -384,6 +394,7 @@ namespace Union::View {
             auto data_cursor = (getDrawable().y() - event->y()) * m_image.height() / getDrawable().height();
             setDataCursor(std::abs(data_cursor));
             m_measuringPointRed.setY(event->pos().y());
+            emit updateCScanRedVLine(static_cast<qreal>(std::abs(getDrawable().y() - event->y())) / getDrawable().height());
         }
 
         if (cursorLocation() & CursorLocation::LOCATION_NEAR_BLUE_VERTIVAL_LINE) {
@@ -392,6 +403,7 @@ namespace Union::View {
 
         if (cursorLocation() & CursorLocation::LOCATION_NEAR_BLUE_HORIZONTAL_LINE) {
             m_measuringPointBlue.setY(event->pos().y());
+            emit updateCScanBlueVLine(static_cast<qreal>(std::abs(getDrawable().y() - event->y())) / getDrawable().height());
         }
 
         update();
@@ -431,30 +443,17 @@ namespace Union::View {
             blue_line_quad       = Qt::green;
         }
 
-        QPainterPath path;
         painter->setPen(QPen(blue_line_horizontal, 2));
         painter->drawLine(QPoint(getDrawable().left(), m_measuringPointBlue.y()), QPoint(getDrawable().right(), m_measuringPointBlue.y()));
         painter->setPen(QPen(blue_line_vertical, 2));
         painter->drawLine(QPoint(m_measuringPointBlue.x(), getDrawable().top()), QPoint(m_measuringPointBlue.x(), getDrawable().bottom()));
         painter->setPen(QPen(blue_line_quad, 2));
-        path.moveTo(m_measuringPointBlue);
-        path.quadTo(m_measuringPointBlue.x() + 4, m_measuringPointBlue.y(), m_measuringPointBlue.x() + 10, m_measuringPointBlue.y() + 10);
-        path.moveTo(m_measuringPointBlue);
-        path.quadTo(m_measuringPointBlue.x() - 4, m_measuringPointBlue.y(), m_measuringPointBlue.x() - 10, m_measuringPointBlue.y() + 10);
-        painter->drawPath(path);
-
-        path.clear();
 
         painter->setPen(QPen(red_line_horizontal, 2));
         painter->drawLine(QPoint(getDrawable().left(), m_measuringPointRed.y()), QPoint(getDrawable().right(), m_measuringPointRed.y()));
         painter->setPen(QPen(red_line_vertical, 2));
         painter->drawLine(QPoint(m_measuringPointRed.x(), getDrawable().top()), QPoint(m_measuringPointRed.x(), getDrawable().bottom()));
         painter->setPen(QPen(red_line_quad, 2));
-        path.moveTo(m_measuringPointRed);
-        path.quadTo(m_measuringPointRed.x() + 4, m_measuringPointRed.y(), m_measuringPointRed.x() + 10, m_measuringPointRed.y() + 10);
-        path.moveTo(m_measuringPointRed);
-        path.quadTo(m_measuringPointRed.x() - 4, m_measuringPointRed.y(), m_measuringPointRed.x() - 10, m_measuringPointRed.y() + 10);
-        painter->drawPath(path);
     }
 
     void BScanView::drawMeasuringText(QPainter* painter) {

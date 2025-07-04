@@ -486,6 +486,25 @@ Rectangle {
                     }
                 }
             }
+            LoggingCategory {
+                id: tag
+                name: "Union.View"
+            }
+            Connections {
+                target: interactor.scanViewHandlerExtra
+                enabled: interactor.scanViewHandlerExtra
+                ignoreUnknownSignals: true
+
+                function onUpdateCScanRedVLine(pos) {
+                    interactor.scanViewHandler.setRedVLineFromBScan(pos)
+                }
+
+                function onUpdateCScanBlueVLine(pos) {
+
+                    console.log(tag, "update CScan blueVLine from qml:", pos)
+                    interactor.scanViewHandler.setBlueVLineFromBScan(pos)
+                }
+            }
 
             Connections {
                 target: interactor.scanViewHandler
@@ -501,6 +520,18 @@ Rectangle {
                 function onDataCursorIntChanged() {
                     if (interactor.showCScanView) {
                         interactor.aScanCursor = interactor.scanViewHandler.dataCursorInt
+                    }
+                }
+
+                function onUpdateExtraBScanRedHLine(pos) {
+                    if (interactor.scanViewHandlerExtra) {
+                        interactor.scanViewHandlerExtra.setRedHLineFromCScan(pos)
+                    }
+                }
+
+                function onUpdateExtraBScanBlueHLine(pos) {
+                    if (interactor.scanViewHandlerExtra) {
+                        interactor.scanViewHandlerExtra.setBlueHLineFromCScan(pos)
                     }
                 }
             }
