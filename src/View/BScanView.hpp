@@ -77,7 +77,6 @@ namespace Union::View {
         void cursorLocationChanged();
         void isPressedChanged();
         void isControlPressedChanged();
-
         void updateCScanRedVLine(qreal pos);
         void updateCScanBlueVLine(qreal pos);
 

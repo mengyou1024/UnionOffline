@@ -69,6 +69,8 @@ namespace Union::View {
         qreal extraBScanBlueValue() const;
         void  setExtraBScanBlueValue(qreal newExtraBScanBlueValue);
 
+        void updateExtraBScanLines();
+
     signals:
         void dataCursorChanged();
         void cursorLineColorChanged();

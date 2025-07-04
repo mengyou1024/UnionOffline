@@ -705,6 +705,13 @@ void AScanInteractor::setAScanCursor(int newAScanCursor) {
     const auto mdata_spec = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
     if (mdata_spec && mdata_spec->isCScanSubLineChanged(old_cursor, m_aScanCursor)) {
         updateExtraBScanView(true);
+        auto c_scan_sp = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+        auto b_scan_sp = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
+        if (c_scan_sp && b_scan_sp) {
+            c_scan_sp->updateExtraBScanLines();
+            b_scan_sp->setRedValueFromCScan(c_scan_sp->extraBScanRedValue());
+            b_scan_sp->setBlueValueFromCScan(c_scan_sp->extraBScanBlueValue());
+        }
     }
 
     emit aScanCursorChanged();

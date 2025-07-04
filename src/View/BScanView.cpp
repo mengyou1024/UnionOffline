@@ -333,6 +333,8 @@ namespace Union::View {
             m_measuringPointRed.setY(m_measuringPointRed.y() - 1);
             auto data_cursor = (getDrawable().y() - m_measuringPointRed.y()) * m_image.height() / getDrawable().height();
             setDataCursor(std::abs(data_cursor));
+
+            emit updateCScanRedVLine(static_cast<qreal>(std::abs(getDrawable().y() - m_measuringPointRed.y())) / getDrawable().height());
             update();
         }
 
@@ -343,6 +345,7 @@ namespace Union::View {
             m_measuringPointRed.setY(m_measuringPointRed.y() + 1);
             auto data_cursor = (getDrawable().y() - m_measuringPointRed.y()) * m_image.height() / getDrawable().height();
             setDataCursor(std::abs(data_cursor));
+            emit updateCScanRedVLine(static_cast<qreal>(std::abs(getDrawable().y() - m_measuringPointRed.y())) / getDrawable().height());
             update();
         }
 
@@ -367,6 +370,8 @@ namespace Union::View {
                 return;
             }
             m_measuringPointBlue.setY(m_measuringPointBlue.y() - 1);
+
+            emit updateCScanBlueVLine(static_cast<qreal>(std::abs(getDrawable().y() - m_measuringPointBlue.y())) / getDrawable().height());
             update();
         }
 
@@ -375,6 +380,8 @@ namespace Union::View {
                 return;
             }
             m_measuringPointBlue.setY(m_measuringPointBlue.y() + 1);
+
+            emit updateCScanBlueVLine(static_cast<qreal>(std::abs(getDrawable().y() - m_measuringPointBlue.y())) / getDrawable().height());
             update();
         }
 

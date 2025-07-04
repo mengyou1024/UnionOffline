@@ -123,6 +123,11 @@ namespace Union::View {
         emit extraBScanBlueValueChanged();
     }
 
+    void CScanView::updateExtraBScanLines() {
+        emit updateExtraBScanRedHLine(static_cast<qreal>(m_measuringPointRed.x() - getDrawable().x()) / getDrawable().width());
+        emit updateExtraBScanBlueHLine(static_cast<qreal>(m_measuringPointBlue.x() - getDrawable().x()) / getDrawable().width());
+    }
+
     CScanView::CScanView() {
         setFocus(true);
         setKeepMouseGrab(true);
@@ -380,6 +385,8 @@ namespace Union::View {
             setDataCursor({cursor_x, cursor_y});
             setDataCursorInt(cursor_y * _raw_width + cursor_x);
 
+            emit updateExtraBScanRedHLine(static_cast<qreal>(m_measuringPointRed.x() - getDrawable().x()) / getDrawable().width());
+
             update();
         }
 
@@ -394,6 +401,7 @@ namespace Union::View {
             setDataCursor({cursor_x, cursor_y});
             setDataCursorInt(cursor_y * _raw_width + cursor_x);
 
+            emit updateExtraBScanRedHLine(static_cast<qreal>(m_measuringPointRed.x() - getDrawable().x()) / getDrawable().width());
             update();
         }
 
@@ -418,6 +426,7 @@ namespace Union::View {
                 return;
             }
             m_measuringPointBlue.setX(m_measuringPointBlue.x() - 1);
+            emit updateExtraBScanBlueHLine(static_cast<qreal>(m_measuringPointBlue.x() - getDrawable().x()) / getDrawable().width());
             update();
         }
 
@@ -426,6 +435,7 @@ namespace Union::View {
                 return;
             }
             m_measuringPointBlue.setX(m_measuringPointBlue.x() + 1);
+            emit updateExtraBScanBlueHLine(static_cast<qreal>(m_measuringPointBlue.x() - getDrawable().x()) / getDrawable().width());
             update();
         }
     }
