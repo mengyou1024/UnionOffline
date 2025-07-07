@@ -77,6 +77,68 @@ ApplicationWindow {
             }
 
             CArea {
+                text: qsTr("界面设置(需重启软件)")
+                font.pointSize: 12
+                Layout.fillWidth: true
+                Layout.preferredWidth: layout_wnd_setting.width + horizontalPadding * 2
+                Layout.preferredHeight: layout_wnd_setting.height + topPadding + bottomPadding
+                ColumnLayout {
+                    id: layout_wnd_setting
+
+                    Settings {
+                        id: wnd_setting
+                        property bool enableHighDpi: true
+                        property int highDpiRoundPolicy: 4
+                        category: "Wnd"
+                        fileName: "setting.ini"
+                    }
+
+                    GridLayout {
+                        rows: 2
+                        columns: 2
+                        CheckBox {
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.leftMargin: 10
+                            Layout.columnSpan: 2
+                            text: qsTr("启用高DPI")
+                            font.pointSize: 12
+
+                            checkState: wnd_setting.enableHighDpi ? Qt.Checked : Qt.Unchecked
+
+                            onCheckStateChanged: {
+                                if (checkState == Qt.Checked) {
+                                    wnd_setting.enableHighDpi = true
+                                } else {
+                                    wnd_setting.enableHighDpi = false
+                                }
+                            }
+                        }
+
+                        Text {
+                            Layout.leftMargin: 20
+                            text: qsTr("高DPI策略:")
+                            font.pointSize: 12
+                        }
+
+                        CComboBox {
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.leftMargin: 10
+                            implicitWidth: 210
+                            implicitHeight: 32
+                            model: [qsTr("四舍五入"), qsTr("向上取整"), qsTr("向下取整"), qsTr("高于0.75向上取整"), qsTr("不取整")]
+                            onActivated: index => {
+                                             wnd_setting.highDpiRoundPolicy = index + 1
+                                         }
+
+                            Component.onCompleted: {
+                                currentIndex = wnd_setting.highDpiRoundPolicy - 1
+                            }
+                        }
+                    }
+                }
+            }
+
+            CArea {
                 visible: MOROSE_ENABLE_MULTI_LANGUATE_FEATURE === 1
                 text: qsTr("语言")
                 font.pointSize: 12
@@ -110,8 +172,6 @@ ApplicationWindow {
                 Layout.preferredHeight: layout_mdat_setting.height + topPadding + bottomPadding
                 ColumnLayout {
                     id: layout_mdat_setting
-
-
 
                     CheckBox {
                         Layout.alignment: Qt.AlignVCenter

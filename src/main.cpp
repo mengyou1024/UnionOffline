@@ -53,21 +53,36 @@ LONG ApplicationCrashHandler(EXCEPTION_POINTERS* pException) {
 #endif
 
 int main(int argc, char* argv[]) {
+    auto setting = std::make_unique<QSettings>("setting.ini", QSettings::IniFormat);
+
 #ifdef Q_OS_WIN32
     SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)ApplicationCrashHandler);
 #endif
-
+    setting->beginGroup("Wnd");
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     // Qt5默认未开启高DPI模式, 需要手动打开
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    if (setting->value("enableHighDpi", true).toBool()) {
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    } else {
+        QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    }
 #endif
+
     // 高DPI适配策略
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+
+    auto high_dpi_round_policy = static_cast<Qt::HighDpiScaleFactorRoundingPolicy>(setting->value("highDpiRoundPolicy", 4).toInt());
+
+    QApplication::setHighDpiScaleFactorRoundingPolicy(high_dpi_round_policy);
+
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 #else
     QQuickWindow::setSceneGraphBackend(QSGRendererInterface::OpenGL);
 #endif
+
+    setting->endGroup();
+
     SingleApplication app(argc, argv, true);
 
     app.setWindowIcon(QIcon(":/img/morose.ico"));
@@ -104,20 +119,19 @@ int main(int argc, char* argv[]) {
     }
 
     // 设置日志过滤规则
-    QSettings log_setting("setting.ini", QSettings::IniFormat);
-    log_setting.beginGroup("Rules");
-    auto filter = log_setting.value("filterRules");
+    setting->beginGroup("Rules");
+    auto filter = setting->value("filterRules");
     if (filter.isNull()) {
 #if defined(QT_DEBUG)
-        log_setting.setValue("filterRules", "");
+        setting->setValue("filterRules", "");
 #else
-        log_setting.setValue("filterRules", "*.debug=false");
+        setting->setValue("filterRules", "*.debug=false");
 #endif
-        filter = log_setting.value("filterRules");
+        filter = setting->value("filterRules");
     }
     QLoggingCategory::setFilterRules(filter.toString());
-    log_setting.endGroup();
-    log_setting.sync();
+    setting->endGroup();
+    setting->sync();
 
     qInfo() << std::string(80, '-').c_str();
     qInfo() << "application start, version: " APP_VERSION;
@@ -133,9 +147,10 @@ int main(int argc, char* argv[]) {
     qDebug() << "ssl lib version:" << QSslSocket::sslLibraryVersionString();
 
     QTemporaryDir temp_dir;
-    QSettings     cache_setting("setting.ini", QSettings::IniFormat);
-    cache_setting.beginGroup("Cache");
-    cache_setting.setValue("dir", temp_dir.path());
+    setting->beginGroup("Cache");
+    setting->setValue("dir", temp_dir.path());
+    setting->endGroup();
+    setting->sync();
     qInfo() << "register cache dir:" << temp_dir.path();
 
     // 加载QML、注册环境变量
