@@ -14,7 +14,6 @@
 #include <QTimer>
 #include <QtCharts>
 #include <UnionType>
-#include <chrono>
 
 class AScanInteractor : public QQuickItem {
     Q_OBJECT
@@ -49,11 +48,11 @@ class AScanInteractor : public QQuickItem {
     bool        m_enableOverWriteGate                   = false;
     bool        m_bScanIsGateMode                       = false;
 
-    int                                     m_replaySpeed             = 0;
-    bool                                    m_isPlaying               = false;
-    _STD_TP                                 m_lastUpdateGateValueTime = std::chrono::system_clock::now();
-    std::shared_ptr<Union::View::BasicView> m_scanViewSp              = nullptr;
-    std::shared_ptr<Union::View::BasicView> m_scanViewSpExtra         = nullptr;
+    int                                        m_replaySpeed             = 0;
+    bool                                       m_isPlaying               = false;
+    _STD_TP                                    m_lastUpdateGateValueTime = std::chrono::system_clock::now();
+    std::shared_ptr<Union::View::IScanView> m_scanViewSp              = nullptr;
+    std::shared_ptr<Union::View::IScanView> m_scanViewSpExtra         = nullptr;
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";

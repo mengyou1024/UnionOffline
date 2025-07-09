@@ -172,120 +172,19 @@ Rectangle {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.leftMargin: -10
 
                 visible: interactor.scanViewHandlerExtra
 
-                GridLayout {
-                    anchors.fill: parent
-                    anchors.margins: 10
-                    columns: 2
-                    rows: 2
-                    columnSpacing: 0
-                    rowSpacing: 0
+                Connections {
+                    target: interactor.scanViewHandlerExtra
+                    enabled: interactor.scanViewHandlerExtra
+                    ignoreUnknownSignals: true
 
-                    Item {
-                        Layout.row: 0
-                        Layout.column: 0
-                        Layout.preferredWidth: 35
-                        Layout.fillHeight: true
-                        ScrollView {
-                            id: axis_vertical_box_extra
-                            anchors.fill: parent
-
-                            clip: true
-
-                            contentWidth: axis_vertical_extra.width
-                            contentHeight: axis_vertical_extra.height
-
-                            ScrollBar.vertical.visible: false
-                            ScrollBar.vertical.interactive: false
-                            ScrollBar.vertical.position: b_or_c_scan_view_box_extra.ScrollBar.vertical.position
-
-                            Flickable {
-                                boundsBehavior: Flickable.StopAtBounds
-                            }
-
-                            Binding {
-                                target: b_or_c_scan_view_box_extra.ScrollBar.vertical
-                                property: "position"
-                                value: axis_vertical_box_extra.ScrollBar.vertical.position
-                            }
-
-                            AxisView {
-                                id: axis_vertical_extra
-                                isVertical: true
-                                reverse: true
-                                width: 35
-                            }
-                        }
-                    }
-
-                    Item {
-                        Layout.row: 0
-                        Layout.column: 1
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        ScrollView {
-                            id: b_or_c_scan_view_box_extra
-                            anchors.fill: parent
-                            clip: true
-
-                            ScrollBar.horizontal.visible: false
-                            ScrollBar.horizontal.interactive: false
-                            ScrollBar.vertical.visible: false
-                            ScrollBar.vertical.interactive: false
-
-                            Flickable {
-                                boundsBehavior: Flickable.StopAtBounds
-                            }
-                        }
-                    }
-
-                    Rectangle {
-                        Layout.row: 1
-                        Layout.column: 0
-                        Layout.preferredWidth: 35
-                        Layout.preferredHeight: 35
-                        color: "#afeeee"
-                        Text {
-                            font.pointSize: 20
-                            text: "B"
-                            anchors.centerIn: parent
-                        }
-                    }
-
-                    Item {
-                        Layout.preferredHeight: 35
-                        Layout.fillWidth: true
-                        Layout.row: 1
-                        Layout.column: 1
-
-                        ScrollView {
-                            id: axis_horizontal_box_extra
-                            anchors.fill: parent
-                            contentWidth: axis_horizontal_extra.width
-                            contentHeight: axis_horizontal_extra.height
-                            clip: true
-
-                            ScrollBar.horizontal.visible: false
-                            ScrollBar.horizontal.interactive: false
-                            ScrollBar.horizontal.position: b_or_c_scan_view_box_extra.ScrollBar.horizontal.position
-
-                            Flickable {
-                                boundsBehavior: Flickable.StopAtBounds
-                            }
-
-                            Binding {
-                                target: b_or_c_scan_view_box_extra.ScrollBar.horizontal
-                                property: "position"
-                                value: axis_horizontal_box_extra.ScrollBar.horizontal.position
-                            }
-
-                            AxisView {
-                                id: axis_horizontal_extra
-                                height: 35
-                            }
-                        }
+                    function onDataCursorChanged() {
+                        interactor.aScanCursor = interactor.scanViewHandler.toIntDataCursor(
+                                    Qt.point(interactor.scanViewHandlerExtra.imagePoint.y,
+                                             interactor.scanViewHandler.imagePoint.y))
                     }
                 }
 
@@ -295,58 +194,12 @@ Rectangle {
 
                     function onUpdateBScanExtraHandler() {
                         if (interactor.scanViewHandlerExtra) {
-                            b_or_c_scan_view_box_extra.contentChildren.push(interactor.scanViewHandlerExtra)
-                            b_or_c_scan_view_box_extra.onChildrenChanged()
-
-                            let img_width = interactor.scanViewHandlerExtra.width
-                            let img_height = interactor.scanViewHandlerExtra.height
-
-                            interactor.scanViewHandlerExtra.width = Qt.binding(() => {
-                                                                                   let content_width = b_or_c_scan_view_box_extra.width
-                                                                                   b_or_c_scan_view_box_extra.contentWidth = content_width
-                                                                                   return content_width
-                                                                               })
-
-                            interactor.scanViewHandlerExtra.height = Qt.binding(() => {
-                                                                                    let content_height = b_or_c_scan_view_box_extra.height
-                                                                                    b_or_c_scan_view_box_extra.contentHeight
-                                                                                    = content_height
-                                                                                    return content_height
-                                                                                })
-
-                            axis_horizontal_extra.width = Qt.binding(() => {
-                                                                         try {
-                                                                             return interactor.scanViewHandlerExtra.width
-                                                                         } catch (e) {
-                                                                             return axis_horizontal_extra.width
-                                                                         }
-                                                                     })
-
-                            axis_vertical_extra.height = Qt.binding(() => {
-                                                                        try {
-                                                                            return interactor.scanViewHandlerExtra.height
-                                                                        } catch (e) {
-                                                                            return axis_vertical_extra.height
-                                                                        }
-                                                                    })
-
-                            axis_horizontal_extra.axisRange = Qt.binding(() => {
-                                                                             try {
-                                                                                 return interactor.scanViewHandlerExtra.horizontalAxisRange
-                                                                             } catch (e) {
-                                                                                 return axis_horizontal_extra.axisRange
-                                                                             }
-                                                                         })
-
-                            axis_vertical_extra.axisRange = Qt.binding(() => {
-                                                                           try {
-                                                                               return interactor.scanViewHandlerExtra.verticalAxisRange
-                                                                           } catch (e) {
-                                                                               return axis_vertical_extra.axisRange
-                                                                           }
-                                                                       })
+                            scan_view_box_extra.children.push(interactor.scanViewHandlerExtra)
+                            interactor.scanViewHandlerExtra.anchors.fill = scan_view_box_extra
+                            interactor.scanViewHandlerExtra.anchors.margins = 10
+                            scan_view_box_extra.onChildrenChanged()
                         } else {
-                            b_or_c_scan_view_box_extra.contentChildren = []
+                            scan_view_box_extra.children = []
                         }
                     }
                 }
@@ -362,148 +215,10 @@ Rectangle {
 
             visible: interactor ? interactor.scanViewHandler : false
 
-            GridLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                columns: 2
-                rows: 2
-                columnSpacing: 0
-                rowSpacing: 0
-
-                Item {
-                    Layout.row: 0
-                    Layout.column: 0
-                    Layout.preferredWidth: 35
-                    Layout.fillHeight: true
-                    ScrollView {
-                        id: axis_vertical_box
-                        anchors.fill: parent
-
-                        clip: true
-
-                        contentWidth: axis_vertical.width
-                        contentHeight: axis_vertical.height
-
-                        ScrollBar.vertical.visible: false
-                        ScrollBar.vertical.interactive: false
-                        ScrollBar.vertical.position: b_or_c_scan_view_box.ScrollBar.vertical.position
-
-                        Flickable {
-                            boundsBehavior: Flickable.StopAtBounds
-                        }
-
-                        Binding {
-                            target: b_or_c_scan_view_box.ScrollBar.vertical
-                            property: "position"
-                            value: axis_vertical_box.ScrollBar.vertical.position
-                        }
-
-                        AxisView {
-                            id: axis_vertical
-                            isVertical: true
-                            reverse: true
-                            width: 35
-                        }
-                    }
-                }
-
-                Item {
-                    Layout.row: 0
-                    Layout.column: 1
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    ScrollView {
-                        id: b_or_c_scan_view_box
-                        anchors.fill: parent
-                        clip: true
-
-                        ScrollBar.horizontal.visible: false
-                        ScrollBar.horizontal.interactive: false
-                        ScrollBar.vertical.visible: false
-                        ScrollBar.vertical.interactive: false
-
-                        Flickable {
-                            boundsBehavior: Flickable.StopAtBounds
-                        }
-                    }
-                }
-
-                Rectangle {
-                    Layout.row: 1
-                    Layout.column: 0
-                    Layout.preferredWidth: 35
-                    Layout.preferredHeight: 35
-                    color: "#afeeee"
-
-                    Text {
-                        font.pointSize: 20
-                        function getText() {
-                            if (interactor && interactor.showBScanView) {
-                                return "B"
-                            }
-                            if (interactor && interactor.showCScanView) {
-                                return "C"
-                            }
-                            return ""
-                        }
-
-                        text: getText()
-                        anchors.centerIn: parent
-                    }
-                }
-
-                Item {
-                    Layout.preferredHeight: 35
-                    Layout.fillWidth: true
-                    Layout.row: 1
-                    Layout.column: 1
-
-                    ScrollView {
-                        id: axis_horizontal_box
-                        anchors.fill: parent
-                        contentWidth: axis_horizontal.width
-                        contentHeight: axis_horizontal.height
-                        clip: true
-
-                        ScrollBar.horizontal.visible: false
-                        ScrollBar.horizontal.interactive: false
-                        ScrollBar.horizontal.position: b_or_c_scan_view_box.ScrollBar.horizontal.position
-
-                        Flickable {
-                            boundsBehavior: Flickable.StopAtBounds
-                        }
-
-                        Binding {
-                            target: b_or_c_scan_view_box.ScrollBar.horizontal
-                            property: "position"
-                            value: axis_horizontal_box.ScrollBar.horizontal.position
-                        }
-
-                        AxisView {
-                            id: axis_horizontal
-                            height: 35
-                        }
-                    }
-                }
-            }
-            LoggingCategory {
-                id: tag
-                name: "Union.View"
-            }
             Connections {
                 target: interactor.scanViewHandlerExtra
                 enabled: interactor.scanViewHandlerExtra
                 ignoreUnknownSignals: true
-
-                function onUpdateCScanRedVLine(pos) {
-                    interactor.scanViewHandler.setRedVLineFromBScan(pos)
-                }
-
-                function onUpdateCScanBlueVLine(pos) {
-
-                    console.log(tag, "update CScan blueVLine from qml:", pos)
-                    interactor.scanViewHandler.setBlueVLineFromBScan(pos)
-                }
             }
 
             Connections {
@@ -512,41 +227,7 @@ Rectangle {
                 ignoreUnknownSignals: true
 
                 function onDataCursorChanged() {
-                    if (interactor.showBScanView) {
-                        interactor.aScanCursor = interactor.scanViewHandler.dataCursor
-                    }
-                }
-
-                function onDataCursorIntChanged() {
-                    if (interactor.showCScanView) {
-                        interactor.aScanCursor = interactor.scanViewHandler.dataCursorInt
-                    }
-                }
-
-                function onUpdateExtraBScanRedHLine(pos) {
-                    if (interactor.scanViewHandlerExtra) {
-                        interactor.scanViewHandlerExtra.setRedHLineFromCScan(pos)
-                    }
-                }
-
-                function onUpdateExtraBScanBlueHLine(pos) {
-                    if (interactor.scanViewHandlerExtra) {
-                        interactor.scanViewHandlerExtra.setBlueHLineFromCScan(pos)
-                    }
-                }
-
-                function onExtraBScanRedValueChanged() {
-                    if (interactor.scanViewHandlerExtra) {
-                        interactor.scanViewHandlerExtra.setRedValueFromCScan(
-                                    interactor.scanViewHandler.extraBScanRedValue)
-                    }
-                }
-
-                function onExtraBScanBlueValueChanged() {
-                    if (interactor.scanViewHandlerExtra) {
-                        interactor.scanViewHandlerExtra.setBlueValueFromCScan(
-                                    interactor.scanViewHandler.extraBScanBlueValue)
-                    }
+                    interactor.aScanCursor = interactor.scanViewHandler.dataCursor
                 }
             }
 
@@ -556,54 +237,12 @@ Rectangle {
 
                 function onUpdateBOrCScanHandler() {
                     if (interactor.scanViewHandler) {
-                        b_or_c_scan_view_box.contentChildren.push(interactor.scanViewHandler)
-                        b_or_c_scan_view_box.onChildrenChanged()
-
-                        interactor.scanViewHandler.width = Qt.binding(() => {
-                                                                          let content_width = b_or_c_scan_view_box.width
-                                                                          b_or_c_scan_view_box.contentWidth = content_width
-                                                                          return content_width
-                                                                      })
-
-                        interactor.scanViewHandler.height = Qt.binding(() => {
-                                                                           let content_height = b_or_c_scan_view_box.height
-                                                                           b_or_c_scan_view_box.contentHeight = content_height
-                                                                           return content_height
-                                                                       })
-
-                        axis_horizontal.width = Qt.binding(() => {
-                                                               try {
-                                                                   return interactor.scanViewHandler.width
-                                                               } catch (e) {
-                                                                   return axis_horizontal.width
-                                                               }
-                                                           })
-
-                        axis_vertical.height = Qt.binding(() => {
-                                                              try {
-                                                                  return interactor.scanViewHandler.height
-                                                              } catch (e) {
-                                                                  return axis_vertical.height
-                                                              }
-                                                          })
-
-                        axis_horizontal.axisRange = Qt.binding(() => {
-                                                                   try {
-                                                                       return interactor.scanViewHandler.horizontalAxisRange
-                                                                   } catch (e) {
-                                                                       return axis_horizontal.axisRange
-                                                                   }
-                                                               })
-
-                        axis_vertical.axisRange = Qt.binding(() => {
-                                                                 try {
-                                                                     return interactor.scanViewHandler.verticalAxisRange
-                                                                 } catch (e) {
-                                                                     return axis_vertical.axisRange
-                                                                 }
-                                                             })
+                        scan_view_box.children.push(interactor.scanViewHandler)
+                        interactor.scanViewHandler.anchors.fill = scan_view_box
+                        interactor.scanViewHandler.anchors.margins = 10
+                        scan_view_box.onChildrenChanged()
                     } else {
-                        b_or_c_scan_view_box.contentChildren = []
+                        scan_view_box.children = []
                     }
                 }
             }

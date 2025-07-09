@@ -518,8 +518,8 @@ void AScanInteractor::updateBOrCScanViewRange() {
             if (c_scan_view && cscan_spec) {
                 const auto range_x = cscan_spec->getCScanRangeX();
                 const auto range_y = cscan_spec->getCScanRangeY();
-                c_scan_view->setHorizontalAxisRange(QPointF(range_x.first, range_x.second));
-                c_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+                c_scan_view->setHorRange(range_x);
+                c_scan_view->setVerRange(range_y);
             }
 
         } else if (showBScanView()) {
@@ -529,17 +529,17 @@ void AScanInteractor::updateBOrCScanViewRange() {
                 if (!bScanIsGateMode()) {
                     const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
                     const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
-                    b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+                    b_scan_view->setHorRange({range_start, range_end});
                 } else {
                     auto&& [gate0, _]     = aScanIntf()->getGate(getAScanCursor());
                     auto       axis_range = aScanIntf()->getAxisRange(0);
                     const auto start      = ValueMap(gate0.pos(), axis_range);
                     const auto end        = ValueMap(gate0.pos() + gate0.width(), axis_range);
-                    b_scan_view->setHorizontalAxisRange(QPointF(start, end));
+                    b_scan_view->setHorRange({start, end});
                 }
 
                 const auto range = bscan_spec->getBScanRange();
-                b_scan_view->setVerticalAxisRange(QPointF(range.first, range.second));
+                b_scan_view->setVerRange(range);
             }
         }
     } catch (std::exception& e) {
@@ -601,8 +601,6 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             }
 
             b_scan_sp->replace(bscan_image, width, height, set_size);
-            b_scan_sp->clearValueFromCScan();
-
             setScanViewHandlerExtra(m_scanViewSpExtra.get());
         } else {
             m_scanViewSpExtra = nullptr;
@@ -634,17 +632,17 @@ void AScanInteractor::updateExtraBScanViewRange() {
             if (!bScanIsGateMode()) {
                 const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
                 const auto range_end   = aScanIntf()->getAxisLen(getAScanCursor()) + range_start;
-                b_scan_view->setHorizontalAxisRange(QPointF(range_start, range_end));
+                b_scan_view->setHorRange({range_start, range_end});
                 const auto range_y = mdata_spec->getSubBScanRange();
-                b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+                b_scan_view->setVerRange({range_y.first, range_y.second});
             } else {
                 auto&& [gate0, _]     = aScanIntf()->getGate(getAScanCursor());
                 auto       axis_range = aScanIntf()->getAxisRange(0);
                 const auto start      = ValueMap(gate0.pos(), axis_range);
                 const auto end        = ValueMap(gate0.pos() + gate0.width(), axis_range);
-                b_scan_view->setHorizontalAxisRange(QPointF(start, end));
+                b_scan_view->setHorRange({start, end});
                 const auto range_y = mdata_spec->getSubBScanRange();
-                b_scan_view->setVerticalAxisRange(QPointF(range_y.first, range_y.second));
+                b_scan_view->setVerRange(range_y);
             }
         }
 
@@ -694,6 +692,8 @@ int AScanInteractor::getAScanCursor() const {
 }
 
 void AScanInteractor::setAScanCursor(int newAScanCursor) {
+    Q_ASSERT(newAScanCursor >= 0);
+
     if (m_aScanCursor == newAScanCursor) {
         return;
     }
@@ -705,13 +705,6 @@ void AScanInteractor::setAScanCursor(int newAScanCursor) {
     const auto mdata_spec = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
     if (mdata_spec && mdata_spec->isCScanSubLineChanged(old_cursor, m_aScanCursor)) {
         updateExtraBScanView(true);
-        auto c_scan_sp = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
-        auto b_scan_sp = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
-        if (c_scan_sp && b_scan_sp) {
-            c_scan_sp->updateExtraBScanLines();
-            b_scan_sp->setRedValueFromCScan(c_scan_sp->extraBScanRedValue());
-            b_scan_sp->setBlueValueFromCScan(c_scan_sp->extraBScanBlueValue());
-        }
     }
 
     emit aScanCursorChanged();
@@ -1470,10 +1463,7 @@ QJsonArray AScanInteractor::CreateGateValue() {
     }
     try {
         return aScanIntf()->createGateValue(getAScanCursor(), getSoftGain());
-    } catch (std::exception& e) {
-        qCCritical(TAG) << e.what();
-        qCCritical(TAG) << std::to_string(std::stacktrace::current()).c_str();
-    }
+    } catch (...) {}
     return QJsonArray::fromVariantList({_m_gateValue[0], _m_gateValue[1]});
 }
 

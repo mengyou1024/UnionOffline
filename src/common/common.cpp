@@ -14,12 +14,10 @@
 #include "TofdPeAScanView.hpp"
 #include "TofdPeDScanView.hpp"
 #include "morose_config.h"
-#include <AScanView.hpp>
 #include <AppSetting.hpp>
 #include <AppUpdater.hpp>
-#include <AxisView.hpp>
+#include <IScanView.hpp>
 #include <BScanView.hpp>
-#include <BasicView.hpp>
 #include <CScanView.hpp>
 #include <QEventLoop>
 #include <QJsonArray>
@@ -152,11 +150,9 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<Union::AScan::RailWeld::RailWeldDigram>("Union.AScan", 1, 0, "RailWeldDigram");
     qmlRegisterType<Morose::Utils::QmlConditionalVariable>("Morose.Utils", 1, 0, "Conditional");
     qmlRegisterType<Morose::Utils::FileReader>("Morose.Utils", 1, 0, "FileReader");
-    qmlRegisterType<Union::View::BasicView>("Union.View", 1, 0, "BasicView");
-    qmlRegisterType<Union::View::AScanView>("Union.View", 1, 0, "AScanView");
-    qmlRegisterType<Union::View::BScanView>("Union.View", 1, 0, "BScanView");
     qmlRegisterType<Union::View::CScanView>("Union.View", 1, 0, "CScanView");
-    qmlRegisterType<Union::View::AxisView>("Union.View", 1, 0, "AxisView");
+    qmlRegisterType<Union::View::IScanView>("Union.View", 1, 0, "IScanView");
+    qmlRegisterType<Union::View::BScanView>("Union.View", 1, 0, "BScanView");
     qmlRegisterType<Union::AScan::RailWeld::RailWeldSimulation>("Union.AScan", 1, 0, "RailWeldSimulation");
     qmlRegisterSingletonInstance("Union.TofdPe", 1, 0, "LinesMaskEnum", TofdPe::LinesMakeEnum::Instance());
     qmlRegisterSingletonInstance("Union.TofdPe", 1, 0, "MaskStatusEnum", TofdPe::MaskStatusEnum::Instance());
