@@ -401,8 +401,10 @@ namespace Union::View {
         setIsMousePressed(false);
         pressed_point_ = std::nullopt;
         if (box_selection_.has_value()) {
-            setMeasuringPointRed(box_selection_->topLeft());
-            setMeasuringPointBlue(box_selection_->bottomRight());
+            if (box_selection_->topLeft() != box_selection_->bottomRight()) {
+                setMeasuringPointRed(box_selection_->topLeft());
+                setMeasuringPointBlue(box_selection_->bottomRight());
+            }
             box_selection_ = std::nullopt;
         }
         // 鼠标释放时, 重新调用hoverMoveEvent设置一下鼠标状态
