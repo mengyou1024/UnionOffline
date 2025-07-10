@@ -103,7 +103,17 @@ namespace Union::View {
         });
     }
 
-    IScanView::~IScanView() {}
+    IScanView::~IScanView() {
+        disconnect(this, &IScanView::horShowRangeChanged, this, nullptr);
+        disconnect(this, &IScanView::horRangeChanged, this, nullptr);
+        disconnect(this, &IScanView::verShowRangeChanged, this, nullptr);
+        disconnect(this, &IScanView::verRangeChanged, this, nullptr);
+        disconnect(this, &IScanView::widthChanged, this, nullptr);
+        disconnect(this, &IScanView::heightChanged, this, nullptr);
+        disconnect(this, &IScanView::cursorLocationChanged, this, nullptr);
+        disconnect(this, &IScanView::measuringPointBlueChanged, this, nullptr);
+        disconnect(this, &IScanView::measuringPointRedChanged, this, nullptr);
+    }
 
     QPoint IScanView::imagePoint() const {
         return m_imagePoint;

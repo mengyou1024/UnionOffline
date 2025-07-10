@@ -36,10 +36,13 @@ namespace Union::View {
             setDataCursor((imagePoint().y() * _raw_width + imagePoint().x()));
         });
         connect(AppSetting::Instance(), &AppSetting::cScanImageSmoothingChanged, this, [this] { update(); });
+        connect(AppSetting::Instance(), &AppSetting::displayCScanLayerLineChanged, this, [this] { update(); });
     }
 
     CScanView::~CScanView() {
+        disconnect(this, &IScanView::imagePointChanged, this, nullptr);
         disconnect(AppSetting::Instance(), &AppSetting::cScanImageSmoothingChanged, this, nullptr);
+        disconnect(AppSetting::Instance(), &AppSetting::displayCScanLayerLineChanged, this, nullptr);
     }
 
     void CScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {

@@ -35,6 +35,7 @@ namespace Union::View {
     }
 
     BScanView::~BScanView() {
+        disconnect(this, &IScanView::imagePointChanged, this, nullptr);
         disconnect(AppSetting::Instance(), &AppSetting::bScanImageSmoothingChanged, this, nullptr);
     }
 

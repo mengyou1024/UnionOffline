@@ -48,9 +48,9 @@ class AScanInteractor : public QQuickItem {
     bool        m_enableOverWriteGate                   = false;
     bool        m_bScanIsGateMode                       = false;
 
-    int                                        m_replaySpeed             = 0;
-    bool                                       m_isPlaying               = false;
-    _STD_TP                                    m_lastUpdateGateValueTime = std::chrono::system_clock::now();
+    int                                     m_replaySpeed             = 0;
+    bool                                    m_isPlaying               = false;
+    _STD_TP                                 m_lastUpdateGateValueTime = std::chrono::system_clock::now();
     std::shared_ptr<Union::View::IScanView> m_scanViewSp              = nullptr;
     std::shared_ptr<Union::View::IScanView> m_scanViewSpExtra         = nullptr;
 
