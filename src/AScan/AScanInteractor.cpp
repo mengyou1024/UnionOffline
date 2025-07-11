@@ -170,6 +170,20 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
             }
         }
 
+        if (m_scanViewSp != nullptr) {
+            auto scan_view_image = m_scanViewSp->grabImage();
+            if (scan_view_image.has_value()) {
+                image_map.insert("ScanView", scan_view_image.value());
+            }
+        }
+
+        if (m_scanViewSpExtra != nullptr) {
+            auto scan_view_image = m_scanViewSpExtra->grabImage();
+            if (scan_view_image.has_value()) {
+                image_map.insert("ScanViewExtra", scan_view_image.value());
+            }
+        }
+
         auto result = Union::Common::File::RenderExcel::Render(excel_template, _fileName, vmp, image_map);
         qCInfo(TAG) << "保存报表:" << _fileName;
         return result;

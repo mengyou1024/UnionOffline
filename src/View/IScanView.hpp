@@ -64,6 +64,8 @@ namespace Union::View {
         void resetShowRange();
         void resetMeasuringLine();
 
+        std::optional<QImage> grabImage();
+
         Range          horRange() const;
         void           setHorRange(const Range& newHorRange);
         Range          horShowRange() const;

@@ -1,10 +1,10 @@
 #include "IScanView.hpp"
 #include "AppSetting.hpp"
-#include "ColorTable.hpp"
 #include <QCursor>
 #include <QLoggingCategory>
 #include <QPainter>
 #include <QPainterPath>
+#include <QQuickItemGrabResult>
 #include <QSettings>
 #include <union_common.hpp>
 
@@ -219,6 +219,20 @@ namespace Union::View {
         setMeasuringPointBlue(QPoint(
             KeepDecimals<0>(ValueMap(0.4, drawable_hor_range())),
             KeepDecimals<0>(ValueMap(0.4, drawable_ver_range()))));
+    }
+
+    std::optional<QImage> IScanView::grabImage() {
+        auto grab_result = grabToImage();
+
+        if (grab_result == nullptr) {
+            return std::nullopt;
+        }
+
+        QEventLoop loop;
+        connect(grab_result.data(), &QQuickItemGrabResult::ready, &loop, [&] { loop.exit(); });
+        loop.exec();
+
+        return QImage(grab_result->image());
     }
 
     IScanView::CursorLocation IScanView::cursorLocation() const {
