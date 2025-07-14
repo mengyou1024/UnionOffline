@@ -38,14 +38,14 @@ ApplicationWindow {
             Layout.fillWidth: true
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: 18
-            text: qsTr("鼠标移动至坐标轴显示区域(灰色部分)\n按住并上下(或者左右)拖动\n可以修改B/C扫显示范围\n拖动边框缩放图像")
+            text: qsTr("鼠标拖动坐标轴显示区域(灰色部分)边框, 可以缩放图像\n拖动矩形, 可以平移图像")
         }
 
         Text {
             Layout.fillWidth: true
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: 18
-            text: qsTr("按住鼠标右键并拖动可以平移视图\n按住鼠标左键拖动，快速框选缺陷")
+            text: qsTr("按住鼠标右键并拖动可以平移视图\n按住鼠标左键拖动，快速框选缺陷(6dB法自动计算缺陷长度)")
         }
 
         Text {

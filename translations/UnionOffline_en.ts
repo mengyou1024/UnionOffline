@@ -339,9 +339,46 @@ Click the &quot;OK&quot; button to start the communication</translation>
 <context>
     <name>HelpWnd</name>
     <message>
+        <location filename="../resource/qml/src/AScan/HelpWnd.qml" line="18"/>
         <location filename="../resource/qml/src/TofdPe/HelpWnd.qml" line="18"/>
         <source>帮助</source>
         <translation>Help</translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/HelpWnd.qml" line="34"/>
+        <source>T8/390N:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/HelpWnd.qml" line="41"/>
+        <source>鼠标移动至坐标轴显示区域(灰色部分)
+按住并上下(或者左右)拖动
+可以修改B/C扫显示范围
+拖动边框缩放图像</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/HelpWnd.qml" line="48"/>
+        <source>按住鼠标右键并拖动可以平移视图
+按住鼠标左键拖动，快速框选缺陷</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/HelpWnd.qml" line="55"/>
+        <source>Ctrl + 鼠标左键: 快速定位红色线条
+Ctrl + 鼠标右键: 快速定位蓝色线条
+WASD: 移动红色线条
+↑←↓→: 移动蓝色线条
+(鼠标需先进入图谱区域)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/src/AScan/HelpWnd.qml" line="62"/>
+        <source>鼠标点击A扫图像位置, 并移动可以绘制波门
+拖动波门头部附近, 可以调整门位和门高
+拖动波门尾部附近, 可以调整门宽
+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../resource/qml/src/TofdPe/HelpWnd.qml" line="34"/>
@@ -428,30 +465,30 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>B-A(↓)</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="598"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="607"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="282"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="291"/>
         <source>保存成功</source>
         <translation>Save Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="600"/>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="609"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="284"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="293"/>
         <source>保存失败</source>
         <translation>Save Failed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="681"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="365"/>
         <location filename="../resource/qml/src/TofdPe/MainUI.qml" line="187"/>
         <source>工艺参数</source>
         <translation>Technological Parameter</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="772"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="456"/>
         <source>打开成功</source>
         <translation>Open Succeed</translation>
     </message>
     <message>
-        <location filename="../resource/qml/src/AScan/MainUI.qml" line="805"/>
+        <location filename="../resource/qml/src/AScan/MainUI.qml" line="489"/>
         <source>打开失败</source>
         <translation>Open Filed</translation>
     </message>
@@ -518,8 +555,8 @@ Click the &quot;OK&quot; button to start the communication</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="990"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="993"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="997"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1000"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="238"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="105"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="107"/>
@@ -527,7 +564,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Basic Information</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="991"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="998"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="223"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/N_Set/hfdat.cpp" line="106"/>
         <source>通道</source>
@@ -630,7 +667,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Zero Point</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="963"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="970"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="72"/>
         <location filename="../src/AScan/AScanInteractor.cpp" line="191"/>
         <source>仪器型号</source>
@@ -755,7 +792,7 @@ Click the &quot;OK&quot; button to start the communication</translation>
         <translation>Probe Frequency</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1122"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1129"/>
         <source>错误的声程模式</source>
         <translation>Incorrect sound distance</translation>
     </message>
@@ -1182,33 +1219,33 @@ Click &lt; Cancel &gt; to exit</translation>
     </message>
     <message>
         <location filename="../components/union/src/BasicType/Probe.cpp" line="18"/>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="418"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="430"/>
         <source>双探头</source>
         <translation>Dual Probe</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="986"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="993"/>
         <source>探头位置</source>
         <translation>Probe position</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="987"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="994"/>
         <source>轨型</source>
         <translation>rail type</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="988"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="995"/>
         <source>通道名</source>
         <translation>Channel name</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="992"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="999"/>
         <location filename="../components/union/src/UniversalApparatus/AScan/AScanType.cpp" line="227"/>
         <source>仪器名称</source>
         <translation>name of instrument</translation>
     </message>
     <message>
-        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="997"/>
+        <location filename="../components/union/src/UniversalApparatus/AScan/390N_T8/MDATType.cpp" line="1004"/>
         <source>钢轨参数(T8)</source>
         <translation>Rail Parameters(T8)</translation>
     </message>
@@ -1238,18 +1275,18 @@ Click &lt; Cancel &gt; to exit</translation>
         <translation>Surplus Sensitivity</translation>
     </message>
     <message>
-        <location filename="../src/AScan/AScanInteractor.cpp" line="1113"/>
+        <location filename="../src/AScan/AScanInteractor.cpp" line="1111"/>
         <source>同时使用B扫和C扫, B扫已被禁用</source>
         <translation>Use both B-scan and C-scan simultaneously. B-scan has been disabled</translation>
     </message>
     <message>
-        <location filename="../src/common/AppUpdater.cpp" line="69"/>
-        <location filename="../src/common/AppUpdater.cpp" line="153"/>
+        <location filename="../src/common/AppUpdater.cpp" line="70"/>
+        <location filename="../src/common/AppUpdater.cpp" line="156"/>
         <source>无法检查更新:接口为空</source>
         <translation>Unable to check for updates: The interface is empty</translation>
     </message>
     <message>
-        <location filename="../src/common/AppUpdater.cpp" line="123"/>
+        <location filename="../src/common/AppUpdater.cpp" line="124"/>
         <source>无法下载更新:接口为空</source>
         <translation>Unable to download update: interface is empty</translation>
     </message>
@@ -1397,32 +1434,77 @@ Place the probe 100mm above the bottom surface of the CSC-IA test block. Wait fo
         <translation>Check for updates at software startup</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="81"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="80"/>
+        <source>界面设置(需重启软件)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="103"/>
+        <source>启用高DPI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="119"/>
+        <source>高DPI策略:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="128"/>
+        <source>四舍五入</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="128"/>
+        <source>向上取整</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="128"/>
+        <source>向下取整</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="128"/>
+        <source>高于0.75向上取整</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="128"/>
+        <source>不取整</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="143"/>
         <source>语言</source>
         <translation>Languages</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="106"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="168"/>
         <source>T8/390N</source>
         <translation>T8/390N</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="117"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="179"/>
         <source>重新计算波门数据</source>
         <translation>Recalculate the gate data</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="134"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="196"/>
         <source>显示C扫分层线</source>
         <translation>Display the C scan layering line</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="151"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="213"/>
         <source>B/C扫坐标轴取整</source>
         <translation>B/C scan the coordinate axis to round</translation>
     </message>
     <message>
-        <location filename="../resource/qml/SettingWnd.qml" line="168"/>
+        <location filename="../resource/qml/SettingWnd.qml" line="230"/>
+        <source>B扫图像平滑</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../resource/qml/SettingWnd.qml" line="247"/>
         <source>C扫图像平滑</source>
         <translation>The C-scan image is smooth</translation>
     </message>

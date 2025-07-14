@@ -115,6 +115,7 @@ public:
     Q_INVOKABLE QVariant     isNearGate(int x, int y, int w, int h, int threshold);
     Q_INVOKABLE void         drawGateDelta(int gate_idx, qreal pos, qreal width, qreal height);
     Q_INVOKABLE void         clearGate();
+    Q_INVOKABLE void         boxSelected(const QRect& rect);
 
     bool             getReplayVisible() const;
     void             setReplayVisible(bool newReplayVisible);
@@ -211,6 +212,7 @@ signals:
     void workpieceThicknessSpecialValueChanged();
     void enableOverWriteGateChanged();
     void bScanIsGateModeChanged();
+    void pushDefectItem(QRect rect, double amp_value, QPoint amp_pt);
 
 private:
     void changeDataCursor(void);

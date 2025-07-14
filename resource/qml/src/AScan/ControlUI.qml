@@ -565,6 +565,14 @@ ScrollView {
                 }
             }
         }
+
+        DefectListArea {
+            visible: aScanInteractor ? aScanInteractor.showBScanView : false
+            Layout.margins: 2
+            Layout.fillWidth: true
+
+            viewItem: aScanInteractor.scanViewHandler
+        }
     }
 
     function init() {

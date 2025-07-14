@@ -229,6 +229,10 @@ Rectangle {
                 function onDataCursorChanged() {
                     interactor.aScanCursor = interactor.scanViewHandler.dataCursor
                 }
+
+                function onBoxSelected(pt) {
+                    interactor.boxSelected(pt)
+                }
             }
 
             Connections {
@@ -243,6 +247,14 @@ Rectangle {
                         scan_view_box.onChildrenChanged()
                     } else {
                         scan_view_box.children = []
+                    }
+                }
+
+                function onPushDefectItem(rect, amp, pt) {
+                    try {
+                        interactor.scanViewHandler.pushDefectItem(rect, amp, pt)
+                    } catch (e) {
+                        console.debug(e)
                     }
                 }
             }

@@ -428,6 +428,14 @@ namespace Union::View {
             if (box_selection_->topLeft() != box_selection_->bottomRight()) {
                 setMeasuringPointRed(box_selection_->topLeft());
                 setMeasuringPointBlue(box_selection_->bottomRight());
+                auto image_pt_top_left     = local_pos_to_raw_image_pos(box_selection_->topLeft());
+                auto image_pt_bottom_right = local_pos_to_raw_image_pos(box_selection_->bottomRight());
+                if (image_pt_top_left.has_value() && image_pt_bottom_right.has_value()) {
+                    auto rect = QRect(image_pt_top_left.value(), image_pt_bottom_right.value()).normalized();
+                    if (rect.width() > 1 && rect.height() > 1) {
+                        emit boxSelected(QRect(rect.topLeft(), rect.bottomRight()));
+                    }
+                }
             }
             box_selection_ = std::nullopt;
         }
@@ -1220,11 +1228,29 @@ namespace Union::View {
     }
 
     void IScanView::update_image_point() {
-        auto image_pt = measuring_point_to_image_point(measuringPointRed());
+        auto image_pt = local_pos_to_raw_image_pos(measuringPointRed());
+        qCDebug(TAG) << "原始屏幕像素点:" << measuringPointRed();
+        qCDebug(TAG) << "图像像素点:" << image_pt.value_or(QPoint(-1, -1));
+        qCDebug(TAG) << "反转换的屏幕像素点:" << raw_image_pos_to_local_pos(image_pt.value_or(QPoint(0, 0))).value_or(QPoint(-1, -1));
+
         setImagePoint(image_pt.value_or(QPoint(0, 0)));
     }
 
-    std::optional<QPoint> IScanView::measuring_point_to_image_point(QPoint pt) {
+    bool IScanView::is_raw_image_width_can_contain() const {
+        if (!image_raw_.has_value()) {
+            return true;
+        }
+        return drawable().width() >= image_raw_->width();
+    }
+
+    bool IScanView::is_raw_image_height_can_contain() const {
+        if (!image_raw_.has_value()) {
+            return true;
+        }
+        return drawable().height() >= image_raw_->height();
+    }
+
+    std::optional<QPoint> IScanView::local_pos_to_raw_image_pos(QPoint pt) const {
         if (!image_raw_.has_value() || !image_visable_.has_value()) {
             return std::nullopt;
         }
@@ -1244,6 +1270,32 @@ namespace Union::View {
         if (x < 0 || x >= image_raw_->width() || y < 0 || y >= image_raw_->height()) {
             return std::nullopt;
         }
+
+        return QPoint(x, y);
+    }
+
+    std::optional<QPoint> IScanView::raw_image_pos_to_local_pos(QPoint pt) const {
+        if (!image_raw_.has_value() || !image_visable_.has_value()) {
+            return std::nullopt;
+        }
+
+        Range image_h_range = {0, image_raw_->width() - 1};
+        Range image_v_range = {0, image_raw_->height() - 1};
+
+        double x_bias = ValueMap(horShowRange().first, image_h_range, horRange());
+        double y_bias = ValueMap(verShowRange().first, image_v_range, verRange());
+
+        // 不在可显示区域范围内
+        if (pt.x() < x_bias || pt.x() >= x_bias + image_visable_->width() ||
+            pt.y() < y_bias || pt.y() >= y_bias + image_visable_->height()) {
+            return std::nullopt;
+        }
+
+        const int view_pt_x = pt.x() - x_bias;
+        const int view_pt_y = pt.y() - y_bias;
+
+        const auto x = drawable().left() + view_pt_x * (drawable_size().width() / static_cast<double>(image_visable_->width()));
+        const auto y = view_pt_y * (drawable_size().height() / static_cast<double>(image_visable_->height()));
 
         return QPoint(x, y);
     }

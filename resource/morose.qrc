@@ -49,5 +49,6 @@
         <file>qml/SettingWnd.qml</file>
         <file>qml/components/common/GateDrawMask.qml</file>
         <file>qml/src/AScan/HelpWnd.qml</file>
+        <file>qml/src/AScan/DefectListArea.qml</file>
     </qresource>
 </RCC>

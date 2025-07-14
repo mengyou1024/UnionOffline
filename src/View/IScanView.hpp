@@ -111,6 +111,7 @@ namespace Union::View {
         void horBlueValueChanged();
         void verBlueValueChanged();
         void imagePointChanged();
+        void boxSelected(QRect rect);
 
     protected:
         virtual void paint(QPainter* painter) override;
@@ -127,17 +128,22 @@ namespace Union::View {
         virtual void draw_image(const QImage& img, QPainter* painter);
 
     protected:
-        inline static constexpr auto AXIS_WIDTH            = 40;
-        inline static constexpr auto AXIS_MASK_COLOR       = QColor(0xCC, 0xCC, 0xCC, 200);
+        // 坐标轴宽度
+        inline static constexpr auto AXIS_WIDTH = 40;
+        // 坐标轴掩膜(滚动条)颜色
+        inline static constexpr auto AXIS_MASK_COLOR = QColor(0xCC, 0xCC, 0xCC, 200);
+        // 坐标轴背景色
         inline static constexpr auto AXIS_BACKGROUND_COLOR = QColor(0xaf, 0xee, 0xee);
-        inline static constexpr auto NEAR_THRESHOLD        = 5;
+        // is_near 函数的判断阈值
+        inline static constexpr auto NEAR_THRESHOLD = 5;
 
-        std::optional<QPoint> pressed_point_ = std::nullopt;
-        QString               display_text_  = "";
-        std::optional<QImage> image_raw_     = std::nullopt;
-        std::optional<QImage> image_visable_ = std::nullopt;
-        std::optional<QRect>  box_selection_ = std::nullopt;
+        std::optional<QPoint> pressed_point_ = std::nullopt; // 鼠标按下的点
+        QString               display_text_  = "";           // 左下角显示的文本
+        std::optional<QImage> image_raw_     = std::nullopt; // 原始图像
+        std::optional<QImage> image_visable_ = std::nullopt; // 可现区域的图像
+        std::optional<QRect>  box_selection_ = std::nullopt; // 框选区域
 
+        // 一些区域划分定义
         QRect                drawable() const;
         QSize                drawable_size() const;
         std::optional<QSize> image_size() const;
@@ -149,6 +155,7 @@ namespace Union::View {
         QRect                ver_show_rect() const;
         QRect                display_text_rect() const;
 
+        // 将屏幕上的像素点位置值映射到对应坐标的坐标值, display表示该值仅用于显示(保留1或0位小数)
         qreal map_to_hor_value(qreal x) const;
         qreal map_to_ver_value(qreal y) const;
         qreal map_to_show_hor_value(qreal x) const;
@@ -158,40 +165,59 @@ namespace Union::View {
         qreal map_to_show_hor_value_display(qreal x) const;
         qreal map_to_show_ver_value_display(qreal y) const;
 
+        // 水平坐标轴和垂直坐标轴在控件中的边界(屏幕像素点位置值)
         qreal show_hor_x_left() const;
         qreal show_hor_x_right() const;
         qreal show_ver_y_top() const;
         qreal show_ver_y_bottom() const;
 
+        // 可显坐标轴的最小宽度
+        // 当图像上的每一个像素点与屏幕上的像素点一一对应时
+        // 可显坐标轴范围最大值 - 最小值
         std::optional<qreal> min_show_range_width() const;
         std::optional<qreal> min_show_range_height() const;
 
-        void draw_hor_axis(QPainter* painter) const;
-        void draw_ver_axis(QPainter* painter) const;
-        void draw_display_text(QPainter* painter) const;
-        void draw_measuring_line(QPainter* painter) const;
-        void draw_measuring_text(QPainter* painter);
-        void draw_box_selection(QPainter* painter) const;
+        // 图像绘制相关
+        void draw_hor_axis(QPainter* painter) const;       // 绘制水平坐标轴
+        void draw_ver_axis(QPainter* painter) const;       // 绘制垂直坐标轴
+        void draw_display_text(QPainter* painter) const;   // 绘制左下角显示的字符
+        void draw_measuring_line(QPainter* painter) const; // 绘制测量线
+        void draw_measuring_text(QPainter* painter);       // 绘制测量线中的文本(同时更新对应的属性)
+        void draw_box_selection(QPainter* painter) const;  // 绘制框选区域
 
+        // 判断一个值是否与目标值靠近 由 NEAR_THRESHOLD 决定阈值
         bool is_near(qreal val, qreal target) const;
 
-        void change_location_and_cursor_hor(QHoverEvent* event);
-        void change_location_and_cursor_ver(QHoverEvent* event);
-        void change_location_and_cursor_measuring_line(QHoverEvent* event);
-        void change_location_and_cursor_to_none();
+        // 改变 cursorLocation 变量的状态 和 鼠标形状
+        void change_location_and_cursor_hor(QHoverEvent* event);            // 水平坐标轴相关
+        void change_location_and_cursor_ver(QHoverEvent* event);            // 垂直坐标轴相关
+        void change_location_and_cursor_measuring_line(QHoverEvent* event); // 测量线相关
+        void change_location_and_cursor_to_none();                          // 其他未定义区域
 
-        void move_hor_show_left(double x);
-        void move_hor_show_right(double x);
-        void move_hor_show_rect(double delta);
+        // 移动坐标轴可显区域范围
+        void move_hor_show_left(double x);     // 改变水平坐标可显范围的起始值(缩放)
+        void move_hor_show_right(double x);    // 改变水平坐标可显范围的终止值(缩放)
+        void move_hor_show_rect(double delta); // 移动水平坐标轴滑块一个变化量(平移)
         void move_ver_show_top(double y);
         void move_ver_show_bottom(double y);
         void move_ver_show_rect(double delta);
 
+        // 从原始图像中拷贝可见区域到 image_visible_ 变量
         void copy_image_visable_from_raw();
 
+        // 更新imagePoint属性
         void update_image_point();
 
-        std::optional<QPoint> measuring_point_to_image_point(QPoint pt);
+        // 更新缺陷掩膜图像的大小
+        void update_defect_mask_size();
+
+        bool is_raw_image_width_can_contain() const;
+        bool is_raw_image_height_can_contain() const;
+
+        // 控件上的像素点位置转换为原始图像上点的位置
+        std::optional<QPoint> local_pos_to_raw_image_pos(QPoint pt) const;
+        // 原始图像上像素点的位置转换为屏幕上像素点的位置
+        std::optional<QPoint> raw_image_pos_to_local_pos(QPoint pt) const;
 
         Q_PROPERTY(Range horRange READ horRange WRITE setHorRange NOTIFY horRangeChanged FINAL)
         Q_PROPERTY(Range horShowRange READ horShowRange WRITE setHorShowRange NOTIFY horShowRangeChanged FINAL)

@@ -16,9 +16,10 @@
 #include "morose_config.h"
 #include <AppSetting.hpp>
 #include <AppUpdater.hpp>
-#include <IScanView.hpp>
 #include <BScanView.hpp>
 #include <CScanView.hpp>
+#include <DefectListModel.hpp>
+#include <IScanView.hpp>
 #include <QEventLoop>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -153,6 +154,7 @@ void Morose::registerVariable(QQmlContext* context) {
     qmlRegisterType<Union::View::CScanView>("Union.View", 1, 0, "CScanView");
     qmlRegisterType<Union::View::IScanView>("Union.View", 1, 0, "IScanView");
     qmlRegisterType<Union::View::BScanView>("Union.View", 1, 0, "BScanView");
+    qmlRegisterType<Union::Model::DefectListModel>("Union.Model", 1, 0, "DefectListModel");
     qmlRegisterType<Union::AScan::RailWeld::RailWeldSimulation>("Union.AScan", 1, 0, "RailWeldSimulation");
     qmlRegisterSingletonInstance("Union.TofdPe", 1, 0, "LinesMaskEnum", TofdPe::LinesMakeEnum::Instance());
     qmlRegisterSingletonInstance("Union.TofdPe", 1, 0, "MaskStatusEnum", TofdPe::MaskStatusEnum::Instance());

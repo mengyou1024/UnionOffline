@@ -473,8 +473,8 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             const auto                          height = bscan_spec->getBScanXDots();
             int                                 width  = 0;
             for (auto i = 0; i < aScanIntf()->getDataSize(); i++) {
-                if (std::ssize(mdata_spec->getDataInGate(i, 0)) > width) {
-                    width = std::ssize(mdata_spec->getDataInGate(i, 0));
+                if (std::ssize(mdata_spec->getDataOrDataInGate(i, 0)) > width) {
+                    width = std::ssize(mdata_spec->getDataOrDataInGate(i, 0));
                 }
             }
 
@@ -482,7 +482,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             std::ranges::fill(bscan_image, std::nullopt);
 
             for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-                auto data = mdata_spec->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
+                auto data = mdata_spec->getDataOrDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
                                 return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
                             }) |
                             std::ranges::to<std::vector<std::optional<uint8_t>>>();
@@ -586,7 +586,7 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             int width                         = 0;
             auto&& [min_encoder, max_encoder] = mdata_spec->getBScanMinMaxXEncoderValue();
             for (auto idx : extra_b_scan_cursors) {
-                auto current_frame_ascan_size = std::ssize(mdata_spec->getDataInGate(idx, 0));
+                auto current_frame_ascan_size = std::ssize(mdata_spec->getDataOrDataInGate(idx, 0));
                 if (current_frame_ascan_size > width) {
                     width = current_frame_ascan_size;
                 }
@@ -597,7 +597,7 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             std::ranges::fill(bscan_image, std::nullopt);
 
             for (auto idx : extra_b_scan_cursors) {
-                auto data = mdata_spec->getDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
+                auto data = mdata_spec->getDataOrDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
                                 return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
                             }) |
                             std::ranges::to<std::vector<std::optional<uint8_t>>>();
@@ -1003,6 +1003,17 @@ void AScanInteractor::clearGate() {
     }
     overwrite_gate_spexc->clearGateInfo();
     updateOnDrawGate();
+}
+
+void AScanInteractor::boxSelected(const QRect& rect) {
+    auto mdata_type = std::dynamic_pointer_cast<::Union::UniversalApparatus::AScan::Instance::UnType>(aScanIntf());
+    if (mdata_type) {
+        auto defect_item = mdata_type->calculateDefectRect(rect);
+        if (defect_item.has_value()) {
+            QRect defect_rect(QPoint(defect_item->left, defect_item->top), QPoint(defect_item->right, defect_item->bottom));
+            emit  pushDefectItem(defect_rect, defect_item->peak / 2.0, defect_item->peak_point);
+        }
+    }
 }
 
 bool AScanInteractor::enableOverWriteGate() const {

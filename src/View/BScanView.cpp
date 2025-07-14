@@ -32,11 +32,87 @@ namespace Union::View {
             setDataCursor(imagePoint().y());
         });
         connect(AppSetting::Instance(), &AppSetting::bScanImageSmoothingChanged, this, [this] { update(); });
+
+        connect(this, &BScanView::widthChanged, this, [this] {
+            update_defect_mask_size();
+            update();
+        });
+        connect(this, &BScanView::heightChanged, this, [this] {
+            update_defect_mask_size();
+            update();
+        });
     }
 
     BScanView::~BScanView() {
         disconnect(this, &IScanView::imagePointChanged, this, nullptr);
         disconnect(AppSetting::Instance(), &AppSetting::bScanImageSmoothingChanged, this, nullptr);
+        disconnect(this, &BScanView::widthChanged, this, nullptr);
+        disconnect(this, &BScanView::heightChanged, this, nullptr);
+    }
+
+    void BScanView::pushDefectItem(QRect region, double max_amp, QPoint pos) {
+        auto defect_top_left     = raw_image_pos_to_defect_mask_pos(region.topLeft());
+        auto defect_bottom_right = raw_image_pos_to_defect_mask_pos(region.bottomRight());
+
+        auto local_top_left     = raw_image_pos_to_local_pos(region.topLeft());
+        auto local_bottom_right = raw_image_pos_to_local_pos(region.bottomRight());
+
+        auto local_pos = raw_image_pos_to_local_pos(pos);
+
+        if (!defect_top_left.has_value() || !defect_bottom_right.has_value() ||
+            !local_top_left.has_value() || !local_bottom_right.has_value() || !local_pos.has_value()) {
+            return;
+        }
+
+        auto hor_len = map_to_show_hor_value(defect_bottom_right->x()) - map_to_show_hor_value(defect_top_left->x());
+        auto ver_len = map_to_show_ver_value(defect_bottom_right->y()) - map_to_show_ver_value(defect_top_left->y());
+        auto amp_pos = QPointF(map_to_show_hor_value(local_pos->x()), map_to_show_ver_value(local_pos->y()));
+        defect_list_.emplace_back(DefectItem{hor_len, ver_len, max_amp, amp_pos});
+
+        qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos};
+
+        QPainter painter(&(*defect_mask_));
+        QPen     pen = painter.pen();
+        pen.setWidthF(1.5);
+        pen.setBrush(Qt::black);
+        painter.setPen(pen);
+        painter.drawRect(QRect(defect_top_left.value(), defect_bottom_right.value()));
+
+        auto font = painter.font();
+        font.setBold(true);
+        font.setPointSize(13);
+        painter.setFont(font);
+        QFontMetricsF font_metrics = painter.fontMetrics();
+
+        auto text_box = font_metrics.boundingRect(QString::number(std::ssize(defect_list_)));
+
+        text_box.moveBottom(defect_top_left.value().y() - 5);
+
+        if (text_box.top() < 0) {
+            text_box.moveTop(defect_bottom_right.value().y() + 5);
+        }
+
+        text_box.moveLeft(defect_top_left.value().x() - 5);
+
+        if (text_box.left() < 0) {
+            text_box.moveRight(defect_bottom_right.value().y() + 5);
+        }
+
+        painter.drawText(text_box, QString::number(std::ssize(defect_list_)));
+
+        const auto radius = std::max(text_box.width(), text_box.height());
+
+        painter.drawEllipse(text_box.center(), radius / 2.0, radius / 2.0);
+
+        update();
+
+        emit defectItemPushed();
+    }
+
+    void BScanView::clearDefectList() {
+        defect_mask_->fill(Qt::transparent);
+        defect_list_.clear();
+        update();
     }
 
     void BScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
@@ -66,6 +142,7 @@ namespace Union::View {
 
             QMetaObject::invokeMethod(this, [=, this, image = std::move(image)]() mutable {
                 updateImage(std::move(image));
+                update_defect_mask_size();
             });
         } catch (const std::exception& e) {
             qCWarning(TAG) << "replace image error";
@@ -75,6 +152,10 @@ namespace Union::View {
 
     void BScanView::paint(QPainter* painter) {
         IScanView::paint(painter);
+
+        painter->save();
+        draw_box_defect(painter);
+        painter->restore();
     }
 
     void BScanView::draw_image(const QImage& img, QPainter* painter) {
@@ -97,4 +178,95 @@ namespace Union::View {
         painter->drawImage(drawable(), image_to_draw);
     }
 
+    void BScanView::draw_box_defect(QPainter* painter) const {
+        if (!defect_mask_.has_value()) {
+            return;
+        }
+
+        Range image_h_range = {0, defect_mask_->width() - 1};
+        Range image_v_range = {0, defect_mask_->height() - 1};
+
+        int left   = ValueMap(horShowRange().first, image_h_range, horRange());
+        int right  = ValueMap(horShowRange().second, image_h_range, horRange());
+        int top    = ValueMap(verShowRange().first, image_v_range, verRange());
+        int bottom = ValueMap(verShowRange().second, image_v_range, verRange());
+
+        painter->drawImage(drawable(), *defect_mask_, QRect(QPoint(left, top), QPoint(right, bottom)));
+    }
+
+    void BScanView::update_defect_mask_size() {
+        if (!image_raw_.has_value()) {
+            defect_mask_ = std::nullopt;
+            return;
+        }
+
+        auto size = image_raw_->size();
+
+        if (is_raw_image_width_can_contain()) {
+            size.setWidth(drawable_size().width());
+        }
+
+        if (is_raw_image_height_can_contain()) {
+            size.setHeight(drawable_size().height());
+        }
+
+        defect_mask_ = QImage(size, QImage::Format_RGBA8888);
+        defect_mask_->fill(Qt::transparent);
+        defect_list_ = {};
+    }
+
+    std::optional<QPoint> BScanView::local_pos_to_defect_mask_pos(QPoint pt) const {
+        if (!image_raw_.has_value() || !defect_mask_.has_value() || !image_visable_.has_value()) {
+            return std::nullopt;
+        }
+
+        auto size = image_raw_->size();
+
+        if (is_raw_image_width_can_contain()) {
+            size.setWidth(drawable_size().width());
+        }
+
+        if (is_raw_image_height_can_contain()) {
+            size.setHeight(drawable_size().height());
+        }
+
+        auto show_size = image_visable_->size();
+
+        if (is_raw_image_width_can_contain()) {
+            show_size.setWidth(drawable_size().width());
+        }
+
+        if (is_raw_image_height_can_contain()) {
+            show_size.setHeight(drawable_size().height());
+        }
+
+        Range image_h_range = {0, size.width() - 1};
+        Range image_v_range = {0, size.height() - 1};
+
+        double x_bias = ValueMap(horShowRange().first, image_h_range, horRange());
+        double y_bias = ValueMap(verShowRange().first, image_v_range, verRange());
+
+        int x = x_bias + (pt.x() - drawable().left()) / (drawable_size().width() / static_cast<double>(show_size.width()));
+        int y = y_bias + pt.y() / (drawable_size().height() / static_cast<double>(show_size.height()));
+
+        if (x < 0 || x >= defect_mask_->width() || y < 0 || y >= defect_mask_->height()) {
+            return std::nullopt;
+        }
+
+        return QPoint(x, y);
+    }
+
+    std::optional<QPoint> BScanView::raw_image_pos_to_defect_mask_pos(QPoint pt) const {
+        return raw_image_pos_to_local_pos(pt)
+            .and_then([this](QPoint pt) -> std::optional<QPoint> {
+                return local_pos_to_defect_mask_pos(pt);
+            });
+    }
+
 } // namespace Union::View
+
+QDebug operator<<(QDebug debug, const ::Union::View::DefectItem& defect) {
+    debug << "DefectItem { hor_len:" << defect.hor_len << ", ver_len:" << defect.ver_len
+          << ", max_amp:" << defect.max_amp << ", amp_pos:" << defect.pos;
+    return debug;
+}
