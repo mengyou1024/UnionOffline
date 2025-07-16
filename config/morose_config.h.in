@@ -1,32 +1,25 @@
 #pragma once
 // Application Variables
-#define PROJECT_NAME                         "@PROJECT_NAME@"
-#define APP_VERSION                          "@APP_VERSION@"
-#define APP_COMMIT_HASH                      "@APP_COMMIT_HASH@"
-#define APP_NAME_ZH_CN                       "@PROJECT_NAME_ZH_CN@"
-#define APP_NAME_ZH_CN_TR                    QObject::tr("@PROJECT_NAME_ZH_CN@")
+#define PROJECT_NAME                                   "@PROJECT_NAME@"
+#define APP_VERSION                                    "@APP_VERSION@"
+#define APP_COMMIT_HASH                                "@APP_COMMIT_HASH@"
+#define APP_NAME_ZH_CN                                 "@PROJECT_NAME_ZH_CN@"
+#define APP_NAME_ZH_CN_TR                              QObject::tr("@PROJECT_NAME_ZH_CN@")
 
 // 调试选项
-#define MOROSE_DEBUG_UPGRADE_OPTION          (0) ///< 调试软件升级功能
+#define MOROSE_DEBUG_UPGRADE_OPTION                    (0) ///< 调试软件升级功能
 
 // A扫接口
-#define MOROSE_ENABLE_DAS_DAT                (1) ///< PXUT-330N .das(单幅) .dat(连续)
-#define MOROSE_ENABLE_COD                    (1) ///< PXUT-F4 .cod(串口数据)
-#define MOROSE_ENABLE_MDAT                   (1) ///< PXUT-390N, PXUT-T8
-#define MOROSE_ENABLE_DAA_HFD                (1) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
+#define MOROSE_ENABLE_DAS_DAT                          (1) ///< PXUT-330N .das(单幅) .dat(连续)
+#define MOROSE_ENABLE_COD                              (1) ///< PXUT-F4 .cod(串口数据)
+#define MOROSE_ENABLE_MDAT                             (1) ///< PXUT-390N, PXUT-T8
+#define MOROSE_ENABLE_DAA_HFD                          (1) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
 
 // TOFD/PE 接口
-#define MOROSE_ENABLE_TOF_TPE                (1) ///< PXUT-F4 TOFD/PE图像
+#define MOROSE_ENABLE_TOF_TPE                          (1) ///< PXUT-F4 TOFD/PE图像
 
 // 程序功能
-#define MOROSE_ENABLE_UPGRADE_FEATURE        (1) ///< 软件升级功能
-#define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE (0) ///< 多语言配置
-
-/// 设置功能
-#if MOROSE_ENABLE_UPGRADE_FEATURE || MOROSE_ENABLE_MULTI_LANGUATE_FEATURE
-    #define MOROSE_ENABLE_SETTING_FEATURE (1)
-#else
-    #define MOROSE_ENABLE_SETTING_FEATURE (0)
-#endif
+#define MOROSE_ENABLE_UPGRADE_FEATURE                  (1) ///< 软件升级功能
+#define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE           (0) ///< 多语言配置
 
 #define MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE (1) ///< 仪器通讯功能

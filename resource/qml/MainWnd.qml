@@ -115,7 +115,6 @@ ApplicationWindow {
                 }
 
                 CIconButton {
-                    visible: MOROSE_ENABLE_SETTING_FEATURE === 1
                     img_src: "qrc:/img/setting.png"
                     btn_txt: qsTr("设置")
                     onClicked: {

@@ -141,7 +141,6 @@ void Morose::registerVariable(QQmlContext* context) {
     context->setContextProperty("MOROSE_APP_ENABLE_UPGRADE", MOROSE_ENABLE_UPGRADE_FEATURE);
     context->setContextProperty("MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE", MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE);
     context->setContextProperty("MOROSE_ENABLE_MULTI_LANGUATE_FEATURE", MOROSE_ENABLE_MULTI_LANGUATE_FEATURE);
-    context->setContextProperty("MOROSE_ENABLE_SETTING_FEATURE", MOROSE_ENABLE_SETTING_FEATURE);
     qmlRegisterType<AScanInteractor>("Union.Interactor", 1, 0, "AScanInteractor");
     qmlRegisterType<TofdPe::TofdPeDScanView>("Union.TofdPe", 1, 0, "TofdPeDScanView");
     qmlRegisterType<TofdPe::TofdPeAScanView>("Union.TofdPe", 1, 0, "TofdPeAScanView");
