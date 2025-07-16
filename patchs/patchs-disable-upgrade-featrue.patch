@@ -11,15 +11,14 @@ diff --git a/config/morose_config.h.in b/config/morose_config.h.in
 index 27602eb..c67619d 100644
 --- a/config/morose_config.h.in
 +++ b/config/morose_config.h.in
-@@ -19,7 +19,7 @@
- #define MOROSE_ENABLE_TOF_TPE                (1) ///< PXUT-F4 TOFD/PE图像
+@@ -19,6 +19,6 @@
+ #define MOROSE_ENABLE_TOF_TPE                          (1) ///< PXUT-F4 TOFD/PE图像
  
  // 程序功能
--#define MOROSE_ENABLE_UPGRADE_FEATURE        (1) ///< 软件升级功能
-+#define MOROSE_ENABLE_UPGRADE_FEATURE        (0) ///< 软件升级功能
- #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE (0) ///< 多语言配置
+-#define MOROSE_ENABLE_UPGRADE_FEATURE                  (1) ///< 软件升级功能
++#define MOROSE_ENABLE_UPGRADE_FEATURE                  (0) ///< 软件升级功能
+ #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE           (0) ///< 多语言配置
  
- /// 设置功能
 -- 
 2.43.0.windows.1
 

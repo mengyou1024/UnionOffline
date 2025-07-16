@@ -1,7 +1,7 @@
-From ff2995ad481db98ed7ba3b51224992a561a7e02a Mon Sep 17 00:00:00 2001
-From: mengyou1024 <mengyuo1024@foxmail.com>
-Date: Fri, 20 Jun 2025 10:34:51 +0800
-Subject: [PATCH] feat(PXUT-T8): create T8 rail special
+From 64a375df4efac9d558373cba0770867fc7afdb43 Mon Sep 17 00:00:00 2001
+From: mengyou1024 <mengyou1024@126.com>
+Date: Wed, 16 Jul 2025 14:23:25 +0800
+Subject: [PATCH] patchs: PXUT-T8 RailWeld special
 
 ---
  CMakeLists.txt               |  4 ++--
@@ -40,39 +40,34 @@ index a220fbb..003353d 100644
  \"APP_VERSION\":\"${APP_VERSION}\",\
  \"APP_URL\": \"${APP_URL}\",\
 diff --git a/config/morose_config.h.in b/config/morose_config.h.in
-index 27602eb..135e8e2 100644
+index 61c8f62..2dd4df4 100644
 --- a/config/morose_config.h.in
 +++ b/config/morose_config.h.in
 @@ -10,16 +10,16 @@
- #define MOROSE_DEBUG_UPGRADE_OPTION          (0) ///< 调试软件升级功能
+ #define MOROSE_DEBUG_UPGRADE_OPTION                    (0) ///< 调试软件升级功能
  
  // A扫接口
--#define MOROSE_ENABLE_DAS_DAT                (1) ///< PXUT-330N .das(单幅) .dat(连续)
--#define MOROSE_ENABLE_COD                    (1) ///< PXUT-F4 .cod(串口数据)
-+#define MOROSE_ENABLE_DAS_DAT                (0) ///< PXUT-330N .das(单幅) .dat(连续)
-+#define MOROSE_ENABLE_COD                    (0) ///< PXUT-F4 .cod(串口数据)
- #define MOROSE_ENABLE_MDAT                   (1) ///< PXUT-390N, PXUT-T8
--#define MOROSE_ENABLE_DAA_HFD                (1) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
-+#define MOROSE_ENABLE_DAA_HFD                (0) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
+-#define MOROSE_ENABLE_DAS_DAT                          (1) ///< PXUT-330N .das(单幅) .dat(连续)
+-#define MOROSE_ENABLE_COD                              (1) ///< PXUT-F4 .cod(串口数据)
++#define MOROSE_ENABLE_DAS_DAT                          (0) ///< PXUT-330N .das(单幅) .dat(连续)
++#define MOROSE_ENABLE_COD                              (0) ///< PXUT-F4 .cod(串口数据)
+ #define MOROSE_ENABLE_MDAT                             (1) ///< PXUT-390N, PXUT-T8
+-#define MOROSE_ENABLE_DAA_HFD                          (1) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
++#define MOROSE_ENABLE_DAA_HFD                          (0) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
  
  // TOFD/PE 接口
--#define MOROSE_ENABLE_TOF_TPE                (1) ///< PXUT-F4 TOFD/PE图像
-+#define MOROSE_ENABLE_TOF_TPE                (0) ///< PXUT-F4 TOFD/PE图像
+-#define MOROSE_ENABLE_TOF_TPE                          (1) ///< PXUT-F4 TOFD/PE图像
++#define MOROSE_ENABLE_TOF_TPE                          (0) ///< PXUT-F4 TOFD/PE图像
  
  // 程序功能
--#define MOROSE_ENABLE_UPGRADE_FEATURE        (1) ///< 软件升级功能
-+#define MOROSE_ENABLE_UPGRADE_FEATURE        (0) ///< 软件升级功能
- #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE (0) ///< 多语言配置
- 
- /// 设置功能
-@@ -29,4 +29,4 @@
-     #define MOROSE_ENABLE_SETTING_FEATURE (0)
- #endif
+-#define MOROSE_ENABLE_UPGRADE_FEATURE                  (1) ///< 软件升级功能
++#define MOROSE_ENABLE_UPGRADE_FEATURE                  (0) ///< 软件升级功能
+ #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE           (0) ///< 多语言配置
  
 -#define MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE (1) ///< 仪器通讯功能
 +#define MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE (0) ///< 仪器通讯功能
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
-index 769ffde..f4b972d 100644
+index 34c02bc..56affe5 100644
 --- a/script/pack-installer.iss.in
 +++ b/script/pack-installer.iss.in
 @@ -34,7 +34,7 @@

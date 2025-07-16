@@ -1,17 +1,8 @@
-From 004a6143f23d3602ad4994e46de654160f4690f1 Mon Sep 17 00:00:00 2001
-From: mengyou <1523038073@qq.com>
-Date: Mon, 30 Dec 2024 15:07:05 +0800
-Subject: [PATCH] =?UTF-8?q?feat:=20=E9=80=82=E9=85=8D=20390=20=E9=92=A2?=
- =?UTF-8?q?=E8=BD=A8=E7=84=8A=E7=BC=9D=E6=A3=80=E6=B5=8B?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 72f784fa35778c8295638c57280841b88af9d922 Mon Sep 17 00:00:00 2001
+From: mengyou1024 <mengyou1024@126.com>
+Date: Wed, 16 Jul 2025 14:22:04 +0800
+Subject: [PATCH] patchs: PXUT-390 RailWeld special
 
-- 修改项目名称为 "390 钢轨焊缝离线分析软件"
-- 更新项目标识符为 RailWeldOffline
-- 启用钢轨焊缝特化接口
-- 禁用通用仪器接口和软件升级功能
-- 添加 RailWeldSpecial.patch 补丁文件
 ---
  CMakeLists.txt               |  4 ++--
  cmake/FindMorose.cmake       |  3 ++-
@@ -20,7 +11,7 @@ Content-Transfer-Encoding: 8bit
  4 files changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 65c019a..8d154be 100644
+index 0ee6636..c840a84 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,8 +1,8 @@
@@ -33,12 +24,12 @@ index 65c019a..8d154be 100644
 +set(PROJECT_NAME_ZH_CN "390钢轨焊缝离线分析软件")
  
  set(CMAKE_CXX_STANDARD 23)
- set(NUMCPP_NO_USE_BOOST ON)
+ 
 diff --git a/cmake/FindMorose.cmake b/cmake/FindMorose.cmake
-index 934304c..5b93ef8 100644
+index a220fbb..2a3e344 100644
 --- a/cmake/FindMorose.cmake
 +++ b/cmake/FindMorose.cmake
-@@ -485,7 +485,8 @@ add_custom_target(
+@@ -497,7 +497,8 @@ add_custom_target(
      COMMAND powershell "Copy-Item -Force -Recurse ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/output/archive/.git;\
      cd ${CMAKE_SOURCE_DIR}/output/archive/; \
      git reset --hard;\
@@ -49,36 +40,36 @@ index 934304c..5b93ef8 100644
  \"APP_VERSION\":\"${APP_VERSION}\",\
  \"APP_URL\": \"${APP_URL}\",\
 diff --git a/config/morose_config.h.in b/config/morose_config.h.in
-index 4a67436..652337d 100644
+index 61c8f62..a7c7bd2 100644
 --- a/config/morose_config.h.in
 +++ b/config/morose_config.h.in
 @@ -10,16 +10,16 @@
- #define MOROSE_DEBUG_UPGRADE_OPTION          (0) ///< 调试软件升级功能
+ #define MOROSE_DEBUG_UPGRADE_OPTION                    (0) ///< 调试软件升级功能
  
  // A扫接口
--#define MOROSE_ENABLE_DAS_DAT                (1) ///< PXUT-330N .das(单幅) .dat(连续)
--#define MOROSE_ENABLE_COD                    (1) ///< PXUT-F4 .cod(串口数据)
--#define MOROSE_ENABLE_MDAT                   (1) ///< PXUT-390N, PXUT-T8
-+#define MOROSE_ENABLE_DAS_DAT                (0) ///< PXUT-330N .das(单幅) .dat(连续)
-+#define MOROSE_ENABLE_COD                    (0) ///< PXUT-F4 .cod(串口数据)
-+#define MOROSE_ENABLE_MDAT                   (0) ///< PXUT-390N, PXUT-T8
- #define MOROSE_ENABLE_DAA_HFD                (1) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
+-#define MOROSE_ENABLE_DAS_DAT                          (1) ///< PXUT-330N .das(单幅) .dat(连续)
+-#define MOROSE_ENABLE_COD                              (1) ///< PXUT-F4 .cod(串口数据)
+-#define MOROSE_ENABLE_MDAT                             (1) ///< PXUT-390N, PXUT-T8
++#define MOROSE_ENABLE_DAS_DAT                          (0) ///< PXUT-330N .das(单幅) .dat(连续)
++#define MOROSE_ENABLE_COD                              (0) ///< PXUT-F4 .cod(串口数据)
++#define MOROSE_ENABLE_MDAT                             (0) ///< PXUT-390N, PXUT-T8
+ #define MOROSE_ENABLE_DAA_HFD                          (1) ///< PXUT-390 钢轨焊缝接口 .daa(单幅) .hfd(连续)
  
  // TOFD/PE 接口
--#define MOROSE_ENABLE_TOF_TPE                (1) ///< PXUT-F4 TOFD/PE图像
-+#define MOROSE_ENABLE_TOF_TPE                (0) ///< PXUT-F4 TOFD/PE图像
+-#define MOROSE_ENABLE_TOF_TPE                          (1) ///< PXUT-F4 TOFD/PE图像
++#define MOROSE_ENABLE_TOF_TPE                          (0) ///< PXUT-F4 TOFD/PE图像
  
  // 程序功能
--#define MOROSE_ENABLE_UPGRADE_FEATURE        (1) ///< 软件升级功能
-+#define MOROSE_ENABLE_UPGRADE_FEATURE        (0) ///< 软件升级功能
- #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE (0) ///< 多语言配置
+-#define MOROSE_ENABLE_UPGRADE_FEATURE                  (1) ///< 软件升级功能
++#define MOROSE_ENABLE_UPGRADE_FEATURE                  (0) ///< 软件升级功能
+ #define MOROSE_ENABLE_MULTI_LANGUATE_FEATURE           (0) ///< 多语言配置
  
- /// 设置功能
+ #define MOROSE_ENABLE_INSTRUMENT_COMMUNICATION_FEATURE (1) ///< 仪器通讯功能
 diff --git a/script/pack-installer.iss.in b/script/pack-installer.iss.in
-index 3a42983..c57a87f 100644
+index 34c02bc..b878589 100644
 --- a/script/pack-installer.iss.in
 +++ b/script/pack-installer.iss.in
-@@ -14,7 +14,7 @@
+@@ -34,7 +34,7 @@
  [Setup]
  ; 注意:AppId的值唯一标识该应用程序。不要在其他应用程序的安装程序中使用相同的AppId值。
  ; (要生成新的GUID，请在IDE中单击Tools | generate GUID。)
