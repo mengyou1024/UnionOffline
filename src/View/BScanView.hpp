@@ -41,17 +41,18 @@ namespace Union::View {
     signals:
 
         void dataCursorChanged();
-        void defectItemPushed();
+        void defectListChanged();
 
     protected:
         virtual void paint(QPainter* painter) override;
         virtual void draw_image(const QImage& img, QPainter* painter) override;
 
     private:
-        std::vector<DefectItem> defect_list_ = {}; // 缺陷列表
-        std::optional<QImage>   defect_mask_ = {};
+        std::vector<DefectItem> defect_list_      = {}; // 缺陷列表
+        std::vector<QRect>      defect_rect_list_ = {}; // 缺陷框列表
+        std::optional<QImage>   defect_mask_      = {};
 
-        void draw_box_defect(QPainter* painter) const; // 绘制缺陷矩形
+        void draw_box_defect(QPainter* painter); // 绘制缺陷矩形
 
         // 更新缺陷掩膜图像的大小
         void update_defect_mask_size();

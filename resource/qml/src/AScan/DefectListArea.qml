@@ -21,7 +21,7 @@ CArea {
         Connections {
             target: aScanInteractor.scanViewHandler
 
-            function onDefectItemPushed() {
+            function onDefectListChanged() {
                 model.updateModel()
                 combobox.currentIndex = model.defectCount - 1
             }

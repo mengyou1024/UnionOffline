@@ -71,48 +71,21 @@ namespace Union::View {
 
         qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos};
 
-        QPainter painter(&(*defect_mask_));
-        QPen     pen = painter.pen();
-        pen.setWidthF(1.5);
-        pen.setBrush(Qt::black);
-        painter.setPen(pen);
-        painter.drawRect(QRect(defect_top_left.value(), defect_bottom_right.value()));
-
-        auto font = painter.font();
-        font.setBold(true);
-        font.setPointSize(13);
-        painter.setFont(font);
-        QFontMetricsF font_metrics = painter.fontMetrics();
-
-        auto text_box = font_metrics.boundingRect(QString::number(std::ssize(defect_list_)));
-
-        text_box.moveBottom(defect_top_left.value().y() - 5);
-
-        if (text_box.top() < 0) {
-            text_box.moveTop(defect_bottom_right.value().y() + 5);
-        }
-
-        text_box.moveLeft(defect_top_left.value().x() - 5);
-
-        if (text_box.left() < 0) {
-            text_box.moveRight(defect_bottom_right.value().y() + 5);
-        }
-
-        painter.drawText(text_box, QString::number(std::ssize(defect_list_)));
-
-        const auto radius = std::max(text_box.width(), text_box.height());
-
-        painter.drawEllipse(text_box.center(), radius / 2.0, radius / 2.0);
+        defect_rect_list_.emplace_back(QRect(defect_top_left.value(), defect_bottom_right.value()));
 
         update();
 
-        emit defectItemPushed();
+        emit defectListChanged();
     }
 
     void BScanView::clearDefectList() {
-        defect_mask_->fill(Qt::transparent);
+        if (defect_mask_.has_value()) {
+            defect_mask_->fill(Qt::transparent);
+        }
         defect_list_.clear();
+        defect_rect_list_.clear();
         update();
+        emit defectListChanged();
     }
 
     void BScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
@@ -138,6 +111,7 @@ namespace Union::View {
 
             if (set_size) {
                 resetMeasuringLine();
+                clearDefectList();
             }
 
             QMetaObject::invokeMethod(this, [=, this, image = std::move(image)]() mutable {
@@ -178,9 +152,47 @@ namespace Union::View {
         painter->drawImage(drawable(), image_to_draw);
     }
 
-    void BScanView::draw_box_defect(QPainter* painter) const {
-        if (!defect_mask_.has_value()) {
+    void BScanView::draw_box_defect(QPainter* painter) {
+        if (!defect_mask_.has_value() || defect_rect_list_.size() != defect_list_.size()) {
             return;
+        }
+
+        {
+            defect_mask_->fill(Qt::transparent);
+            QPainter image_painter(&(*defect_mask_));
+            QPen     pen = image_painter.pen();
+            pen.setWidthF(1.5);
+            pen.setBrush(Qt::black);
+            image_painter.setPen(pen);
+
+            auto font = image_painter.font();
+            font.setBold(true);
+            font.setPointSize(13);
+            image_painter.setFont(font);
+            QFontMetricsF font_metrics = image_painter.fontMetrics();
+
+            for (int i = 0; i < std::ssize(defect_list_); i++) {
+                image_painter.drawRect(defect_rect_list_.at(i));
+                auto text_box = font_metrics.boundingRect(QString::number(i));
+
+                text_box.moveBottom(defect_rect_list_.at(i).topLeft().y() - 5);
+
+                if (text_box.top() < 0) {
+                    text_box.moveTop(defect_rect_list_.at(i).bottomRight().y() + 5);
+                }
+
+                text_box.moveLeft(defect_rect_list_.at(i).topLeft().x() - 5);
+
+                if (text_box.left() < 0) {
+                    text_box.moveRight(defect_rect_list_.at(i).bottomRight().y() + 5);
+                }
+
+                image_painter.drawText(text_box, QString::number(std::ssize(defect_list_)));
+
+                const auto radius = std::max(text_box.width(), text_box.height());
+
+                image_painter.drawEllipse(text_box.center(), radius / 2.0, radius / 2.0);
+            }
         }
 
         Range image_h_range = {0, defect_mask_->width() - 1};
@@ -212,7 +224,6 @@ namespace Union::View {
 
         defect_mask_ = QImage(size, QImage::Format_RGBA8888);
         defect_mask_->fill(Qt::transparent);
-        defect_list_ = {};
     }
 
     std::optional<QPoint> BScanView::local_pos_to_defect_mask_pos(QPoint pt) const {
