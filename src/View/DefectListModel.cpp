@@ -128,6 +128,66 @@ namespace Union::Model {
         setAmpValue(KeepDecimals<1>(_defect_list.at(currentIndex()).max_amp));
         setAmpX(KeepDecimals<1>(_defect_list.at(currentIndex()).pos.x()));
         setAmpY(KeepDecimals<1>(_defect_list.at(currentIndex()).pos.y()));
+        setS1(KeepDecimals<1>(_defect_list.at(currentIndex()).s1));
+        setS2(KeepDecimals<1>(_defect_list.at(currentIndex()).s2));
+        setH(_defect_list.at(currentIndex()).h);
+        setAMax(_defect_list.at(currentIndex()).a_max);
+        setArea(_defect_list.at(currentIndex()).region);
+    }
+
+    double DefectListModel::s1() const {
+        return m_s1;
+    }
+
+    void DefectListModel::setS1(double newS1) {
+        if (qFuzzyCompare(m_s1, newS1))
+            return;
+        m_s1 = newS1;
+        emit s1Changed();
+    }
+
+    double DefectListModel::s2() const {
+        return m_s2;
+    }
+
+    void DefectListModel::setS2(double newS2) {
+        if (qFuzzyCompare(m_s2, newS2))
+            return;
+        m_s2 = newS2;
+        emit s2Changed();
+    }
+
+    QString DefectListModel::h() const {
+        return m_h;
+    }
+
+    void DefectListModel::setH(const QString& newH) {
+        if (m_h == newH)
+            return;
+        m_h = newH;
+        emit hChanged();
+    }
+
+    QString DefectListModel::aMax() const {
+        return m_aMax;
+    }
+
+    void DefectListModel::setAMax(const QString& newAMax) {
+        if (m_aMax == newAMax)
+            return;
+        m_aMax = newAMax;
+        emit aMaxChanged();
+    }
+
+    QString DefectListModel::area() const {
+        return m_area;
+    }
+
+    void DefectListModel::setArea(const QString& newArea) {
+        if (m_area == newArea)
+            return;
+        m_area = newArea;
+        emit areaChanged();
     }
 
     int DefectListModel::rowCount(const QModelIndex&) const {
@@ -155,6 +215,21 @@ namespace Union::Model {
             case AMP_Y: {
                 return KeepDecimals<1>(_defect_list.at(row).pos.y());
             }
+            case S1: {
+                return KeepDecimals<1>(_defect_list.at(row).s1);
+            }
+            case S2: {
+                return KeepDecimals<1>(_defect_list.at(row).s2);
+            }
+            case H: {
+                return _defect_list.at(row).h;
+            }
+            case A_MAX: {
+                return _defect_list.at(row).a_max;
+            }
+            case AREA: {
+                return _defect_list.at(row).region;
+            }
             default: {
                 break;
             }
@@ -169,6 +244,11 @@ namespace Union::Model {
             {AMP_VALUE, "defect_amp_value"},
             {AMP_X,     "defect_amp_x"    },
             {AMP_Y,     "defect_amp_y"    },
+            {S1,        "defect_s1"       },
+            {S2,        "defect_s2"       },
+            {H,         "defect_h"        },
+            {A_MAX,     "defect_a_max"    },
+            {AREA,      "defect_AREA"     },
         };
     }
 

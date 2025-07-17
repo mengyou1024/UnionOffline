@@ -12,8 +12,8 @@ using namespace ::Union::Common;
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.View.IScanView");
 
-static constexpr auto MOVE_BUTTON      = Qt::RightButton;
-static constexpr auto DRAW_RECT_BUTTON = Qt::LeftButton;
+static constexpr auto MOVE_BUTTON      = Qt::LeftButton;
+static constexpr auto DRAW_RECT_BUTTON = Qt::RightButton;
 
 namespace Union::View {
 
@@ -311,7 +311,7 @@ namespace Union::View {
             box_selection_ = QRect(QPoint(event->pos()), QPoint(event->pos()));
         }
 
-        if (event->button() == MOVE_BUTTON && drawable().contains(event->pos())) {
+        if (event->button() == MOVE_BUTTON && drawable().contains(event->pos()) && cursorLocation() == LOCATION_NEAR_NONE) {
             setCursor(Qt::ClosedHandCursor);
         }
     }
@@ -326,7 +326,7 @@ namespace Union::View {
             }
         }
 
-        if (event->buttons() == MOVE_BUTTON && image_visable_.has_value()) {
+        if (event->buttons() == MOVE_BUTTON && image_visable_.has_value() && cursorLocation() == LOCATION_NEAR_NONE) {
             // 鼠标移动的像素点
             const auto delta_x = pressed_point_->x() - event->x();
             const auto delta_y = pressed_point_->y() - event->y();

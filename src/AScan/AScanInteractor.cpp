@@ -1011,7 +1011,7 @@ void AScanInteractor::boxSelected(const QRect& rect) {
         auto defect_item = mdata_type->calculateDefectRect(rect);
         if (defect_item.has_value()) {
             QRect defect_rect(QPoint(defect_item->left, defect_item->top), QPoint(defect_item->right, defect_item->bottom));
-            emit  pushDefectItem(defect_rect, defect_item->peak / 2.0, defect_item->peak_point);
+            emit  pushDefectItem(defect_rect, defect_item->peak / 2.0, defect_item->peak_point, defect_item->h, defect_item->a_max, defect_item->area);
         }
     }
 }

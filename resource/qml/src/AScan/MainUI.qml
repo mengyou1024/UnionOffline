@@ -250,9 +250,9 @@ Rectangle {
                     }
                 }
 
-                function onPushDefectItem(rect, amp, pt) {
+                function onPushDefectItem(rect, amp, pt, h, a_max, region) {
                     try {
-                        interactor.scanViewHandler.pushDefectItem(rect, amp, pt)
+                        interactor.scanViewHandler.pushDefectItem(rect, amp, pt, h, a_max, region)
                     } catch (e) {
                         console.debug(e)
                     }

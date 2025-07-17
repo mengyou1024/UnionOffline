@@ -15,13 +15,18 @@ namespace Union::Model {
 
         QPointer<QQuickItem> m_viewItem = nullptr;
 
-        int    m_defectCount  = 0;
-        int    m_currentIndex = 0;
-        double m_horLen       = 0;
-        double m_verLen       = 0;
-        double m_ampValue     = 0;
-        double m_ampX         = 0;
-        double m_ampY         = 0;
+        int     m_defectCount  = 0;
+        int     m_currentIndex = 0;
+        double  m_horLen       = 0;
+        double  m_verLen       = 0;
+        double  m_ampValue     = 0;
+        double  m_ampX         = 0;
+        double  m_ampY         = 0;
+        double  m_s1           = 0;
+        double  m_s2           = 0;
+        QString m_h            = {};
+        QString m_aMax         = {};
+        QString m_area         = {};
 
     public:
         enum RoleEnum {
@@ -30,6 +35,11 @@ namespace Union::Model {
             AMP_VALUE = 2,
             AMP_X     = 3,
             AMP_Y     = 4,
+            S1        = 5,
+            S2        = 6,
+            H         = 7,
+            A_MAX     = 8,
+            AREA      = 9,
         };
 
         int                    rowCount(const QModelIndex& = QModelIndex()) const override;
@@ -55,6 +65,21 @@ namespace Union::Model {
 
         void updateParam();
 
+        double s1() const;
+        void   setS1(double newS1);
+
+        double s2() const;
+        void   setS2(double newS2);
+
+        QString h() const;
+        void    setH(const QString& newH);
+
+        QString aMax() const;
+        void    setAMax(const QString& newAMax);
+
+        QString area() const;
+        void    setArea(const QString& newArea);
+
     public slots:
         void updateModel();
 
@@ -68,6 +93,16 @@ namespace Union::Model {
         void ampXChanged();
         void ampYChanged();
 
+        void s1Changed();
+
+        void s2Changed();
+
+        void hChanged();
+
+        void aMaxChanged();
+
+        void areaChanged();
+
     private:
         std::vector<View::DefectItem> _defect_list = {};
         QPointer<View::BScanView>     _view        = nullptr;
@@ -80,5 +115,10 @@ namespace Union::Model {
         Q_PROPERTY(double ampValue READ ampValue WRITE setAmpValue NOTIFY ampValueChanged FINAL)
         Q_PROPERTY(double ampX READ ampX WRITE setAmpX NOTIFY ampXChanged FINAL)
         Q_PROPERTY(double ampY READ ampY WRITE setAmpY NOTIFY ampYChanged FINAL)
+        Q_PROPERTY(double s1 READ s1 WRITE setS1 NOTIFY s1Changed FINAL)
+        Q_PROPERTY(double s2 READ s2 WRITE setS2 NOTIFY s2Changed FINAL)
+        Q_PROPERTY(QString h READ h WRITE setH NOTIFY hChanged FINAL)
+        Q_PROPERTY(QString aMax READ aMax WRITE setAMax NOTIFY aMaxChanged FINAL)
+        Q_PROPERTY(QString area READ area WRITE setArea NOTIFY areaChanged FINAL)
     };
 } // namespace Union::Model

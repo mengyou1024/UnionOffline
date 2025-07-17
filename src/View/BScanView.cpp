@@ -50,7 +50,7 @@ namespace Union::View {
         disconnect(this, &BScanView::heightChanged, this, nullptr);
     }
 
-    void BScanView::pushDefectItem(QRect region, double max_amp, QPoint pos) {
+    void BScanView::pushDefectItem(QRect region, double max_amp, QPoint pos, QString h, QString a_max, QString area) {
         auto defect_top_left     = raw_image_pos_to_defect_mask_pos(region.topLeft());
         auto defect_bottom_right = raw_image_pos_to_defect_mask_pos(region.bottomRight());
 
@@ -65,11 +65,18 @@ namespace Union::View {
         }
 
         auto hor_len = map_to_show_hor_value(defect_bottom_right->x()) - map_to_show_hor_value(defect_top_left->x());
-        auto ver_len = map_to_show_ver_value(defect_bottom_right->y()) - map_to_show_ver_value(defect_top_left->y());
         auto amp_pos = QPointF(map_to_show_hor_value(local_pos->x()), map_to_show_ver_value(local_pos->y()));
-        defect_list_.emplace_back(DefectItem{hor_len, ver_len, max_amp, amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value())});
+        auto s1      = KeepDecimals<1>(map_to_show_ver_value(defect_top_left->y()));
+        auto s2      = KeepDecimals<1>(map_to_show_ver_value(defect_bottom_right->y()));
+        auto ver_len = s2 - s1;
+        defect_list_.emplace_back(DefectItem{hor_len,
+                                             ver_len,
+                                             max_amp,
+                                             amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value()),
+                                             s1, s2, h, a_max, area});
 
-        qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value())};
+        qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value()),
+                                   s1, s2, h, a_max, area};
 
         update();
 
@@ -131,7 +138,7 @@ namespace Union::View {
         // 2. 调整红色测量线的位置
         auto x = ValueMap(defect_list_.at(idx).pos.x(), drawable_hor_range(), horShowRange());
         auto y = ValueMap(defect_list_.at(idx).pos.y(), drawable_ver_range(), verShowRange());
-        setMeasuringPointRed(QPoint(x, y));
+        setMeasuringPointRed(QPoint(KeepDecimals<0>(x), KeepDecimals<0>(y)));
     }
 
     void BScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
@@ -324,6 +331,9 @@ namespace Union::View {
 
 QDebug operator<<(QDebug debug, const ::Union::View::DefectItem& defect) {
     debug << "DefectItem { hor_len:" << defect.hor_len << ", ver_len:" << defect.ver_len
-          << ", max_amp:" << defect.max_amp << ", amp_pos:" << defect.pos << ", rect:" << defect.rect;
+          << ", max_amp:" << defect.max_amp << ", amp_pos:" << defect.pos << ", rect:" << defect.rect
+          << ", s1:" << defect.s1 << ", s2:" << defect.s2 << ", h" << defect.h
+          << ", aMax:" << defect.a_max << ", region:" << defect.region;
+
     return debug;
 }

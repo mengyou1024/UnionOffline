@@ -46,43 +46,59 @@ CArea {
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: qsTr("水平长度")
+            text: qsTr("起始位置S1")
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: model.horLen
+            text: model.s1
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: qsTr("垂直长度")
+            text: qsTr("终止位置S2")
         }
 
         Text {
-            Layout.preferredWidth: 72
+            text: model.s2
+        }
+
+        Text {
+            text: qsTr("缺陷指示长度S2-S1")
+        }
+
+        Text {
             text: model.verLen
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: qsTr("最高波")
+            text: qsTr("最大波幅位置S3")
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: model.ampValue + "%"
+            text: model.ampY
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: qsTr("缺陷位置")
+            text: qsTr("缺陷深度H")
         }
 
         Text {
-            Layout.preferredWidth: 72
-            text: `(${model.ampX}, ${model.ampY}}`
+            text: model.h
+        }
+
+        Text {
+            text: qsTr("当量Amax")
+        }
+
+        Text {
+            text: model.aMax
+        }
+
+        Text {
+            text: qsTr("缺陷所在区域")
+        }
+
+        Text {
+            text: model.area + qsTr("区")
         }
 
         CButton {

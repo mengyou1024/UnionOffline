@@ -15,6 +15,13 @@ namespace Union::View {
         double  max_amp = {}; // 最高波 %
         QPointF pos     = {}; // 最高波位置
         QRect   rect    = {}; // 框选区域
+
+        double s1 = {};
+        double s2 = {};
+
+        QString h      = {};
+        QString a_max  = {};
+        QString region = {};
     };
 
     class BScanView : public IScanView {
@@ -31,7 +38,7 @@ namespace Union::View {
         BScanView();
         ~BScanView() override;
 
-        Q_INVOKABLE void pushDefectItem(QRect region, double max_amp, QPoint pos);
+        Q_INVOKABLE void pushDefectItem(QRect region, double max_amp, QPoint pos, QString h, QString a_max, QString area);
         Q_INVOKABLE void clearDefectList();
         Q_INVOKABLE void delectDefectItem(int idx);
         Q_INVOKABLE void locateToDefect(int idx);
