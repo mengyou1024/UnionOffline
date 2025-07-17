@@ -572,6 +572,18 @@ ScrollView {
             Layout.fillWidth: true
 
             viewItem: aScanInteractor.scanViewHandler
+
+            onClearDefect: {
+                aScanInteractor.scanViewHandler.clearDefectList()
+            }
+
+            onDeleteDefect: idx => {
+                                aScanInteractor.scanViewHandler.delectDefectItem(idx)
+                            }
+
+            onLocateDefect: idx => {
+                                aScanInteractor.scanViewHandler.locateToDefect(idx)
+                            }
         }
     }
 

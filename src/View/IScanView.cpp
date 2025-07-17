@@ -12,6 +12,9 @@ using namespace ::Union::Common;
 
 [[maybe_unused]] static Q_LOGGING_CATEGORY(TAG, "Union.View.IScanView");
 
+static constexpr auto MOVE_BUTTON      = Qt::RightButton;
+static constexpr auto DRAW_RECT_BUTTON = Qt::LeftButton;
+
 namespace Union::View {
 
     Range IScanView::horShowRange() const {
@@ -302,13 +305,13 @@ namespace Union::View {
         }
 
         if (!isCtrlPressed() &&
-            event->button() == Qt::LeftButton &&
+            event->button() == DRAW_RECT_BUTTON &&
             drawable().contains(event->pos()) &&
             cursorLocation() == LOCATION_NEAR_NONE) {
             box_selection_ = QRect(QPoint(event->pos()), QPoint(event->pos()));
         }
 
-        if (event->button() == Qt::RightButton && drawable().contains(event->pos())) {
+        if (event->button() == MOVE_BUTTON && drawable().contains(event->pos())) {
             setCursor(Qt::ClosedHandCursor);
         }
     }
@@ -316,14 +319,14 @@ namespace Union::View {
     void IScanView::mouseMoveEvent(QMouseEvent* event) {
         Q_UNUSED(event)
 
-        if (!isCtrlPressed() && event->buttons() == Qt::LeftButton) {
+        if (!isCtrlPressed() && event->buttons() == DRAW_RECT_BUTTON) {
             if (box_selection_.has_value()) {
                 box_selection_ = QRect(box_selection_->topLeft(), QPoint(event->pos()));
                 update();
             }
         }
 
-        if (event->buttons() == Qt::RightButton && image_visable_.has_value()) {
+        if (event->buttons() == MOVE_BUTTON && image_visable_.has_value()) {
             // 鼠标移动的像素点
             const auto delta_x = pressed_point_->x() - event->x();
             const auto delta_y = pressed_point_->y() - event->y();
@@ -426,18 +429,17 @@ namespace Union::View {
         pressed_point_ = std::nullopt;
         if (box_selection_.has_value()) {
             if (box_selection_->topLeft() != box_selection_->bottomRight()) {
-                setMeasuringPointRed(box_selection_->topLeft());
-                setMeasuringPointBlue(box_selection_->bottomRight());
                 auto image_pt_top_left     = local_pos_to_raw_image_pos(box_selection_->topLeft());
                 auto image_pt_bottom_right = local_pos_to_raw_image_pos(box_selection_->bottomRight());
                 if (image_pt_top_left.has_value() && image_pt_bottom_right.has_value()) {
                     auto rect = QRect(image_pt_top_left.value(), image_pt_bottom_right.value()).normalized();
-                    if (rect.width() > 1 && rect.height() > 1) {
+                    if (rect.width() > 3 && rect.height() > 3) {
                         emit boxSelected(QRect(rect.topLeft(), rect.bottomRight()));
                     }
                 }
             }
             box_selection_ = std::nullopt;
+            update();
         }
         // 鼠标释放时, 重新调用hoverMoveEvent设置一下鼠标状态
         QHoverEvent hover_event(QEvent::HoverMove, event->pos(), event->pos());
@@ -530,8 +532,75 @@ namespace Union::View {
     }
 
     void IScanView::wheelEvent(QWheelEvent* event) {
-        auto angle = event->angleDelta();
-        qCDebug(TAG) << "滚轮:" << angle << event->pixelDelta();
+        if (!min_show_range_width().has_value() || !min_show_range_height().has_value()) {
+            return;
+        }
+
+        if (!drawable().contains(event->position().toPoint())) {
+            return;
+        }
+        auto angle         = event->angleDelta();
+        auto left_factor   = (event->position().x() - drawable().left()) / drawable().width();
+        auto right_factor  = 1.0 - left_factor;
+        auto top_factor    = (event->position().y() - drawable().top()) / drawable().height();
+        auto bottom_factor = 1.0 - top_factor;
+
+        auto delta_hor = length(horShowRange()) / 20.0;
+        auto delta_ver = length(verShowRange()) / 20.0;
+
+        auto sign = (angle.y() > 0) ? -1.0 : 1.0;
+
+        auto left   = horShowRange().first - delta_hor * left_factor * sign;
+        auto right  = horShowRange().second + delta_hor * right_factor * sign;
+        auto top    = verShowRange().first - delta_ver * top_factor * sign;
+        auto bottom = verShowRange().second + delta_ver * bottom_factor * sign;
+
+        if (left < horRange().first) {
+            left = horRange().first;
+        }
+
+        if (right > horRange().second) {
+            right = horRange().second;
+        }
+
+        if (top < verRange().first) {
+            top = verRange().first;
+        }
+
+        if (bottom > verRange().second) {
+            bottom = verRange().second;
+        }
+
+        if (right - left < min_show_range_width().value()) {
+            auto min_width = min_show_range_width().value();
+            auto x_value   = map_to_show_hor_value(event->position().x());
+            left           = x_value - min_width * left_factor;
+            right          = left + min_width;
+        }
+
+        if (bottom - top < min_show_range_height().value()) {
+            auto min_height = min_show_range_height().value();
+            auto y_value    = map_to_show_ver_value(event->position().y());
+            top             = y_value - min_height * top_factor;
+            bottom          = top + min_height;
+        }
+
+        if (sign < 0) {
+            if (!is_show_image_width_can_contain() && !is_raw_image_width_can_contain()) {
+                setHorShowRange({left, right});
+            }
+
+            if (!is_show_image_height_can_contain() && !is_raw_image_height_can_contain()) {
+                setVerShowRange({top, bottom});
+            }
+        } else {
+            if (!is_raw_image_width_can_contain()) {
+                setHorShowRange({left, right});
+            }
+            if (!is_raw_image_height_can_contain()) {
+                setVerShowRange({top, bottom});
+            }
+        }
     }
 
     void IScanView::draw_image(const QImage& img, QPainter* painter) {
@@ -682,7 +751,7 @@ namespace Union::View {
         }
 
         if (drawable_size().width() >= image_raw_->width()) {
-            return std::nullopt;
+            return length(horRange());
         }
 
         const auto left  = ValueMap(0, horRange(), {0, image_raw_->width() - 1});
@@ -696,7 +765,7 @@ namespace Union::View {
         }
 
         if (drawable_size().height() >= image_raw_->height()) {
-            return std::nullopt;
+            return length(verRange());
         }
 
         const auto top    = ValueMap(0, verRange(), {0, image_raw_->height() - 1});
@@ -1248,6 +1317,20 @@ namespace Union::View {
             return true;
         }
         return drawable().height() >= image_raw_->height();
+    }
+
+    bool IScanView::is_show_image_width_can_contain() const {
+        if (!image_visable_.has_value()) {
+            return true;
+        }
+        return drawable().width() >= image_visable_->width();
+    }
+
+    bool IScanView::is_show_image_height_can_contain() const {
+        if (!image_visable_.has_value()) {
+            return true;
+        }
+        return drawable().height() >= image_visable_->height();
     }
 
     std::optional<QPoint> IScanView::local_pos_to_raw_image_pos(QPoint pt) const {

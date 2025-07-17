@@ -45,7 +45,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: 18
-            text: qsTr("按住鼠标右键并拖动可以平移视图\n按住鼠标左键拖动，快速框选缺陷(6dB法自动计算缺陷长度)")
+            text: qsTr("滚动鼠标滚轮缩放图像\n按住鼠标右键并拖动可以平移视图\n按住鼠标左键拖动，快速框选缺陷(6dB法自动计算缺陷长度)")
         }
 
         Text {

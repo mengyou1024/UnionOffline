@@ -10,6 +10,10 @@ CArea {
 
     property alias viewItem: model.viewItem
 
+    signal locateDefect(int idx)
+    signal deleteDefect(int idx)
+    signal clearDefect
+
     GridLayout {
         id: layout
         anchors.centerIn: parent
@@ -28,6 +32,8 @@ CArea {
         }
 
         CComboBox {
+            Layout.preferredWidth: 120
+            Layout.alignment: Qt.AlignHCenter
             id: combobox
             Layout.columnSpan: 2
             model: Array.from({
@@ -40,35 +46,74 @@ CArea {
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: qsTr("水平长度")
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: model.horLen
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: qsTr("垂直长度")
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: model.verLen
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: qsTr("最高波")
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: model.ampValue + "%"
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: qsTr("缺陷位置")
         }
 
         Text {
+            Layout.preferredWidth: 72
             text: `(${model.ampX}, ${model.ampY}}`
+        }
+
+        CButton {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 120
+            Layout.columnSpan: 2
+            text: qsTr("定位最高波")
+            onClicked: {
+                locateDefect(combobox.currentIndex)
+            }
+        }
+
+        CButton {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 120
+            Layout.columnSpan: 2
+            Layout.topMargin: 20
+            text: qsTr("删除当前缺陷")
+            onClicked: {
+                deleteDefect(combobox.currentIndex)
+            }
+        }
+
+        CButton {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 120
+            Layout.columnSpan: 2
+            text: qsTr("删除所有缺陷")
+            onClicked: {
+                clearDefect()
+            }
         }
     }
 }

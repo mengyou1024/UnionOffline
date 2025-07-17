@@ -67,11 +67,9 @@ namespace Union::View {
         auto hor_len = map_to_show_hor_value(defect_bottom_right->x()) - map_to_show_hor_value(defect_top_left->x());
         auto ver_len = map_to_show_ver_value(defect_bottom_right->y()) - map_to_show_ver_value(defect_top_left->y());
         auto amp_pos = QPointF(map_to_show_hor_value(local_pos->x()), map_to_show_ver_value(local_pos->y()));
-        defect_list_.emplace_back(DefectItem{hor_len, ver_len, max_amp, amp_pos});
+        defect_list_.emplace_back(DefectItem{hor_len, ver_len, max_amp, amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value())});
 
-        qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos};
-
-        defect_rect_list_.emplace_back(QRect(defect_top_left.value(), defect_bottom_right.value()));
+        qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value())};
 
         update();
 
@@ -83,9 +81,57 @@ namespace Union::View {
             defect_mask_->fill(Qt::transparent);
         }
         defect_list_.clear();
-        defect_rect_list_.clear();
         update();
         emit defectListChanged();
+    }
+
+    void BScanView::delectDefectItem(int idx) {
+        if (idx < 0 || idx >= std::ssize(defect_list_)) {
+            return;
+        }
+        defect_list_.erase(defect_list_.begin() + idx);
+        update();
+        emit defectListChanged();
+    }
+
+    void BScanView::locateToDefect(int idx) {
+        if (idx < 0 || idx >= std::ssize(defect_list_)) {
+            return;
+        }
+        // 1. 调整坐标区域的显示范围
+        if (!::Union::View::contains(horShowRange(), defect_list_.at(idx).pos.x())) {
+            auto min_hor_range = min_show_range_width().value_or(0) / 2.0;
+            auto min_value     = defect_list_.at(idx).pos.x() - min_hor_range;
+            auto max_value     = defect_list_.at(idx).pos.x() + min_hor_range;
+            if (min_value < horRange().first) {
+                min_value = horRange().first;
+            }
+            if (max_value > horRange().second) {
+                max_value = horRange().second;
+            }
+
+            setHorShowRange({min_value, max_value});
+        }
+
+        if (!Union::View::contains(verShowRange(), defect_list_.at(idx).pos.y())) {
+            auto min_ver_range = min_show_range_height().value_or(0) / 2.0;
+            auto min_value     = defect_list_.at(idx).pos.y() - min_ver_range;
+            auto max_value     = defect_list_.at(idx).pos.y() + min_ver_range;
+
+            if (min_value < verRange().first) {
+                min_value = verRange().first;
+            }
+            if (max_value > verRange().second) {
+                max_value = verRange().second;
+            }
+
+            setVerShowRange({min_value, max_value});
+        }
+
+        // 2. 调整红色测量线的位置
+        auto x = ValueMap(defect_list_.at(idx).pos.x(), drawable_hor_range(), horShowRange());
+        auto y = ValueMap(defect_list_.at(idx).pos.y(), drawable_ver_range(), verShowRange());
+        setMeasuringPointRed(QPoint(x, y));
     }
 
     void BScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
@@ -153,7 +199,7 @@ namespace Union::View {
     }
 
     void BScanView::draw_box_defect(QPainter* painter) {
-        if (!defect_mask_.has_value() || defect_rect_list_.size() != defect_list_.size()) {
+        if (!defect_mask_.has_value()) {
             return;
         }
 
@@ -172,22 +218,22 @@ namespace Union::View {
             QFontMetricsF font_metrics = image_painter.fontMetrics();
 
             for (int i = 0; i < std::ssize(defect_list_); i++) {
-                image_painter.drawRect(defect_rect_list_.at(i));
-                auto text_box = font_metrics.boundingRect(QString::number(i));
+                image_painter.drawRect(defect_list_.at(i).rect);
+                auto text_box = font_metrics.boundingRect(QString::number(i + 1));
 
-                text_box.moveBottom(defect_rect_list_.at(i).topLeft().y() - 5);
+                text_box.moveBottom(defect_list_.at(i).rect.topLeft().y() - 5);
 
                 if (text_box.top() < 0) {
-                    text_box.moveTop(defect_rect_list_.at(i).bottomRight().y() + 5);
+                    text_box.moveTop(defect_list_.at(i).rect.bottomRight().y() + 5);
                 }
 
-                text_box.moveLeft(defect_rect_list_.at(i).topLeft().x() - 5);
+                text_box.moveLeft(defect_list_.at(i).rect.topLeft().x() - 5);
 
                 if (text_box.left() < 0) {
-                    text_box.moveRight(defect_rect_list_.at(i).bottomRight().y() + 5);
+                    text_box.moveRight(defect_list_.at(i).rect.bottomRight().y() + 5);
                 }
 
-                image_painter.drawText(text_box, QString::number(std::ssize(defect_list_)));
+                image_painter.drawText(text_box, QString::number(i + 1));
 
                 const auto radius = std::max(text_box.width(), text_box.height());
 
@@ -278,6 +324,6 @@ namespace Union::View {
 
 QDebug operator<<(QDebug debug, const ::Union::View::DefectItem& defect) {
     debug << "DefectItem { hor_len:" << defect.hor_len << ", ver_len:" << defect.ver_len
-          << ", max_amp:" << defect.max_amp << ", amp_pos:" << defect.pos;
+          << ", max_amp:" << defect.max_amp << ", amp_pos:" << defect.pos << ", rect:" << defect.rect;
     return debug;
 }

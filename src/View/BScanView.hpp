@@ -14,6 +14,7 @@ namespace Union::View {
         qreal   ver_len = {};
         double  max_amp = {}; // 最高波 %
         QPointF pos     = {}; // 最高波位置
+        QRect   rect    = {}; // 框选区域
     };
 
     class BScanView : public IScanView {
@@ -32,6 +33,8 @@ namespace Union::View {
 
         Q_INVOKABLE void pushDefectItem(QRect region, double max_amp, QPoint pos);
         Q_INVOKABLE void clearDefectList();
+        Q_INVOKABLE void delectDefectItem(int idx);
+        Q_INVOKABLE void locateToDefect(int idx);
 
         void replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size = true) noexcept;
 
@@ -48,9 +51,8 @@ namespace Union::View {
         virtual void draw_image(const QImage& img, QPainter* painter) override;
 
     private:
-        std::vector<DefectItem> defect_list_      = {}; // 缺陷列表
-        std::vector<QRect>      defect_rect_list_ = {}; // 缺陷框列表
-        std::optional<QImage>   defect_mask_      = {};
+        std::vector<DefectItem> defect_list_ = {}; // 缺陷列表
+        std::optional<QImage>   defect_mask_ = {};
 
         void draw_box_defect(QPainter* painter); // 绘制缺陷矩形
 

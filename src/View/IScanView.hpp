@@ -7,6 +7,17 @@
 namespace Union::View {
     using Range = std::pair<double, double>;
 
+    [[maybe_unused]] inline static bool contains(const Range& range, double val) {
+        if (val >= std::min(range.first, range.second) && val <= std::max(range.first, range.second)) {
+            return true;
+        }
+        return false;
+    }
+
+    [[maybe_unused]] inline static double length(const Range& range) {
+        return std::abs(range.second - range.first);
+    }
+
     class IScanView : public QQuickPaintedItem {
     public:
         IScanView();
@@ -213,6 +224,8 @@ namespace Union::View {
 
         bool is_raw_image_width_can_contain() const;
         bool is_raw_image_height_can_contain() const;
+        bool is_show_image_width_can_contain() const;
+        bool is_show_image_height_can_contain() const;
 
         // 控件上的像素点位置转换为原始图像上点的位置
         std::optional<QPoint> local_pos_to_raw_image_pos(QPoint pt) const;
