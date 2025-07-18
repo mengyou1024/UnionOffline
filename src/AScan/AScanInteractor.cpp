@@ -1342,10 +1342,20 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
         }();
         // 获取增益修改
         const auto ModifyGain = [&](int idx) -> double {
-            if (idx == 0) {
-                return getSoftGain();
+            switch (type) {
+                case QuadraticCurveSeriesType::DAC:
+                    if (idx == 0) {
+                        return getSoftGain();
+                    }
+                    return aScanIntf()->getDacLineStandard(getAScanCursor()).at(idx - 1) + getSoftGain();
+                case QuadraticCurveSeriesType::AVG:
+                    if (idx == 0) {
+                        return getSoftGain();
+                    }
+                    return aScanIntf()->getAvgLineStandard(getAScanCursor()).at(idx - 1) + getSoftGain();
+                default:
+                    throw std::runtime_error("QuadraticCurveSeriesType error");
             }
-            return aScanIntf()->getDacLineStandard(getAScanCursor()).at(idx - 1) + getSoftGain();
         };
         // } <- end define lambda
 
@@ -1359,7 +1369,19 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
             pts.resize(1);
             indexs = {0};
         } else {
-            int line_count = std::ssize(aScanIntf()->getDacLineStandard(getAScanCursor()));
+            int line_count = 0;
+
+            switch (type) {
+                case QuadraticCurveSeriesType::DAC:
+                    line_count = std::ssize(aScanIntf()->getDacLineStandard(getAScanCursor()));
+                    break;
+                case QuadraticCurveSeriesType::AVG:
+                    line_count = std::ssize(aScanIntf()->getAvgLineStandard(getAScanCursor()));
+                    break;
+                default:
+                    throw std::runtime_error("QuadraticCurveSeriesType error");
+            }
+
             lines.resize(line_count);
             pts.resize(line_count);
             indexs = std::views::iota(1, line_count + 1) | std::views::take(line_count) | std::ranges::to<std::vector<int>>();
