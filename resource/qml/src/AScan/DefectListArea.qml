@@ -23,7 +23,9 @@ CArea {
         }
 
         Connections {
-            target: aScanInteractor.scanViewHandler
+            target: aScanInteractor ? aScanInteractor.scanViewHandler : null
+            enabled: aScanInteractor ? (aScanInteractor.scanViewHandler ? aScanInteractor.scanViewHandler : false) : false
+            ignoreUnknownSignals: true
 
             function onDefectListChanged() {
                 model.updateModel()

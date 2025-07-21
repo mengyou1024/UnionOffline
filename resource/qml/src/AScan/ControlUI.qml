@@ -571,7 +571,7 @@ ScrollView {
             Layout.margins: 2
             Layout.fillWidth: true
 
-            viewItem: aScanInteractor.scanViewHandler
+            viewItem: aScanInteractor ? (aScanInteractor.scanViewHandler ? aScanInteractor.scanViewHandler : null) : null
 
             onClearDefect: {
                 aScanInteractor.scanViewHandler.clearDefectList()
