@@ -22,31 +22,32 @@ class AScanInteractor : public QQuickItem {
     using _STD_TP    = std::chrono::system_clock::time_point;
     using ASCAN_TYPE = std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf>;
 
-    bool        m_replayVisible                         = false;
-    QString     m_date                                  = {};
-    int         m_softGain                              = {};
-    int         m_replayValue                           = {};
-    QQuickItem* m_chartView                             = nullptr;
-    QJsonArray  m_gateValue                             = {};
-    int         m_aScanCursor                           = 0;
-    int         m_aScanCursorMax                        = 0;
-    QString     m_distanceMode                          = "N";
-    bool        m_hasCameraImage                        = false;
-    bool        m_showRailWeldDigramSpecial             = false;
-    int         m_replayTimerInterval                   = 0;
-    bool        m_reportEnabled                         = true;
-    bool        m_dateEnabled                           = true;
-    bool        m_showCMP001Special                     = false;
-    ASCAN_TYPE  m_aScanIntf                             = {}; ///< A扫接口
-    bool        m_showBScanView                         = false;
-    bool        m_showCScanView                         = false;
-    QQuickItem* m_scanViewHandler                       = nullptr;
-    bool        m_softGainEnable                        = false;
-    QQuickItem* m_scanViewHandlerExtra                  = nullptr;
-    bool        m_isSetWorkpieceThicknessSpecialEnabled = false;
-    QVariant    m_workpieceThicknessSpecialValue        = QVariant::Invalid;
-    bool        m_enableOverWriteGate                   = false;
-    bool        m_bScanIsGateMode                       = false;
+    bool         m_replayVisible                         = false;
+    QString      m_date                                  = {};
+    int          m_softGain                              = {};
+    int          m_replayValue                           = {};
+    QQuickItem*  m_chartView                             = nullptr;
+    QJsonArray   m_gateValue                             = {};
+    int          m_aScanCursor                           = 0;
+    int          m_aScanCursorMax                        = 0;
+    QString      m_distanceMode                          = "N";
+    bool         m_hasCameraImage                        = false;
+    bool         m_showRailWeldDigramSpecial             = false;
+    int          m_replayTimerInterval                   = 0;
+    bool         m_reportEnabled                         = true;
+    bool         m_dateEnabled                           = true;
+    bool         m_showCMP001Special                     = false;
+    ASCAN_TYPE   m_aScanIntf                             = {}; ///< A扫接口
+    bool         m_showBScanView                         = false;
+    bool         m_showCScanView                         = false;
+    QQuickItem*  m_scanViewHandler                       = nullptr;
+    bool         m_softGainEnable                        = false;
+    QQuickItem*  m_scanViewHandlerExtra                  = nullptr;
+    bool         m_isSetWorkpieceThicknessSpecialEnabled = false;
+    QVariant     m_workpieceThicknessSpecialValue        = QVariant::Invalid;
+    bool         m_enableOverWriteGate                   = false;
+    bool         m_bScanIsGateMode                       = false;
+    QVariantList m_isGateEnable                          = {false, false};
 
     int                                     m_replaySpeed             = 0;
     bool                                    m_isPlaying               = false;
@@ -110,7 +111,7 @@ public:
     int                      seriesCount() const;
     Q_INVOKABLE QImage       getCameraImage(void) const;
     Q_INVOKABLE QVariantList getRailWeldDot(void) const;
-    Q_INVOKABLE bool         isGateEnable(int gate_idx) const;
+    bool                     isGateEnable(int gate_idx) const;
     Q_INVOKABLE void         drawGate(int gate_idx, qreal pos, qreal width, qreal height);
     Q_INVOKABLE QVariant     isNearGate(int x, int y, int w, int h, int threshold);
     Q_INVOKABLE void         drawGateDelta(int gate_idx, qreal pos, qreal width, qreal height);
@@ -167,6 +168,8 @@ public:
     void             setEnableOverWriteGate(bool newEnableOverWriteGate);
     bool             bScanIsGateMode() const;
     void             setBScanIsGateMode(bool newBScanIsGateMode);
+    QVariantList     isGateEnable() const;
+    void             setIsGateEnable(const QVariantList& newIsGateEnable);
 
 public slots:
     bool         reportExportClicked(QString fileName, QQuickItemGrabResult* img = nullptr);
@@ -213,6 +216,7 @@ signals:
     void enableOverWriteGateChanged();
     void bScanIsGateModeChanged();
     void pushDefectItem(QRect rect, double amp_value, QPoint amp_pt, QString h, QString a_max, QString region);
+    void isGateEnableChanged();
 
 private:
     void changeDataCursor(void);
@@ -248,4 +252,5 @@ private:
     Q_PROPERTY(QVariant workpieceThicknessSpecialValue READ workpieceThicknessSpecialValue WRITE setWorkpieceSpecialValue NOTIFY workpieceThicknessSpecialValueChanged FINAL)
     Q_PROPERTY(bool enableOverWriteGate READ enableOverWriteGate WRITE setEnableOverWriteGate NOTIFY enableOverWriteGateChanged FINAL)
     Q_PROPERTY(bool bScanIsGateMode READ bScanIsGateMode WRITE setBScanIsGateMode NOTIFY bScanIsGateModeChanged FINAL)
+    Q_PROPERTY(QVariantList isGateEnable READ isGateEnable WRITE setIsGateEnable NOTIFY isGateEnableChanged FINAL)
 };

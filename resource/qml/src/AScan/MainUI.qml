@@ -33,9 +33,6 @@ Rectangle {
         }]
 
     readonly property var gateIndexTable: ["amp", "↘", "→", "↓", "equi"]
-
-    property var gateEnable: [false, false]
-
     readonly property var gateTextColor: ["red", "#5b4bab"]
 
     ColumnLayout {
@@ -104,7 +101,7 @@ Rectangle {
                                                                                                      }),
                                                                                   "textColor": gateTextColor[gateIndex],
                                                                                   "visible": Qt.binding(() => {
-                                                                                                            return gateEnable[gateIndex]
+                                                                                                            return interactor.isGateEnable[gateIndex]
                                                                                                         })
                                                                               }))
                         let object_param = {
@@ -115,7 +112,7 @@ Rectangle {
                                                }),
                             "textColor": gateTextColor[gateIndex],
                             "visible": Qt.binding(() => {
-                                                      return gateEnable[gateIndex]
+                                                      return interactor.isGateEnable[gateIndex]
                                                   })
                         }
                         if (paramIndex === 4) {
@@ -129,7 +126,7 @@ Rectangle {
 
             CKeyValue {
                 Layout.alignment: Qt.AlignVCenter
-                visible: gateEnable[1]
+                visible: interactor.isGateEnable[1]
                 property real value_A: parseFloat(interactor.gateValue[0]["↓"])
                 property real value_B: parseFloat(interactor.gateValue[1]["↓"])
                 key: qsTr("B-A(↓)")
@@ -273,8 +270,6 @@ Rectangle {
                     img_popup.setImageAndZoomIn(interactor.getCameraImage(), 2)
                 }
             }
-            let _gateEnable = [interactor.isGateEnable(0), interactor.isGateEnable(1)]
-            gateEnable = _gateEnable
         }
 
         onReplayValueChanged: {
@@ -463,8 +458,7 @@ Rectangle {
             if (interactor.showRailWeldDigramSpecial) {
                 controlTarget.setRailWeldDot(interactor.getRailWeldDot())
             }
-            let _gateEnable = [interactor.isGateEnable(0), interactor.isGateEnable(1)]
-            gateEnable = _gateEnable
+
             showSuccessful(qsTr("打开成功"))
 
             controlTarget.replayVisible = Qt.binding(() => {

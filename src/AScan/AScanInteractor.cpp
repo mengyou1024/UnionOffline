@@ -349,6 +349,7 @@ void AScanInteractor::changeDataCursor() {
             updateQuadraticCurveSeries(QuadraticCurveSeriesType::AVG);
 
             // 5. 更新AScan图的波门信息显示
+            setIsGateEnable(QVariantList{isGateEnable(0), isGateEnable(1)});
             setGateValue(CreateGateValue());
             qCDebug(TAG) << "当前指针:" << getAScanCursor();
             qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint8_t>(0, 0)));
@@ -673,6 +674,7 @@ void AScanInteractor::updateOnDrawGate() {
             // 更新波门曲线
             updateGateSeries(aScanIntf()->getGate(getAScanCursor()));
             // 更新AScan图的波门信息显示
+            setIsGateEnable(QVariantList{isGateEnable(0), isGateEnable(1)});
             setGateValue(CreateGateValue());
             // 更新B扫或C扫
             if (bScanIsGateMode()) {
@@ -1038,6 +1040,17 @@ void AScanInteractor::setBScanIsGateMode(bool newBScanIsGateMode) {
     emit bScanIsGateModeChanged();
 }
 
+QVariantList AScanInteractor::isGateEnable() const {
+    return m_isGateEnable;
+}
+
+void AScanInteractor::setIsGateEnable(const QVariantList& newIsGateEnable) {
+    if (m_isGateEnable == newIsGateEnable)
+        return;
+    m_isGateEnable = newIsGateEnable;
+    emit isGateEnableChanged();
+}
+
 bool AScanInteractor::checkAScanCursorValid() {
     if (!std::cmp_greater(aScanIntf() ? aScanIntf()->getDataSize() : 0, getAScanCursorMax()) || !(getAScanCursorMax() >= 0)) {
         return false;
@@ -1155,6 +1168,7 @@ bool AScanInteractor::openFile(QString filename) {
         updateBOrCScanViewRange();
         updateExtraBScanView(true);
         updateExtraBScanViewRange();
+        setIsGateEnable(QVariantList{isGateEnable(0), isGateEnable(1)});
 
         // 最后更新A扫数据指针
         if (getAScanCursor() == 0) {
