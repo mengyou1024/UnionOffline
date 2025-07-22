@@ -68,6 +68,9 @@ AScanInteractor::AScanInteractor() {
 }
 
 AScanInteractor::~AScanInteractor() {
+    setScanViewHandler(nullptr);
+    setScanViewHandlerExtra(nullptr);
+
     disconnect(this, &AScanInteractor::aScanCursorChanged, this, &AScanInteractor::changeDataCursor);
     disconnect(this, &AScanInteractor::softGainChanged, this, &AScanInteractor::updateCurrentFrame);
     disconnect(this, &AScanInteractor::workpieceThicknessSpecialValueChanged, this, &AScanInteractor::onWorkpieceThicknessSpecialValueChanged);
@@ -170,15 +173,15 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
             }
         }
 
-        if (m_scanViewSp != nullptr) {
-            auto scan_view_image = m_scanViewSp->grabImage();
+        if (m_scanViewHandler) {
+            auto scan_view_image = m_scanViewHandler->grabImage();
             if (scan_view_image.has_value()) {
                 image_map.insert("ScanView", scan_view_image.value());
             }
         }
 
-        if (m_scanViewSpExtra != nullptr) {
-            auto scan_view_image = m_scanViewSpExtra->grabImage();
+        if (m_scanViewHandlerExtra != nullptr) {
+            auto scan_view_image = m_scanViewHandlerExtra->grabImage();
             if (scan_view_image.has_value()) {
                 image_map.insert("ScanViewExtra", scan_view_image.value());
             }
@@ -433,10 +436,10 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             const auto frame_per_row = cscan_spec->getCScanXDots();
             const auto frame_per_col = cscan_spec->getCScanYDots();
 
-            auto c_scan_sp = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+            auto c_scan_sp = qSharedPointerDynamicCast<Union::View::CScanView>(m_scanViewHandler);
             if (c_scan_sp == nullptr) {
-                c_scan_sp    = std::make_shared<Union::View::CScanView>();
-                m_scanViewSp = c_scan_sp;
+                c_scan_sp = QSharedPointer<Union::View::CScanView>::create();
+                setScanViewHandler(c_scan_sp);
             }
 
             std::vector<std::optional<uint8_t>> cscan_image;
@@ -458,16 +461,16 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             }
             c_scan_sp->replace(cscan_image, width, height, set_size);
 
-            setScanViewHandler(m_scanViewSp.get());
+            setScanViewHandler(c_scan_sp);
             setSoftGainEnable(true);
 
         } else if (showBScanView()) {
             const auto bscan_spec = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
             const auto mdata_spec = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
-            auto       b_scan_sp  = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
+            auto       b_scan_sp  = qSharedPointerDynamicCast<Union::View::BScanView>(m_scanViewHandler);
             if (b_scan_sp == nullptr) {
-                b_scan_sp    = std::make_shared<Union::View::BScanView>();
-                m_scanViewSp = b_scan_sp;
+                b_scan_sp = QSharedPointer<Union::View ::BScanView>::create();
+                setScanViewHandler(b_scan_sp);
             }
 
             std::vector<std::optional<uint8_t>> bscan_image;
@@ -504,10 +507,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
 
             b_scan_sp->replace(bscan_image, width, height, set_size);
 
-            m_scanViewSpExtra = nullptr;
             setScanViewHandlerExtra(nullptr);
-
-            setScanViewHandler(m_scanViewSp.get());
             setSoftGainEnable(true);
         } else {
             setScanViewHandler(nullptr);
@@ -529,7 +529,7 @@ void AScanInteractor::updateBOrCScanViewRange() {
     try {
         if (showCScanView()) {
             auto cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
-            auto c_scan_view = std::dynamic_pointer_cast<Union::View::CScanView>(m_scanViewSp);
+            auto c_scan_view = qSharedPointerDynamicCast<Union::View::CScanView>(m_scanViewHandler);
             if (c_scan_view && cscan_spec) {
                 const auto range_x = cscan_spec->getCScanRangeX();
                 const auto range_y = cscan_spec->getCScanRangeY();
@@ -539,7 +539,7 @@ void AScanInteractor::updateBOrCScanViewRange() {
 
         } else if (showBScanView()) {
             auto bscan_spec  = std::dynamic_pointer_cast<Special::BScanSpecial>(aScanIntf());
-            auto b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSp);
+            auto b_scan_view = qSharedPointerDynamicCast<Union::View::BScanView>(m_scanViewHandler);
             if (b_scan_view && bscan_spec) {
                 if (!bScanIsGateMode()) {
                     const auto range_start = aScanIntf()->getAxisBias(getAScanCursor());
@@ -572,10 +572,10 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
         if (showCScanView()) {
             const auto c_scan_spec = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
             const auto mdata_spec  = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
-            auto       b_scan_sp   = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
+            auto       b_scan_sp   = qSharedPointerDynamicCast<Union::View::BScanView>(m_scanViewHandlerExtra);
             if (b_scan_sp == nullptr) {
-                b_scan_sp         = std::make_shared<Union::View::BScanView>();
-                m_scanViewSpExtra = b_scan_sp;
+                b_scan_sp = QSharedPointer<Union::View::BScanView>::create();
+                setScanViewHandlerExtra(b_scan_sp);
             }
 
             std::vector<std::optional<uint8_t>> bscan_image;
@@ -615,11 +615,8 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
                 memcpy_s(dist_ptr, width * sizeof(std::optional<uint8_t>),
                          data.data(), std::ssize(data) * sizeof(std::optional<uint8_t>));
             }
-
             b_scan_sp->replace(bscan_image, width, height, set_size);
-            setScanViewHandlerExtra(m_scanViewSpExtra.get());
         } else {
-            m_scanViewSpExtra = nullptr;
             setScanViewHandlerExtra(nullptr);
         }
     } catch (std::exception& e) {
@@ -642,7 +639,7 @@ void AScanInteractor::updateExtraBScanViewRange() {
     try {
         // VARIFY: 更新C扫坐标轴
         auto       cscan_spec  = std::dynamic_pointer_cast<Special::CScanSpecial>(aScanIntf());
-        auto       b_scan_view = std::dynamic_pointer_cast<Union::View::BScanView>(m_scanViewSpExtra);
+        auto       b_scan_view = qSharedPointerDynamicCast<Union::View::BScanView>(m_scanViewHandlerExtra);
         const auto mdata_spec  = std::dynamic_pointer_cast<::Instance::UnType>(aScanIntf());
         if (b_scan_view && cscan_spec) {
             if (!bScanIsGateMode()) {
@@ -847,11 +844,11 @@ void AScanInteractor::setShowCMP001Special(bool newShowCMP001Special) {
     emit showCMP001SpecialChanged();
 }
 
-AScanInteractor::ASCAN_TYPE AScanInteractor::aScanIntf() const {
+AScanInteractor::AScanType AScanInteractor::aScanIntf() const {
     return m_aScanIntf;
 }
 
-void AScanInteractor::setAScanIntf(const ASCAN_TYPE& newAScanIntf) {
+void AScanInteractor::setAScanIntf(const AScanType& newAScanIntf) {
     if (m_aScanIntf == newAScanIntf)
         return;
     m_aScanIntf = newAScanIntf;
@@ -881,10 +878,10 @@ void AScanInteractor::setShowCScanView(bool newShowCScanView) {
 }
 
 QQuickItem* AScanInteractor::scanViewHandler() const {
-    return m_scanViewHandler;
+    return m_scanViewHandler.get();
 }
 
-void AScanInteractor::setScanViewHandler(QQuickItem* newScanViewHandler) {
+void AScanInteractor::setScanViewHandler(IScanViewPointer newScanViewHandler) {
     if (m_scanViewHandler == newScanViewHandler)
         return;
     m_scanViewHandler = newScanViewHandler;
@@ -903,10 +900,10 @@ void AScanInteractor::setSoftGainEnable(bool newSoftGainEnable) {
 }
 
 QQuickItem* AScanInteractor::scanViewHandlerExtra() const {
-    return m_scanViewHandlerExtra;
+    return m_scanViewHandlerExtra.get();
 }
 
-void AScanInteractor::setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra) {
+void AScanInteractor::setScanViewHandlerExtra(IScanViewPointer newScanViewHandlerExtra) {
     if (m_scanViewHandlerExtra == newScanViewHandlerExtra)
         return;
     m_scanViewHandlerExtra = newScanViewHandlerExtra;
@@ -1090,14 +1087,14 @@ bool AScanInteractor::openFile(QString filename) {
             return false;
         }
         try {
-            ASCAN_TYPE _tyy_ascan_type = nullptr;
+            AScanType ascan_type = nullptr;
             for (const auto& func : READ_FUNC.value()) {
-                _tyy_ascan_type = func(filename.toStdWString());
-                if (_tyy_ascan_type != nullptr) {
+                ascan_type = func(filename.toStdWString());
+                if (ascan_type != nullptr) {
                     break;
                 }
             }
-            setAScanIntf(_tyy_ascan_type);
+            setAScanIntf(ascan_type);
             emit aScanIntfChanged();
         } catch (std::exception& e) {
             qCCritical(TAG) << e.what();

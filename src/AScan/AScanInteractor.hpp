@@ -16,12 +16,15 @@
 #include <UnionType>
 
 class AScanInteractor : public QQuickItem {
+public:
+    using TimePoint        = std::chrono::system_clock::time_point;
+    using AScanType        = std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf>;
+    using IScanViewPointer = QSharedPointer<::Union::View::IScanView>;
+
     Q_OBJECT
     QML_ELEMENT
 
-    using _STD_TP    = std::chrono::system_clock::time_point;
-    using ASCAN_TYPE = std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf>;
-
+private:
     bool                 m_replayVisible                         = false;
     QString              m_date                                  = {};
     int                  m_softGain                              = {};
@@ -37,23 +40,21 @@ class AScanInteractor : public QQuickItem {
     bool                 m_reportEnabled                         = true;
     bool                 m_dateEnabled                           = true;
     bool                 m_showCMP001Special                     = false;
-    ASCAN_TYPE           m_aScanIntf                             = {}; ///< A扫接口
+    AScanType            m_aScanIntf                             = {}; ///< A扫接口
     bool                 m_showBScanView                         = false;
     bool                 m_showCScanView                         = false;
-    QPointer<QQuickItem> m_scanViewHandler                       = nullptr;
+    IScanViewPointer     m_scanViewHandler                       = nullptr;
     bool                 m_softGainEnable                        = false;
-    QPointer<QQuickItem> m_scanViewHandlerExtra                  = nullptr;
+    IScanViewPointer     m_scanViewHandlerExtra                  = nullptr;
     bool                 m_isSetWorkpieceThicknessSpecialEnabled = false;
     QVariant             m_workpieceThicknessSpecialValue        = QVariant::Invalid;
     bool                 m_enableOverWriteGate                   = false;
     bool                 m_bScanIsGateMode                       = false;
     QVariantList         m_isGateEnable                          = {false, false};
 
-    int                                     m_replaySpeed             = 0;
-    bool                                    m_isPlaying               = false;
-    _STD_TP                                 m_lastUpdateGateValueTime = std::chrono::system_clock::now();
-    std::shared_ptr<Union::View::IScanView> m_scanViewSp              = nullptr;
-    std::shared_ptr<Union::View::IScanView> m_scanViewSpExtra         = nullptr;
+    int       m_replaySpeed             = 0;
+    bool      m_isPlaying               = false;
+    TimePoint m_lastUpdateGateValueTime = std::chrono::system_clock::now();
 
     inline static constexpr auto ASCAN_SERIES_NAME = "AScan";
     inline static constexpr auto GATE_SERIES_NAME  = "Gate:%1";
@@ -148,18 +149,18 @@ public:
     void             setDateEnabled(bool newDateEnabled);
     bool             getShowCMP001Special() const;
     void             setShowCMP001Special(bool newShowCMP001Special);
-    ASCAN_TYPE       aScanIntf() const;
-    void             setAScanIntf(const ASCAN_TYPE& newAScanIntf);
+    AScanType        aScanIntf() const;
+    void             setAScanIntf(const AScanType& newAScanIntf);
     bool             showBScanView() const;
     void             setShowBScanView(bool newShowBScanView);
     bool             showCScanView() const;
     void             setShowCScanView(bool newShowCScanView);
     QQuickItem*      scanViewHandler() const;
-    void             setScanViewHandler(QQuickItem* newScanViewHandler);
+    void             setScanViewHandler(IScanViewPointer newScanViewHandler);
     bool             softGainEnable() const;
     void             setSoftGainEnable(bool newSoftGainEnable);
     QQuickItem*      scanViewHandlerExtra() const;
-    void             setScanViewHandlerExtra(QQuickItem* newScanViewHandlerExtra);
+    void             setScanViewHandlerExtra(IScanViewPointer newScanViewHandlerExtra);
     bool             isSetWorkpieceThicknessSpecialEnabled() const;
     void             setIsSetWorkpieceThicknessSpecialEnabled(bool newIsSetWorkpieceThicknessSpecialEnabled);
     QVariant         workpieceThicknessSpecialValue() const;
@@ -245,12 +246,14 @@ private:
     Q_PROPERTY(std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
     Q_PROPERTY(bool showBScanView READ showBScanView WRITE setShowBScanView NOTIFY showBScanViewChanged FINAL)
     Q_PROPERTY(bool showCScanView READ showCScanView WRITE setShowCScanView NOTIFY showCScanViewChanged FINAL)
-    Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler WRITE setScanViewHandler NOTIFY scanViewHandlerChanged FINAL)
+    Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler NOTIFY scanViewHandlerChanged FINAL)
     Q_PROPERTY(bool softGainEnable READ softGainEnable WRITE setSoftGainEnable NOTIFY softGainEnableChanged FINAL)
-    Q_PROPERTY(QQuickItem* scanViewHandlerExtra READ scanViewHandlerExtra WRITE setScanViewHandlerExtra NOTIFY scanViewHandlerExtraChanged FINAL)
+    Q_PROPERTY(QQuickItem* scanViewHandlerExtra READ scanViewHandlerExtra NOTIFY scanViewHandlerExtraChanged FINAL)
     Q_PROPERTY(bool isSetWorkpieceThicknessSpecialEnabled READ isSetWorkpieceThicknessSpecialEnabled WRITE setIsSetWorkpieceThicknessSpecialEnabled NOTIFY isSetWorkpieceThicknessSpecialEnabledChanged FINAL)
     Q_PROPERTY(QVariant workpieceThicknessSpecialValue READ workpieceThicknessSpecialValue WRITE setWorkpieceSpecialValue NOTIFY workpieceThicknessSpecialValueChanged FINAL)
     Q_PROPERTY(bool enableOverWriteGate READ enableOverWriteGate WRITE setEnableOverWriteGate NOTIFY enableOverWriteGateChanged FINAL)
     Q_PROPERTY(bool bScanIsGateMode READ bScanIsGateMode WRITE setBScanIsGateMode NOTIFY bScanIsGateModeChanged FINAL)
     Q_PROPERTY(QVariantList isGateEnable READ isGateEnable WRITE setIsGateEnable NOTIFY isGateEnableChanged FINAL)
 };
+
+Q_DECLARE_METATYPE(QSharedPointer<::Union::View::IScanView>);
