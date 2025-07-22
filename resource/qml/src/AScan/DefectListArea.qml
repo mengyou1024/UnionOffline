@@ -24,7 +24,18 @@ CArea {
 
         Connections {
             target: aScanInteractor ? aScanInteractor.scanViewHandler : null
-            enabled: aScanInteractor ? (aScanInteractor.scanViewHandler ? aScanInteractor.scanViewHandler : false) : false
+            enabled: aScanInteractor ? aScanInteractor.showBScanView : false
+            ignoreUnknownSignals: true
+
+            function onDefectListChanged() {
+                model.updateModel()
+                combobox.currentIndex = model.defectCount - 1
+            }
+        }
+
+        Connections {
+            target: aScanInteractor ? aScanInteractor.scanViewHandlerExtra : null
+            enabled: aScanInteractor ? aScanInteractor.showCScanView : false
             ignoreUnknownSignals: true
 
             function onDefectListChanged() {

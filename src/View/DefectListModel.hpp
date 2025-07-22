@@ -48,35 +48,29 @@ namespace Union::Model {
         QQuickItem*            viewItem() const;
         void                   setViewItem(QQuickItem* newViewItem);
 
-        int    defectCount() const;
-        void   setDefectCount(int newDefectCount);
-        int    currentIndex() const;
-        void   setCurrentIndex(int newCurrentIndex);
-        double horLen() const;
-        void   setHorLen(double newHorLen);
-        double verLen() const;
-        void   setVerLen(double newVerLen);
-        double ampValue() const;
-        void   setAmpValue(double newAmpValue);
-        double ampX() const;
-        void   setAmpX(double newAmpX);
-        double ampY() const;
-        void   setAmpY(double newAmpY);
-
-        void updateParam();
-
-        double s1() const;
-        void   setS1(double newS1);
-
-        double s2() const;
-        void   setS2(double newS2);
-
+        int     defectCount() const;
+        void    setDefectCount(int newDefectCount);
+        int     currentIndex() const;
+        void    setCurrentIndex(int newCurrentIndex);
+        double  horLen() const;
+        void    setHorLen(double newHorLen);
+        double  verLen() const;
+        void    setVerLen(double newVerLen);
+        double  ampValue() const;
+        void    setAmpValue(double newAmpValue);
+        double  ampX() const;
+        void    setAmpX(double newAmpX);
+        double  ampY() const;
+        void    setAmpY(double newAmpY);
+        void    updateParam();
+        double  s1() const;
+        void    setS1(double newS1);
+        double  s2() const;
+        void    setS2(double newS2);
         QString h() const;
         void    setH(const QString& newH);
-
         QString aMax() const;
         void    setAMax(const QString& newAMax);
-
         QString area() const;
         void    setArea(const QString& newArea);
 
@@ -92,15 +86,10 @@ namespace Union::Model {
         void ampValueChanged();
         void ampXChanged();
         void ampYChanged();
-
         void s1Changed();
-
         void s2Changed();
-
         void hChanged();
-
         void aMaxChanged();
-
         void areaChanged();
 
     private:

@@ -171,17 +171,21 @@ Rectangle {
                 Layout.fillHeight: true
                 Layout.leftMargin: -10
 
-                visible: interactor.scanViewHandlerExtra
+                visible: interactor.showCScanView
 
                 Connections {
                     target: interactor.scanViewHandlerExtra
-                    enabled: interactor.scanViewHandlerExtra
+                    enabled: interactor.showCScanView
                     ignoreUnknownSignals: true
 
                     function onDataCursorChanged() {
                         interactor.aScanCursor = interactor.scanViewHandler.toIntDataCursor(
                                     Qt.point(interactor.scanViewHandlerExtra.imagePoint.y,
                                              interactor.scanViewHandler.imagePoint.y))
+                    }
+
+                    function onBoxSelected(pt) {
+                        interactor.boxSelected(pt)
                     }
                 }
 
@@ -213,14 +217,8 @@ Rectangle {
             visible: interactor ? interactor.scanViewHandler : false
 
             Connections {
-                target: interactor.scanViewHandlerExtra
-                enabled: interactor.scanViewHandlerExtra
-                ignoreUnknownSignals: true
-            }
-
-            Connections {
                 target: interactor.scanViewHandler
-                enabled: interactor.scanViewHandler
+                enabled: interactor.showBScanView || interactor.showCScanView
                 ignoreUnknownSignals: true
 
                 function onDataCursorChanged() {
@@ -228,7 +226,9 @@ Rectangle {
                 }
 
                 function onBoxSelected(pt) {
-                    interactor.boxSelected(pt)
+                    if (interactor.showBScanView) {
+                        interactor.boxSelected(pt)
+                    }
                 }
             }
 
@@ -249,7 +249,11 @@ Rectangle {
 
                 function onPushDefectItem(rect, amp, pt, h, a_max, region) {
                     try {
-                        interactor.scanViewHandler.pushDefectItem(rect, amp, pt, h, a_max, region)
+                        if (interactor.showBScanView) {
+                            interactor.scanViewHandler.pushDefectItem(rect, amp, pt, h, a_max, region)
+                        } else if (interactor.showCScanView) {
+                            interactor.scanViewHandlerExtra.pushDefectItem(rect, amp, pt, h, a_max, region)
+                        }
                     } catch (e) {
                         console.debug(e)
                     }

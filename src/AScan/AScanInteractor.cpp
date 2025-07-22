@@ -505,7 +505,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             b_scan_sp->replace(bscan_image, width, height, set_size);
 
             m_scanViewSpExtra = nullptr;
-            setScanViewHandlerExtra(m_scanViewSpExtra.get());
+            setScanViewHandlerExtra(nullptr);
 
             setScanViewHandler(m_scanViewSp.get());
             setSoftGainEnable(true);
@@ -580,9 +580,10 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
 
             std::vector<std::optional<uint8_t>> bscan_image;
             // 获取当前行的B扫数据游标
-            const auto line_width           = mdata_spec->getCScanXDots();
-            const auto line_count           = getAScanCursor() / line_width;
-            auto       extra_b_scan_cursors = std::views::iota(line_count * line_width, (line_count + 1) * line_width);
+            const auto line_width = mdata_spec->getCScanXDots();
+            const auto line_count = getAScanCursor() / line_width;
+            mdata_spec->setExtraBScanLine(line_count);
+            auto extra_b_scan_cursors = std::views::iota(line_count * line_width, (line_count + 1) * line_width);
 
             int width                         = 0;
             auto&& [min_encoder, max_encoder] = mdata_spec->getBScanMinMaxXEncoderValue();
@@ -619,7 +620,7 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             setScanViewHandlerExtra(m_scanViewSpExtra.get());
         } else {
             m_scanViewSpExtra = nullptr;
-            setScanViewHandlerExtra(m_scanViewSpExtra.get());
+            setScanViewHandlerExtra(nullptr);
         }
     } catch (std::exception& e) {
         qCCritical(TAG) << e.what();

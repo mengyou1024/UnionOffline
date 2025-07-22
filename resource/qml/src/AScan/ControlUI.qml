@@ -567,22 +567,65 @@ ScrollView {
         }
 
         DefectListArea {
-            visible: aScanInteractor ? aScanInteractor.showBScanView : false
+
+            visible: {
+                if (!aScanInteractor) {
+                    return false
+                }
+
+                if (aScanInteractor.showBScanView || aScanInteractor.showCScanView) {
+                    return true
+                }
+                return false
+            }
+
             Layout.margins: 2
             Layout.fillWidth: true
 
-            viewItem: aScanInteractor ? (aScanInteractor.scanViewHandler ? aScanInteractor.scanViewHandler : null) : null
+            viewItem: {
+                if (!aScanInteractor) {
+                    return null
+                }
+
+                if (aScanInteractor.showBScanView && aScanInteractor.scanViewHandler) {
+                    return aScanInteractor.scanViewHandler
+                }
+
+                if (aScanInteractor.showCScanView && aScanInteractor.scanViewHandlerExtra) {
+                    return aScanInteractor.scanViewHandlerExtra
+                }
+
+                return null
+            }
 
             onClearDefect: {
-                aScanInteractor.scanViewHandler.clearDefectList()
+                if (aScanInteractor.showBScanView) {
+                    aScanInteractor.scanViewHandler.clearDefectList()
+                }
+
+                if (aScanInteractor.showCScanView) {
+                    aScanInteractor.scanViewHandlerExtra.clearDefectList()
+                }
             }
 
             onDeleteDefect: idx => {
-                                aScanInteractor.scanViewHandler.delectDefectItem(idx)
+                                if (aScanInteractor.showBScanView) {
+                                    aScanInteractor.scanViewHandler.delectDefectItem(idx)
+                                }
+
+                                if (aScanInteractor.showCScanView) {
+                                    aScanInteractor.scanViewHandlerExtra.delectDefectItem(idx)
+                                }
                             }
 
             onLocateDefect: idx => {
-                                aScanInteractor.scanViewHandler.locateToDefect(idx)
+                                if (aScanInteractor.showBScanView) {
+                                    aScanInteractor.scanViewHandler.locateToDefect(idx)
+                                }
+
+                                if (aScanInteractor.showCScanView) {
+                                    aScanInteractor.scanViewHandlerExtra.locateToDefect(idx)
+                                }
                             }
         }
     }

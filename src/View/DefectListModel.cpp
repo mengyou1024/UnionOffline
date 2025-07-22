@@ -120,6 +120,11 @@ namespace Union::Model {
             setAmpValue(0);
             setAmpX(0);
             setAmpY(0);
+            setS1(KeepDecimals<1>(0.0));
+            setS2(KeepDecimals<1>(0.0));
+            setH("");
+            setAMax("");
+            setArea("");
             return;
         }
 
