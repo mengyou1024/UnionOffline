@@ -99,6 +99,14 @@ CArea {
         }
 
         Text {
+            text: qsTr("偏离焊缝中心q:")
+        }
+
+        Text {
+            text: model.q
+        }
+
+        Text {
             text: qsTr("当量Amax")
         }
 

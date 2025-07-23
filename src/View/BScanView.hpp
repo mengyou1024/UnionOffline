@@ -22,6 +22,7 @@ namespace Union::View {
         QString h      = {};
         QString a_max  = {};
         QString region = {};
+        QString q      = {};
     };
 
     class BScanView : public IScanView {
@@ -38,7 +39,7 @@ namespace Union::View {
         BScanView();
         ~BScanView() override;
 
-        Q_INVOKABLE void pushDefectItem(QRect region, double max_amp, QPoint pos, QString h, QString a_max, QString area);
+        Q_INVOKABLE void pushDefectItem(QRect region, double max_amp, QPoint pos, QString h, QString a_max, QString area, QString q);
         Q_INVOKABLE void clearDefectList();
         Q_INVOKABLE void delectDefectItem(int idx);
         Q_INVOKABLE void locateToDefect(int idx);

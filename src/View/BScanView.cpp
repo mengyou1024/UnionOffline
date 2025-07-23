@@ -50,7 +50,7 @@ namespace Union::View {
         disconnect(this, &BScanView::heightChanged, this, nullptr);
     }
 
-    void BScanView::pushDefectItem(QRect region, double max_amp, QPoint pos, QString h, QString a_max, QString area) {
+    void BScanView::pushDefectItem(QRect region, double max_amp, QPoint pos, QString h, QString a_max, QString area, QString q) {
         auto defect_top_left     = raw_image_pos_to_defect_mask_pos(region.topLeft());
         auto defect_bottom_right = raw_image_pos_to_defect_mask_pos(region.bottomRight());
 
@@ -73,10 +73,10 @@ namespace Union::View {
                                              ver_len,
                                              max_amp,
                                              amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value()),
-                                             s1, s2, h, a_max, area});
+                                             s1, s2, h, a_max, area, q});
 
         qCDebug(TAG) << DefectItem{hor_len, ver_len, max_amp, amp_pos, QRect(defect_top_left.value(), defect_bottom_right.value()),
-                                   s1, s2, h, a_max, area};
+                                   s1, s2, h, a_max, area, q};
 
         update();
 

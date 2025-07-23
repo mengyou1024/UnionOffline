@@ -247,12 +247,12 @@ Rectangle {
                     }
                 }
 
-                function onPushDefectItem(rect, amp, pt, h, a_max, region) {
+                function onPushDefectItem(rect, amp, pt, h, a_max, region, q) {
                     try {
                         if (interactor.showBScanView) {
-                            interactor.scanViewHandler.pushDefectItem(rect, amp, pt, h, a_max, region)
+                            interactor.scanViewHandler.pushDefectItem(rect, amp, pt, h, a_max, region, q)
                         } else if (interactor.showCScanView) {
-                            interactor.scanViewHandlerExtra.pushDefectItem(rect, amp, pt, h, a_max, region)
+                            interactor.scanViewHandlerExtra.pushDefectItem(rect, amp, pt, h, a_max, region, q)
                         }
                     } catch (e) {
                         console.debug(e)

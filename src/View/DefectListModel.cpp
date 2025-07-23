@@ -125,6 +125,7 @@ namespace Union::Model {
             setH("");
             setAMax("");
             setArea("");
+            setQ("");
             return;
         }
 
@@ -138,6 +139,7 @@ namespace Union::Model {
         setH(_defect_list.at(currentIndex()).h);
         setAMax(_defect_list.at(currentIndex()).a_max);
         setArea(_defect_list.at(currentIndex()).region);
+        setQ(_defect_list.at(currentIndex()).q);
     }
 
     double DefectListModel::s1() const {
@@ -195,6 +197,17 @@ namespace Union::Model {
         emit areaChanged();
     }
 
+    QString DefectListModel::q() const {
+        return m_q;
+    }
+
+    void DefectListModel::setQ(const QString& newQ) {
+        if (m_q == newQ)
+            return;
+        m_q = newQ;
+        emit qChanged();
+    }
+
     int DefectListModel::rowCount(const QModelIndex&) const {
         return std::ssize(_defect_list);
     }
@@ -235,6 +248,9 @@ namespace Union::Model {
             case AREA: {
                 return _defect_list.at(row).region;
             }
+            case Q: {
+                return _defect_list.at(row).q;
+            }
             default: {
                 break;
             }
@@ -253,7 +269,8 @@ namespace Union::Model {
             {S2,        "defect_s2"       },
             {H,         "defect_h"        },
             {A_MAX,     "defect_a_max"    },
-            {AREA,      "defect_AREA"     },
+            {AREA,      "defect_area"     },
+            {Q,         "defect_q"        },
         };
     }
 

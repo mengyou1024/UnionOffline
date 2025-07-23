@@ -216,7 +216,7 @@ signals:
     void workpieceThicknessSpecialValueChanged();
     void enableOverWriteGateChanged();
     void bScanIsGateModeChanged();
-    void pushDefectItem(QRect rect, double amp_value, QPoint amp_pt, QString h, QString a_max, QString region);
+    void pushDefectItem(QRect rect, double amp_value, QPoint amp_pt, QString h, QString a_max, QString region, QString q);
     void isGateEnableChanged();
 
 private:

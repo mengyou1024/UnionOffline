@@ -27,6 +27,7 @@ namespace Union::Model {
         QString m_h            = {};
         QString m_aMax         = {};
         QString m_area         = {};
+        QString m_q            = {};
 
     public:
         enum RoleEnum {
@@ -40,6 +41,7 @@ namespace Union::Model {
             H         = 7,
             A_MAX     = 8,
             AREA      = 9,
+            Q         = 10,
         };
 
         int                    rowCount(const QModelIndex& = QModelIndex()) const override;
@@ -74,6 +76,9 @@ namespace Union::Model {
         QString area() const;
         void    setArea(const QString& newArea);
 
+        QString q() const;
+        void    setQ(const QString& newQ);
+
     public slots:
         void updateModel();
 
@@ -92,6 +97,8 @@ namespace Union::Model {
         void aMaxChanged();
         void areaChanged();
 
+        void qChanged();
+
     private:
         std::vector<View::DefectItem> _defect_list = {};
         QPointer<View::BScanView>     _view        = nullptr;
@@ -109,5 +116,6 @@ namespace Union::Model {
         Q_PROPERTY(QString h READ h WRITE setH NOTIFY hChanged FINAL)
         Q_PROPERTY(QString aMax READ aMax WRITE setAMax NOTIFY aMaxChanged FINAL)
         Q_PROPERTY(QString area READ area WRITE setArea NOTIFY areaChanged FINAL)
+        Q_PROPERTY(QString q READ q WRITE setQ NOTIFY qChanged FINAL)
     };
 } // namespace Union::Model
