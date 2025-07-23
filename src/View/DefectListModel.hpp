@@ -75,7 +75,6 @@ namespace Union::Model {
         void    setAMax(const QString& newAMax);
         QString area() const;
         void    setArea(const QString& newArea);
-
         QString q() const;
         void    setQ(const QString& newQ);
 
@@ -96,7 +95,6 @@ namespace Union::Model {
         void hChanged();
         void aMaxChanged();
         void areaChanged();
-
         void qChanged();
 
     private:
