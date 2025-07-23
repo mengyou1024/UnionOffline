@@ -66,8 +66,8 @@ namespace Union::View {
 
         auto hor_len = map_to_show_hor_value(defect_bottom_right->x()) - map_to_show_hor_value(defect_top_left->x());
         auto amp_pos = QPointF(map_to_show_hor_value(local_pos->x()), map_to_show_ver_value(local_pos->y()));
-        auto s1      = KeepDecimals<1>(map_to_show_ver_value(defect_top_left->y()));
-        auto s2      = KeepDecimals<1>(map_to_show_ver_value(defect_bottom_right->y()));
+        auto s1      = KeepDecimals<1>(map_to_show_ver_value(local_top_left->y()));
+        auto s2      = KeepDecimals<1>(map_to_show_ver_value(local_bottom_right->y()));
         auto ver_len = s2 - s1;
         defect_list_.emplace_back(DefectItem{hor_len,
                                              ver_len,
