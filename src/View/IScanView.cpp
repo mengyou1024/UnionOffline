@@ -1354,6 +1354,10 @@ namespace Union::View {
             return std::nullopt;
         }
 
+        if (drawable().width() >= image_visable_->width() / 2.0) {
+            return QPoint(std::ceil(x), std::ceil(y));
+        }
+
         return QPoint(x, y);
     }
 
@@ -1377,10 +1381,25 @@ namespace Union::View {
         const int view_pt_x = pt.x() - x_bias;
         const int view_pt_y = pt.y() - y_bias;
 
-        const auto x = drawable().left() + view_pt_x * (drawable_size().width() / static_cast<double>(image_visable_->width()));
-        const auto y = view_pt_y * (drawable_size().height() / static_cast<double>(image_visable_->height()));
+        double x = 0, y = 0;
 
-        return QPoint(x, y);
+        if (drawable_size().width() == image_visable_->width()) {
+            x = drawable().left() + view_pt_x;
+        } else if (drawable_size().width() > image_visable_->width()) {
+            x = drawable().left() + (view_pt_x + 0.5) * (drawable_size().width() / static_cast<double>(image_visable_->width()));
+        } else {
+            x = drawable().left() + view_pt_x * (drawable_size().width() / static_cast<double>(image_visable_->width()));
+        }
+
+        if (drawable_size().height() == image_visable_->height()) {
+            y = view_pt_y;
+        } else if (drawable_size().height() > image_visable_->height()) {
+            y = (view_pt_y + 0.5) * (drawable_size().height() / static_cast<double>(image_visable_->height()));
+        } else {
+            y = view_pt_y * (drawable_size().height() / static_cast<double>(image_visable_->height()));
+        }
+
+        return QPoint(std::ceil(x), std::ceil(y));
     }
 
 } // namespace Union::View

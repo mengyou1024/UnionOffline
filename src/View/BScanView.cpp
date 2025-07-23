@@ -138,7 +138,7 @@ namespace Union::View {
         // 2. 调整红色测量线的位置
         auto x = ValueMap(defect_list_.at(idx).pos.x(), drawable_hor_range(), horShowRange());
         auto y = ValueMap(defect_list_.at(idx).pos.y(), drawable_ver_range(), verShowRange());
-        setMeasuringPointRed(QPoint(KeepDecimals<0>(x), KeepDecimals<0>(y)));
+        setMeasuringPointRed(QPoint(std::ceil(x), std::ceil(y)));
     }
 
     void BScanView::replace(const std::vector<std::optional<uint8_t>>& data, int width, int height, bool set_size) noexcept {
