@@ -153,10 +153,7 @@ bool AScanInteractor::reportExportClicked(QString _fileName, QQuickItemGrabResul
         const auto is_rail_weld_t8  = mdat_type != nullptr && !mdat_type->isCMP001IsNullptr(getAScanCursor());
         if (is_rail_weld_390 || is_rail_weld_t8) {
             // 钢轨特化版本(390、T8)
-            excel_template = "excel_templates/AScan/T_报表生成_RailWeldSpecial.xlsx";
-        } else if (std::dynamic_pointer_cast<Special::CameraImageSpecial>(aScanIntf())) {
-            // 390N/T8带摄像头
-            excel_template = "excel_templates/AScan/T_报表生成_CameraImageSpecial.xlsx";
+            excel_template = "excel_templates/AScan/T_报表生成(钢轨焊缝).xlsx";
         }
 
         QMap<QString, QImage> image_map = {};
