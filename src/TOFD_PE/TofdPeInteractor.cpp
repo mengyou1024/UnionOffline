@@ -178,7 +178,7 @@ namespace TofdPe {
     }
 
     bool TofdPeInteractor::reportExport(QString filePath, QQuickItemGrabResult* img) const {
-        using Union::UniversalApparatus::TofdPe::TofdPeIntf;
+        using Union::UniversalApparatus::TofdPe::ITofdPeIntf;
         qCDebug(TAG) << "reportExport, filePath:" << filePath;
         if (!m_file.isEmpty() || m_data == nullptr) {
             QVariantMap map = {
@@ -193,7 +193,7 @@ namespace TofdPe {
                 {"ChannelParam", "(发射1 接收1)"},
                 {"PCS", QString::number(m_data->getPCS(), 'f', 1) + "mm"},
                 {"TofdGain", QString::number(m_data->getTofdGain(), 'f', 1) + "dB"},
-                {"TofdRange", QString::number(TofdPeIntf::mm2us(m_data->getTofdRange()), 'f', 1) + "μs"},
+                {"TofdRange", QString::number(ITofdPeIntf::mm2us(m_data->getTofdRange()), 'f', 1) + "μs"},
                 {"TofdDelay", QString::number(m_data->getTofdDelay(), 'f', 1) + "μs"},
                 {"FilterBand", m_data->getFilterBand()},
                 {"DetectionMode", m_data->getDetectionMode()},
@@ -223,11 +223,11 @@ namespace TofdPe {
         return false;
     }
 
-    const std::vector<uint8_t>& TofdPeInteractor::getTofdData() const {
+    AScanSpan TofdPeInteractor::getTofdData() const {
         return m_data->getTofdData();
     }
 
-    const std::vector<uint8_t>& TofdPeInteractor::getPeData() const {
+    AScanSpan TofdPeInteractor::getPeData() const {
         return m_data->getPeData();
     }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <AScanSpan.hpp>
 #include <QChartView>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -12,14 +13,14 @@
 #include <QTimer>
 #include <UnionType>
 #include <memory>
-#include <vector>
 
 namespace TofdPe {
+    using namespace ::Union::BasicType;
     class TofdPeInteractor : public QQuickItem {
         Q_OBJECT
         QML_ELEMENT
 
-        using DATA_PTR        = std::unique_ptr<Union::UniversalApparatus::TofdPe::TofdPeIntf>;
+        using DATA_PTR        = std::unique_ptr<Union::UniversalApparatus::TofdPe::ITofdPeIntf>;
         using ADJUST_FUNC     = std::optional<std::function<double(double)>>;
         using VAXIS_ZERO_FUNC = std::optional<std::function<double(void)>>;
 
@@ -40,8 +41,8 @@ namespace TofdPe {
         Q_INVOKABLE int               getSubLines() const;
         Q_INVOKABLE int               getMaxLines() const;
         Q_INVOKABLE bool              reportExport(QString filePath, QQuickItemGrabResult* img = nullptr) const;
-        const std::vector<uint8_t>&   getTofdData() const;
-        const std::vector<uint8_t>&   getPeData() const;
+        AScanSpan                     getTofdData() const;
+        AScanSpan                     getPeData() const;
         Q_INVOKABLE qreal             getDelay() const;
         Q_INVOKABLE qreal             getRange() const;
         Q_INVOKABLE qreal             getSubRange() const;

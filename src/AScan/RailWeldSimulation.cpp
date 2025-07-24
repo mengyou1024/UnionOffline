@@ -1,5 +1,5 @@
 #include "RailWeldSimulation.hpp"
-#include <AScanType.hpp>
+#include <IAScanIntf.hpp>
 #include <MDATType.hpp>
 #include <QBrush>
 #include <QLoggingCategory>
@@ -145,7 +145,7 @@ namespace Union::AScan::RailWeld {
 
     void RailWeldSimulation::cursorChanged(int idx, double soft_gain) {
         using namespace Union::UniversalApparatus::AScan::Instance;
-        auto ascan_intf = ascanIntf().value<std::shared_ptr<Union::UniversalApparatus::AScan::AScanIntf>>();
+        auto ascan_intf = ascanIntf().value<std::shared_ptr<Union::UniversalApparatus::AScan::IAScanIntf>>();
         auto intf       = std::dynamic_pointer_cast<UnType>(ascan_intf);
         if (intf == nullptr || !intf->isSpecial001Enabled(idx)) {
             qCDebug(TAG) << "intf is nullptr or feature CMP001 is not enable";

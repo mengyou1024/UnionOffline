@@ -483,10 +483,14 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             std::ranges::fill(bscan_image, std::nullopt);
 
             for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-                auto data = mdata_spec->getDataOrDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
-                                return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
-                            }) |
-                            std::ranges::to<std::vector<std::optional<uint8_t>>>();
+                auto data = std::visit(
+                    [&, this](auto&& data_in_gate) {
+                        return data_in_gate | std::views::transform([this](auto&& val) {
+                                   return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
+                               }) |
+                               std::ranges::to<std::vector<std::optional<uint8_t>>>();
+                    },
+                    mdata_spec->getDataOrDataInGate(idx, 0));
 
                 auto       frame   = bscan_spec->getBScanEncoder(idx);
                 const auto img_idx = width * frame;
@@ -497,7 +501,7 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
 
                 auto dist_ptr = bscan_image.begin() + img_idx;
 
-                for (auto i : std::views::iota(0, std::min<int>(width, std::ssize(data)))) {
+                for (auto i : std::views::iota(0, std::min<int>(width, static_cast<int>(data.size())))) {
                     *(dist_ptr + i) = data.at(i);
                 }
             }
@@ -596,10 +600,14 @@ void AScanInteractor::updateExtraBScanView(bool set_size) {
             std::ranges::fill(bscan_image, std::nullopt);
 
             for (auto idx : extra_b_scan_cursors) {
-                auto data = mdata_spec->getDataOrDataInGate(idx, 0) | std::views::transform([this](auto&& val) {
-                                return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
-                            }) |
-                            std::ranges::to<std::vector<std::optional<uint8_t>>>();
+                auto data = std::visit(
+                    [&](auto&& data) {
+                        return data | std::views::transform([this](auto&& val) {
+                                   return std::min<double>(std::numeric_limits<uint8_t>::max(), CalculateGainOutput(val, getSoftGain()));
+                               }) |
+                               std::ranges::to<std::vector<std::optional<uint8_t>>>();
+                    },
+                    mdata_spec->getDataOrDataInGate(idx, 0));
 
                 auto       frame   = mdata_spec->getBScanEncoder(idx);
                 const auto img_idx = width * frame;

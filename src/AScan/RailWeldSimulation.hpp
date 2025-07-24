@@ -1,6 +1,6 @@
 #pragma once
 
-#include <AScanType.hpp>
+#include <IAScanIntf.hpp>
 #include <QQuickPaintedItem>
 #include <QSemaphore>
 

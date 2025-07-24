@@ -199,7 +199,7 @@ namespace TofdPe {
             for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
                 auto index_x = static_cast<int>(x) + static_cast<int>(intr()->tofdSpace());
                 if (std::cmp_less(index_x, intr()->getLines()) && std::cmp_greater_equal(index_x, 0)) {
-                    auto bias    = static_cast<int>(intr()->getTofdData()[index_x * intr()->getAScanSize() + y]) - 128;
+                    auto bias    = static_cast<int>(intr()->getTofdData()[index_x * intr()->getAScanSize() + y].value_or(0)) - 128;
                     auto newBias = CalculateGainOutput((double)bias, softGain());
                     if (newBias > 72) {
                         newBias = 72;
@@ -227,7 +227,7 @@ namespace TofdPe {
             for (uint32_t y = 0; std::cmp_less(y, intr()->getAScanSize()); y++) {
                 auto index_x = static_cast<int>(x) + static_cast<int>(intr()->peSpace());
                 if (std::cmp_less(index_x, intr()->getSubLines()) && std::cmp_greater_equal(index_x, 0)) {
-                    auto    _t   = CalculateGainOutput((double)intr()->getPeData()[index_x * intr()->getAScanSize() + y], softGain());
+                    auto    _t   = CalculateGainOutput((double)intr()->getPeData()[index_x * intr()->getAScanSize() + y].value_or(0), softGain());
                     uint8_t gray = 0;
                     if (_t > 255.0) {
                         gray = 255;
@@ -335,7 +335,7 @@ namespace TofdPe {
                 return std::nullopt;
             }
             std::vector<uint8_t> data = {};
-            const std::span      data_ptr(intr()->getTofdData().begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
+            const std::span      data_ptr(intr()->getTofdData().to_u8_span().value_or({}).begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto temp    = data_ptr[i];
                 auto bias    = static_cast<int>(temp) - 128;
@@ -358,7 +358,7 @@ namespace TofdPe {
                 return std::nullopt;
             }
             std::vector<uint8_t> data = {};
-            const std::span      data_ptr(intr()->getPeData().begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
+            const std::span      data_ptr(intr()->getPeData().to_u8_span().value_or({}).begin() + (intr()->getAScanSize() * _cursor), intr()->getAScanSize());
             for (auto i = 0; std::cmp_less(i, intr()->getAScanSize()); i++) {
                 auto  raw    = data_ptr[i];
                 auto  _t     = CalculateGainOutput((double)raw, softGain());

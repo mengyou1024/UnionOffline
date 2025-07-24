@@ -18,7 +18,7 @@
 class AScanInteractor : public QQuickItem {
 public:
     using TimePoint        = std::chrono::system_clock::time_point;
-    using AScanType        = std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf>;
+    using AScanType        = std::shared_ptr<::Union::UniversalApparatus::AScan::IAScanIntf>;
     using IScanViewPointer = QSharedPointer<::Union::View::IScanView>;
 
     Q_OBJECT
@@ -243,7 +243,7 @@ private:
     Q_PROPERTY(bool reportEnabled READ getReportEnabled WRITE setReportEnabled NOTIFY reportEnabledChanged FINAL)
     Q_PROPERTY(bool dateEnabled READ getDateEnabled WRITE setDateEnabled NOTIFY dateEnabledChanged FINAL)
     Q_PROPERTY(bool showCMP001Special READ getShowCMP001Special WRITE setShowCMP001Special NOTIFY showCMP001SpecialChanged FINAL)
-    Q_PROPERTY(std::shared_ptr<::Union::UniversalApparatus::AScan::AScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
+    Q_PROPERTY(std::shared_ptr<::Union::UniversalApparatus::AScan::IAScanIntf> aScanIntf READ aScanIntf WRITE setAScanIntf NOTIFY aScanIntfChanged FINAL)
     Q_PROPERTY(bool showBScanView READ showBScanView WRITE setShowBScanView NOTIFY showBScanViewChanged FINAL)
     Q_PROPERTY(bool showCScanView READ showCScanView WRITE setShowCScanView NOTIFY showCScanViewChanged FINAL)
     Q_PROPERTY(QQuickItem* scanViewHandler READ scanViewHandler NOTIFY scanViewHandlerChanged FINAL)
