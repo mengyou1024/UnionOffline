@@ -1424,7 +1424,7 @@ void AScanInteractor::updateQuadraticCurveSeries(QuadraticCurveSeriesType type) 
             lines[i]->attachedAxes().at(0)->setMin(0.0);
             lines[i]->attachedAxes().at(0)->setMax(aScanIntf()->getScanData(getAScanCursor()).size() - 1);
             lines[i]->attachedAxes().at(1)->setMin(0.0);
-            lines[i]->attachedAxes().at(1)->setMax(200.0);
+            lines[i]->attachedAxes().at(1)->setMax(aScanIntf()->getImageViewMax(getAScanCursor()));
             lines[i]->setVisible();
         }
 
