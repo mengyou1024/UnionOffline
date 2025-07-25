@@ -352,7 +352,7 @@ void AScanInteractor::changeDataCursor() {
             setIsGateEnable(QVariantList{isGateEnable(0), isGateEnable(1)});
             setGateValue(CreateGateValue());
             qCDebug(TAG) << "当前指针:" << getAScanCursor();
-            qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint8_t>(0, 0)));
+            qCDebug(TAG) << "当前门内最高波:" << std::get<1>(aScanIntf()->getGateResult(getAScanCursor()).value_or(std::make_tuple<double, uint16_t>(0, 0)));
             // 6. 更新显示的声程模式
             switch (aScanIntf()->getDistanceMode(getAScanCursor())) {
                 case DISTANCE_MODE_Y:
@@ -447,8 +447,8 @@ void AScanInteractor::updateBOrCScanView(bool set_size) {
             std::ranges::fill(cscan_image, std::nullopt);
 
             for (auto idx = 0; idx < aScanIntf()->getDataSize(); idx++) {
-                uint8_t amp_in_gate;
-                std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint8_t>(0.0, 0));
+                uint16_t amp_in_gate;
+                std::tie(std::ignore, amp_in_gate) = aScanIntf()->getGateResult(idx).value_or(std::make_tuple<double, uint16_t>(0.0, 0));
                 auto [x, y]                        = cscan_spec->getCScanEncoder(idx);
                 const auto img_idx                 = y * width + x;
                 if (img_idx >= std::ssize(cscan_image)) {
